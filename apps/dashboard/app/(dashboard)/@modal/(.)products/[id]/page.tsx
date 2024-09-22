@@ -2,8 +2,8 @@ import type { NextPage } from 'next'
 
 import { CardHeader, CardTitle } from '@yuki/ui/card'
 
+import { UpdateProductForm } from '@/app/(dashboard)/products/_components/update-product-form'
 import { api } from '@/lib/trpc/server'
-import { UpdateProductForm } from '../_components/update-product-form'
 
 const Page: NextPage<Props> = async ({ params }) => {
   const product = await api.product.getOne({ id: params.id })

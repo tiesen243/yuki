@@ -1,7 +1,7 @@
 import type { NextPage } from 'next'
 
 import { api } from '@/lib/trpc/server'
-import { UpdateProductForm } from '../../@modal/(.)products/_components/update-product-form'
+import { UpdateProductForm } from '../_components/update-product-form'
 
 const Page: NextPage<Props> = async ({ params }) => {
   const product = await api.product.getOne({ id: params.id })

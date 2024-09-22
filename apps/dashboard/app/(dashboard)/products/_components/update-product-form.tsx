@@ -21,6 +21,8 @@ export const UpdateProductForm: React.FC<Props> = ({ product, categories }) => {
     isLoading: false,
   })
 
+  console.log(uploader)
+
   const { mutate, isPending, error } = api.product.update.useMutation({
     onSuccess: async () => {
       router.back()
@@ -57,7 +59,7 @@ export const UpdateProductForm: React.FC<Props> = ({ product, categories }) => {
           />
         ))}
 
-        <Select disabled={isPending} defaultValue={product.categoryId}>
+        <Select name="category" disabled={isPending} defaultValue={product.categoryId}>
           <SelectTrigger>
             <SelectValue />
           </SelectTrigger>

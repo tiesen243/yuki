@@ -7,10 +7,10 @@ export const productSchema = {
   getOne,
 
   create: z.object({
-    name: z.string(),
-    description: z.string(),
-    category: z.string(),
-    image: z.string().url().optional(),
+    name: z.string().min(1, 'Name is required'),
+    description: z.string().min(1, 'Description is required'),
+    category: z.string().min(1, 'Category is required'),
+    image: z.string().optional(),
     price: z.number().positive(),
     stock: z.number().int().positive(),
   }),
@@ -20,7 +20,7 @@ export const productSchema = {
     name: z.string().optional(),
     description: z.string().optional(),
     category: z.string().optional(),
-    image: z.string().url().optional(),
+    image: z.string().optional(),
     price: z.number().positive().optional(),
     stock: z.number().int().positive().optional(),
   }),
