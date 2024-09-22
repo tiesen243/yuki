@@ -8,3 +8,7 @@ export const query = z.object({
   noLimit: z.boolean().default(false),
 })
 export type Query = z.infer<typeof query>
+
+export const getOne = z.object({
+  id: z.string(),
+})
