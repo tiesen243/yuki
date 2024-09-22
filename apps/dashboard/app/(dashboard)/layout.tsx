@@ -8,7 +8,7 @@ import { extractRouterConfig, NextSSRPlugin } from '@yuki/uploader/uploadthing'
 
 import { AppSidebar } from '@/app/(dashboard)/_components/app-sidebar/index'
 
-const DashboardLayout: React.FC<React.PropsWithChildren> = async ({ children }) => {
+const DashboardLayout: React.FC<Props> = async ({ children, modal }) => {
   const { cookies } = await import('next/headers')
 
   const session = await auth()
@@ -27,8 +27,15 @@ const DashboardLayout: React.FC<React.PropsWithChildren> = async ({ children }) 
           </div>
         </main>
       </SidebarLayout>
+
+      {modal}
     </SessionProvider>
   )
 }
 
 export default DashboardLayout
+
+interface Props {
+  children: Readonly<React.ReactNode>
+  modal: Readonly<React.ReactNode>
+}
