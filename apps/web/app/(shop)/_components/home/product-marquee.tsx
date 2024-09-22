@@ -5,7 +5,7 @@ import { ProductCard } from '@/app/_components/product-card'
 import { api } from '@/lib/trpc/server'
 
 export const ProductMarquee: React.FC = async () => {
-  const products = await api.product.getAll({ limit: 13 }).then((res) => res.slice(2, 13))
+  const products = await api.product.getAll({ limit: 13 }).then((res) => res.slice(3, 14))
 
   return (
     <Marquee>
