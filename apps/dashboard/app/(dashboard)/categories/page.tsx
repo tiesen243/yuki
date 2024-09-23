@@ -7,7 +7,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { api } from '@/lib/trpc/server'
 
 const Page: NextPage = async () => {
-  const products = await api.product.getAll({})
+  const cateogries = await api.category.getAll({})
 
   return (
     <Table>
@@ -20,27 +20,26 @@ const Page: NextPage = async () => {
       </TableHeader>
 
       <TableBody>
-        {products.length === 0 && (
+        {cateogries.length === 0 && (
           <TableRow className="text-muted-foreground">
             <TableCell align="center" colSpan={headers.length}>
-              No products found
+              No cateogries found
             </TableCell>
           </TableRow>
         )}
 
-        {products.map((product) => (
-          <TableRow key={product.id}>
-            <TableCell>{product.id}</TableCell>
-            <TableCell>{product.name}</TableCell>
-            <TableCell>{product.price}</TableCell>
-            <TableCell>{product.stock}</TableCell>
-            <TableCell>{product.createdAt.toDateString()}</TableCell>
+        {cateogries.map((category) => (
+          <TableRow key={category.id}>
+            <TableCell>{category.id}</TableCell>
+            <TableCell>{category.name}</TableCell>
+            <TableCell>{category._count.products}</TableCell>{' '}
+            <TableCell>{category.createdAt.toDateString()}</TableCell>
             <TableCell className="space-x-2">
               <Button size="sm" asChild>
-                <Link href={`/products/${product.id}`}>Edit</Link>
+                <Link href={`/cateogries/${category.id}`}>Edit</Link>
               </Button>
               <Button variant="destructive" size="sm" asChild>
-                <Link href={`/products/${product.id}/delete`}>Delete</Link>
+                <Link href={`/cateogries/${category.id}/delete`}>Delete</Link>
               </Button>
             </TableCell>
           </TableRow>
@@ -52,4 +51,4 @@ const Page: NextPage = async () => {
 
 export default Page
 
-const headers = ['ID', 'Name', 'Price', 'Stock', 'Created at', 'Actions']
+const headers = ['ID', 'Name', 'Number of Products', 'Created at', 'Actions']

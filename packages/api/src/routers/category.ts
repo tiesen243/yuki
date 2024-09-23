@@ -15,6 +15,7 @@ export const categoryRouter = createTRPCRouter({
         skip: input.limit * (input.page - 1),
       }),
     })
+
     return categories
   }),
 
@@ -34,11 +35,7 @@ export const categoryRouter = createTRPCRouter({
     })
 
     return {
-      id: category.id,
-      name: category.name,
-      image: category.image,
-      description: category.description,
-      productCount: category._count.products,
+      category,
       products,
     }
   }),

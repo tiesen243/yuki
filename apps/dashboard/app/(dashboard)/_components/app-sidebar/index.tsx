@@ -59,7 +59,7 @@ const data = {
   adminNav: [
     {
       title: 'Products',
-      url: '#',
+      url: '/products',
       icon: icons.Package,
       items: [
         { title: 'All Products', url: '/products', icon: icons.List },
@@ -68,7 +68,7 @@ const data = {
     },
     {
       title: 'Categories',
-      url: '#',
+      url: '/categories',
       icon: icons.Grid,
       items: [
         { title: 'All Categories', url: '/categories', icon: icons.List },
