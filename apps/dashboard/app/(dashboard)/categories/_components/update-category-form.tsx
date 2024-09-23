@@ -12,17 +12,18 @@ import { UploadDropzone } from '@yuki/uploader/react'
 
 import { api } from '@/lib/trpc/react'
 
-export const UpdateCategoryForm: React.FC<{ categories: Category }> = ({ categories }) => {
+export const UpdateCategoryForm: React.FC<{ category: Category }> = ({ category }) => {
   const router = useRouter()
+
   const [uploader, setUploader] = useState<{ image?: string; isLoading: boolean }>({
-    image: categories.image,
+    image: category.image,
     isLoading: false,
   })
 
-  const { mutate, isPending, error } = api.category.create.useMutation({
+  const { mutate, isPending, error } = api.category.update.useMutation({
     onSuccess: async () => {
       router.push('/categories')
-      toast.success(`Category ${categories.name} updated`)
+      toast.success(`Category ${category.name} updated`)
       await new Promise((resolve) => setTimeout(resolve, 150))
       router.refresh()
     },
@@ -32,6 +33,7 @@ export const UpdateCategoryForm: React.FC<{ categories: Category }> = ({ categor
   const action = async (formData: FormData) => {
     const data = Object.fromEntries(formData)
     mutate({
+      id: category.id,
       name: String(data.name),
       description: String(data.description),
       image: uploader.image,
@@ -46,7 +48,7 @@ export const UpdateCategoryForm: React.FC<{ categories: Category }> = ({ categor
           label={field.name.charAt(0).toUpperCase() + field.name.slice(1)}
           name={field.name}
           type={field.type}
-          defaultValue={categories[field.name] ?? ''}
+          defaultValue={category[field.name] ?? ''}
           message={error?.data?.zodError?.[field.name]?.at(0)}
           disabled={isPending}
         />
@@ -54,7 +56,7 @@ export const UpdateCategoryForm: React.FC<{ categories: Category }> = ({ categor
 
       <div className="grid grid-cols-2 gap-4">
         <UploadDropzone
-          endpoint="prodcutUploader"
+          endpoint="categoryUploader"
           config={{ mode: 'auto' }}
           disabled={isPending}
           onUploadBegin={() => setUploader({ isLoading: true, image: uploader.image })}
@@ -68,7 +70,7 @@ export const UpdateCategoryForm: React.FC<{ categories: Category }> = ({ categor
           }}
         />
 
-        <Image src={uploader.image ?? ''} alt="product-preview" width={200} height={200} />
+        <Image src={uploader.image ?? ''} alt="category-preview" width={200} height={200} />
       </div>
 
       <Button className="w-full" disabled={isPending || uploader.isLoading}>

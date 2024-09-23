@@ -14,8 +14,12 @@ import { UploadDropzone } from '@yuki/uploader/react'
 
 import { api } from '@/lib/trpc/react'
 
-export const UpdateProductForm: React.FC<Props> = ({ product, categories }) => {
+export const UpdateProductForm: React.FC<{ product: Product; categories: Category[] }> = ({
+  product,
+  categories,
+}) => {
   const router = useRouter()
+
   const [uploader, setUploader] = useState<{ image: string | undefined; isLoading: boolean }>({
     image: product.image,
     isLoading: false,
@@ -105,11 +109,6 @@ export const UpdateProductForm: React.FC<Props> = ({ product, categories }) => {
       </form>
     </CardContent>
   )
-}
-
-interface Props {
-  product: Product
-  categories: Category[]
 }
 
 const fields = [

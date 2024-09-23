@@ -13,6 +13,7 @@ import { api } from '@/lib/trpc/react'
 
 export const CreateCategoryForm: React.FC = () => {
   const router = useRouter()
+
   const [uploader, setUploader] = useState<{ image?: string; isLoading: boolean }>({
     image: '/assets/logo.svg',
     isLoading: false,
@@ -52,7 +53,7 @@ export const CreateCategoryForm: React.FC = () => {
 
       <div className="grid grid-cols-2 gap-4">
         <UploadDropzone
-          endpoint="prodcutUploader"
+          endpoint="categoryUploader"
           config={{ mode: 'auto' }}
           disabled={isPending}
           onUploadBegin={() => setUploader({ isLoading: true, image: uploader.image })}

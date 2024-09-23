@@ -15,15 +15,16 @@ import { api } from '@/lib/trpc/react'
 
 export const CreateProductForm: React.FC<{ categories: Category[] }> = ({ categories }) => {
   const router = useRouter()
+
   const [uploader, setUploader] = useState<{ image?: string; isLoading: boolean }>({
     image: '/assets/logo.svg',
     isLoading: false,
   })
 
   const { mutate, isPending, error } = api.product.create.useMutation({
-    onSuccess: async () => {
+    onSuccess: async (data) => {
       router.push('/products')
-      toast.success('Product created')
+      toast.success(`Product ${data.name} created`)
       await new Promise((resolve) => setTimeout(resolve, 150))
       router.refresh()
     },
