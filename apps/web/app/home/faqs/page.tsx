@@ -43,7 +43,7 @@ const Page: NextPage = () => (
       </aside>
 
       {/* Main FAQ Content */}
-      <div className="overflow-y-auto px-4 md:max-h-[500px] md:w-3/4">
+      <div className="overflow-y-auto rounded-lg border p-6 md:max-h-[500px] md:w-3/4">
         {faqCategories.map((category, categoryIndex) => (
           <section key={categoryIndex} className="mb-8">
             <h2
