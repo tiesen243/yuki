@@ -2,6 +2,7 @@ import { createTRPCRouter, publicProcedure } from '../trpc'
 import { userSchema as schema } from '../validators/user'
 
 export const userRouter = createTRPCRouter({
+  // [GET] /api/trpc/user.getAll
   getAll: publicProcedure.input(schema.query).query(async ({ ctx, input }) => {
     const users = await ctx.db.user.findMany({
       where: {
@@ -25,6 +26,7 @@ export const userRouter = createTRPCRouter({
     }
   }),
 
+  // [GET] /api/trpc/user.getOne
   getOne: publicProcedure.input(schema.getOne).query(async ({ ctx, input: { id } }) => {
     const user = await ctx.db.user.findUnique({ where: { id } })
     if (!user) throw new Error('User not found')
@@ -37,5 +39,14 @@ export const userRouter = createTRPCRouter({
     })
 
     return { user, products }
+  }),
+
+  // [POST] /api/trpc/user.update
+  update: publicProcedure.input(schema.update).mutation(async ({ ctx, input }) => {
+    const user = await ctx.db.user.update({
+      where: { id: input.id },
+      data: { role: input.role ?? 'USER' },
+    })
+    return user
   }),
 })

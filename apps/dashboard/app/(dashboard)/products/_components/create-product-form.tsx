@@ -47,10 +47,9 @@ export const CreateProductForm: React.FC<{ categories: Category[] }> = ({ catego
     <form action={action} className="space-y-4 p-4 pt-0">
       {fields.map((field) => (
         <FormField
+          {...field}
           key={field.name}
           label={field.name.charAt(0).toUpperCase() + field.name.slice(1)}
-          name={field.name}
-          type={field.type}
           message={error?.data?.zodError?.[field.name]?.at(0)}
           disabled={isPending}
         />
@@ -106,6 +105,6 @@ export const CreateProductForm: React.FC<{ categories: Category[] }> = ({ catego
 const fields = [
   { name: 'name' as const, type: 'text' },
   { name: 'description' as const, type: 'text' },
-  { name: 'price' as const, type: 'number' },
+  { name: 'price' as const, type: 'number', step: 'any' },
   { name: 'stock' as const, type: 'number' },
 ]

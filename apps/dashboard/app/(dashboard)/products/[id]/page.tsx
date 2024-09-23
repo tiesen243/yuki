@@ -5,7 +5,7 @@ import { UpdateProductForm } from '../_components/update-product-form'
 
 const Page: NextPage<Props> = async ({ params }) => {
   const { product } = await api.product.getOne({ id: params.id })
-  const categories = await api.category.getAll({})
+  const { categories } = await api.category.getAll({ limit: 9999 })
   return <UpdateProductForm product={product} categories={categories} />
 }
 

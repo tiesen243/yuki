@@ -29,7 +29,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className }) 
         <div className="flex w-full flex-col items-start gap-1 bg-secondary p-4 transition-colors ease-linear group-hover/product:bg-secondary/90">
           <div className="flex items-center gap-2">
             <Badge>{product.category.name}</Badge>
-            <card.CardTitle>{product.name}</card.CardTitle>
+            <card.CardTitle className="line-clamp-1">{product.name}</card.CardTitle>
           </div>
           <card.CardDescription>$ {product.price.toFixed(2)}</card.CardDescription>
         </div>

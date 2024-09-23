@@ -6,7 +6,7 @@ import { api } from '@/lib/trpc/server'
 import { CreateProductForm } from '../_components/create-product-form'
 
 const Page: NextPage = async () => {
-  const categories = await api.category.getAll({})
+  const { categories } = await api.category.getAll({ limit: 9999 })
 
   return (
     <>
