@@ -13,7 +13,7 @@ const Page: NextPage<PageProps> = async ({ searchParams }) => {
     ...searchParams,
     page: Number(searchParams.page) || 1,
   })
-  const headers = ['ID', 'Name', 'Price', 'Stock', 'Created at', 'Actions']
+  const headers = ['ID', 'Name', 'Category', 'Price', 'Stock', 'Created at', 'Actions']
 
   return (
     <DataTable
@@ -34,6 +34,7 @@ const Page: NextPage<PageProps> = async ({ searchParams }) => {
         <TableRow key={product.id}>
           <TableCell>{product.id}</TableCell>
           <TableCell>{product.name}</TableCell>
+          <TableCell>{product.category.name}</TableCell>
           <TableCell>{product.price}</TableCell>
           <TableCell>{product.stock}</TableCell>
           <TableCell>{product.createdAt.toDateString()}</TableCell>

@@ -25,15 +25,15 @@ export const categoryRouter = createTRPCRouter({
   }),
 
   // [GET] /api/trpc/category.getOne
-  getOne: publicProcedure.input(schema.getOne).query(async ({ input: { id }, ctx }) => {
+  getOne: publicProcedure.input(schema.getOne).query(async ({ input, ctx }) => {
     const category = await ctx.db.category.findUnique({
-      where: { id },
+      where: { id: input.id },
       include: { _count: { select: { products: true } } },
     })
     if (!category) throw new TRPCError({ code: 'NOT_FOUND', message: 'Category not found' })
 
     const products = await ctx.db.product.findMany({
-      where: { categoryId: id },
+      where: { categoryId: input.id },
       take: 10,
       orderBy: { createdAt: 'desc' },
       include: { category: true },

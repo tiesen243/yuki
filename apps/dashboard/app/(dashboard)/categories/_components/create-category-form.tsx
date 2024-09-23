@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 
 import { Button } from '@yuki/ui/button'
+import { CardContent } from '@yuki/ui/card'
 import { FormField } from '@yuki/ui/form-field'
 import { toast } from '@yuki/ui/sonner'
 import { UploadDropzone } from '@yuki/uploader/react'
@@ -39,41 +40,43 @@ export const CreateCategoryForm: React.FC = () => {
   }
 
   return (
-    <form action={action} className="space-y-4 p-4 pt-0">
-      {fields.map((field) => (
-        <FormField
-          key={field.name}
-          label={field.name.charAt(0).toUpperCase() + field.name.slice(1)}
-          name={field.name}
-          type={field.type}
-          message={error?.data?.zodError?.[field.name]?.at(0)}
-          disabled={isPending}
-        />
-      ))}
+    <CardContent asChild>
+      <form action={action} className="space-y-4">
+        {fields.map((field) => (
+          <FormField
+            key={field.name}
+            label={field.name.charAt(0).toUpperCase() + field.name.slice(1)}
+            name={field.name}
+            type={field.type}
+            message={error?.data?.zodError?.[field.name]?.at(0)}
+            disabled={isPending}
+          />
+        ))}
 
-      <div className="grid grid-cols-2 gap-4">
-        <UploadDropzone
-          endpoint="categoryUploader"
-          config={{ mode: 'auto' }}
-          disabled={isPending}
-          onUploadBegin={() => setUploader({ isLoading: true, image: uploader.image })}
-          onClientUploadComplete={(images) => {
-            if (images.length === 0) return
-            setUploader({ isLoading: false, image: images[0]?.url })
-            toast.success('Image uploaded')
-          }}
-          onUploadError={(error) => {
-            toast.error(error.message)
-          }}
-        />
+        <div className="grid grid-cols-2 gap-4">
+          <UploadDropzone
+            endpoint="categoryUploader"
+            config={{ mode: 'auto' }}
+            disabled={isPending}
+            onUploadBegin={() => setUploader({ isLoading: true, image: uploader.image })}
+            onClientUploadComplete={(images) => {
+              if (images.length === 0) return
+              setUploader({ isLoading: false, image: images[0]?.url })
+              toast.success('Image uploaded')
+            }}
+            onUploadError={(error) => {
+              toast.error(error.message)
+            }}
+          />
 
-        <Image src={uploader.image ?? ''} alt="product-preview" width={200} height={200} />
-      </div>
+          <Image src={uploader.image ?? ''} alt="product-preview" width={200} height={200} />
+        </div>
 
-      <Button className="w-full" disabled={isPending || uploader.isLoading}>
-        {isPending ? 'Creating...' : 'Create'}
-      </Button>
-    </form>
+        <Button className="w-full" disabled={isPending || uploader.isLoading}>
+          {isPending ? 'Creating...' : 'Create'}
+        </Button>
+      </form>
+    </CardContent>
   )
 }
 

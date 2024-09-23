@@ -75,8 +75,8 @@ model Product {
   category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   categoryId String   @db.ObjectId
 
-  owner  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String @db.ObjectId
+  owner   User   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  ownerId String @db.ObjectId
 
   comments Comment[]
 

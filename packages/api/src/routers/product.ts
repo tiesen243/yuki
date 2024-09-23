@@ -25,12 +25,15 @@ export const productRouter = createTRPCRouter({
   }),
 
   // [GET] /api/trpc/product.getOne
-  getOne: publicProcedure.input(schema.getOne).query(async ({ input: { id }, ctx }) => {
-    const product = await ctx.db.product.findUnique({ where: { id } })
+  getOne: publicProcedure.input(schema.getOne).query(async ({ input, ctx }) => {
+    const product = await ctx.db.product.findUnique({
+      where: { id: input.id },
+      include: { category: true, owner: true },
+    })
     if (!product) throw new TRPCError({ code: 'NOT_FOUND', message: 'Product not found' })
 
     const relatedProducts = await ctx.db.product.findMany({
-      where: { category: { id: product.categoryId }, NOT: { id } },
+      where: { category: { id: product.categoryId }, NOT: { id: input.id } },
       take: 10,
       orderBy: { createdAt: 'desc' },
       include: { category: true },

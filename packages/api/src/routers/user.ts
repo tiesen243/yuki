@@ -32,7 +32,7 @@ export const userRouter = createTRPCRouter({
     if (!user) throw new Error('User not found')
 
     const products = await ctx.db.product.findMany({
-      where: { userId: id },
+      where: { ownerId: id },
       take: 10,
       orderBy: { createdAt: 'desc' },
       include: { category: true },

@@ -9,7 +9,7 @@ export const ProductMarquee: React.FC = async () => {
 
   return (
     <Marquee>
-      {products.slice(4, 11).map((product) => (
+      {products.slice(3, 11).map((product) => (
         <ProductCard key={product.id} product={product} className="w-80" />
       ))}
     </Marquee>
