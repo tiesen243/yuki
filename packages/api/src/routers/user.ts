@@ -3,7 +3,7 @@ import { userSchema as schema } from '../validators/user'
 
 export const userRouter = createTRPCRouter({
   getAll: publicProcedure.input(schema.query).query(async ({ ctx, input }) => {
-    const products = await ctx.db.user.findMany({
+    const users = await ctx.db.user.findMany({
       where: {
         ...(input.q && {
           OR: [{ name: { contains: input.q } }, { email: { contains: input.q } }],
@@ -13,6 +13,14 @@ export const userRouter = createTRPCRouter({
       skip: input.limit * (input.page - 1),
       orderBy: { createdAt: 'desc' },
     })
-    return products
+
+    if (users.length === 0) return { users: [], totalPage: 0 }
+
+    const totalPage = Math.ceil((await ctx.db.user.count()) / input.limit)
+
+    return {
+      users,
+      totalPage,
+    }
   }),
 })

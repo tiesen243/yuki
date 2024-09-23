@@ -8,14 +8,20 @@ export const productRouter = createTRPCRouter({
   getAll: publicProcedure.input(schema.query).query(async ({ input, ctx }) => {
     const products = await ctx.db.product.findMany({
       where: { ...(input.q && { name: { contains: input.q } }) },
-      ...(!input.noLimit && {
-        take: input.limit,
-        skip: input.limit * (input.page - 1),
-      }),
+      take: input.limit,
+      skip: input.limit * (input.page - 1),
       orderBy: { createdAt: 'desc' },
       include: { category: true },
     })
-    return products
+
+    if (products.length === 0) return { products: [], totalPage: 0 }
+
+    const totalPage = Math.ceil((await ctx.db.product.count()) / input.limit)
+
+    return {
+      products,
+      totalPage,
+    }
   }),
 
   // [GET] /api/trpc/product.getOne

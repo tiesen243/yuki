@@ -7,16 +7,21 @@ export const categoryRouter = createTRPCRouter({
   // [GET] /api/trpc/category.getAll
   getAll: publicProcedure.input(schema.query).query(async ({ input, ctx }) => {
     const categories = await ctx.db.category.findMany({
-      include: { _count: { select: { products: true } } },
+      ...(input.q && { where: { name: { contains: input.q, mode: 'insensitive' } } }),
+      take: input.limit,
+      skip: input.limit * (input.page - 1),
       orderBy: { createdAt: 'desc' },
-      ...(input.q && { where: { name: { contains: input.q } } }),
-      ...(!input.noLimit && {
-        take: input.limit,
-        skip: input.limit * (input.page - 1),
-      }),
+      include: { _count: { select: { products: true } } },
     })
 
-    return categories
+    if (categories.length === 0) return { categories: [], totalPage: 0 }
+
+    const totalPage = Math.ceil((await ctx.db.category.count()) / input.limit)
+
+    return {
+      categories,
+      totalPage,
+    }
   }),
 
   // [GET] /api/trpc/category.getOne
