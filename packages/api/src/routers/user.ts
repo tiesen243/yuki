@@ -28,7 +28,10 @@ export const userRouter = createTRPCRouter({
 
   // [GET] /api/trpc/user.getOne
   getOne: publicProcedure.input(schema.getOne).query(async ({ ctx, input: { id } }) => {
-    const user = await ctx.db.user.findUnique({ where: { id } })
+    const user = await ctx.db.user.findUnique({
+      where: { id },
+      include: { _count: { select: { products: true } } },
+    })
     if (!user) throw new Error('User not found')
 
     const products = await ctx.db.product.findMany({

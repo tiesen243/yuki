@@ -1,14 +1,16 @@
 import type { NextPage, ResolvingMetadata } from 'next'
 import Image from 'next/image'
+import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
+import { Button } from '@yuki/ui/button'
 import { Marquee } from '@yuki/ui/marquee'
 import { Typography } from '@yuki/ui/typography'
 
 import { ProductCard } from '@/app/_components/product-card'
 import { seo } from '@/lib/seo'
 import { api } from '@/lib/trpc/server'
-import { getIdFromSlug } from '@/lib/utils'
+import { getIdFromSlug, slugify } from '@/lib/utils'
 
 const Page: NextPage<Props> = async ({ params }) => {
   try {
@@ -27,10 +29,10 @@ const Page: NextPage<Props> = async ({ params }) => {
             className="h-auto w-full rounded-lg object-cover md:col-span-4"
           />
 
-          <article className="md:col-span-8">
+          <article className="flex h-full flex-col md:col-span-8">
             <Typography level="h2">{product.name}</Typography>
 
-            <Typography className="h-[350px] max-h-[350px] overflow-y-auto pr-2">
+            <Typography className="max-h-[300px] overflow-y-auto pr-2">
               {product.description?.split('\\n').map((p) => (
                 <span>
                   {p}
@@ -39,20 +41,68 @@ const Page: NextPage<Props> = async ({ params }) => {
               ))}
             </Typography>
 
+            <div className="flex-1" />
+
             <Typography>
-              <span>
-                <strong>Category:</strong> {product.category.name}
-              </span>
-              <br />
+              <strong>Category:</strong> {product.category.name}
+            </Typography>
+
+            <Typography className="flex justify-between">
               <span>
                 <strong>Price:</strong> ${product.price}
               </span>
-              <br />
               <span>
                 <strong>Stock:</strong> {product.stock}
               </span>
             </Typography>
+
+            <Button className="mt-4 w-full">Add to Cart</Button>
           </article>
+        </section>
+
+        <section className="mt-8 flex items-center gap-8 rounded-lg border p-6 shadow-md">
+          <Image
+            src={product.owner.avatar ?? product.owner.discord?.avatar ?? ''}
+            alt={product.owner.name}
+            width={100}
+            height={100}
+            className="aspect-square rounded-full"
+          />
+
+          <article className="flex-1">
+            <Typography level="h4">
+              {product.owner.name}{' '}
+              {product.owner.discord && (
+                <span className="text-base font-medium text-muted-foreground">
+                  #{product.owner.discord.username}
+                </span>
+              )}
+            </Typography>
+
+            <Typography>
+              <strong>Joined at:</strong> {product.owner.createdAt.toDateString()}
+            </Typography>
+          </article>
+
+          <div className="flex flex-col gap-2">
+            <Button asChild>
+              <Link href={`/u/${slugify(product.owner.name, product.owner.id)}`}>Profile</Link>
+            </Button>
+
+            <Button variant="outline" asChild>
+              <a
+                href={
+                  product.owner.discord
+                    ? `https://discord.com/users/${product.owner.discord.id}`
+                    : `mailto:${product.owner.email}`
+                }
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                Message
+              </a>
+            </Button>
+          </div>
         </section>
 
         <section className="mt-8">

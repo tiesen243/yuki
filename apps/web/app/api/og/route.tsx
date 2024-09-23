@@ -34,7 +34,7 @@ export const GET = async (
         <img
           src={image}
           alt="Logo"
-          tw="w-2/5 ml-8"
+          tw="w-2/5 ml-8 rounded-lg"
           style={{
             ...(image === logo ? { filter: 'invert(1)' } : {}),
           }}
