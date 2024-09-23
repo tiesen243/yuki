@@ -64,4 +64,16 @@ export const productRouter = createTRPCRouter({
 
     return updatedProduct
   }),
+
+  // [POST] /api/trpc/product.delete
+  delete: protectedProcedure.input(schema.getOne).mutation(async ({ input, ctx }) => {
+    const product = await ctx.db.product.findUnique({ where: { id: input.id } })
+    if (!product) throw new TRPCError({ code: 'NOT_FOUND', message: 'Product not found' })
+
+    await ctx.db.product.delete({ where: { id: input.id } })
+    if (product.image.startsWith('https'))
+      await utapi.deleteFiles([product.image.split('/').pop() ?? ''])
+
+    return product
+  }),
 })
