@@ -76,7 +76,7 @@ const data = {
       ],
     },
     { title: 'Orders', url: '/orders', icon: icons.ShoppingBag },
-    { title: 'Customers', url: '/customers', icon: icons.Users },
+    { title: 'Users', url: '/users', icon: icons.Users },
   ],
 
   userNav: [

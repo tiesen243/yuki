@@ -5,11 +5,11 @@ import { ProductCard } from '@/app/_components/product-card'
 import { api } from '@/lib/trpc/server'
 
 export const ProductMarquee: React.FC = async () => {
-  const products = await api.product.getAll({ limit: 13 }).then((res) => res.slice(3, 14))
+  const { products } = await api.product.getAll({ limit: 10 })
 
   return (
     <Marquee>
-      {products.map((product) => (
+      {products.slice(4, 11).map((product) => (
         <ProductCard key={product.id} product={product} className="w-80" />
       ))}
     </Marquee>

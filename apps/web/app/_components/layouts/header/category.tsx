@@ -6,7 +6,7 @@ import { api } from '@/lib/trpc/server'
 import { slugify } from '@/lib/utils'
 
 export const Category: React.FC<Props> = async ({ className, itemClassName }) => {
-  const categories = await api.category.getAll({ limit: 3 })
+  const { categories } = await api.category.getAll({ limit: 3 })
 
   return (
     <ul className={cn('flex gap-2', className)}>

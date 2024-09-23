@@ -4,7 +4,7 @@ import { orderSchema as schema } from '../validators/order'
 export const orderRouter = createTRPCRouter({
   getAll: protectedProcedure.input(schema.query).query(async ({ ctx, input }) => {
     const orders = await ctx.db.order.findMany({
-      ...(input.q && { where: { user: { email: { contains: input.q } } } }),
+      ...(input.q && { where: { user: { name: { contains: input.q, mode: 'insensitive' } } } }),
       take: input.limit,
       skip: input.limit * (input.page - 1),
       orderBy: { createdAt: 'desc' },

@@ -24,60 +24,73 @@ export const DataTable: React.FC<Props> = ({
   totalPage,
   searchParams,
   children,
-}) => (
-  <Table>
-    <TableCaption>{caption}</TableCaption>
-    <TableHeader>
-      <TableRow>
-        {headers.map((header, index) => (
-          <TableHead key={index}>{header}</TableHead>
-        ))}
-      </TableRow>
-    </TableHeader>
+}) => {
+  const nextPage = searchParams.page
+    ? +searchParams.page + 1 > totalPage
+      ? totalPage
+      : +searchParams.page + 1
+    : 1
+  const prevPage = searchParams.page
+    ? +searchParams.page - 1 === 0
+      ? 1
+      : +searchParams.page - 1
+    : 1
 
-    <TableBody>{children}</TableBody>
+  return (
+    <Table>
+      <TableCaption>{caption}</TableCaption>
+      <TableHeader>
+        <TableRow>
+          {headers.map((header, index) => (
+            <TableHead key={index}>{header}</TableHead>
+          ))}
+        </TableRow>
+      </TableHeader>
 
-    <TableFooter>
-      <TableRow>
-        <TableCell colSpan={2}>
-          <form>
-            <Input name="q" placeholder="Search" defaultValue={searchParams.q} />
-          </form>
-        </TableCell>
+      <TableBody>{children}</TableBody>
 
-        <TableCell colSpan={headers.length - 2}>
-          <div className="flex items-center justify-end gap-4">
-            <Button
-              size="icon"
-              variant="outline"
-              disabled={searchParams.page === 1 || !searchParams.page}
-              asChild
-            >
-              <Link href={{ query: { page: Number(searchParams.page) - 1 } }}>
-                <ChevronLeftIcon />
-              </Link>
-            </Button>
+      <TableFooter>
+        <TableRow>
+          <TableCell colSpan={2}>
+            <form>
+              <Input name="q" placeholder="Search" defaultValue={searchParams.q} />
+            </form>
+          </TableCell>
 
-            <span>
-              {searchParams.page ?? 1} / {totalPage}
-            </span>
+          <TableCell colSpan={headers.length - 2}>
+            <div className="flex items-center justify-end gap-4">
+              <Button
+                size="icon"
+                variant="outline"
+                disabled={searchParams.page === 1 || !searchParams.page}
+                asChild
+              >
+                <Link href={{ query: { page: prevPage } }}>
+                  <ChevronLeftIcon />
+                </Link>
+              </Button>
 
-            <Button
-              size="icon"
-              variant="outline"
-              disabled={searchParams.page === totalPage || totalPage === 1}
-              asChild
-            >
-              <Link href={{ query: { page: Number(searchParams.page) + 1 } }}>
-                <ChevronRightIcon />
-              </Link>
-            </Button>
-          </div>
-        </TableCell>
-      </TableRow>
-    </TableFooter>
-  </Table>
-)
+              <span>
+                {searchParams.page ?? 1} / {totalPage}
+              </span>
+
+              <Button
+                size="icon"
+                variant="outline"
+                disabled={searchParams.page === totalPage || totalPage === 1}
+                asChild
+              >
+                <Link href={{ query: { page: nextPage } }}>
+                  <ChevronRightIcon />
+                </Link>
+              </Button>
+            </div>
+          </TableCell>
+        </TableRow>
+      </TableFooter>
+    </Table>
+  )
+}
 
 interface Props {
   caption: string

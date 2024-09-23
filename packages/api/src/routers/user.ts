@@ -6,7 +6,10 @@ export const userRouter = createTRPCRouter({
     const users = await ctx.db.user.findMany({
       where: {
         ...(input.q && {
-          OR: [{ name: { contains: input.q } }, { email: { contains: input.q } }],
+          OR: [
+            { name: { contains: input.q, mode: 'insensitive' } },
+            { email: { contains: input.q, mode: 'insensitive' } },
+          ],
         }),
       },
       take: input.limit,
@@ -14,13 +17,25 @@ export const userRouter = createTRPCRouter({
       orderBy: { createdAt: 'desc' },
     })
 
-    if (users.length === 0) return { users: [], totalPage: 0 }
-
     const totalPage = Math.ceil((await ctx.db.user.count()) / input.limit)
 
     return {
       users,
       totalPage,
     }
+  }),
+
+  getOne: publicProcedure.input(schema.getOne).query(async ({ ctx, input: { id } }) => {
+    const user = await ctx.db.user.findUnique({ where: { id } })
+    if (!user) throw new Error('User not found')
+
+    const products = await ctx.db.product.findMany({
+      where: { userId: id },
+      take: 10,
+      orderBy: { createdAt: 'desc' },
+      include: { category: true },
+    })
+
+    return { user, products }
   }),
 })

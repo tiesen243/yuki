@@ -38,10 +38,10 @@ const Page: NextPage<PageProps> = async ({ searchParams }) => {
           <TableCell>{customer.createdAt.toDateString()}</TableCell>
           <TableCell className="space-x-2">
             <Button size="sm" asChild>
-              <Link href={`/customers/${customer.id}`}>Edit</Link>
+              <Link href={`/users/${customer.id}`}>Edit</Link>
             </Button>
             <Button variant="destructive" size="sm" asChild>
-              <Link href={`/customers/${customer.id}/delete`}>Delete</Link>
+              <Link href={`/users/${customer.id}/delete`}>Delete</Link>
             </Button>
           </TableCell>
         </TableRow>
