@@ -12,6 +12,7 @@ import { ZodError } from 'zod'
 
 import { auth } from '@yuki/auth'
 import { db } from '@yuki/db'
+import { utapi } from '@yuki/uploader'
 
 /**
  * 1. CONTEXT
@@ -33,6 +34,7 @@ export const createTRPCContext = async (opts: { headers: Headers }) => {
 
   return {
     session,
+    utapi,
     db,
   }
 }

@@ -51,4 +51,33 @@ export const categoryRouter = createTRPCRouter({
     })
     return category
   }),
+
+  // [POST] /api/trpc/category.update
+  update: protectedProcedure.input(schema.update).mutation(async ({ input, ctx }) => {
+    const category = await ctx.db.category.update({
+      where: { id: input.id },
+      data: {
+        name: input.name,
+        description: input.description,
+        ...(input.image && { image: input.image }),
+      },
+    })
+
+    if (category.image && category.image !== input.image)
+      await ctx.utapi.deleteFiles([category.image.split('/').pop() ?? ''])
+
+    return category
+  }),
+
+  // [POST] /api/trpc/category.delete
+  delete: protectedProcedure.input(schema.getOne).mutation(async ({ input: { id }, ctx }) => {
+    const category = await ctx.db.category.findUnique({ where: { id } })
+    if (!category) throw new TRPCError({ code: 'NOT_FOUND', message: 'Category not found' })
+
+    await ctx.db.category.delete({ where: { id } })
+    if (category.image.startsWith('https'))
+      await ctx.utapi.deleteFiles([category.image.split('/').pop() ?? ''])
+
+    return category
+  }),
 })

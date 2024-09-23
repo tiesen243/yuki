@@ -83,7 +83,7 @@ const data = {
     { title: 'Back to Site', url: getClientUrl(), icon: icons.Home },
     { title: 'Account', url: '/account', icon: icons.User },
     { title: 'Your Cart', url: '/account/cart', icon: icons.ShoppingCart },
-    { title: 'Settings', url: '/settings', icon: icons.Settings },
+    { title: 'Settings', url: '/account/settings', icon: icons.Settings },
   ],
 
   navSecondary: [

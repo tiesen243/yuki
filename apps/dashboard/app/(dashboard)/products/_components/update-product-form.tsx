@@ -26,7 +26,7 @@ export const UpdateProductForm: React.FC<Props> = ({ product, categories }) => {
   const { mutate, isPending, error } = api.product.update.useMutation({
     onSuccess: async () => {
       router.back()
-      toast.success('Product updated')
+      toast.success(`Product ${product.name} updated`)
       await new Promise((resolve) => setTimeout(resolve, 150))
       router.refresh()
     },

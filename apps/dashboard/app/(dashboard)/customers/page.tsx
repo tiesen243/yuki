@@ -36,10 +36,10 @@ const Page: NextPage = async () => {
             <TableCell>{customer.createdAt.toDateString()}</TableCell>
             <TableCell className="space-x-2">
               <Button size="sm" asChild>
-                <Link href={`/cateogries/${customer.id}`}>Edit</Link>
+                <Link href={`/customers/${customer.id}`}>Edit</Link>
               </Button>
               <Button variant="destructive" size="sm" asChild>
-                <Link href={`/cateogries/${customer.id}/delete`}>Delete</Link>
+                <Link href={`/customers/${customer.id}/delete`}>Delete</Link>
               </Button>
             </TableCell>
           </TableRow>

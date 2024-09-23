@@ -1,7 +1,5 @@
 import { TRPCError } from '@trpc/server'
 
-import { utapi } from '@yuki/uploader'
-
 import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc'
 import { productSchema as schema } from '../validators/product'
 
@@ -72,7 +70,7 @@ export const productRouter = createTRPCRouter({
     })
 
     if (product.image !== updatedProduct.image)
-      await utapi.deleteFiles([product.image.split('/').pop() ?? ''])
+      await ctx.utapi.deleteFiles([product.image.split('/').pop() ?? ''])
 
     return updatedProduct
   }),
@@ -84,7 +82,7 @@ export const productRouter = createTRPCRouter({
 
     await ctx.db.product.delete({ where: { id: input.id } })
     if (product.image.startsWith('https'))
-      await utapi.deleteFiles([product.image.split('/').pop() ?? ''])
+      await ctx.utapi.deleteFiles([product.image.split('/').pop() ?? ''])
 
     return product
   }),
