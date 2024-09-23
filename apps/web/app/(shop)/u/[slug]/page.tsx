@@ -21,10 +21,10 @@ const Page: NextPage<Props> = async ({ params }) => {
             alt={user.name}
             width={400}
             height={400}
-            className="h-auto w-full rounded-lg object-cover md:col-span-3"
+            className="mx-auto h-auto w-1/2 rounded-lg object-cover md:col-span-3 md:w-full"
           />
 
-          <article className="md:col-span-9">
+          <article className="text-center md:col-span-9 md:text-start">
             <Typography level="h1">
               {user.name}{' '}
               {user.discord && (
@@ -39,8 +39,8 @@ const Page: NextPage<Props> = async ({ params }) => {
         </section>
 
         <section className="mt-8">
-          <Typography level="h2">Products</Typography>
-          <div className="grid gap-4 md:grid-cols-3">
+          <Typography level="h2">{user.name}'s products</Typography>
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
             {products.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
@@ -66,8 +66,8 @@ export async function generateMetadata({ params }: Props, parent: ResolvingMetad
       description,
       images: [
         `/api/og?title=${user.name}&description=${description}&image=${user.avatar ?? user.discord?.avatar}`,
-        user.avatar!,
-        user.discord?.avatar!,
+        user.avatar ?? '',
+        user.discord?.avatar ?? '',
         ...previousImages,
       ],
       url: `/u/${params.slug}`,
