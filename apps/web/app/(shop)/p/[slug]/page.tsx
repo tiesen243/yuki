@@ -19,7 +19,7 @@ const Page: NextPage<Props> = async ({ params }) => {
     })
 
     return (
-      <main className="container flex-1">
+      <>
         <section className="grid gap-4 md:grid-cols-12 md:gap-8">
           <Image
             src={product.image}
@@ -114,7 +114,7 @@ const Page: NextPage<Props> = async ({ params }) => {
             ))}
           </Marquee>
         </section>
-      </main>
+      </>
     )
   } catch {
     notFound()

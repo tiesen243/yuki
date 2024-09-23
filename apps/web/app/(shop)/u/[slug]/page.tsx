@@ -14,7 +14,7 @@ const Page: NextPage<Props> = async ({ params }) => {
     const { user, products } = await api.user.getOne({ id: getIdFromSlug(params.slug) })
 
     return (
-      <main className="container flex-1">
+      <>
         <section className="grid gap-8 md:grid-cols-12">
           <Image
             src={user.avatar ?? user.discord?.avatar ?? ''}
@@ -46,7 +46,7 @@ const Page: NextPage<Props> = async ({ params }) => {
             ))}
           </div>
         </section>
-      </main>
+      </>
     )
   } catch {
     notFound()
