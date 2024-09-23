@@ -1,4 +1,4 @@
-import type { NextPage } from 'next'
+import type { NextPage, ResolvingMetadata } from 'next'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
 
@@ -6,6 +6,7 @@ import { Marquee } from '@yuki/ui/marquee'
 import { Typography } from '@yuki/ui/typography'
 
 import { ProductCard } from '@/app/_components/product-card'
+import { seo } from '@/lib/seo'
 import { api } from '@/lib/trpc/server'
 import { getIdFromSlug } from '@/lib/utils'
 
@@ -71,6 +72,26 @@ const Page: NextPage<Props> = async ({ params }) => {
 }
 
 export default Page
+
+export async function generateMetadata({ params }: Props, parent: ResolvingMetadata) {
+  try {
+    const { product } = await api.product.getOne({ id: getIdFromSlug(params.slug) })
+    const previousImages = (await parent).openGraph?.images ?? []
+
+    return seo({
+      title: product.name,
+      description: product.description ?? '',
+      images: [
+        `/api/og?title=${product.name}&description=${product.description?.split('\\n').at(0)}&image=${product.image}`,
+        product.image,
+        ...previousImages,
+      ],
+      url: `/p/${params.slug}`,
+    })
+  } catch {
+    notFound()
+  }
+}
 
 interface Props {
   params: { slug: string }

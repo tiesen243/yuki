@@ -4,11 +4,16 @@ import { seo } from '@/lib/seo'
 
 export const runtime = 'edge'
 
+const logo = 'https://tiesen.id.vn/assets/logo.svg'
 export const GET = async (
   _: Request,
   {
-    params: { title = String(seo({}).title), description = String(seo({}).description) },
-  }: { params: { title?: string; description?: string; hero?: string } },
+    params: {
+      title = String(seo({}).title),
+      description = String(seo({}).description),
+      image = logo,
+    },
+  }: { params: { title?: string; description?: string; hero?: string; image?: string } },
 ) =>
   new ImageResponse(
     (
@@ -27,10 +32,12 @@ export const GET = async (
 
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="https://tiesen.id.vn/assets/logo.svg"
+          src={image}
           alt="Logo"
           tw="w-2/5 ml-8"
-          style={{ filter: 'invert(1)' }}
+          style={{
+            ...(image === logo ? { filter: 'invert(1)' } : {}),
+          }}
         />
       </div>
     ),
