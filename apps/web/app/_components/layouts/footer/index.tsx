@@ -19,14 +19,18 @@ export const Footer: React.FC = () => (
         <section className="space-y-4">
           <Typography level="h4">Stay Connected</Typography>
           <p>Subscribe to our newsletter for exclusive offers and updates.</p>
-          <form className="flex space-x-2">
+          <div className="flex space-x-2">
             <Input
               type="email"
               placeholder="Enter your email"
               className="border-primary bg-secondary text-secondary-foreground"
             />
-            <Button type="submit">Subscribe</Button>
-          </form>
+            <Button asChild>
+              <a href="https://youtu.be/LoZCAEgioDg" target="_blank" rel="noopener noreferrer">
+                Subscribe
+              </a>
+            </Button>
+          </div>
 
           <div className="flex space-x-4">
             {socials.map(({ title, icon: Icon, url }) => (

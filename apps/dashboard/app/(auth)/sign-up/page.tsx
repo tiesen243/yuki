@@ -2,7 +2,7 @@ import type { NextPage } from 'next'
 import Link from 'next/link'
 
 import { Button } from '@yuki/ui/button'
-import { CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@yuki/ui/card'
+import { CardDescription, CardFooter, CardHeader, CardTitle } from '@yuki/ui/card'
 import { DiscordIcon } from '@yuki/ui/icons'
 
 import { RegisterForm } from '@/app/(auth)/_components/register-form'
@@ -15,9 +15,7 @@ const Page: NextPage = () => (
       <CardDescription>Enter your email below to register for an account</CardDescription>
     </CardHeader>
 
-    <CardContent>
-      <RegisterForm />
-    </CardContent>
+    <RegisterForm />
 
     <CardFooter className="flex-col">
       <Button variant="outline" className="w-full" asChild>

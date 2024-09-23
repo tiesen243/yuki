@@ -2,16 +2,23 @@ import * as icons from '@yuki/ui/icons'
 
 export const techStacks = [
   {
+    href: 'https://turbo.build',
+    title: 'Turborepo',
+    description:
+      'Turbo is an incremental bundler and build system optimized for JavaScript and TypeScript, written in Rust.',
+    Icon: icons.BookCopy,
+  },
+  {
     href: 'https://nextjs.org',
     title: 'Next.js',
     description: 'React framework for building fast and scalable web applications',
-    Icon: icons.ArrowRight,
+    Icon: icons.Code,
   },
   {
     href: 'https://trpc.io',
     title: 'tRPC',
     description: 'End-to-end typesafe APIs made easy',
-    Icon: icons.ArrowRight,
+    Icon: icons.Code,
   },
   {
     href: 'https://prisma.io',
@@ -36,6 +43,12 @@ export const techStacks = [
     title: 'Tailwind CSS',
     description: 'Utility-first CSS framework for rapid UI development',
     Icon: icons.Code,
+  },
+  {
+    href: 'https://ui.shadcn.com',
+    title: 'Shadcn/UI',
+    description: 'Beautifully designed components that you can copy and paste into your apps.',
+    Icon: icons.Code2,
   },
   {
     href: 'https://resend.com',

@@ -23,9 +23,7 @@ const Page: NextPage<Props> = async (props) => {
         <CardDescription>Enter your email below to login to your account</CardDescription>
       </CardHeader>
 
-      <CardContent>
-        <LoginForm {...props} setCookies={setCookies} />
-      </CardContent>
+      <LoginForm {...props} setCookies={setCookies} />
 
       <CardFooter className="flex-col">
         <Button variant="outline" className="w-full" asChild>

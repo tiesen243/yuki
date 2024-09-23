@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation'
 
 import { Button } from '@yuki/ui/button'
+import { CardContent } from '@yuki/ui/card'
 import { FormField } from '@yuki/ui/form-field'
 import { toast } from '@yuki/ui/sonner'
 
@@ -25,27 +26,29 @@ export const RegisterForm: React.FC = () => {
   }
 
   return (
-    <form className="space-y-4" action={action}>
-      {fields.map((field) => (
-        <FormField
-          key={field.name}
-          {...field}
-          disabled={isPending}
-          message={error?.data?.zodError?.[field.name]?.at(0)}
-        />
-      ))}
+    <CardContent asChild>
+      <form className="space-y-4" action={action}>
+        {fields.map((field) => (
+          <FormField
+            key={field.name}
+            {...field}
+            disabled={isPending}
+            message={error?.data?.zodError?.[field.name]?.at(0)}
+          />
+        ))}
 
-      <Button className="w-full" disabled={isPending}>
-        Register
-      </Button>
+        <Button className="w-full" disabled={isPending}>
+          Register
+        </Button>
 
-      <div className="text-center text-sm">
-        Already have an account?{' '}
-        <button type="button" onClick={() => router.push('sign-in')} className="underline">
-          Sign in
-        </button>
-      </div>
-    </form>
+        <div className="text-center text-sm">
+          Already have an account?{' '}
+          <button type="button" onClick={() => router.push('sign-in')} className="underline">
+            Sign in
+          </button>
+        </div>
+      </form>
+    </CardContent>
   )
 }
 

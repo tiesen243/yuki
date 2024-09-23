@@ -21,7 +21,7 @@
     "eslint-plugin-react": "^7.36.1",
     "eslint-plugin-react-hooks": "rc",
     "eslint-plugin-turbo": "^2.1.2",
-    "typescript-eslint": "^8.6.0"
+    "typescript-eslint": "^8.7.0"
   },
   "devDependencies": {
     "@yuki/prettier-config": "workspace:*",
