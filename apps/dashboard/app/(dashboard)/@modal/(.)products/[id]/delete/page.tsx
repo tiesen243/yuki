@@ -6,7 +6,7 @@ import { DeleteProductPrompt } from '@/app/(dashboard)/products/_components/dele
 import { api } from '@/lib/trpc/server'
 
 const Page: NextPage<Props> = async ({ params }) => {
-  const product = await api.product.getOne({ id: params.id })
+  const { product } = await api.product.getOne({ id: params.id })
 
   return (
     <>

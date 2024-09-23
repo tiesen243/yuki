@@ -59,18 +59,26 @@ export const UpdateProductForm: React.FC<Props> = ({ product, categories }) => {
           />
         ))}
 
-        <Select name="category" disabled={isPending} defaultValue={product.categoryId}>
-          <SelectTrigger>
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            {categories.map((category) => (
-              <SelectItem key={category.id} value={category.id}>
-                {category.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <FormField
+          label="Category"
+          name="category"
+          disabled={isPending}
+          message={error?.data?.zodError?.category?.at(0)}
+          asChild
+        >
+          <Select>
+            <SelectTrigger>
+              <SelectValue placeholder="Select a category" />
+            </SelectTrigger>
+            <SelectContent>
+              {categories.map((category) => (
+                <SelectItem key={category.id} value={category.id}>
+                  {category.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </FormField>
 
         <div className="grid grid-cols-2 gap-4">
           <UploadDropzone

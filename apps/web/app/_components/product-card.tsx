@@ -31,7 +31,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className }) 
             <Badge>{product.category.name}</Badge>
             <card.CardTitle>{product.name}</card.CardTitle>
           </div>
-          <card.CardDescription>{product.price.toFixed(2)}</card.CardDescription>
+          <card.CardDescription>$ {product.price.toFixed(2)}</card.CardDescription>
         </div>
       </div>
     </Link>

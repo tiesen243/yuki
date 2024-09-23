@@ -6,7 +6,7 @@ import { UpdateProductForm } from '@/app/(dashboard)/products/_components/update
 import { api } from '@/lib/trpc/server'
 
 const Page: NextPage<Props> = async ({ params }) => {
-  const product = await api.product.getOne({ id: params.id })
+  const { product } = await api.product.getOne({ id: params.id })
   const categories = await api.category.getAll({})
 
   return (

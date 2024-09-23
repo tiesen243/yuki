@@ -13,7 +13,7 @@ export const productRouter = createTRPCRouter({
       take: input.limit,
       skip: input.limit * (input.page - 1),
       orderBy: { createdAt: 'desc' },
-      include: { category: true, owner: true },
+      include: { category: true },
     })
     return products
   }),
@@ -23,7 +23,17 @@ export const productRouter = createTRPCRouter({
     const product = await ctx.db.product.findUnique({ where: { id } })
     if (!product) throw new TRPCError({ code: 'NOT_FOUND', message: 'Product not found' })
 
-    return product
+    const relatedProducts = await ctx.db.product.findMany({
+      where: { category: { id: product.categoryId }, NOT: { id } },
+      take: 10,
+      orderBy: { createdAt: 'desc' },
+      include: { category: true },
+    })
+
+    return {
+      product,
+      relatedProducts,
+    }
   }),
 
   // [POST] /api/trpc/product.create
