@@ -39,7 +39,7 @@
     "@yuki/tsconfig": "workspace:*",
     "@types/react-dom": "^18.3.0",
     "@types/react": "^18.3.8",
-    "@types/node": "^22.6.0",
+    "@types/node": "^22.6.1",
     "tailwindcss": "^3.4.13",
     "dotenv-cli": "^7.4.2",
     "postcss": "^8.4.47",
