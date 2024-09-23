@@ -1,5 +1,3 @@
-import Link from 'next/link'
-
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@yuki/ui/accordion'
 import { Button } from '@yuki/ui/button'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@yuki/ui/card'
@@ -129,7 +127,9 @@ export default function ShippingReturns() {
         <CardFooter className="flex-col">
           <p className="mb-4">Still have questions about shipping or returns?</p>
           <Button asChild>
-            <Link href="/home/contact">Contact Customer Support</Link>
+            <a href="https://youtu.be/dQw4w9WgXcQ" target="_blank" rel="noopener noreferrer">
+              Contact Customer Support
+            </a>
           </Button>
         </CardFooter>
       </Card>

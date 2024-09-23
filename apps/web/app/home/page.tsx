@@ -1,5 +1,4 @@
 import type { NextPage } from 'next'
-import Image from 'next/image'
 import Link from 'next/link'
 
 import { Button } from '@yuki/ui/button'
@@ -77,15 +76,17 @@ const Page: NextPage = () => (
       </div>
     </section>
 
-    <section className="container grid min-h-dvh w-full place-items-center">
+    <section className="container grid w-full py-8">
       <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
-        <Image
-          src="/assets/logo.svg"
-          alt="Yuki Logo"
-          width={600}
-          height={600}
-          className="mx-auto aspect-video overflow-hidden rounded-xl object-cover dark:invert sm:w-full lg:order-last lg:aspect-square"
-        />
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="mx-auto aspect-video overflow-hidden rounded-xl object-cover sm:w-full lg:order-last lg:aspect-square"
+        >
+          <source src="https://tiesen.id.vn/assets/yuki.webm" type="video/webm" />
+        </video>
         <div className="flex flex-col justify-center space-y-4">
           <div className="space-y-2">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">

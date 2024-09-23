@@ -9,6 +9,7 @@ import { Button } from '@yuki/ui/button'
 import { FormField } from '@yuki/ui/form-field'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@yuki/ui/select'
 import { toast } from '@yuki/ui/sonner'
+import { Textarea } from '@yuki/ui/textarea'
 import { UploadDropzone } from '@yuki/uploader/react'
 
 import { api } from '@/lib/trpc/react'
@@ -52,6 +53,7 @@ export const CreateProductForm: React.FC<{ categories: Category[] }> = ({ catego
           label={field.name.charAt(0).toUpperCase() + field.name.slice(1)}
           message={error?.data?.zodError?.[field.name]?.at(0)}
           disabled={isPending}
+          {...(field.name === 'description' && { asChild: true, children: <Textarea /> })}
         />
       ))}
 

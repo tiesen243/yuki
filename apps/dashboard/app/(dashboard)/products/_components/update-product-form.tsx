@@ -10,6 +10,7 @@ import { CardContent } from '@yuki/ui/card'
 import { FormField } from '@yuki/ui/form-field'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@yuki/ui/select'
 import { toast } from '@yuki/ui/sonner'
+import { Textarea } from '@yuki/ui/textarea'
 import { UploadDropzone } from '@yuki/uploader/react'
 
 import { api } from '@/lib/trpc/react'
@@ -60,6 +61,7 @@ export const UpdateProductForm: React.FC<{ product: Product; categories: Categor
             defaultValue={product[field.name] ?? ''}
             message={error?.data?.zodError?.[field.name]?.at(0)}
             disabled={isPending}
+            {...(field.name === 'description' && { asChild: true, children: <Textarea /> })}
           />
         ))}
 
@@ -70,7 +72,7 @@ export const UpdateProductForm: React.FC<{ product: Product; categories: Categor
           message={error?.data?.zodError?.category?.at(0)}
           asChild
         >
-          <Select>
+          <Select defaultValue={product.categoryId}>
             <SelectTrigger>
               <SelectValue placeholder="Select a category" />
             </SelectTrigger>
