@@ -48,7 +48,7 @@ export const UpdateCategoryForm: React.FC<{ category: Category }> = ({ category 
           label={field.name.charAt(0).toUpperCase() + field.name.slice(1)}
           name={field.name}
           type={field.type}
-          defaultValue={category[field.name] ?? ''}
+          defaultValue={category[field.name]}
           message={error?.data?.zodError?.[field.name]?.at(0)}
           disabled={isPending}
         />

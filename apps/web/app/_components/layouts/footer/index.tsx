@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { Facebook, Github, Globe, Twitter, Youtube } from 'lucide-react'
+import { Facebook, Github, Globe, Twitter } from 'lucide-react'
 
 import { Button } from '@yuki/ui/button'
 import { Input } from '@yuki/ui/input'

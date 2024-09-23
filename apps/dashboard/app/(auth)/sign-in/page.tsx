@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation'
 
 import { auth } from '@yuki/auth'
 import { Button } from '@yuki/ui/button'
-import { CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@yuki/ui/card'
+import { CardDescription, CardFooter, CardHeader, CardTitle } from '@yuki/ui/card'
 import { DiscordIcon } from '@yuki/ui/icons'
 
 import type { Props } from '@/app/(auth)/_components/login-form'

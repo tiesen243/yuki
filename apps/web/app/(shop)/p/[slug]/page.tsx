@@ -33,8 +33,8 @@ const Page: NextPage<Props> = async ({ params }) => {
             <Typography level="h2">{product.name}</Typography>
 
             <Typography className="max-h-[300px] overflow-y-auto pr-2">
-              {product.description?.split('\\n').map((p) => (
-                <span>
+              {product.description?.split('\\n').map((p, idx) => (
+                <span key={idx}>
                   {p}
                   <br />
                 </span>
@@ -127,12 +127,13 @@ export async function generateMetadata({ params }: Props, parent: ResolvingMetad
   try {
     const { product } = await api.product.getOne({ id: getIdFromSlug(params.slug) })
     const previousImages = (await parent).openGraph?.images ?? []
+    const description = `For only $${product.price}, you can get ${product.name} from ${product.owner.name}.`
 
     return seo({
       title: product.name,
-      description: product.description ?? '',
+      description: product.description,
       images: [
-        `/api/og?title=${product.name}&description=${product.description?.split('\\n').at(0)}&image=${product.image}`,
+        `/api/og?title=${product.name}&description=${description}&image=${product.image}`,
         product.image,
         ...previousImages,
       ],
