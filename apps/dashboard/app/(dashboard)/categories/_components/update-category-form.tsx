@@ -6,6 +6,7 @@ import React, { useState } from 'react'
 
 import type { Category } from '@yuki/db'
 import { Button } from '@yuki/ui/button'
+import { CardContent } from '@yuki/ui/card'
 import { FormField } from '@yuki/ui/form-field'
 import { toast } from '@yuki/ui/sonner'
 import { UploadDropzone } from '@yuki/uploader/react'
@@ -41,20 +42,20 @@ export const UpdateCategoryForm: React.FC<{ category: Category }> = ({ category 
   }
 
   return (
-    <form action={action} className="space-y-4 p-4 pt-0">
-      {fields.map((field) => (
-        <FormField
-          key={field.name}
-          label={field.name.charAt(0).toUpperCase() + field.name.slice(1)}
-          name={field.name}
-          type={field.type}
-          defaultValue={category[field.name]}
-          message={error?.data?.zodError?.[field.name]?.at(0)}
-          disabled={isPending}
-        />
-      ))}
+    <CardContent className="grid grid-cols-2 gap-4" asChild>
+      <form action={action}>
+        {fields.map((field) => (
+          <FormField
+            key={field.name}
+            label={field.name.charAt(0).toUpperCase() + field.name.slice(1)}
+            name={field.name}
+            type={field.type}
+            defaultValue={category[field.name]}
+            message={error?.data?.zodError?.[field.name]?.at(0)}
+            disabled={isPending}
+          />
+        ))}
 
-      <div className="grid grid-cols-2 gap-4">
         <UploadDropzone
           endpoint="categoryUploader"
           config={{ mode: 'auto' }}
@@ -70,13 +71,23 @@ export const UpdateCategoryForm: React.FC<{ category: Category }> = ({ category 
           }}
         />
 
-        <Image src={uploader.image ?? ''} alt="category-preview" width={200} height={200} />
-      </div>
+        <Image
+          src={uploader.image ?? ''}
+          alt="category-preview"
+          width={200}
+          height={200}
+          className="mx-auto aspect-square w-full object-contain"
+        />
 
-      <Button className="w-full" disabled={isPending || uploader.isLoading}>
-        {isPending ? 'Updating...' : 'Update'}
-      </Button>
-    </form>
+        <Button className="w-full" disabled={isPending || uploader.isLoading}>
+          {isPending ? 'Updating...' : 'Update'}
+        </Button>
+
+        <Button type="button" variant="outline" onClick={() => router.back()} disabled={isPending}>
+          Cancel
+        </Button>
+      </form>
+    </CardContent>
   )
 }
 

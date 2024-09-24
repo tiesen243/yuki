@@ -26,8 +26,6 @@ export const UpdateProductForm: React.FC<{ product: Product; categories: Categor
     isLoading: false,
   })
 
-  console.log(uploader)
-
   const { mutate, isPending, error } = api.product.update.useMutation({
     onSuccess: async () => {
       router.back()
@@ -50,29 +48,33 @@ export const UpdateProductForm: React.FC<{ product: Product; categories: Categor
   }
 
   return (
-    <CardContent className="space-y-4" asChild>
+    <CardContent className="grid grid-cols-2 gap-4" asChild>
       <form action={action}>
         {fields.map((field) => (
           <FormField
+            {...field}
             key={field.name}
             label={field.name.charAt(0).toUpperCase() + field.name.slice(1)}
-            name={field.name}
-            type={field.type}
-            defaultValue={product[field.name] ?? ''}
             message={error?.data?.zodError?.[field.name]?.at(0)}
+            defaultValue={product[field.name] ?? ''}
             disabled={isPending}
-            {...(field.name === 'description' && { asChild: true, children: <Textarea /> })}
+            {...(field.name === 'description' && {
+              asChild: true,
+              children: <Textarea className="h-4/5" />,
+              className: 'row-span-2',
+            })}
           />
         ))}
 
         <FormField
           label="Category"
           name="category"
+          defaultValue={product.categoryId}
           disabled={isPending}
           message={error?.data?.zodError?.category?.at(0)}
           asChild
         >
-          <Select defaultValue={product.categoryId}>
+          <Select>
             <SelectTrigger>
               <SelectValue placeholder="Select a category" />
             </SelectTrigger>
@@ -86,27 +88,35 @@ export const UpdateProductForm: React.FC<{ product: Product; categories: Categor
           </Select>
         </FormField>
 
-        <div className="grid grid-cols-2 gap-4">
-          <UploadDropzone
-            endpoint="prodcutUploader"
-            config={{ mode: 'auto' }}
-            disabled={isPending}
-            onUploadBegin={() => setUploader({ isLoading: true, image: undefined })}
-            onClientUploadComplete={(images) => {
-              if (images.length === 0) return
-              setUploader({ isLoading: false, image: images[0]?.url })
-              toast.success('Image uploaded')
-            }}
-            onUploadError={(error) => {
-              toast.error(error.message)
-            }}
-          />
+        <UploadDropzone
+          endpoint="prodcutUploader"
+          config={{ mode: 'auto' }}
+          disabled={isPending}
+          onUploadBegin={() => setUploader({ isLoading: true, image: uploader.image })}
+          onClientUploadComplete={(images) => {
+            if (images.length === 0) return
+            setUploader({ isLoading: false, image: images[0]?.url })
+            toast.success('Image uploaded')
+          }}
+          onUploadError={(error) => {
+            toast.error(error.message)
+          }}
+        />
 
-          <Image src={uploader.image ?? product.image} alt={product.id} width={200} height={200} />
-        </div>
+        <Image
+          src={uploader.image ?? ''}
+          alt="product-preview"
+          width={200}
+          height={200}
+          className="mx-auto aspect-square w-full object-contain"
+        />
 
         <Button className="w-full" disabled={isPending || uploader.isLoading}>
           {isPending ? 'Updating...' : 'Update'}
+        </Button>
+
+        <Button type="button" variant="outline" onClick={() => router.back()} disabled={isPending}>
+          Cancel
         </Button>
       </form>
     </CardContent>

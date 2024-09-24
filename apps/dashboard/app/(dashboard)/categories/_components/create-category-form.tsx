@@ -40,8 +40,8 @@ export const CreateCategoryForm: React.FC = () => {
   }
 
   return (
-    <CardContent asChild>
-      <form action={action} className="space-y-4">
+    <CardContent className="grid grid-cols-2 gap-4" asChild>
+      <form action={action}>
         {fields.map((field) => (
           <FormField
             key={field.name}
@@ -53,27 +53,35 @@ export const CreateCategoryForm: React.FC = () => {
           />
         ))}
 
-        <div className="grid grid-cols-2 gap-4">
-          <UploadDropzone
-            endpoint="categoryUploader"
-            config={{ mode: 'auto' }}
-            disabled={isPending}
-            onUploadBegin={() => setUploader({ isLoading: true, image: uploader.image })}
-            onClientUploadComplete={(images) => {
-              if (images.length === 0) return
-              setUploader({ isLoading: false, image: images[0]?.url })
-              toast.success('Image uploaded')
-            }}
-            onUploadError={(error) => {
-              toast.error(error.message)
-            }}
-          />
+        <UploadDropzone
+          endpoint="categoryUploader"
+          config={{ mode: 'auto' }}
+          disabled={isPending}
+          onUploadBegin={() => setUploader({ isLoading: true, image: uploader.image })}
+          onClientUploadComplete={(images) => {
+            if (images.length === 0) return
+            setUploader({ isLoading: false, image: images[0]?.url })
+            toast.success('Image uploaded')
+          }}
+          onUploadError={(error) => {
+            toast.error(error.message)
+          }}
+        />
 
-          <Image src={uploader.image ?? ''} alt="product-preview" width={200} height={200} />
-        </div>
+        <Image
+          src={uploader.image ?? ''}
+          alt="product-preview"
+          width={200}
+          height={200}
+          className="mx-auto aspect-square w-full object-contain"
+        />
 
         <Button className="w-full" disabled={isPending || uploader.isLoading}>
           {isPending ? 'Creating...' : 'Create'}
+        </Button>
+
+        <Button type="button" variant="outline" onClick={() => router.back()} disabled={isPending}>
+          Cancel
         </Button>
       </form>
     </CardContent>

@@ -6,7 +6,7 @@ import React, { useState } from 'react'
 
 import type { Category } from '@yuki/db'
 import { Button } from '@yuki/ui/button'
-import { CardContent } from '@yuki/ui/card'
+import { CardContent, CardFooter } from '@yuki/ui/card'
 import { FormField } from '@yuki/ui/form-field'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@yuki/ui/select'
 import { toast } from '@yuki/ui/sonner'
@@ -46,8 +46,8 @@ export const CreateProductForm: React.FC<{ categories: Category[] }> = ({ catego
   }
 
   return (
-    <CardContent asChild>
-      <form action={action} className="space-y-4">
+    <CardContent className="grid grid-cols-2 gap-4" asChild>
+      <form action={action}>
         {fields.map((field) => (
           <FormField
             {...field}
@@ -55,7 +55,11 @@ export const CreateProductForm: React.FC<{ categories: Category[] }> = ({ catego
             label={field.name.charAt(0).toUpperCase() + field.name.slice(1)}
             message={error?.data?.zodError?.[field.name]?.at(0)}
             disabled={isPending}
-            {...(field.name === 'description' && { asChild: true, children: <Textarea /> })}
+            {...(field.name === 'description' && {
+              asChild: true,
+              children: <Textarea className="h-4/5" />,
+              className: 'row-span-2',
+            })}
           />
         ))}
 
@@ -80,27 +84,35 @@ export const CreateProductForm: React.FC<{ categories: Category[] }> = ({ catego
           </Select>
         </FormField>
 
-        <div className="grid grid-cols-2 gap-4">
-          <UploadDropzone
-            endpoint="prodcutUploader"
-            config={{ mode: 'auto' }}
-            disabled={isPending}
-            onUploadBegin={() => setUploader({ isLoading: true, image: uploader.image })}
-            onClientUploadComplete={(images) => {
-              if (images.length === 0) return
-              setUploader({ isLoading: false, image: images[0]?.url })
-              toast.success('Image uploaded')
-            }}
-            onUploadError={(error) => {
-              toast.error(error.message)
-            }}
-          />
+        <UploadDropzone
+          endpoint="prodcutUploader"
+          config={{ mode: 'auto' }}
+          disabled={isPending}
+          onUploadBegin={() => setUploader({ isLoading: true, image: uploader.image })}
+          onClientUploadComplete={(images) => {
+            if (images.length === 0) return
+            setUploader({ isLoading: false, image: images[0]?.url })
+            toast.success('Image uploaded')
+          }}
+          onUploadError={(error) => {
+            toast.error(error.message)
+          }}
+        />
 
-          <Image src={uploader.image ?? ''} alt="product-preview" width={200} height={200} />
-        </div>
+        <Image
+          src={uploader.image ?? ''}
+          alt="product-preview"
+          width={200}
+          height={200}
+          className="mx-auto aspect-square w-full object-contain"
+        />
 
         <Button className="w-full" disabled={isPending || uploader.isLoading}>
           {isPending ? 'Creating...' : 'Create'}
+        </Button>
+
+        <Button type="button" variant="outline" onClick={() => router.back()} disabled={isPending}>
+          Cancel
         </Button>
       </form>
     </CardContent>
