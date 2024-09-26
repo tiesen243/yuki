@@ -22,7 +22,7 @@
     "@yuki/db": "workspace:*",
     "@lucia-auth/adapter-prisma": "^4.0.1",
     "@t3-oss/env-nextjs": "^0.11.1",
-    "@types/react": "^18.3.8",
+    "@types/react": "^18.3.9",
     "server-only": "^0.0.1",
     "react": "^18.3.1",
     "arctic": "^1.9.2",
