@@ -105,6 +105,11 @@ export const authRouter = createTRPCRouter({
       data: { resetToken: token },
     })
 
+    const baseUrl =
+      process.env.NODE_ENV === 'production'
+        ? 'https://dashboard.yuki.tiesen.id.vn'
+        : 'http://localhost:3001'
+
     await sendEmail({
       type: 'ResetPassword',
       email: user.email,
@@ -112,7 +117,7 @@ export const authRouter = createTRPCRouter({
       preview: 'You have requested to reset your password',
       data: {
         name: user.name,
-        link: `https://dashboard.yuki.tiesen.id.vn/forgot-password/reset?token=${token}&email=${user.email}`,
+        link: `${baseUrl}/forgot-password/reset?token=${token}&email=${user.email}`,
       },
     })
 
