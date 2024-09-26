@@ -3,10 +3,8 @@ import * as email from '@react-email/components'
 import type { EmailProps } from '../config'
 import { font, replyTo as rt, tailwindConfig } from '../config'
 
-const logo =
-  'https://raw.githubusercontent.com/tiesen243/portfolio/main/public/android-chrome-192x192.png'
-const logoText =
-  'https://raw.githubusercontent.com/tiesen243/portfolio/main/public/images/tiesen.png'
+const logo = 'https://tiesen.id.vn/android-chrome-192x192.png'
+const logoText = 'https://tiesen.id.vn/assets/tiesen.png'
 
 export const EmailLayout: React.FC<EmailProps> = ({ preview, subject, replyTo = rt, children }) => (
   <email.Html lang="en">

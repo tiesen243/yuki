@@ -6,7 +6,7 @@ import React, { useState } from 'react'
 
 import type { Category } from '@yuki/db'
 import { Button } from '@yuki/ui/button'
-import { CardContent, CardFooter } from '@yuki/ui/card'
+import { CardContent } from '@yuki/ui/card'
 import { FormField } from '@yuki/ui/form-field'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@yuki/ui/select'
 import { toast } from '@yuki/ui/sonner'
