@@ -21,7 +21,7 @@
     "@yuki/uploader": "workspace:*",
     "@yuki/auth": "workspace:*",
     "@yuki/db": "workspace:*",
-    "@trpc/server": "^11.0.0-rc.532",
+    "@trpc/server": "^11.0.0-rc.553",
     "zod": "^3.23.8",
     "superjson": "^2.2.1"
   },
