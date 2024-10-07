@@ -21,17 +21,26 @@ type DiscordUser {
   avatar   String
 }
 
+type Address {
+  address String
+  city    String
+  state   String
+  country String
+  zipCode String
+}
+
 model User {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
   discord DiscordUser?
   email   String       @unique @db.String
 
-  name       String  @db.String
-  avatar     String? @db.String
-  role       Role    @default(USER)
-  password   String? @db.String
-  resetToken String? @db.String
+  name       String   @db.String
+  avatar     String?  @db.String
+  role       Role     @default(USER)
+  address    Address?
+  password   String?  @db.String
+  resetToken String?  @db.String
 
   sessions Session[]
   products Product[]
