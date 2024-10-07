@@ -15,7 +15,7 @@ import { api } from '@/lib/trpc/react'
 export const UpdateUserForm: React.FC<{ user: User }> = ({ user }) => {
   const router = useRouter()
 
-  const { mutate, isPending, error } = api.user.update.useMutation({
+  const { mutate, isPending, error } = api.user.updateRole.useMutation({
     onSuccess: async (data) => {
       router.back()
       toast.success(`User ${data.name} updated`)

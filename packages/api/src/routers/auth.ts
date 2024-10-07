@@ -2,7 +2,6 @@ import { TRPCError } from '@trpc/server'
 
 import { lucia, Scrypt } from '@yuki/auth/lucia'
 import { sendEmail } from '@yuki/email'
-import { utapi } from '@yuki/uploader'
 
 import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc'
 import { authSchema as schema } from '../validators/auth'
@@ -156,7 +155,7 @@ export const authRouter = createTRPCRouter({
     await ctx.db.user.delete({ where: { id: ctx.session.user.id } })
 
     if (ctx.session.user.avatar)
-      await utapi.deleteFiles(ctx.session.user.avatar.split('/').pop() ?? '')
+      await ctx.utapi.deleteFiles(ctx.session.user.avatar.split('/').pop() ?? '')
     await lucia.invalidateUserSessions(ctx.session.user.id)
 
     await sendEmail({

@@ -1,7 +1,15 @@
 import type { NextPage } from 'next'
 
-const Page: NextPage = () => {
-  return <div>Page</div>
-}
+import { Accordion } from '@yuki/ui/accordion'
+
+import { AccountSetting } from './_components/account-setting'
+import { ThemeSetting } from './_components/theme-setting'
+
+const Page: NextPage = () => (
+  <Accordion type="multiple">
+    <ThemeSetting />
+    <AccountSetting />
+  </Accordion>
+)
 
 export default Page

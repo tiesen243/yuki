@@ -8,10 +8,10 @@ import { DropdownMenuItem } from '@yuki/ui/dropdown-menu'
 import { signOut } from '@/lib/actions'
 import { getClientUrl } from '@/lib/utils'
 
-export const LogoutBtn: React.FC<{ sessionId: string }> = ({ sessionId }) => {
+export const LogoutBtn: React.FC = () => {
   const router = useRouter()
   const handleLogout = async () => {
-    await signOut(sessionId)
+    await signOut()
     router.push(`${getClientUrl()}/home`)
   }
 

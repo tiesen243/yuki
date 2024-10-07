@@ -1,4 +1,6 @@
-import { createTRPCRouter, publicProcedure } from '../trpc'
+import { TRPCError } from '@trpc/server'
+
+import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc'
 import { userSchema as schema } from '../validators/user'
 
 export const userRouter = createTRPCRouter({
@@ -45,11 +47,40 @@ export const userRouter = createTRPCRouter({
   }),
 
   // [POST] /api/trpc/user.update
-  update: publicProcedure.input(schema.update).mutation(async ({ ctx, input }) => {
+  updateRole: protectedProcedure.input(schema.updateRole).mutation(async ({ ctx, input }) => {
+    if (ctx.session.user.role !== 'ADMIN')
+      throw new TRPCError({
+        code: 'FORBIDDEN',
+        message: 'You are not allowed to perform this action',
+      })
+
     const user = await ctx.db.user.update({
       where: { id: input.id },
       data: { role: input.role ?? 'USER' },
     })
+    return user
+  }),
+
+  // [POST] /api/trpc/user.updateProfile
+  updateProfile: protectedProcedure.input(schema.updateProfile).mutation(async ({ ctx, input }) => {
+    const user = await ctx.db.user.update({
+      where: { id: ctx.session.user.id },
+      data: {
+        name: input.name,
+        avatar: input.avatar,
+        address: {
+          address: input.address,
+          city: input.city,
+          state: input.state,
+          zipCode: input.zipCode,
+          country: input.country,
+        },
+      },
+    })
+
+    if (ctx.session.user.avatar && input.avatar !== ctx.session.user.avatar)
+      await ctx.utapi.deleteFiles(ctx.session.user.avatar.split('/').pop() ?? '')
+
     return user
   }),
 })

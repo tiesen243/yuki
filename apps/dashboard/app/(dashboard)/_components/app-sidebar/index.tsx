@@ -50,7 +50,7 @@ export const AppSidebar: React.FC<{ session: Session & { user: User } }> = ({ se
     </SidebarContent>
 
     <SidebarFooter>
-      <NavUser session={session} />
+      <NavUser user={session.user} />
     </SidebarFooter>
   </Sidebar>
 )

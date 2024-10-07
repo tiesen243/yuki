@@ -1,7 +1,14 @@
 import type { NextPage } from 'next'
 
-const Page: NextPage = () => {
-  return <div>Page</div>
+import { auth } from '@yuki/auth'
+
+import { AccountSettingForm } from './settings/_components/account-setting-form'
+
+const Page: NextPage = async () => {
+  const session = await auth()
+  if (!session) return null
+
+  return <AccountSettingForm user={session.user} />
 }
 
 export default Page
