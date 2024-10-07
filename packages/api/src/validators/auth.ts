@@ -40,6 +40,7 @@ export const authSchema = {
   forgotPassword: z.object({
     email: z.string().email(),
   }),
+
   resetPassword: z
     .object({
       token: z.string(),
