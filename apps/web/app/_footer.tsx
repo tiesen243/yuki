@@ -1,3 +1,4 @@
+import type { LucideIcon } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Facebook, Github, Globe, Twitter } from 'lucide-react'
@@ -5,8 +6,6 @@ import { Facebook, Github, Globe, Twitter } from 'lucide-react'
 import { Button } from '@yuki/ui/button'
 import { Input } from '@yuki/ui/input'
 import { Typography } from '@yuki/ui/typography'
-
-import { Links, SocialLinks } from './links'
 
 export const Footer: React.FC = () => (
   <footer className="bg-secondary text-secondary-foreground">
@@ -120,3 +119,42 @@ const socials = [
     url: 'https://twitter.com/tiesen243',
   },
 ]
+
+interface Props {
+  title: React.ReactNode
+  links: { title: string; href: string }[]
+}
+
+export const Links: React.FC<Props> = ({ title, links }) => (
+  <div className="space-y-4">
+    {title}
+    <ul className="space-y-2">
+      {links.map(({ title, href }) => (
+        <li key={title}>
+          <Link href={href} className="hover:underline">
+            {title}
+          </Link>
+        </li>
+      ))}
+    </ul>
+  </div>
+)
+
+interface SocialProps {
+  title: string
+  url: string
+  icon: LucideIcon
+}
+
+export const SocialLinks: React.FC<SocialProps> = ({ url, title, icon: Icon }) => (
+  <a
+    key={url}
+    href={url}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="text-muted-foreground transition-colors hover:text-foreground"
+  >
+    <Icon size={24} />
+    <span className="sr-only">{title}</span>
+  </a>
+)

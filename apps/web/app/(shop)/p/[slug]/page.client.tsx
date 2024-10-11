@@ -7,7 +7,7 @@ import { Button } from '@yuki/ui/button'
 import { Marquee } from '@yuki/ui/marquee'
 import { Typography } from '@yuki/ui/typography'
 
-import { ProductCard } from '@/app/_components/product-card'
+import { ProductCard } from '@/app/(shop)/_components/product-card'
 import { api } from '@/lib/trpc/react'
 import { slugify } from '@/lib/utils'
 
@@ -29,7 +29,7 @@ export const PageClient: React.FC<{ id: string }> = ({ id }) => {
           <Typography level="h2">{product.name}</Typography>
 
           <Typography className="max-h-[300px] overflow-y-auto pr-2">
-            {product.description?.split('\\n').map((p, idx) => (
+            {product.description.split('\\n').map((p, idx) => (
               <span key={idx}>
                 {p}
                 <br />

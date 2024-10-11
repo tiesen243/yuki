@@ -56,7 +56,7 @@ export const UpdateProductForm: React.FC<{ product: Product; categories: Categor
             key={field.name}
             label={field.name.charAt(0).toUpperCase() + field.name.slice(1)}
             message={error?.data?.zodError?.[field.name]?.at(0)}
-            defaultValue={product[field.name] ?? ''}
+            defaultValue={product[field.name]}
             disabled={isPending}
             {...(field.name === 'description' && {
               asChild: true,

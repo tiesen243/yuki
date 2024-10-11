@@ -1,6 +1,6 @@
 'use client'
 
-import { ProductCard } from '@/app/_components/product-card'
+import { ProductCard } from '@/app/(shop)/_components/product-card'
 import { api } from '@/lib/trpc/react'
 
 export const ThreeGridProductsClient: React.FC = () => {

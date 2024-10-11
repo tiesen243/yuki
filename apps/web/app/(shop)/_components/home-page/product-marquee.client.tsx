@@ -2,7 +2,7 @@
 
 import { Marquee } from '@yuki/ui/marquee'
 
-import { ProductCard } from '@/app/_components/product-card'
+import { ProductCard } from '@/app/(shop)/_components/product-card'
 import { api } from '@/lib/trpc/react'
 
 export const ProductMarqueeClient: React.FC = () => {

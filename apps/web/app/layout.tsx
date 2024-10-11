@@ -3,8 +3,8 @@ import '@yuki/ui/tailwind.css'
 import { cn, GeistMono, GeistSans, ThemeProvider } from '@yuki/ui'
 import { Toaster } from '@yuki/ui/sonner'
 
+import { Footer } from '@/app/_footer'
 import { seo } from '@/lib/seo'
-import { Footer } from './_components/layouts/footer'
 
 const RootLayout: React.FC<React.PropsWithChildren> = async ({ children }) => (
   <html lang="en" suppressHydrationWarning>

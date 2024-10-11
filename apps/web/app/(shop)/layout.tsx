@@ -1,7 +1,7 @@
 import { auth } from '@yuki/auth'
 import { SessionProvider } from '@yuki/auth/react'
 
-import { Header } from '@/app/_components/layouts/header'
+import { Header } from '@/app/(shop)/_components/header'
 import { TRPCReactProvider } from '@/lib/trpc/react'
 
 const ShopLayout: React.FC<React.PropsWithChildren> = async ({ children }) => {
