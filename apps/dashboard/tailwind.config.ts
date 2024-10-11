@@ -7,14 +7,7 @@ import { withUt } from '@yuki/uploader/uploadthing'
 const config = {
   content: [...baseConfig.content, '../../packages/ui/src/*.{ts,tsx}'],
   presets: [baseConfig],
-  theme: {
-    extend: {
-      fontFamily: {
-        sans: ['var(--font-geist-sans)', ...fontFamily.sans],
-        mono: ['var(--font-geist-mono)', ...fontFamily.mono],
-      },
-    },
-  },
+  theme: { extend: { fontFamily: { sans: ['var(--font-geist-sans)', ...fontFamily.sans] } } },
 } satisfies Config
 
 export default withUt(config)

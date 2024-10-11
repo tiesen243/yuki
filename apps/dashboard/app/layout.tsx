@@ -1,6 +1,6 @@
 import '@yuki/ui/tailwind.css'
 
-import { cn, GeistMono, GeistSans, ThemeProvider } from '@yuki/ui'
+import { cn, GeistSans, ThemeProvider } from '@yuki/ui'
 import { Toaster } from '@yuki/ui/sonner'
 
 import { seo } from '@/lib/seo'
@@ -8,7 +8,7 @@ import { TRPCReactProvider } from '@/lib/trpc/react'
 
 const RootLayout: React.FC<React.PropsWithChildren> = async ({ children }) => (
   <html lang="en" suppressHydrationWarning>
-    <body className={cn('min-h-dvh font-sans', GeistSans.variable, GeistMono.variable)}>
+    <body className={cn('min-h-dvh font-sans', GeistSans.variable)}>
       <ThemeProvider attribute="class" defaultTheme="dark" disableTransitionOnChange>
         <TRPCReactProvider>{children}</TRPCReactProvider>
         <Toaster richColors />
