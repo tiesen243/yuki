@@ -75,11 +75,11 @@ model Category {
 model Product {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
-  name        String  @db.String
-  description String? @db.String
-  image       String  @default("/assets/logo.svg")
-  price       Float   @db.Double
-  stock       Int     @db.Int
+  name        String @db.String
+  description String @db.String
+  image       String @default("/assets/logo.svg")
+  price       Float  @db.Double
+  stock       Int    @db.Int
 
   category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   categoryId String   @db.ObjectId

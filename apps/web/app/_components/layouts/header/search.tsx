@@ -10,7 +10,7 @@ export const Search: React.FC<{ className?: string }> = ({ className }) => {
     'use server'
     const q = formData.get('q')
     if (!q) return
-    redirect(`/search?q=${String(q)}`)
+    redirect(`/p?q=${String(q)}`)
   }
 
   return (
