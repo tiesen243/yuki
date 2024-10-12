@@ -25,7 +25,7 @@ export const PageClient: React.FC = () => {
 
   const { mutate, isPending, error } = api.product.create.useMutation({
     onSuccess: async (data) => {
-      router.push('/products')
+      router.back()
       toast.success(`Product ${data.name} created`)
       await new Promise((resolve) => setTimeout(resolve, 150))
       router.refresh()
