@@ -11,7 +11,7 @@ export const Header: React.FC = () => (
 
       <Brand />
 
-      <Category className="hidden md:flex" itemClassName="hover:text-muted-foreground" />
+      <Category limit={3} className="hidden md:flex" itemClassName="hover:text-muted-foreground" />
 
       <Search className="hidden flex-1 md:flex" />
 

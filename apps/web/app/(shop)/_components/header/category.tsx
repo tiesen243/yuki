@@ -5,23 +5,26 @@ import { cn } from '@yuki/ui'
 import { api } from '@/lib/trpc/server'
 import { slugify } from '@/lib/utils'
 
-export const Category: React.FC<Props> = async ({ className, itemClassName }) => {
-  const { categories } = await api.category.getAll({ limit: 3 })
+export const Category: React.FC<Props> = async ({ limit = 10, className, itemClassName }) => {
+  const { categories } = await api.category.getAll({ limit })
 
   return (
-    <ul className={cn('flex gap-2', className)}>
-      {categories.slice(0, 3).map((category) => (
-        <li key={category.id} className={itemClassName}>
-          <Link href={`/search?category=${slugify(category.name, category.id)}`}>
-            {category.name}
-          </Link>
-        </li>
+    <nav className={cn('flex gap-2', className)}>
+      {categories.map((category) => (
+        <Link
+          key={category.id}
+          className={itemClassName}
+          href={`/p?category=${slugify(category.name, category.id)}`}
+        >
+          {category.name}
+        </Link>
       ))}
-    </ul>
+    </nav>
   )
 }
 
 interface Props {
+  limit?: number
   className?: string
   itemClassName?: string
 }
