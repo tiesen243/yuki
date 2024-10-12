@@ -42,10 +42,13 @@ export const userRouter = createTRPCRouter({
       where: { ownerId: id },
       take: 10,
       orderBy: { createdAt: 'desc' },
-      include: { category: true },
+      include: { category: true, comments: { select: { stars: true } } },
     })
 
-    return { user, products }
+    const totalRating = products.map((product) => product.comments).flat()
+    const rating = totalRating.reduce((acc, curr) => acc + curr.stars, 0) / totalRating.length || 0
+
+    return { user, rating, products }
   }),
 
   // [POST] /api/trpc/user.updateRole
