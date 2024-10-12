@@ -28,7 +28,7 @@ export const productRouter = createTRPCRouter({
   getOne: publicProcedure.input(schema.getOne).query(async ({ input, ctx }) => {
     const product = await ctx.db.product.findUnique({
       where: { id: input.id },
-      include: { category: true, owner: true },
+      include: { category: true, owner: true, comments: { include: { user: true } } },
     })
     if (!product) throw new TRPCError({ code: 'NOT_FOUND', message: 'Product not found' })
 
@@ -39,9 +39,16 @@ export const productRouter = createTRPCRouter({
       include: { category: true },
     })
 
+    const avgStars =
+      product.comments.length === 0
+        ? 0
+        : product.comments.reduce((acc, comment) => acc + comment.stars, 0) /
+          product.comments.length
+
     return {
       product,
       relatedProducts,
+      avgStars,
     }
   }),
 
@@ -82,6 +89,28 @@ export const productRouter = createTRPCRouter({
       await ctx.utapi.deleteFiles([product.image.split('/').pop() ?? ''])
 
     return updatedProduct
+  }),
+
+  // [POST] /api/trpc/product.comment
+  comment: protectedProcedure.input(schema.comment).mutation(async ({ input, ctx }) => {
+    await ctx.db.comment.create({
+      data: {
+        stars: input.stars,
+        content: input.content,
+        user: { connect: { id: ctx.session.user.id } },
+        product: { connect: { id: input.productId } },
+      },
+    })
+    return { message: 'Comment created' }
+  }),
+
+  // [POST] /api/trpc/product.deleteComment
+  deleteComment: protectedProcedure.input(schema.getOne).mutation(async ({ input, ctx }) => {
+    const comment = await ctx.db.comment.findUnique({ where: { id: input.id } })
+    if (!comment) throw new TRPCError({ code: 'NOT_FOUND', message: 'Comment not found' })
+
+    await ctx.db.comment.delete({ where: { id: input.id } })
+    return comment
   }),
 
   // [POST] /api/trpc/product.delete

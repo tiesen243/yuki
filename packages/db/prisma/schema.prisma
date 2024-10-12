@@ -102,6 +102,8 @@ model Comment {
 
   content String @db.String
   stars   Int    @db.Int
+
+  createdAt DateTime @default(now()) @db.Date
 }
 
 type OrderItem {
