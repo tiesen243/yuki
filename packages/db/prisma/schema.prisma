@@ -63,9 +63,8 @@ model Session {
 model Category {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
-  name        String @unique @db.String
-  description String @db.String
-  image       String @default("/assets/logo.svg")
+  name  String @unique @db.String
+  image String @default("/assets/logo.svg")
 
   products Product[]
 

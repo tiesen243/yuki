@@ -1,7 +1,7 @@
 import type { NextPage } from 'next'
 
 import { api, HydrateClient } from '@/lib/trpc/server'
-import { UpdateProductForm } from './_components/update-product-form'
+import { PageClient } from './page.client'
 
 const Page: NextPage<Props> = async ({ params }) => {
   void api.product.getOne.prefetch({ id: params.id })
@@ -9,7 +9,7 @@ const Page: NextPage<Props> = async ({ params }) => {
 
   return (
     <HydrateClient>
-      <UpdateProductForm id={params.id} />
+      <PageClient id={params.id} />
     </HydrateClient>
   )
 }

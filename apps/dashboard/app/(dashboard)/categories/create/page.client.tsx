@@ -12,7 +12,7 @@ import { UploadDropzone } from '@yuki/uploader/react'
 
 import { api } from '@/lib/trpc/react'
 
-export const CreateCategoryForm: React.FC = () => {
+export const PageClient: React.FC = () => {
   const router = useRouter()
 
   const [uploader, setUploader] = useState<{ image?: string; isLoading: boolean }>({
@@ -34,7 +34,6 @@ export const CreateCategoryForm: React.FC = () => {
     const data = Object.fromEntries(formData)
     mutate({
       name: String(data.name),
-      description: String(data.description),
       image: uploader.image,
     })
   }
@@ -42,16 +41,13 @@ export const CreateCategoryForm: React.FC = () => {
   return (
     <CardContent className="grid grid-cols-2 gap-4" asChild>
       <form action={action}>
-        {fields.map((field) => (
-          <FormField
-            key={field.name}
-            label={field.name.charAt(0).toUpperCase() + field.name.slice(1)}
-            name={field.name}
-            type={field.type}
-            message={error?.data?.zodError?.[field.name]?.at(0)}
-            disabled={isPending}
-          />
-        ))}
+        <FormField
+          name="name"
+          label="Name"
+          message={error?.data?.zodError?.name?.at(0)}
+          disabled={isPending}
+          className="col-span-2"
+        />
 
         <UploadDropzone
           endpoint="categoryUploader"

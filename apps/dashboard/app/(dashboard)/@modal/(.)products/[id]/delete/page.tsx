@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
 
-import { DeleteProductPrompt } from '@/app/(dashboard)/products/[id]/_components/delete-product-prompt'
+import { PageClient } from '@/app/(dashboard)/products/[id]/delete/page.client'
 import { api, HydrateClient } from '@/lib/trpc/server'
 
 const Page: NextPage<Props> = async ({ params }) => {
@@ -8,7 +8,7 @@ const Page: NextPage<Props> = async ({ params }) => {
 
   return (
     <HydrateClient>
-      <DeleteProductPrompt id={params.id} />
+      <PageClient id={params.id} />
     </HydrateClient>
   )
 }

@@ -24,10 +24,6 @@ export const AccountSettingList: React.FC = () => (
 
 const settings = [
   {
-    title: 'Profile',
-    href: '/account',
-  },
-  {
     title: 'Change Password',
     href: '/account/settings/change-password',
   },

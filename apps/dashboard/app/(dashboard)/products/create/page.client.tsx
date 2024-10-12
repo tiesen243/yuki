@@ -14,7 +14,7 @@ import { UploadDropzone } from '@yuki/uploader/react'
 
 import { api } from '@/lib/trpc/react'
 
-export const CreateProductForm: React.FC = () => {
+export const PageClient: React.FC = () => {
   const router = useRouter()
 
   const [{ categories }] = api.category.getAll.useSuspenseQuery({ limit: 9999 })

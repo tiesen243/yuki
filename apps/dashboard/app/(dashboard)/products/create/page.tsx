@@ -3,7 +3,7 @@ import type { NextPage } from 'next'
 import { CardDescription, CardHeader, CardTitle } from '@yuki/ui/card'
 
 import { api, HydrateClient } from '@/lib/trpc/server'
-import { CreateProductForm } from './page.client'
+import { PageClient } from './page.client'
 
 const Page: NextPage = async () => {
   void api.category.getAll({ limit: 9999 })
@@ -15,7 +15,7 @@ const Page: NextPage = async () => {
         <CardDescription>Fill out the form below to create a new product</CardDescription>
       </CardHeader>
 
-      <CreateProductForm />
+      <PageClient />
     </HydrateClient>
   )
 }

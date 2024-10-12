@@ -2,7 +2,7 @@ import type { NextPage } from 'next'
 
 import { CardDescription, CardHeader, CardTitle } from '@yuki/ui/card'
 
-import { CreateCategoryForm } from '@/app/(dashboard)/categories/create/page.client'
+import { PageClient } from '@/app/(dashboard)/categories/create/page.client'
 
 const Page: NextPage = async () => (
   <>
@@ -11,7 +11,7 @@ const Page: NextPage = async () => (
       <CardDescription>Fill out the form below to create a new category</CardDescription>
     </CardHeader>
 
-    <CreateCategoryForm />
+    <PageClient />
   </>
 )
 

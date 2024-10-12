@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
 
-import { UpdateProductForm } from '@/app/(dashboard)/products/[id]/_components/update-product-form'
+import { PageClient } from '@/app/(dashboard)/products/[id]/page.client'
 import { api, HydrateClient } from '@/lib/trpc/server'
 
 const Page: NextPage<Props> = async ({ params }) => {
@@ -9,7 +9,7 @@ const Page: NextPage<Props> = async ({ params }) => {
 
   return (
     <HydrateClient>
-      <UpdateProductForm id={params.id} />
+      <PageClient id={params.id} />
     </HydrateClient>
   )
 }

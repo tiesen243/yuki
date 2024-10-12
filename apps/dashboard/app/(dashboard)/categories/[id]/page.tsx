@@ -1,12 +1,16 @@
 import type { NextPage } from 'next'
 
-import { api } from '@/lib/trpc/server'
-import { UpdateCategoryForm } from './_components/update-category-form'
+import { api, HydrateClient } from '@/lib/trpc/server'
+import { PageClient } from './page.client'
 
 const Page: NextPage<Props> = async ({ params }) => {
-  const { category } = await api.category.getOne({ id: params.id })
+  void api.category.getOne.prefetch({ id: params.id })
 
-  return <UpdateCategoryForm category={category} />
+  return (
+    <HydrateClient>
+      <PageClient id={params.id} />
+    </HydrateClient>
+  )
 }
 
 export default Page

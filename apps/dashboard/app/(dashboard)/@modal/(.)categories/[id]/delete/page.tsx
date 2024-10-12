@@ -1,22 +1,15 @@
 import type { NextPage } from 'next'
 
-import { CardDescription, CardHeader, CardTitle } from '@yuki/ui/card'
-
-import { DeleteCategoryPrompt } from '@/app/(dashboard)/categories/[id]/_components/delete-category-prompt'
-import { api } from '@/lib/trpc/server'
+import { PageClient } from '@/app/(dashboard)/categories/[id]/delete/page.client'
+import { api, HydrateClient } from '@/lib/trpc/server'
 
 const Page: NextPage<Props> = async ({ params }) => {
-  const { category } = await api.category.getOne({ id: params.id })
+  void api.category.getOne.prefetch({ id: params.id })
 
   return (
-    <>
-      <CardHeader>
-        <CardTitle>Delete {category.name}</CardTitle>
-        <CardDescription>Are you sure you want to delete this category?</CardDescription>
-      </CardHeader>
-
-      <DeleteCategoryPrompt category={category} />
-    </>
+    <HydrateClient>
+      <PageClient id={params.id} />
+    </HydrateClient>
   )
 }
 

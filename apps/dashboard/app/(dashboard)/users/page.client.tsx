@@ -1,3 +1,5 @@
+'use client'
+
 import Link from 'next/link'
 
 import { Button } from '@yuki/ui/button'
@@ -7,7 +9,7 @@ import type { PageProps } from '@/app/(dashboard)/_components/data-table'
 import { DataTable } from '@/app/(dashboard)/_components/data-table'
 import { api } from '@/lib/trpc/react'
 
-export const PageClient: React.FC<PageProps> = async ({ searchParams }) => {
+export const PageClient: React.FC<PageProps> = ({ searchParams }) => {
   const headers = ['ID', 'Name', 'Role', 'Created at', 'Actions']
   const [{ users, totalPage }] = api.user.getAll.useSuspenseQuery({
     q: searchParams.q,

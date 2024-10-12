@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation'
 
 import { Button } from '@yuki/ui/button'
-import { CardContent } from '@yuki/ui/card'
+import { CardContent, CardHeader, CardTitle } from '@yuki/ui/card'
 import { FormField } from '@yuki/ui/form-field'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@yuki/ui/select'
 import { toast } from '@yuki/ui/sonner'
@@ -30,30 +30,36 @@ export const PageClient: React.FC<{ id: string }> = ({ id }) => {
   }
 
   return (
-    <CardContent className="space-y-4" asChild>
-      <form action={action}>
-        <FormField
-          name="role"
-          label="Role"
-          message={error?.data?.zodError?.role?.at(0)}
-          disabled={isPending}
-          asChild
-        >
-          <Select defaultValue={user.role}>
-            <SelectTrigger>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="ADMIN">Admin</SelectItem>
-              <SelectItem value="USER">User</SelectItem>
-            </SelectContent>
-          </Select>
-        </FormField>
+    <>
+      <CardHeader>
+        <CardTitle>Edit {user.name}</CardTitle>
+      </CardHeader>
 
-        <Button className="w-full" disabled={isPending}>
-          {isPending ? 'Updating...' : 'Update'}
-        </Button>
-      </form>
-    </CardContent>
+      <CardContent className="space-y-4" asChild>
+        <form action={action}>
+          <FormField
+            name="role"
+            label="Role"
+            message={error?.data?.zodError?.role?.at(0)}
+            disabled={isPending}
+            asChild
+          >
+            <Select defaultValue={user.role}>
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="ADMIN">Admin</SelectItem>
+                <SelectItem value="USER">User</SelectItem>
+              </SelectContent>
+            </Select>
+          </FormField>
+
+          <Button className="w-full" disabled={isPending}>
+            {isPending ? 'Updating...' : 'Update'}
+          </Button>
+        </form>
+      </CardContent>
+    </>
   )
 }

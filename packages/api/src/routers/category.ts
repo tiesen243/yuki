@@ -50,7 +50,6 @@ export const categoryRouter = createTRPCRouter({
     const category = await ctx.db.category.create({
       data: {
         name: input.name,
-        description: input.description,
         ...(input.image && { image: input.image }),
       },
     })
@@ -63,7 +62,6 @@ export const categoryRouter = createTRPCRouter({
       where: { id: input.id },
       data: {
         name: input.name,
-        description: input.description,
         ...(input.image && { image: input.image }),
       },
     })

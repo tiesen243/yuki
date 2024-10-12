@@ -14,7 +14,7 @@ import { UploadDropzone } from '@yuki/uploader/react'
 
 import { api } from '@/lib/trpc/react'
 
-export const UpdateProductForm: React.FC<{ id: string }> = ({ id }) => {
+export const PageClient: React.FC<{ id: string }> = ({ id }) => {
   const router = useRouter()
 
   const [{ product }] = api.product.getOne.useSuspenseQuery({ id })
@@ -116,7 +116,7 @@ export const UpdateProductForm: React.FC<{ id: string }> = ({ id }) => {
           />
 
           <Button className="w-full" disabled={isPending || uploader.isLoading}>
-            {isPending ? 'Updating...' : 'Update'}
+            {isPending ? 'Saving...' : 'Save changes'}
           </Button>
 
           <Button

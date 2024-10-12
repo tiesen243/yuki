@@ -2,7 +2,7 @@ import type { NextPage } from 'next'
 
 import { CardDescription, CardHeader, CardTitle } from '@yuki/ui/card'
 
-import { CreateCategoryForm } from './page.client'
+import { PageClient } from './page.client'
 
 const Page: NextPage = async () => (
   <>
@@ -11,7 +11,7 @@ const Page: NextPage = async () => (
       <CardDescription>Fill out the form below to create a new product</CardDescription>
     </CardHeader>
 
-    <CreateCategoryForm />
+    <PageClient />
   </>
 )
 export default Page
