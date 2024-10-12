@@ -1,10 +1,19 @@
 import { z } from 'zod'
 
 export const query = z.object({
-  q: z.string().optional(),
-  category: z.string().optional(),
+  q: z
+    .string()
+    .trim()
+    .transform((v) => (v === '' || v === ' ' ? undefined : v))
+    .optional(),
+  category: z
+    .string()
+    .trim()
+    .transform((v) => (v === '' || v === ' ' ? undefined : v))
+    .optional(),
   page: z.number().int().positive().default(1),
   limit: z.number().int().positive().default(10),
+  sort: z.enum(['price', 'price-desc', 'createdAt', 'createdAt-desc']).default('createdAt-desc'),
 })
 export type Query = z.infer<typeof query>
 

@@ -6,6 +6,9 @@ import { productSchema as schema } from '../validators/product'
 export const productRouter = createTRPCRouter({
   // [GET] /api/trpc/product.getAll
   getAll: publicProcedure.input(schema.query).query(async ({ input, ctx }) => {
+    const orderBy = input.sort.split('-').at(0) as 'price' | 'createdAt'
+    const order = input.sort.split('-').at(1) as 'asc' | 'desc'
+
     const products = await ctx.db.product.findMany({
       where: {
         ...(input.q && { name: { contains: input.q, mode: 'insensitive' } }),
@@ -13,7 +16,7 @@ export const productRouter = createTRPCRouter({
       },
       take: input.limit,
       skip: input.limit * (input.page - 1),
-      orderBy: { createdAt: 'desc' },
+      orderBy: { [orderBy]: order },
       include: { category: true },
     })
 
