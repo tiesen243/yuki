@@ -19,7 +19,7 @@ export const ProductDetail: React.FC<{ product: Product & { category: { name: st
     <article className="flex h-full flex-col md:col-span-8">
       <Typography level="h2">{product.name}</Typography>
 
-      <Typography className="max-h-[300px] overflow-y-auto pr-2">
+      <Typography className="overflow-y-auto pr-2 md:max-h-[300px]">
         {product.description.split('\\n').map((p, idx) => (
           <span key={idx}>
             {p}
