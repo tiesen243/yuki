@@ -2,16 +2,16 @@
 
 import { useRouter } from 'next/navigation'
 
-import type { Product } from '@yuki/db'
 import { Button } from '@yuki/ui/button'
 import { CardFooter } from '@yuki/ui/card'
 import { toast } from '@yuki/ui/sonner'
 
 import { api } from '@/lib/trpc/react'
 
-export const DeleteProductPrompt: React.FC<{ product: Product }> = ({ product }) => {
+export const DeleteProductPrompt: React.FC<{ id: string }> = ({ id }) => {
   const router = useRouter()
 
+  const [{ product }] = api.product.getOne.useSuspenseQuery({ id })
   const { mutate, isPending } = api.product.delete.useMutation({
     onSuccess: async () => {
       router.back()

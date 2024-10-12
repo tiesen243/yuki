@@ -1,12 +1,17 @@
 import type { NextPage } from 'next'
 
-import { api } from '@/lib/trpc/server'
-import { UpdateProductForm } from '../_components/update-product-form'
+import { api, HydrateClient } from '@/lib/trpc/server'
+import { UpdateProductForm } from './_components/update-product-form'
 
 const Page: NextPage<Props> = async ({ params }) => {
-  const { product } = await api.product.getOne({ id: params.id })
-  const { categories } = await api.category.getAll({ limit: 9999 })
-  return <UpdateProductForm product={product} categories={categories} />
+  void api.product.getOne.prefetch({ id: params.id })
+  void api.category.getAll.prefetch({ limit: 9999 })
+
+  return (
+    <HydrateClient>
+      <UpdateProductForm id={params.id} />
+    </HydrateClient>
+  )
 }
 
 export default Page

@@ -11,7 +11,7 @@ import { UploadButton } from '@yuki/uploader/react'
 
 import { api } from '@/lib/trpc/react'
 
-export const AccountSettingForm: React.FC<{ user: User }> = ({ user }) => {
+export const PageClient: React.FC<{ user: User }> = ({ user }) => {
   const [uploader, setUploader] = useState<{ image?: string; isLoading: boolean }>({
     image: user.avatar ?? '',
     isLoading: false,

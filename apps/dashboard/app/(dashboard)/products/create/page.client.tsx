@@ -4,7 +4,6 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
-import type { Category, Product } from '@yuki/db'
 import { Button } from '@yuki/ui/button'
 import { CardContent } from '@yuki/ui/card'
 import { FormField } from '@yuki/ui/form-field'
@@ -15,21 +14,19 @@ import { UploadDropzone } from '@yuki/uploader/react'
 
 import { api } from '@/lib/trpc/react'
 
-export const UpdateProductForm: React.FC<{ product: Product; categories: Category[] }> = ({
-  product,
-  categories,
-}) => {
+export const CreateProductForm: React.FC = () => {
   const router = useRouter()
 
-  const [uploader, setUploader] = useState<{ image: string | undefined; isLoading: boolean }>({
-    image: product.image,
+  const [{ categories }] = api.category.getAll.useSuspenseQuery({ limit: 9999 })
+  const [uploader, setUploader] = useState<{ image?: string; isLoading: boolean }>({
+    image: '/assets/logo.svg',
     isLoading: false,
   })
 
-  const { mutate, isPending, error } = api.product.update.useMutation({
-    onSuccess: async () => {
-      router.back()
-      toast.success(`Product ${product.name} updated`)
+  const { mutate, isPending, error } = api.product.create.useMutation({
+    onSuccess: async (data) => {
+      router.push('/products')
+      toast.success(`Product ${data.name} created`)
       await new Promise((resolve) => setTimeout(resolve, 150))
       router.refresh()
     },
@@ -39,11 +36,12 @@ export const UpdateProductForm: React.FC<{ product: Product; categories: Categor
   const action = async (formData: FormData) => {
     const data = Object.fromEntries(formData)
     mutate({
-      ...data,
-      id: product.id,
-      image: uploader.image,
+      name: String(data.name),
+      description: String(data.description),
       price: Number(data.price),
       stock: Number(data.stock),
+      category: String(data.category),
+      image: uploader.image,
     })
   }
 
@@ -56,7 +54,6 @@ export const UpdateProductForm: React.FC<{ product: Product; categories: Categor
             key={field.name}
             label={field.name.charAt(0).toUpperCase() + field.name.slice(1)}
             message={error?.data?.zodError?.[field.name]?.at(0)}
-            defaultValue={product[field.name]}
             disabled={isPending}
             {...(field.name === 'description' && {
               asChild: true,
@@ -69,7 +66,6 @@ export const UpdateProductForm: React.FC<{ product: Product; categories: Categor
         <FormField
           label="Category"
           name="category"
-          defaultValue={product.categoryId}
           disabled={isPending}
           message={error?.data?.zodError?.category?.at(0)}
           asChild
@@ -112,7 +108,7 @@ export const UpdateProductForm: React.FC<{ product: Product; categories: Categor
         />
 
         <Button className="w-full" disabled={isPending || uploader.isLoading}>
-          {isPending ? 'Updating...' : 'Update'}
+          {isPending ? 'Creating...' : 'Create'}
         </Button>
 
         <Button type="button" variant="outline" onClick={() => router.back()} disabled={isPending}>
@@ -126,6 +122,6 @@ export const UpdateProductForm: React.FC<{ product: Product; categories: Categor
 const fields = [
   { name: 'name' as const, type: 'text' },
   { name: 'description' as const, type: 'text' },
-  { name: 'price' as const, type: 'number' },
+  { name: 'price' as const, type: 'number', step: 'any' },
   { name: 'stock' as const, type: 'number' },
 ]

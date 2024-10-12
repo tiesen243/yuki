@@ -2,13 +2,13 @@ import type { NextPage } from 'next'
 
 import { Accordion } from '@yuki/ui/accordion'
 
-import { AccountSetting } from './_components/account-setting'
+import { AccountSettingList } from './_components/account-setting-list'
 import { ThemeSetting } from './_components/theme-setting'
 
 const Page: NextPage = () => (
   <Accordion type="multiple">
     <ThemeSetting />
-    <AccountSetting />
+    <AccountSettingList />
   </Accordion>
 )
 

@@ -11,6 +11,7 @@ export const UnlinkAccountBtn: React.FC = () => {
   const { mutate, isPending } = api.auth.unlinkDiscord.useMutation({
     onSuccess: () => router.refresh(),
   })
+
   return (
     <Button size="sm" onClick={() => mutate()} disabled={isPending}>
       Unlink Account

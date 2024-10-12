@@ -1,9 +1,7 @@
 import type { NextPage } from 'next'
 
-import { ChangePasswordForm } from '../_components/change-password-form'
+import { ChangePasswordForm } from './page.client'
 
-const Page: NextPage = () => {
-  return <ChangePasswordForm />
-}
+const Page: NextPage = () => <ChangePasswordForm />
 
 export default Page

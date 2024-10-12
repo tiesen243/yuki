@@ -2,8 +2,6 @@
 
 import { useRouter } from 'next/navigation'
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { User } from '@yuki/db'
 import { Button } from '@yuki/ui/button'
 import { CardContent } from '@yuki/ui/card'
 import { FormField } from '@yuki/ui/form-field'
@@ -12,9 +10,10 @@ import { toast } from '@yuki/ui/sonner'
 
 import { api } from '@/lib/trpc/react'
 
-export const UpdateUserForm: React.FC<{ user: User }> = ({ user }) => {
+export const PageClient: React.FC<{ id: string }> = ({ id }) => {
   const router = useRouter()
 
+  const [{ user }] = api.user.getOne.useSuspenseQuery({ id })
   const { mutate, isPending, error } = api.user.updateRole.useMutation({
     onSuccess: async (data) => {
       router.back()

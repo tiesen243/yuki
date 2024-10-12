@@ -1,12 +1,16 @@
 import type { NextPage } from 'next'
 
-import { api } from '@/lib/trpc/server'
-import { DeleteProductPrompt } from '../../_components/delete-product-prompt'
+import { api, HydrateClient } from '@/lib/trpc/server'
+import { DeleteProductPrompt } from '../_components/delete-product-prompt'
 
 const Page: NextPage<Props> = async ({ params }) => {
-  const { product } = await api.product.getOne({ id: params.id })
+  void api.product.getOne.prefetch({ id: params.id })
 
-  return <DeleteProductPrompt product={product} />
+  return (
+    <HydrateClient>
+      <DeleteProductPrompt id={params.id} />
+    </HydrateClient>
+  )
 }
 
 export default Page

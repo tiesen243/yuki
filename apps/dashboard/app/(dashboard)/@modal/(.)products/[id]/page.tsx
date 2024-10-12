@@ -1,22 +1,16 @@
 import type { NextPage } from 'next'
 
-import { CardHeader, CardTitle } from '@yuki/ui/card'
-
-import { UpdateProductForm } from '@/app/(dashboard)/products/_components/update-product-form'
-import { api } from '@/lib/trpc/server'
+import { UpdateProductForm } from '@/app/(dashboard)/products/[id]/_components/update-product-form'
+import { api, HydrateClient } from '@/lib/trpc/server'
 
 const Page: NextPage<Props> = async ({ params }) => {
-  const { product } = await api.product.getOne({ id: params.id })
-  const { categories } = await api.category.getAll({ limit: 9999 })
+  void api.product.getOne.prefetch({ id: params.id })
+  void api.category.getAll.prefetch({ limit: 9999 })
 
   return (
-    <>
-      <CardHeader>
-        <CardTitle>Edit {product.name}</CardTitle>
-      </CardHeader>
-
-      <UpdateProductForm product={product} categories={categories} />
-    </>
+    <HydrateClient>
+      <UpdateProductForm id={params.id} />
+    </HydrateClient>
   )
 }
 

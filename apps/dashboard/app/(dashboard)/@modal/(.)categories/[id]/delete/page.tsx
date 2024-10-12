@@ -2,7 +2,7 @@ import type { NextPage } from 'next'
 
 import { CardDescription, CardHeader, CardTitle } from '@yuki/ui/card'
 
-import { DeleteCategoryPrompt } from '@/app/(dashboard)/categories/_components/delete-category-prompt'
+import { DeleteCategoryPrompt } from '@/app/(dashboard)/categories/[id]/_components/delete-category-prompt'
 import { api } from '@/lib/trpc/server'
 
 const Page: NextPage<Props> = async ({ params }) => {

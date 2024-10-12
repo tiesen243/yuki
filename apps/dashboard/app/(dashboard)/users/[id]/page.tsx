@@ -1,11 +1,16 @@
 import type { NextPage } from 'next'
 
-import { api } from '@/lib/trpc/server'
-import { UpdateUserForm } from '../_components/update-user-form'
+import { api, HydrateClient } from '@/lib/trpc/server'
+import { PageClient } from './page.client'
 
 const Page: NextPage<Props> = async ({ params }) => {
-  const { user } = await api.user.getOne({ id: params.id })
-  return <UpdateUserForm user={user} />
+  void api.user.getOne.prefetch({ id: params.id })
+
+  return (
+    <HydrateClient>
+      <PageClient id={params.id} />
+    </HydrateClient>
+  )
 }
 
 export default Page

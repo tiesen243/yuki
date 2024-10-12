@@ -1,7 +1,7 @@
 import type { NextPage } from 'next'
 
 import { api } from '@/lib/trpc/server'
-import { UpdateCategoryForm } from '../_components/update-category-form'
+import { UpdateCategoryForm } from './_components/update-category-form'
 
 const Page: NextPage<Props> = async ({ params }) => {
   const { category } = await api.category.getOne({ id: params.id })

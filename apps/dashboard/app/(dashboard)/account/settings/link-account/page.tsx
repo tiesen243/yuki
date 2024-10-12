@@ -4,7 +4,7 @@ import { auth } from '@yuki/auth'
 import { Button } from '@yuki/ui/button'
 import { CardTitle } from '@yuki/ui/card'
 
-import { UnlinkAccountBtn } from '../_components/unlink-account-btn'
+import { UnlinkAccountBtn } from './page.client'
 
 const Page: NextPage = async () => {
   const session = await auth()
