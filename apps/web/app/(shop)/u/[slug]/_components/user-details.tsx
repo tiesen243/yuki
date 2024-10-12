@@ -28,7 +28,7 @@ export const UserDetails: React.FC<Props> = ({ user, rating }) => (
           </span>
         )}
       </Typography>
-      <Typography>Rating: {rating}/5</Typography>
+      <Typography>Rating: {rating.toFixed(2)}/5</Typography>
       <Typography>Joined at: {user.createdAt.toDateString()}</Typography>
       <Typography>Numer of products: {user._count.products}</Typography>
 
