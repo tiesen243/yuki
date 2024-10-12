@@ -9,7 +9,6 @@ export const Search: React.FC<{ className?: string }> = ({ className }) => {
   const action = async (formData: FormData) => {
     'use server'
     const q = formData.get('q')
-    if (!q) return
     redirect(`/p?q=${String(q)}`)
   }
 

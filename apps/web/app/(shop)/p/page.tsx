@@ -2,15 +2,21 @@ import type { NextPage } from 'next'
 
 import type { Query } from '@yuki/api'
 
-interface Props {
-  searchParams: Query
-}
+import { api, HydrateClient } from '@/lib/trpc/server'
+import { getIdFromSlug } from '@/lib/utils'
+import { PageClient } from './page.client'
 
-const Page: NextPage<Props> = ({ searchParams }) => {
+const Page: NextPage<{ searchParams: Query }> = ({ searchParams }) => {
+  void api.product.getAll({
+    q: searchParams.q,
+    page: searchParams.page ?? 1,
+    category: getIdFromSlug(searchParams.category ?? ''),
+  })
+
   return (
-    <div>
-      <pre>{JSON.stringify(searchParams, null, 2)}</pre>
-    </div>
+    <HydrateClient>
+      <PageClient searchParams={searchParams} />
+    </HydrateClient>
   )
 }
 
