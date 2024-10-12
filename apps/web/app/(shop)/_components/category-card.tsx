@@ -11,7 +11,7 @@ export const CategoryCard: React.FC<{ category: Category }> = ({ category }) => 
     <Card className="aspect-square w-full transition-colors ease-linear hover:bg-secondary">
       <Image
         src={category.image}
-        alt={category.name}
+        alt={`category-${category.name.toLowerCase()}`}
         width={200}
         height={200}
         className="absolute inset-0 aspect-square w-full object-cover"

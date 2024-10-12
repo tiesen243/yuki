@@ -61,7 +61,7 @@ const links = [
         <div className="rounded-lg border border-primary p-1">
           <Image
             src="/assets/logo.svg"
-            alt="Yuki"
+            alt="yuki-logo"
             width={24}
             height={24}
             className="object-cover dark:invert"
