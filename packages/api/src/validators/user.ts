@@ -4,7 +4,7 @@ import { getOne, passwordSchema, query } from './utils'
 
 export const userSchema = {
   query,
-  getOne,
+  getOne: getOne.merge(query),
 
   updateRole: z.object({
     id: z.string(),

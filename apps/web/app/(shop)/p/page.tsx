@@ -9,7 +9,7 @@ import { PageClient } from './page.client'
 const Page: NextPage<{ searchParams: Query }> = ({ searchParams }) => {
   void api.product.getAll({
     q: searchParams.q,
-    page: searchParams.page ?? 1,
+    page: Number(searchParams.page) || 1,
     category: getIdFromSlug(searchParams.category ?? ''),
   })
 

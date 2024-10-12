@@ -31,16 +31,17 @@ export const userRouter = createTRPCRouter({
   }),
 
   // [GET] /api/trpc/user.getOne
-  getOne: publicProcedure.input(schema.getOne).query(async ({ ctx, input: { id } }) => {
+  getOne: publicProcedure.input(schema.getOne).query(async ({ ctx, input }) => {
     const user = await ctx.db.user.findUnique({
-      where: { id },
+      where: { id: input.id },
       include: { _count: { select: { products: true } } },
     })
     if (!user) throw new Error('User not found')
 
     const products = await ctx.db.product.findMany({
-      where: { ownerId: id },
-      take: 10,
+      where: { ownerId: user.id },
+      take: input.limit,
+      skip: input.limit * (input.page - 1),
       orderBy: { createdAt: 'desc' },
       include: { category: true, comments: { select: { stars: true } } },
     })
@@ -48,7 +49,9 @@ export const userRouter = createTRPCRouter({
     const totalRating = products.map((product) => product.comments).flat()
     const rating = totalRating.reduce((acc, curr) => acc + curr.stars, 0) / totalRating.length || 0
 
-    return { user, rating, products }
+    const totalPage = Math.ceil(user._count.products / input.limit)
+
+    return { user, rating, products, totalPage }
   }),
 
   // [POST] /api/trpc/user.updateRole

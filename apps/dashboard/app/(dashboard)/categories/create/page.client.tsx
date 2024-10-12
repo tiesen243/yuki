@@ -83,8 +83,3 @@ export const PageClient: React.FC = () => {
     </CardContent>
   )
 }
-
-const fields = [
-  { name: 'name' as const, type: 'text' },
-  { name: 'description' as const, type: 'text' },
-]
