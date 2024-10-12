@@ -22,7 +22,7 @@ export const PageClient: React.FC = () => {
 
   const { mutate, isPending, error } = api.category.create.useMutation({
     onSuccess: async () => {
-      router.push('/categories')
+      router.back()
       toast.success('Category created')
       await new Promise((resolve) => setTimeout(resolve, 150))
       router.refresh()
