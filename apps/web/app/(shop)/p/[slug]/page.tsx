@@ -27,11 +27,17 @@ export async function generateMetadata({ params }: Props, parent: ResolvingMetad
     const { product } = await api.product.getOne({ id: getIdFromSlug(params.slug) })
     const previousImages = (await parent).openGraph?.images ?? []
 
+    const name = product.name.length > 50 ? `${product.name.slice(0, 50)}...` : product.name
+    const description =
+      product.description.length > 200
+        ? `${product.description.slice(0, 200)}...`
+        : product.description
+
     return seo({
       title: product.name,
       description: product.description,
       images: [
-        `/api/og?title=${product.name}&description=${product.description.slice(0, 50)}&image=${product.image}`,
+        `/api/og?title=${name}&description=${description}&image=${product.image}`,
         product.image,
         ...previousImages,
       ],
