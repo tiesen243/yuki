@@ -73,12 +73,19 @@ export const ProductComments: React.FC<{
           setFormData({ content: '', stars: 5 })
         }}
       >
+        <label htmlFor="content" className="sr-only">
+          Comment
+        </label>
         <Input
           name="content"
           placeholder="What do you think about this product?"
           value={formData.content}
           onChange={(e) => setFormData({ ...formData, content: e.target.value })}
         />
+
+        <label htmlFor="stars" className="sr-only">
+          Stars
+        </label>
         <Input
           name="stars"
           type="number"
@@ -88,7 +95,12 @@ export const ProductComments: React.FC<{
           onChange={(e) => setFormData({ ...formData, stars: parseInt(e.target.value) })}
           className="basis-1/12"
         />
-        <Button size="icon" className="aspect-square" disabled={isPending}>
+        <Button
+          size="icon"
+          className="aspect-square"
+          aria-label="Send comment"
+          disabled={isPending}
+        >
           <SendHorizonalIcon className="size-4" />
         </Button>
       </form>

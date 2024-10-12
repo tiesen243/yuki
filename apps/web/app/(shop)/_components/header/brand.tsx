@@ -1,9 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
-import { cn } from '@yuki/ui'
-
-export const Brand: React.FC<{ className?: string }> = ({ className }) => (
+export const Brand: React.FC<React.PropsWithChildren> = ({ children }) => (
   <Link href="/" className="flex items-center gap-2">
     <Image
       src="/assets/logo.svg"
@@ -12,6 +10,6 @@ export const Brand: React.FC<{ className?: string }> = ({ className }) => (
       height={28}
       className="object-cover dark:invert"
     />
-    <span className={cn('sr-only text-xl font-bold md:not-sr-only', className)}>Yuki</span>
+    {children}
   </Link>
 )

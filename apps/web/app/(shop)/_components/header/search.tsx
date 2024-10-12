@@ -16,7 +16,7 @@ export const Search: React.FC<{ className?: string }> = ({ className }) => {
   return (
     <form className={cn('flex gap-1', className)} action={action}>
       <Input name="q" placeholder="Search..." />
-      <Button variant="outline" size="icon" className="md:hidden">
+      <Button variant="outline" size="icon" className="aspect-square md:hidden">
         <SearchIcon size={16} />
       </Button>
     </form>

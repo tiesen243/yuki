@@ -19,12 +19,12 @@ export const UserMenu: React.FC = () => (
 const menuItems = [
   {
     title: 'Account',
-    href: '/dashboard/account',
+    href: '/account',
     icon: BadgeCheck,
   },
   {
     title: 'Orders',
-    href: '/dashboard/account/orders',
+    href: '/account/orders',
     icon: ShoppingCart,
   },
 ]

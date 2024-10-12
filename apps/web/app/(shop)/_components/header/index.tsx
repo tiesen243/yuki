@@ -9,7 +9,9 @@ export const Header: React.FC = () => (
     <div className="container flex items-center justify-between gap-4">
       <MobileSidebar />
 
-      <Brand />
+      <Brand>
+        <span className="text-xl font-bold">Yuki</span>
+      </Brand>
 
       <Category limit={3} className="hidden md:flex" itemClassName="hover:text-muted-foreground" />
 

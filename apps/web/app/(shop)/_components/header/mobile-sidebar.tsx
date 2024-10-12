@@ -1,7 +1,14 @@
 import { MenuIcon } from 'lucide-react'
 
 import { Button } from '@yuki/ui/button'
-import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTrigger } from '@yuki/ui/sheet'
+import {
+  Sheet,
+  SheetContent,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@yuki/ui/sheet'
 
 import { Brand } from './brand'
 import { Category } from './category'
@@ -17,7 +24,9 @@ export const MobileSidebar: React.FC = () => (
 
     <SheetContent side="left" className="flex flex-col gap-4">
       <SheetHeader>
-        <Brand className="not-sr-only text-3xl" />
+        <Brand>
+          <SheetTitle className="text-2xl">Yuki</SheetTitle>
+        </Brand>
       </SheetHeader>
 
       <Search />
