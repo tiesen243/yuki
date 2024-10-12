@@ -23,7 +23,7 @@ export const ProductCommentsSkeleton: React.FC = () => (
           </div>
         </div>
 
-        <Skeleton className="ml-10 mt-2 h-12 w-full" />
+        <Skeleton className="ml-10 mt-2 h-12 w-4/5" />
       </div>
     ))}
   </section>
