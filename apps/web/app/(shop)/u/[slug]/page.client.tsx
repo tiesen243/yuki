@@ -1,3 +1,5 @@
+'use client'
+
 import Image from 'next/image'
 
 import { Typography } from '@yuki/ui/typography'
