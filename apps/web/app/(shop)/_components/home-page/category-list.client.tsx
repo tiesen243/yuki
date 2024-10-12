@@ -1,10 +1,15 @@
 'use client'
 
-import { CategoryCard } from '@/app/(shop)/_components/category-card'
+import { CategoryCard, CategoryCardSkeleton } from '@/app/(shop)/_components/category-card'
 import { api } from '@/lib/trpc/react'
 
 export const CategoryListClient: React.FC = () => {
-  const [{ categories }] = api.category.getAll.useSuspenseQuery({ limit: 12 })
+  const { data, isLoading } = api.category.getAll.useQuery({ limit: 12 })
 
-  return categories.map((category) => <CategoryCard key={category.id} category={category} />)
+  if (isLoading)
+    return Array.from({ length: 12 }).map((_, idx) => <CategoryCardSkeleton key={idx} />)
+
+  if (!data?.categories || data.categories.length < 1) return <p>No categories found</p>
+
+  return data.categories.map((category) => <CategoryCard key={category.id} category={category} />)
 }

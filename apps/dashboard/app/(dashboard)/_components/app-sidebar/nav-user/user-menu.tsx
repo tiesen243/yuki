@@ -24,7 +24,7 @@ const menuItems = [
   },
   {
     title: 'Orders',
-    href: '/account/orders',
+    href: '/account/cart',
     icon: ShoppingCart,
   },
 ]

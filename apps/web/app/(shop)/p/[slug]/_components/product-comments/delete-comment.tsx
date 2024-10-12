@@ -3,10 +3,10 @@ import { XIcon } from '@yuki/ui/icons'
 
 import { api } from '@/lib/trpc/react'
 
-export const DeleteComment: React.FC<{ id: string }> = ({ id }) => {
+export const DeleteComment: React.FC<{ id: string; productId: string }> = ({ id, productId }) => {
   const utils = api.useUtils()
   const { mutate, isPending } = api.product.deleteComment.useMutation({
-    onSuccess: () => utils.product.getOne.invalidate({ id }),
+    onSuccess: () => utils.product.getOne.invalidate({ id: productId }),
   })
 
   return (

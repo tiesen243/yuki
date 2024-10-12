@@ -14,7 +14,7 @@ export const RelatedProducts: React.FC<Props> = ({ products }) => (
 
     <Marquee>
       {products.map((product) => (
-        <ProductCard key={product.id} product={product} className="w-1/2" />
+        <ProductCard key={product.id} product={product} className="w-96" />
       ))}
     </Marquee>
   </section>

@@ -1,7 +1,7 @@
-import Image from 'next/image'
 import Link from 'next/link'
 
 import type { User } from '@yuki/db'
+import { Avatar, AvatarFallback, AvatarImage } from '@yuki/ui/avatar'
 import { Button } from '@yuki/ui/button'
 import { Typography } from '@yuki/ui/typography'
 
@@ -9,13 +9,10 @@ import { slugify } from '@/lib/utils'
 
 export const ProductOwner: React.FC<{ owner: User }> = ({ owner }) => (
   <section className="mt-8 flex items-center gap-8 rounded-lg border p-6 shadow-md">
-    <Image
-      src={owner.avatar ?? owner.discord?.avatar ?? ''}
-      alt={owner.name}
-      width={100}
-      height={100}
-      className="aspect-square rounded-full"
-    />
+    <Avatar className="size-16">
+      <AvatarImage src={owner.avatar ?? owner.discord?.avatar} alt={`avatar-${owner.name}`} />
+      <AvatarFallback>{owner.name.slice(0, 2)}</AvatarFallback>
+    </Avatar>
 
     <article className="flex-1">
       <Typography level="h3">

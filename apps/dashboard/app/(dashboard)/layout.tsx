@@ -20,7 +20,7 @@ const DashboardLayout: React.FC<Props> = async ({ children, modal }) => {
 
       <SidebarLayout defaultOpen={cookies().get('sidebar:state')?.value === 'true'}>
         <AppSidebar session={session} />
-        <main className="flex flex-1 flex-col p-2 transition-all duration-300 ease-in-out">
+        <main className="flex flex-1 flex-col overflow-x-hidden p-2 transition-all duration-300 ease-in-out">
           <div className="h-full overflow-y-auto rounded-md border-dashed px-4 py-2 md:border-2">
             <SidebarTrigger />
             <section>{children}</section>

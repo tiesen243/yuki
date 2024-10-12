@@ -1,20 +1,23 @@
 'use client'
 
-import { ProductCard } from '@/app/(shop)/_components/product-card'
+import { ProductCard, ProductCardSkeleton } from '@/app/(shop)/_components/product-card'
 import { api } from '@/lib/trpc/react'
 
 export const ThreeGridProductsClient: React.FC = () => {
-  const [{ products }] = api.product.getAll.useSuspenseQuery({ limit: 3 })
+  const { data, isLoading } = api.product.getAll.useQuery({ limit: 3 })
 
-  return (
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-3 md:grid-rows-2">
-      {products.map((product, idx) => (
-        <ProductCard
-          key={product.id}
-          product={product}
-          className={idx === 0 ? 'md:col-span-2 md:row-span-2' : ''}
-        />
-      ))}
-    </div>
-  )
+  if (isLoading)
+    return Array.from({ length: 3 }).map((_, idx) => (
+      <ProductCardSkeleton key={idx} className={idx === 0 ? 'md:col-span-2 md:row-span-2' : ''} />
+    ))
+
+  if (!data?.products || data.products.length < 1) return <div>No products found</div>
+
+  return data.products.map((product, idx) => (
+    <ProductCard
+      key={product.id}
+      product={product}
+      className={idx === 0 ? 'md:col-span-2 md:row-span-2' : ''}
+    />
+  ))
 }

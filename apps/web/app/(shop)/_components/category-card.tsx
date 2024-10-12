@@ -3,6 +3,7 @@ import Link from 'next/link'
 
 import type { Category } from '@yuki/db'
 import { Card, CardHeader, CardTitle } from '@yuki/ui/card'
+import { Skeleton } from '@yuki/ui/skeleton'
 
 import { slugify } from '@/lib/utils'
 
@@ -21,4 +22,14 @@ export const CategoryCard: React.FC<{ category: Category }> = ({ category }) => 
       </CardHeader>
     </Card>
   </Link>
+)
+
+export const CategoryCardSkeleton: React.FC = () => (
+  <Card className="aspect-square w-full">
+    <Skeleton className="absolute inset-0 aspect-square w-full object-cover" />
+
+    <CardHeader className="absolute bottom-0 w-full bg-secondary">
+      <CardTitle className="animate-pulse">Loading...</CardTitle>
+    </CardHeader>
+  </Card>
 )

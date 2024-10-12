@@ -10,6 +10,10 @@ export const Category: React.FC<Props> = async ({ limit = 10, className, itemCla
 
   return (
     <nav className={cn('flex gap-2', className)}>
+      <Link className={itemClassName} href="/p">
+        All
+      </Link>
+
       {categories.map((category) => (
         <Link
           key={category.id}

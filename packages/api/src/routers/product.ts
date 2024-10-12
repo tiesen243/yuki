@@ -94,8 +94,8 @@ export const productRouter = createTRPCRouter({
     return updatedProduct
   }),
 
-  // [POST] /api/trpc/product.comment
-  comment: protectedProcedure.input(schema.comment).mutation(async ({ input, ctx }) => {
+  // [POST] /api/trpc/product.createComment
+  createComment: protectedProcedure.input(schema.comment).mutation(async ({ input, ctx }) => {
     await ctx.db.comment.create({
       data: {
         stars: input.stars,

@@ -12,16 +12,17 @@ import { DeleteComment } from './delete-comment'
 
 export const ProductComments: React.FC<{
   id: string
-  comments: Array<Comment & { user: User }>
   avgStars: number
-}> = ({ id, comments, avgStars }) => {
+  comments: Array<Comment & { user: User }>
+}> = ({ id, avgStars, comments }) => {
   const utils = api.useUtils()
 
   const [formData, setFormData] = useState<{ content: string; stars: number }>({
     content: '',
     stars: 5,
   })
-  const { mutate, isPending } = api.product.comment.useMutation({
+
+  const { mutate, isPending } = api.product.createComment.useMutation({
     onSuccess: () => utils.product.getOne.invalidate({ id }),
   })
 
@@ -58,7 +59,7 @@ export const ProductComments: React.FC<{
               </span>
             </div>
 
-            <DeleteComment id={comment.id} />
+            <DeleteComment id={comment.id} productId={id} />
           </div>
 
           <p className="pl-10 pt-2">{comment.content}</p>

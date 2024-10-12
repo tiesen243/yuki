@@ -13,7 +13,7 @@ export const ProductDetail: React.FC<{ product: Product & { category: { name: st
       alt={product.name}
       width={400}
       height={400}
-      className="h-auto w-full rounded-lg object-cover md:col-span-4"
+      className="aspect-[3/4] h-auto w-full rounded-lg object-cover md:col-span-4"
     />
 
     <article className="flex h-full flex-col md:col-span-8">
