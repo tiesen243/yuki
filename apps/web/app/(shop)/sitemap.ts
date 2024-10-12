@@ -11,7 +11,7 @@ interface Route {
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Fetch static routes
-  const routesMap: Route[] = [''].map((route) => ({
+  const routesMap: Route[] = ['', 'p'].map((route) => ({
     url: `${getBaseUrl()}/${route}`,
     lastModified: new Date().toISOString(),
   }))
