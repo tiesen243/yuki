@@ -45,7 +45,7 @@ export const SearchForm: React.FC<{ searchParams: Query }> = async ({ searchPara
 
       <FormField label="Sort" name="sort" asChild>
         {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-        <Select defaultValue={searchParams.sort || 'createdAt'}>
+        <Select defaultValue={searchParams.sort || 'createdAt-desc'}>
           <SelectTrigger>
             <SelectValue placeholder="Sort by" />
           </SelectTrigger>
@@ -68,6 +68,6 @@ export const SearchForm: React.FC<{ searchParams: Query }> = async ({ searchPara
 const sortOptions = [
   { label: 'Price Increase', value: 'price-asc' },
   { label: 'Price Decrease', value: 'price-desc' },
-  { label: 'Newest', value: 'createdAt-asc' },
-  { label: 'Oldest', value: 'createdAt-desc' },
+  { label: 'Newest', value: 'createdAt-desc' },
+  { label: 'Oldest', value: 'createdAt-asc' },
 ]
