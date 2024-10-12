@@ -19,10 +19,14 @@ export const PageClient: React.FC<{ searchParams: Query }> = ({ searchParams }) 
 
   if (isLoading)
     return (
-      <section className="grid grid-cols-2 gap-4 md:col-span-3 lg:grid-cols-3">
-        {Array.from({ length: 6 }).map((_, idx) => (
-          <ProductCardSkeleton key={idx} />
-        ))}
+      <section className="md:col-span-3">
+        <div className="grid grid-cols-2 gap-4 lg:grid-cols-3">
+          {Array.from({ length: 6 }).map((_, idx) => (
+            <ProductCardSkeleton key={idx} />
+          ))}
+        </div>
+
+        <Pagination searchParams={searchParams} totalPage={999} />
       </section>
     )
 
@@ -34,6 +38,10 @@ export const PageClient: React.FC<{ searchParams: Query }> = ({ searchParams }) 
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-3">
         {data.products.map((product) => (
           <ProductCard key={product.id} product={product} />
+        ))}
+
+        {Array.from({ length: 6 - data.products.length }).map((_, idx) => (
+          <div key={idx} className="aspect-square" />
         ))}
       </div>
 
