@@ -1,11 +1,6 @@
 import { z } from 'zod'
 
-const passwordSchema = z
-  .string()
-  .regex(
-    /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/,
-    'Password must contain at least 8 characters, one uppercase letter, one lowercase letter and one number and special character',
-  )
+import { passwordSchema } from './utils'
 
 export const authSchema = {
   signIn: z.object({

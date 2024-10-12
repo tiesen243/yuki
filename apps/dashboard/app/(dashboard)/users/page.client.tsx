@@ -10,7 +10,7 @@ import { DataTable } from '@/app/(dashboard)/_components/data-table'
 import { api } from '@/lib/trpc/react'
 
 export const PageClient: React.FC<PageProps> = ({ searchParams }) => {
-  const headers = ['ID', 'Name', 'Role', 'Created at', 'Actions']
+  const headers = ['ID', 'Name', 'Email', 'Role', 'Created at', 'Actions']
   const [{ users, totalPage }] = api.user.getAll.useSuspenseQuery({
     q: searchParams.q,
     page: Number(searchParams.page) || 1,
@@ -31,18 +31,19 @@ export const PageClient: React.FC<PageProps> = ({ searchParams }) => {
         </TableRow>
       )}
 
-      {users.map((customer) => (
-        <TableRow key={customer.id}>
-          <TableCell>{customer.id}</TableCell>
-          <TableCell>{customer.name}</TableCell>
-          <TableCell>{customer.role}</TableCell>
-          <TableCell>{customer.createdAt.toDateString()}</TableCell>
+      {users.map((user) => (
+        <TableRow key={user.id}>
+          <TableCell>{user.id}</TableCell>
+          <TableCell>{user.name}</TableCell>
+          <TableCell>{user.email}</TableCell>
+          <TableCell>{user.role}</TableCell>
+          <TableCell>{user.createdAt.toDateString()}</TableCell>
           <TableCell className="space-x-2">
             <Button size="sm" asChild>
-              <Link href={`/users/${customer.id}`}>Edit</Link>
+              <Link href={`/users/${user.id}`}>Edit</Link>
             </Button>
             <Button variant="destructive" size="sm" asChild>
-              <Link href={`/users/${customer.id}/delete`}>Delete</Link>
+              <Link href={`/users/${user.id}/delete`}>Delete</Link>
             </Button>
           </TableCell>
         </TableRow>

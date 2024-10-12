@@ -31,4 +31,8 @@ const settings = [
     title: 'Link Account',
     href: '/account/settings/link-account',
   },
+  {
+    title: 'Danger Zone',
+    href: '/account/settings/delete-account',
+  },
 ]

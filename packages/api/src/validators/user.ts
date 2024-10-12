@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-import { getOne, query } from './utils'
+import { getOne, passwordSchema, query } from './utils'
 
 export const userSchema = {
   query,
@@ -19,5 +19,12 @@ export const userSchema = {
     state: z.string().min(4, 'State must be at least 4 characters'),
     zipCode: z.number().min(6, 'Zip code must be at least 6 characters'),
     country: z.string().min(1, 'Country is required'),
+  }),
+
+  deleteProfile: z.object({
+    password: passwordSchema,
+    confirm: z.string().refine((data) => data === 'Delete my account', {
+      message: 'Please type "Delete my account" to confirm',
+    }),
   }),
 }

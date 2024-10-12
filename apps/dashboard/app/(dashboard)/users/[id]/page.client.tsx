@@ -56,7 +56,7 @@ export const PageClient: React.FC<{ id: string }> = ({ id }) => {
           </FormField>
 
           <Button className="w-full" disabled={isPending}>
-            {isPending ? 'Updating...' : 'Update'}
+            {isPending ? 'Saving...' : 'Save changes'}
           </Button>
         </form>
       </CardContent>
