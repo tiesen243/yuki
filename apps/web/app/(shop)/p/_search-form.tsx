@@ -1,41 +1,40 @@
-'use client'
-
-import Link from 'next/link'
-import { useState } from 'react'
+import { redirect } from 'next/navigation'
 
 import type { Query } from '@yuki/api'
 import { Button } from '@yuki/ui/button'
 import { FormField } from '@yuki/ui/form-field'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@yuki/ui/select'
 
-import { api } from '@/lib/trpc/react'
+import { api } from '@/lib/trpc/server'
 import { getIdFromSlug, slugify } from '@/lib/utils'
 
-export const SearchForm: React.FC<{ searchParams: Query }> = ({ searchParams }) => {
-  const { data } = api.category.getAll.useQuery({ limit: 9999 })
-  const [query, setQuery] = useState<Query>(searchParams)
+export const SearchForm: React.FC<{ searchParams: Query }> = async ({ searchParams }) => {
+  const { categories } = await api.category.getAll({ limit: 9999 })
+
+  const action = async (formData: FormData) => {
+    'use server'
+    const params = {
+      q: formData.get('q'),
+      category: formData.get('category'),
+      sort: formData.get('sort'),
+    }
+    // @ts-expect-error `Object.fromEntries` returns `Query` type
+    const query = new URLSearchParams({ ...searchParams, ...params }).toString()
+    redirect(`/p?${query}`)
+  }
 
   return (
-    <div className="space-y-4">
-      <FormField
-        label="Search"
-        name="q"
-        type="search"
-        value={query.q}
-        onChange={(e) => setQuery({ ...query, q: e.target.value })}
-      />
+    <form action={action} className="space-y-4">
+      <FormField label="Search" name="q" type="search" />
       <FormField label="Category" name="category" asChild>
-        <Select
-          value={getIdFromSlug(query.category ?? '')}
-          onValueChange={(value) => setQuery({ ...query, category: value })}
-        >
+        <Select defaultValue={getIdFromSlug(searchParams.category ?? '')}>
           <SelectTrigger>
             <SelectValue placeholder="Select category" />
           </SelectTrigger>
 
           <SelectContent>
             <SelectItem value=" ">All</SelectItem>
-            {data?.categories.map((category) => (
+            {categories.map((category) => (
               <SelectItem key={category.id} value={slugify(category.id)}>
                 {category.name}
               </SelectItem>
@@ -45,11 +44,8 @@ export const SearchForm: React.FC<{ searchParams: Query }> = ({ searchParams }) 
       </FormField>
 
       <FormField label="Sort" name="sort" asChild>
-        <Select
-          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-          value={query.sort || 'createdAt-desc'}
-          onValueChange={(value: Options) => setQuery({ ...query, sort: value })}
-        >
+        {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
+        <Select defaultValue={searchParams.sort || 'createdAt'}>
           <SelectTrigger>
             <SelectValue placeholder="Sort by" />
           </SelectTrigger>
@@ -64,17 +60,14 @@ export const SearchForm: React.FC<{ searchParams: Query }> = ({ searchParams }) 
         </Select>
       </FormField>
 
-      <Button className="w-full" asChild>
-        <Link href={{ query }}>Search</Link>
-      </Button>
-    </div>
+      <Button className="w-full">Search</Button>
+    </form>
   )
 }
 
 const sortOptions = [
-  { label: 'Price Increase', value: 'price' },
+  { label: 'Price Increase', value: 'price-asc' },
   { label: 'Price Decrease', value: 'price-desc' },
-  { label: 'Newest', value: 'createdAt' },
+  { label: 'Newest', value: 'createdAt-asc' },
   { label: 'Oldest', value: 'createdAt-desc' },
 ]
-type Options = 'price' | 'price-desc' | 'createdAt' | 'createdAt-desc'

@@ -13,7 +13,9 @@ export const query = z.object({
     .optional(),
   page: z.number().int().positive().default(1),
   limit: z.number().int().positive().default(10),
-  sort: z.enum(['price', 'price-desc', 'createdAt', 'createdAt-desc']).default('createdAt-desc'),
+  sort: z
+    .enum(['price-asc', 'price-desc', 'createdAt-asc', 'createdAt-desc'])
+    .default('createdAt-desc'),
 })
 export type Query = z.infer<typeof query>
 

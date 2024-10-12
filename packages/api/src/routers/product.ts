@@ -9,6 +9,8 @@ export const productRouter = createTRPCRouter({
     const orderBy = input.sort.split('-').at(0) as 'price' | 'createdAt'
     const order = input.sort.split('-').at(1) as 'asc' | 'desc'
 
+    console.log(orderBy, order)
+
     const products = await ctx.db.product.findMany({
       where: {
         ...(input.q && { name: { contains: input.q, mode: 'insensitive' } }),
