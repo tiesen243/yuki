@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "turbo dev",
+    "email:dev": "turbo run email:dev",
     "build": "turbo run build",
     "ui-add": "turbo run ui-add",
     "db:push": "turbo -F @yuki/db push",

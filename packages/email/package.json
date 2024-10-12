@@ -9,7 +9,7 @@
     "./env": "./src/env.js"
   },
   "scripts": {
-    "dev": "email dev -d ./src/components -p 3002",
+    "email:dev": "email dev -d ./src/components -p 3002",
     "clean": "git clean -xdf .cache .turbo dist node_modules",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
