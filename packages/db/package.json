@@ -19,13 +19,13 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
-    "@prisma/client": "^5.20.0"
+    "@prisma/client": "^5.21.0"
   },
   "devDependencies": {
     "@yuki/prettier-config": "workspace:*",
     "@yuki/eslint-config": "workspace:*",
     "@yuki/tsconfig": "workspace:*",
-    "prisma": "^5.20.0",
+    "prisma": "^5.21.0",
     "dotenv-cli": "^7.4.2",
     "typescript": "latest",
     "prettier": "latest",
