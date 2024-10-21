@@ -30,7 +30,7 @@ const typographyVariants = cva('font-sans text-base font-normal text-foreground'
 
 export interface TypographyProps
   extends Omit<React.HTMLAttributes<HTMLParagraphElement>, 'color'>,
-  VariantProps<typeof typographyVariants> { }
+    VariantProps<typeof typographyVariants> {}
 
 const Typography = React.forwardRef<HTMLButtonElement, TypographyProps>(
   ({ className, level = 'p', color, ...props }, ref) => {

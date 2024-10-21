@@ -4,15 +4,17 @@
   "rsc": true,
   "tsx": true,
   "tailwind": {
-    "config": "tailwind.config.ts",
-    "css": "unused.css",
+    "config": "../../tooling/tailwind/index.ts",
+    "css": "styles/tailwind.css",
     "baseColor": "neutral",
     "cssVariables": true,
     "prefix": ""
   },
   "aliases": {
+    "components": "@yuki/ui",
     "utils": "@yuki/ui",
-    "components": "src/",
-    "ui": "src/"
+    "ui": "@yuki/ui",
+    "lib": "@yuki/ui",
+    "hooks": "@yuki/ui/hooks"
   }
 }

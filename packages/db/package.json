@@ -13,7 +13,7 @@
     "studio": "bun with-env prisma studio",
     "db:generate": "prisma generate",
     "clean": "git clean -xdf .cache .turbo dist node_modules",
-    "format": "prisma format && prettier --check . --ignore-path ../../.gitignore",
+    "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
     "typecheck": "tsc --noEmit --emitDeclarationOnly false",
     "with-env": "dotenv -e ../../.env --"
