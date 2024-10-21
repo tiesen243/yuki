@@ -1,6 +1,6 @@
 'use client'
 
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 import { Button } from '@yuki/ui/button'
 import { DiscordIcon } from '@yuki/ui/icons'
@@ -10,13 +10,16 @@ export interface SignInWithDiscordProps {
 }
 
 export const SignInWithDiscord: React.FC = () => {
+  const router = useRouter()
   const redirect = useSearchParams().get('redirect')
 
   return (
-    <form action={`/api/auth/discord?redirect=${redirect}`} className="w-full">
-      <Button variant="outline" className="w-full">
-        <DiscordIcon /> Sign in with Discord
-      </Button>
-    </form>
+    <Button
+      variant="outline"
+      className="w-full"
+      onClick={() => router.push(`/api/auth/discord?redirect=${redirect}`)}
+    >
+      <DiscordIcon /> Sign in with Discord
+    </Button>
   )
 }

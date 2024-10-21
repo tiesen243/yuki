@@ -16,7 +16,7 @@ export const GET = async (req: NextRequest) => {
   if (!code || !state || state !== storedState)
     return NextResponse.json({ message: 'Invalid state' }, { status: 400 })
 
-  const redirectUri = cookies().get('redirect')?.value ?? '/'
+  const redirectUrl = cookies().get('redirect')?.value ?? '/'
 
   cookies().delete('discord_oauth_state')
   cookies().delete('redirect')
@@ -48,7 +48,7 @@ export const GET = async (req: NextRequest) => {
       const sessionCookie = lucia.createSessionCookie(session.id)
       await setCookie(sessionCookie)
 
-      return NextResponse.redirect(new URL(redirectUri, req.url))
+      return NextResponse.redirect(new URL(redirectUrl, req.url))
     }
 
     const newUser = await db.user.create({
@@ -59,7 +59,7 @@ export const GET = async (req: NextRequest) => {
     const sessionCookie = lucia.createSessionCookie(session.id)
     await setCookie(sessionCookie)
 
-    return NextResponse.redirect(new URL(redirectUri, req.url))
+    return NextResponse.redirect(new URL(redirectUrl, req.url))
   } catch (e) {
     if (e instanceof OAuth2RequestError)
       return NextResponse.json({ message: e.message, description: e.description }, { status: 400 })

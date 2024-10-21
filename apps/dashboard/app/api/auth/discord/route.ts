@@ -7,27 +7,25 @@ import { generateState } from '@yuki/auth/lucia'
 import { discord } from '@/app/api/auth/discord/core'
 import { env } from '@/env'
 
-const options = {
-  path: '/',
-  secure: env.NODE_ENV === 'production',
-  httpOnly: true,
-  maxAge: 60 * 10,
-  sameSite: 'lax' as const,
-}
-
 export const GET = async (req: NextRequest) => {
   const state = generateState()
 
   // store redirect url in cookie
   const ur = new URL(req.url)
   const redirect = ur.searchParams.get('redirect') ?? '/'
-  cookies().set('redirect', redirect, options)
+  cookies().set('redirect', redirect)
 
   const url = await discord.createAuthorizationURL(state, {
     scopes: ['identify', 'email'],
   })
 
-  cookies().set('discord_oauth_state', state, options)
+  cookies().set('discord_oauth_state', state, {
+    path: '/',
+    secure: env.NODE_ENV === 'production',
+    httpOnly: true,
+    maxAge: 60 * 10,
+    sameSite: 'lax',
+  })
 
   return NextResponse.redirect(new URL(url, req.url))
 }
