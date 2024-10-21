@@ -1,5 +1,8 @@
 #!/bin/bash
 
+bun clean:workspaces
+bun update
+
 # Base directories
 BASE_DIRS=("apps" "packages" "tooling")
 
