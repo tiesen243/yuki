@@ -15,15 +15,14 @@ export function getBaseUrl() {
 }
 
 /*
- * Get the dashboard URL of the current environment
- * @returns {string} The dashboard URL
- * @example getDashboardUrl() // 'http://localhost:3001'
- * @example getDashboardUrl() // 'https://dashboard.yuki.tiesen.id.vn'
+ * Get the website URL of the current app
+ * @returns {string} The website URL
+ * @example getDashboardUrl() // 'http://localhost:3000'
+ * @example getDashboardUrl() // 'https://yuki.tiesen.id.vn'
  */
-export function getDashboardUrl() {
-  if (env.VERCEL_PROJECT_PRODUCTION_URL)
-    return `https://dashboard.${env.VERCEL_PROJECT_PRODUCTION_URL}`
-  return 'http://localhost:3001'
+export function getWebsiteUrl() {
+  if (env.VERCEL_PROJECT_PRODUCTION_URL) return getBaseUrl().replace('dashboard.', '')
+  return 'http://localhost:3000'
 }
 
 /*

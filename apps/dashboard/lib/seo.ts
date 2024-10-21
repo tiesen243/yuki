@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 
-import { getBaseUrl } from '@/lib/utils'
+import { getBaseUrl, getWebsiteUrl } from '@/lib/utils'
 
 interface SeoParams {
   title?: string
@@ -19,7 +19,7 @@ export function seo(params: SeoParams): Metadata {
   const description =
     params.description ??
     'A full-stack e-commerce platform built with Turborepo, Next.js, tRPC, TailwindCSS and Prisma. It is a modern, fast, and secure platform that allows you to create your own e-commerce store with ease. Yuki is built with the latest technologies and best practices to ensure that your store is fast, secure, and scalable.'
-  const images = [...(params.images ?? []), '/api/og']
+  const images = [...(params.images ?? []), `${getWebsiteUrl()}/api/og`]
   const url = params.url ? `${getBaseUrl()}${params.url}` : getBaseUrl()
 
   return {

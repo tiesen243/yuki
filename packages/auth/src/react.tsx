@@ -5,7 +5,7 @@ import * as React from 'react'
 
 type SessionContext = null | (Session & { user: User })
 
-const sessionContext = React.createContext<SessionContext>(null)
+const sessionContext = React.createContext<SessionContext | undefined>(undefined)
 
 interface SessionProviderProps {
   session: SessionContext
@@ -18,7 +18,6 @@ export const SessionProvider: React.FC<SessionProviderProps> = ({ session, child
 
 export const useSession = () => {
   const context = React.useContext(sessionContext)
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (context === undefined) throw new Error('useSession must be used within a SessionProvider')
   return context
 }
