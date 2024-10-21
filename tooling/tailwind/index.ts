@@ -6,6 +6,7 @@ const config = {
   content: ['./app/**/*.{ts,tsx}'],
   theme: {
     extend: {
+      container: { center: true, padding: '2rem', screens: { '2xl': '1400px' } },
       colors: {
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
