@@ -1,6 +1,6 @@
-import type { EmailProps } from '../config'
 import * as email from '@react-email/components'
 
+import type { EmailProps } from '../config'
 import { font, replyTo as rt, tailwindConfig } from '../config'
 
 const logo = 'https://tiesen.id.vn/android-chrome-192x192.png'

@@ -5,7 +5,6 @@ import { cn, ThemeProvider } from '@yuki/ui'
 import { geistSans } from '@/lib/fonts'
 import { seo } from '@/lib/seo'
 import { TRPCReactProvider } from '@/lib/trpc/react'
-import { getWebsiteUrl } from '@/lib/utils'
 
 const RootLayout: React.FC<React.PropsWithChildren> = ({ children }) => (
   <html lang="en" suppressHydrationWarning>

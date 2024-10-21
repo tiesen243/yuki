@@ -1,6 +1,6 @@
-import type { EmailProps } from '../config'
 import { Text } from '@react-email/components'
 
+import type { EmailProps } from '../config'
 import { hello } from '../config'
 import { EmailLayout } from './_layout'
 
