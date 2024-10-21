@@ -9,6 +9,7 @@ export const env = createEnv({
   shared: {
     NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
   },
+
   /**
    * Specify your server-side environment variables schema here.
    * This way you can ensure the app isn't built with invalid env vars.
@@ -25,6 +26,7 @@ export const env = createEnv({
   client: {
     // NEXT_PUBLIC_CLIENTVAR: z.string(),
   },
+
   /**
    * Destructure all variables from `process.env` to make sure they aren't tree-shaken away.
    */

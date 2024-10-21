@@ -4,12 +4,13 @@ import { cn, ThemeProvider } from '@yuki/ui'
 
 import { geistSans } from '@/lib/fonts'
 import { seo } from '@/lib/seo'
+import { TRPCReactProvider } from '@/lib/trpc/react'
 
 const RootLayout: React.FC<React.PropsWithChildren> = ({ children }) => (
   <html lang="en" suppressHydrationWarning>
     <body className={cn('min-h-dvh font-sans antialiased', geistSans.variable)}>
       <ThemeProvider attribute="class" defaultTheme="dark" disableTransitionOnChange>
-        {children}
+        <TRPCReactProvider>{children}</TRPCReactProvider>
       </ThemeProvider>
     </body>
   </html>

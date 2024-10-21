@@ -1,16 +1,15 @@
 import { createEnv } from '@t3-oss/env-nextjs'
 import { z } from 'zod'
 
-export const uploaderEnv = createEnv({
+export const emailEnv = createEnv({
   /**
    * Specify your server-side environment variables schema here.
    * This way you can ensure the app isn't built with invalid env vars.
    */
   server: {
     NODE_ENV: z.enum(['development', 'production']).optional(),
-    UPLOADTHING_TOKEN: z.string(),
+    RESEND_KEY: z.string(),
   },
-
   /**
    * Specify your client-side environment variables schema here.
    * For them to be exposed to the client, prefix them with `NEXT_PUBLIC_`.

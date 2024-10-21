@@ -6,7 +6,7 @@
   "exports": {
     ".": "./src/index.ts",
     "./config": "./src/config.ts",
-    "./env": "./src/env.js"
+    "./env": "./env.js"
   },
   "scripts": {
     "email:dev": "email dev -d ./src/components -p 3002",
