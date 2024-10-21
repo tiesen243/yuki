@@ -4,7 +4,7 @@ import { UploadThingError, UTApi } from 'uploadthing/server'
 
 import { auth } from '@yuki/auth'
 
-import { uploaderEnv } from './env'
+import { uploaderEnv } from '../env'
 
 const f = createUploadthing()
 

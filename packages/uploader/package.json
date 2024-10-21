@@ -7,7 +7,7 @@
     ".": "./src/index.ts",
     "./uploadthing": "./src/uploadthing.ts",
     "./react": "./src/react.tsx",
-    "./env": "./src/env.js"
+    "./env": "./env.js"
   },
   "scripts": {
     "dev": "tsc",
