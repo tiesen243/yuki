@@ -8,7 +8,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@yuki/ui/dropdown-menu'
-import { BadgeCheck, ShieldIcon, ShoppingCart, UserIcon } from '@yuki/ui/icons'
+import { ShieldIcon, ShoppingCart, UserIcon } from '@yuki/ui/icons'
 
 import { SignoutBtn } from './signout-btn'
 import { UserCard } from './user-card'
@@ -33,9 +33,9 @@ export const Footer: React.FC = () => {
 
         <UserMenu
           items={[
-            { title: 'Profile', url: '/profile', icon: UserIcon },
-            { title: 'Orders', url: '/orders', icon: ShoppingCart },
-            { title: 'Sercurity', url: '/security', icon: ShieldIcon },
+            { title: 'Profile', url: '/account', icon: UserIcon },
+            { title: 'Orders', url: '/account/orders', icon: ShoppingCart },
+            { title: 'Security', url: '/account/security', icon: ShieldIcon },
           ]}
         />
 

@@ -64,7 +64,7 @@ const adminItems: SidebarItem[] = [
 
 const userItems: SidebarItem[] = [
   { title: 'Browse Products', url: getWebsiteUrl(), icon: PanelTopIcon },
-  { title: 'Profile', url: '/profile', icon: UserIcon },
-  { title: 'Orders', url: '/orders', icon: ShoppingCartIcon },
-  { title: 'Sercurity', url: '/security', icon: ShieldIcon },
+  { title: 'Profile', url: '/account', icon: UserIcon },
+  { title: 'Orders', url: '/account/orders', icon: ShoppingCartIcon },
+  { title: 'Security', url: '/account/security', icon: ShieldIcon },
 ]
