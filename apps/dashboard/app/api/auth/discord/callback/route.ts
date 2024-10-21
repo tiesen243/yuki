@@ -6,7 +6,7 @@ import { lucia, OAuth2RequestError } from '@yuki/auth/lucia'
 import { db } from '@yuki/db'
 
 import { discord } from '@/app/api/auth/discord/core'
-import { getWebsiteUrl } from '@/lib/utils'
+import { setCookie } from '@/lib/actions'
 
 export const GET = async (req: NextRequest) => {
   const url = new URL(req.url)
@@ -46,10 +46,7 @@ export const GET = async (req: NextRequest) => {
 
       const session = await lucia.createSession(existedUser.id, {})
       const sessionCookie = lucia.createSessionCookie(session.id)
-      cookies().set(sessionCookie.name, sessionCookie.value, {
-        ...sessionCookie.attributes,
-        domain: new URL(getWebsiteUrl()).hostname,
-      })
+      await setCookie(sessionCookie)
 
       return NextResponse.redirect(new URL(redirectUri, req.url))
     }
@@ -60,10 +57,7 @@ export const GET = async (req: NextRequest) => {
 
     const session = await lucia.createSession(newUser.id, {})
     const sessionCookie = lucia.createSessionCookie(session.id)
-    cookies().set(sessionCookie.name, sessionCookie.value, {
-      ...sessionCookie.attributes,
-      domain: new URL(getWebsiteUrl()).hostname,
-    })
+    await setCookie(sessionCookie)
 
     return NextResponse.redirect(new URL(redirectUri, req.url))
   } catch (e) {

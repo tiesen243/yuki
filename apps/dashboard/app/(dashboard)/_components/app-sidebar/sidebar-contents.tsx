@@ -22,7 +22,7 @@ export const SidebarContents: React.FC<{ label: string; items: SidebarItem[] }> 
         {items.map((item) => {
           if (item.child)
             return (
-              <Collapsible className="group/collapsible" asChild>
+              <Collapsible key={item.title} className="group/collapsible" asChild>
                 <SidebarGroup className="p-0">
                   <CollapsibleTrigger asChild>
                     <SidebarGroupLabel className="gap-2 text-sm text-foreground">

@@ -1,3 +1,5 @@
+import { redirect } from 'next/navigation'
+
 import { auth } from '@yuki/auth'
 import { SessionProvider } from '@yuki/auth/react'
 import { SidebarProvider } from '@yuki/ui/sidebar'
@@ -7,6 +9,7 @@ import { Header } from '@/app/(dashboard)/_components/header'
 
 const DashboardLayout: React.FC<React.PropsWithChildren> = async ({ children }) => {
   const session = await auth()
+  if (!session) redirect('/sign-in')
 
   return (
     <SessionProvider session={session}>

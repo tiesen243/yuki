@@ -2,7 +2,7 @@ import { CardContent, CardDescription, CardHeader, CardTitle } from '@yuki/ui/ca
 
 import { PageClient } from './page.client'
 
-const Page: React.FC = () => (
+const Page: React.FC<{ searchParams: { redirect?: string } }> = ({ searchParams }) => (
   <>
     <CardHeader>
       <CardTitle>Sign In</CardTitle>
@@ -10,7 +10,7 @@ const Page: React.FC = () => (
     </CardHeader>
 
     <CardContent>
-      <PageClient />
+      <PageClient redirect={searchParams.redirect} />
     </CardContent>
   </>
 )
