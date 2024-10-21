@@ -1,0 +1,19 @@
+'use server'
+
+import { cookies } from 'next/headers'
+
+import { auth } from '@yuki/auth'
+import { lucia } from '@yuki/auth/lucia'
+
+import { getWebsiteUrl } from '@/lib/utils'
+
+export const signOut = async () => {
+  const session = await auth()
+  if (!session) return
+
+  const sessionCookie = lucia.createBlankSessionCookie()
+  cookies().set(sessionCookie.name, sessionCookie.value, {
+    ...sessionCookie.attributes,
+    domain: new URL(getWebsiteUrl()).hostname,
+  })
+}

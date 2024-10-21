@@ -8,8 +8,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@yuki/ui/dropdown-menu'
+import { BadgeCheck, ShieldIcon, ShoppingCart, UserIcon } from '@yuki/ui/icons'
 
+import { SignoutBtn } from './signout-btn'
 import { UserCard } from './user-card'
+import { UserMenu } from './user-menu'
 
 export const Footer: React.FC = () => {
   const session = useSession()
@@ -28,7 +31,17 @@ export const Footer: React.FC = () => {
 
         <DropdownMenuSeparator />
 
+        <UserMenu
+          items={[
+            { title: 'Profile', url: '/profile', icon: UserIcon },
+            { title: 'Orders', url: '/orders', icon: ShoppingCart },
+            { title: 'Sercurity', url: '/security', icon: ShieldIcon },
+          ]}
+        />
+
         <DropdownMenuSeparator />
+
+        <SignoutBtn />
       </DropdownMenuContent>
     </DropdownMenu>
   )
