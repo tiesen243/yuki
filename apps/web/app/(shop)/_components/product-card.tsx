@@ -3,7 +3,9 @@ import Link from 'next/link'
 
 import { cn } from '@yuki/ui'
 import { Badge } from '@yuki/ui/badge'
-import { Card, CardDescription, CardTitle } from '@yuki/ui/card'
+import { Button } from '@yuki/ui/button'
+import { Card, CardContent, CardFooter } from '@yuki/ui/card'
+import { ShoppingCart } from '@yuki/ui/icons'
 import { Skeleton } from '@yuki/ui/skeleton'
 
 import { slugify } from '@/lib/utils'
@@ -14,44 +16,59 @@ interface ProductCardProps {
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product, className }) => (
-  <Card className={cn('group/product aspect-square overflow-hidden', className)} asChild>
-    <Link href={`/p/${slugify(product.name, product.id)}`}>
-      <Image
-        src={product.image}
-        alt={product.name}
-        className={cn(
-          'object-cover transition-all ease-linear hover:border-secondary group-hover/product:scale-110 group-hover/product:brightness-75',
-          product.image === '/assets/logo.svg' && 'dark:invert',
-        )}
-        fill
-      />
-
-      <div className="flex h-full w-full items-end">
-        <div className="flex w-full flex-col items-start gap-1 bg-secondary p-4 transition-colors ease-linear group-hover/product:bg-secondary/90">
-          <div className="flex items-center gap-2">
-            <Badge>{product.category.name}</Badge>
-            <CardTitle className="line-clamp-1">{product.name}</CardTitle>
-          </div>
-          <CardDescription>$ {product.price.toFixed(2)}</CardDescription>
-        </div>
+  <Card
+    className={cn('overflow-hidden transition-all hover:border-ring hover:shadow-lg', className)}
+  >
+    <Link href={`/p/${slugify(product.name, product.id)}`} passHref>
+      <div className="relative">
+        <Image
+          src={product.image}
+          alt={product.name}
+          className="aspect-square h-auto w-full object-cover"
+          width={500}
+          height={200}
+        />
+        <Badge className="absolute right-2 top-2 bg-primary text-primary-foreground">
+          {product.category.name}
+        </Badge>
       </div>
+
+      <CardContent className="p-4">
+        <h3 className="mb-2 line-clamp-1 text-lg font-semibold">{product.name}</h3>
+        <p className="text-2xl font-bold text-primary">$ {product.price.toFixed(2)}</p>
+      </CardContent>
     </Link>
+
+    <CardFooter className="p-4 pt-0">
+      <Button className="w-full">
+        <ShoppingCart className="mr-2 h-4 w-4" /> Add to Cart
+      </Button>
+    </CardFooter>
   </Card>
 )
 
 export const ProductCardSkeleton: React.FC<{ className?: string }> = ({ className }) => (
-  <Card className={cn('group/product aspect-square overflow-hidden', className)}>
-    <Skeleton className="absolute inset-0 aspect-square w-full object-cover transition-all ease-linear hover:border-secondary group-hover/product:scale-110 group-hover/product:brightness-75" />
-
-    <div className="flex h-full w-full items-end">
-      <div className="flex w-full flex-col items-start gap-1 bg-secondary p-4 transition-colors ease-linear group-hover/product:bg-secondary/90">
-        <div className="flex items-center gap-2">
-          <Badge className="animate-pulse">Loading...</Badge>
-          <CardTitle className="animate-pulse">Loading...</CardTitle>
-        </div>
-
-        <CardDescription className="animate-pulse">Loading...</CardDescription>
-      </div>
+  <Card
+    className={cn(
+      'w-full overflow-hidden transition-all hover:border-ring hover:shadow-lg',
+      className,
+    )}
+  >
+    <div className="relative">
+      <Skeleton className="aspect-square h-auto w-full object-cover" />
+      <Badge className="absolute right-2 top-2 bg-primary text-primary-foreground">
+        Loading...
+      </Badge>
     </div>
+
+    <CardContent className="p-4">
+      <h3 className="mb-2 line-clamp-1 text-lg font-semibold">Loading...</h3>
+      <p className="text-2xl font-bold text-primary">$ NaN</p>
+    </CardContent>
+    <CardFooter className="p-4 pt-0">
+      <Button className="w-full">
+        <ShoppingCart className="mr-2 h-4 w-4" /> Add to Cart
+      </Button>
+    </CardFooter>
   </Card>
 )

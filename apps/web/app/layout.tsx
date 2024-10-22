@@ -9,7 +9,7 @@ import { Footer } from './_footer'
 
 const RootLayout: React.FC<React.PropsWithChildren> = ({ children }) => (
   <html lang="en" suppressHydrationWarning>
-    <body className={cn('min-h-dvh flex-col font-sans antialiased', geistSans.variable)}>
+    <body className={cn('flex min-h-dvh flex-col font-sans antialiased', geistSans.variable)}>
       <ThemeProvider attribute="class" defaultTheme="dark" disableTransitionOnChange>
         <TRPCReactProvider>
           {children}
