@@ -7,7 +7,7 @@ import { SearchForm } from './_search-form'
 import { PageClient } from './page.client'
 
 const Page: NextPage<{ searchParams: Query }> = ({ searchParams }) => (
-  <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
+  <div className="grid flex-1 grid-cols-1 gap-4 md:grid-cols-4">
     <SearchForm searchParams={searchParams} />
     <PageClient searchParams={searchParams} />
   </div>
