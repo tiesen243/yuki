@@ -50,9 +50,7 @@ export const CategoryCardSkeleton: React.FC = () => (
       <div className="absolute inset-0 bg-gradient-to-t from-background/60 to-transparent" />
       <div className="absolute bottom-4 left-4 right-4">
         <h3 className="mb-2 text-2xl font-bold">Loading...</h3>
-        <Badge variant="secondary" className="bg-primary/80 hover:bg-primary">
-          0 products
-        </Badge>
+        <Badge className="bg-primary/80 text-primary-foreground hover:bg-primary">0 products</Badge>
       </div>
     </div>
     <CardContent className="p-4">
