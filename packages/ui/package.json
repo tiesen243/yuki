@@ -18,8 +18,8 @@
     "./hooks/*": {
       "types": "./dist/src/hooks/*.d.ts",
       "default": [
-        "./src/hooks/*.tsx",
-        "./src/hooks/*.ts"
+        "./src/hooks/*.ts",
+        "./src/hooks/*.tsx"
       ]
     },
     "./tailwind.css": "./styles/tailwind.css"

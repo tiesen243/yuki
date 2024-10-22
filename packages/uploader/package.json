@@ -4,13 +4,21 @@
   "private": true,
   "type": "module",
   "exports": {
-    ".": "./src/index.ts",
-    "./uploadthing": "./src/uploadthing.ts",
-    "./react": "./src/react.tsx",
+    ".": {
+      "types": "./dist/src/index.d.ts",
+      "default": "./src/index.ts"
+    },
+    "./*": {
+      "types": "./dist/src/*.d.ts",
+      "default": [
+        "./src/*.ts",
+        "./src/*.tsx"
+      ]
+    },
     "./env": "./env.js"
   },
   "scripts": {
-    "dev": "tsc",
+    "dev": "tsc -w",
     "build": "tsc",
     "clean": "git clean -xdf .cache .turbo dist node_modules",
     "format": "prettier --check . --ignore-path ../../.gitignore",
@@ -25,9 +33,9 @@
     "@t3-oss/env-nextjs": "^0.11.1"
   },
   "devDependencies": {
-    "@yuki/prettier-config": "workspace:*",
-    "@yuki/eslint-config": "workspace:*",
     "@yuki/tsconfig": "workspace:*",
+    "@yuki/eslint-config": "workspace:*",
+    "@yuki/prettier-config": "workspace:*",
     "typescript": "latest",
     "prettier": "latest",
     "eslint": "latest"

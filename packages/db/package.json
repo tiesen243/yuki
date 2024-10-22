@@ -7,7 +7,7 @@
     ".": "./src/index.ts"
   },
   "scripts": {
-    "dev": "tsc",
+    "dev": "tsc -w",
     "build": "tsc",
     "push": "bun with-env prisma db push",
     "studio": "bun with-env prisma studio",
@@ -22,9 +22,9 @@
     "@prisma/client": "^5.21.1"
   },
   "devDependencies": {
-    "@yuki/prettier-config": "workspace:*",
-    "@yuki/eslint-config": "workspace:*",
     "@yuki/tsconfig": "workspace:*",
+    "@yuki/eslint-config": "workspace:*",
+    "@yuki/prettier-config": "workspace:*",
     "prisma": "^5.21.1",
     "dotenv-cli": "^7.4.2",
     "typescript": "latest",
