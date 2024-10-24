@@ -5,16 +5,12 @@ import { cn, ThemeProvider } from '@yuki/ui'
 import { geistSans } from '@/lib/fonts'
 import { seo } from '@/lib/seo'
 import { TRPCReactProvider } from '@/lib/trpc/react'
-import { Footer } from './_footer'
 
 const RootLayout: React.FC<React.PropsWithChildren> = ({ children }) => (
-  <html lang="en" suppressHydrationWarning>
-    <body className={cn('flex min-h-dvh flex-col font-sans antialiased', geistSans.variable)}>
+  <html lang="en" className="scroll-smooth" suppressHydrationWarning>
+    <body className={cn('flex min-h-dvh flex-col font-sans', geistSans.variable)}>
       <ThemeProvider attribute="class" defaultTheme="dark" disableTransitionOnChange>
-        <TRPCReactProvider>
-          {children}
-          <Footer />
-        </TRPCReactProvider>
+        <TRPCReactProvider>{children}</TRPCReactProvider>
       </ThemeProvider>
     </body>
   </html>

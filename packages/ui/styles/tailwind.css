@@ -84,19 +84,6 @@
     @apply bg-background text-foreground antialiased;
   }
 
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    @apply text-balance;
-  }
-
-  p {
-    @apply text-pretty;
-  }
-
   ::-webkit-scrollbar {
     @apply h-1 w-1;
   }
@@ -107,14 +94,5 @@
 
   ::-webkit-scrollbar-thumb {
     @apply rounded-full bg-ring;
-  }
-}
-
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
   }
 }

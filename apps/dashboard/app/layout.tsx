@@ -8,7 +8,7 @@ import { TRPCReactProvider } from '@/lib/trpc/react'
 
 const RootLayout: React.FC<React.PropsWithChildren> = ({ children }) => (
   <html lang="en" suppressHydrationWarning>
-    <body className={cn('min-h-dvh font-sans antialiased', geistSans.variable)}>
+    <body className={cn('min-h-dvh font-sans', geistSans.variable)}>
       <ThemeProvider attribute="class" defaultTheme="dark" disableTransitionOnChange>
         <TRPCReactProvider>{children}</TRPCReactProvider>
       </ThemeProvider>
