@@ -19,8 +19,8 @@ const Page: React.FC = () => (
         Price Cheaper, Quality Better!
       </Typography>
       <Typography className="max-w-screen-xl text-xl lg:text-3xl">
-        We are a team of passionate people whose goal is to improve everyone's life through
-        disruptive products. We build great products to solve your business problems.
+        The best place to find quality products at the best prices. Sign up now and get started for
+        free. No credit card required. Cancel anytime. No questions asked.
       </Typography>
 
       <div className="mt-6 flex items-center justify-center gap-6">
