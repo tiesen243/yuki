@@ -16,7 +16,7 @@ export const User: React.FC = async () => {
 
   return (
     <a href={`${getDashboardUrl()}/account`}>
-      <Avatar>
+      <Avatar className="ring-2 hover:ring-ring">
         <AvatarImage
           src={session.user.avatar ?? session.user.discord?.avatar}
           alt={session.user.name}

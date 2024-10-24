@@ -12,7 +12,9 @@ const Page: NextPage<Props> = async ({ params }) => {
 
     return (
       <HydrateClient>
-        <PageClient id={getIdFromSlug(params.slug)} />
+        <main className="container py-4">
+          <PageClient id={getIdFromSlug(params.slug)} />
+        </main>
       </HydrateClient>
     )
   } catch {

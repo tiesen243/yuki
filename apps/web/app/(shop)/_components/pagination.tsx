@@ -14,21 +14,21 @@ export const Pagination: React.FC<{ searchParams: Query; totalPage: number }> = 
 
   return (
     <section className="mt-8 flex items-center justify-center gap-2">
-      <Link href={{ query: { ...searchParams, page: prevPage } }} passHref>
-        <Button variant="outline" size="icon" disabled={page === 1}>
+      <Button variant="outline" size="icon" disabled={page === 1}>
+        <Link href={{ query: { ...searchParams, page: prevPage } }}>
           <ChevronLeftIcon />
-        </Button>
-      </Link>
+        </Link>
+      </Button>
 
       <span>
         Page {page} of {totalPage}
       </span>
 
-      <Link href={{ query: { ...searchParams, page: nextPage } }} passHref>
-        <Button variant="outline" size="icon" disabled={page === totalPage}>
+      <Button variant="outline" size="icon" disabled={page === totalPage}>
+        <Link href={{ query: { ...searchParams, page: nextPage } }}>
           <ChevronRightIcon />
-        </Button>
-      </Link>
+        </Link>
+      </Button>
     </section>
   )
 }

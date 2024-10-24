@@ -1,5 +1,6 @@
 import Image from 'next/image'
 
+import { auth } from '@yuki/auth'
 import {
   Grid2x2Icon,
   Grid2x2PlusIcon,
@@ -21,30 +22,34 @@ import { SidebarContents } from '@/app/(dashboard)/_components/app-sidebar/sideb
 import { SidebarSettings } from '@/app/(dashboard)/_components/app-sidebar/sidebar-settings'
 import { getWebsiteUrl } from '@/lib/utils'
 
-export const AppSidebar: React.FC = () => (
-  <Sidebar>
-    <SidebarHeader className="flex-row items-center gap-4 px-4">
-      <Image
-        src={`${getWebsiteUrl()}/assets/logo.svg`}
-        alt="Yuki"
-        width={32}
-        height={32}
-        className="dark:invert"
-      />
-      <span className="text-xl font-bold">Yuki</span>
-    </SidebarHeader>
+export const AppSidebar: React.FC = async () => {
+  const session = await auth()
 
-    <SidebarContent className="list-none">
-      <SidebarContents label="Admin" items={adminItems} />
-      <SidebarContents label="User" items={userItems} />
-      <SidebarSettings />
-    </SidebarContent>
+  return (
+    <Sidebar>
+      <SidebarHeader className="flex-row items-center gap-4 px-4">
+        <Image
+          src={`${getWebsiteUrl()}/assets/logo.svg`}
+          alt="Yuki"
+          width={32}
+          height={32}
+          className="dark:invert"
+        />
+        <span className="text-xl font-bold">Yuki</span>
+      </SidebarHeader>
 
-    <SidebarFooter>
-      <Footer />
-    </SidebarFooter>
-  </Sidebar>
-)
+      <SidebarContent className="list-none">
+        {session?.user.role === 'ADMIN' && <SidebarContents label="Admin" items={adminItems} />}
+        <SidebarContents label="User" items={userItems} />
+        <SidebarSettings />
+      </SidebarContent>
+
+      <SidebarFooter>
+        <Footer />
+      </SidebarFooter>
+    </Sidebar>
+  )
+}
 
 const adminItems: SidebarItem[] = [
   { title: 'Dashboard', url: '/', icon: LayoutDashboardIcon },

@@ -39,12 +39,6 @@ export const PageClient: React.FC<{ searchParams: Query }> = ({ searchParams }) 
         {data.products.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
-
-        {Array.from({ length: (Number(searchParams.limit) || 6) - data.products.length }).map(
-          (_, idx) => (
-            <div key={idx} className="aspect-square" />
-          ),
-        )}
       </div>
 
       <Pagination searchParams={searchParams} totalPage={data.totalPage} />

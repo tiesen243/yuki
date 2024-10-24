@@ -24,7 +24,7 @@ export const SearchForm: React.FC<{ searchParams: Query }> = async ({ searchPara
   }
 
   return (
-    <form action={action} className="space-y-4">
+    <form action={action} className="sticky inset-0 space-y-4">
       <FormField label="Search" name="q" type="search" />
       <FormField label="Category" name="category" asChild>
         <Select defaultValue={getIdFromSlug(searchParams.category ?? '')}>

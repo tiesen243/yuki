@@ -11,7 +11,7 @@ const ShopLayout: React.FC<React.PropsWithChildren> = async ({ children }) => {
     <TRPCReactProvider>
       <SessionProvider session={session}>
         <Header />
-        <main className="container flex-1 py-4">{children}</main>
+        {children}
       </SessionProvider>
     </TRPCReactProvider>
   )

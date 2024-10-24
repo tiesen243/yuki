@@ -15,7 +15,9 @@ const Page: NextPage<Props> = async ({ params, searchParams }) => {
 
     return (
       <HydrateClient>
-        <PageClient id={getIdFromSlug(params.slug)} searchParams={searchParams} />
+        <main className="container py-4">
+          <PageClient id={getIdFromSlug(params.slug)} searchParams={searchParams} />
+        </main>
       </HydrateClient>
     )
   } catch {
@@ -38,7 +40,7 @@ export async function generateMetadata({ params }: Props, parent: ResolvingMetad
         `/api/og?title=${user.name}&description=${description}&image=${user.avatar ?? user.discord?.avatar}`,
         user.avatar ?? '',
         user.discord?.avatar ?? '',
-        ...previousImages,
+        ...(previousImages as string[]),
       ],
       url: `/u/${params.slug}`,
     })

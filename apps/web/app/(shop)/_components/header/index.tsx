@@ -11,14 +11,13 @@ export const Header: React.FC = () => (
     <div className="container flex items-center justify-between gap-4">
       <Brand />
 
-      <div className="hidden flex-1 space-y-1 md:block">
+      <div className="flex-1">
         <form className="flex items-center gap-2">
           <Input name="q" type="search" placeholder="What are you looking for?" />
           <Button variant="outline" size="icon" className="aspect-square">
             <SearchIcon />
           </Button>
         </form>
-
         <Categories />
       </div>
 

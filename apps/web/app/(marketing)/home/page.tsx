@@ -1,3 +1,5 @@
+import Link from 'next/link'
+
 import { Button } from '@yuki/ui/button'
 import { Card, CardHeader } from '@yuki/ui/card'
 import { ChevronRightIcon, ShoppingCartIcon, StarIcon } from '@yuki/ui/icons'
@@ -25,15 +27,15 @@ const Page: React.FC = () => (
 
       <div className="mt-6 flex items-center justify-center gap-6">
         <Button asChild>
-          <a href={`${getDashboardUrl()}/sign-up`}>
+          <Link href={`${getDashboardUrl()}/sign-up`}>
             Get Started for Free <ChevronRightIcon size={16} />
-          </a>
+          </Link>
         </Button>
 
         <Button variant="outline" asChild>
-          <a href="/">
+          <Link href="/">
             Shop Now <ShoppingCartIcon size={16} />
-          </a>
+          </Link>
         </Button>
       </div>
     </section>
