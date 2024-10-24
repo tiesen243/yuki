@@ -1,29 +1,28 @@
-import type { NextPage } from 'next'
-
 import { Marquee } from '@yuki/ui/marquee'
 import { Typography } from '@yuki/ui/typography'
 
+import { CategoryList } from '@/app/(shop)/_components/home-page/category-list'
+import { ProductMarquee } from '@/app/(shop)/_components/home-page/product-marquee'
 import { ThreeGridProducts } from '@/app/(shop)/_components/home-page/three-grid-products'
-import { CategoryList } from './_components/home-page/category-list'
-import { ProductMarquee } from './_components/home-page/product-marquee'
 
-const Page: NextPage = () => (
+const Page: React.FC = () => (
   <>
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-10 lg:grid-rows-2">
+    <Typography level="h1" className="mb-6 text-center">
+      Welcome to the Yuki Shop
+    </Typography>
+
+    <Typography level="h2">New Arrivals</Typography>
+    <div className="my-4 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-10 lg:grid-rows-2">
       <ThreeGridProducts />
     </div>
-
-    <Marquee>
+    <Marquee className="mb-4">
       <ProductMarquee />
     </Marquee>
 
-    <section className="mt-4 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-      <Typography level="h2" className="col-span-2 md:col-span-4">
-        Explore Categories
-      </Typography>
-
+    <Typography level="h2">Explore by Category</Typography>
+    <div className="mt-4 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
       <CategoryList />
-    </section>
+    </div>
   </>
 )
 

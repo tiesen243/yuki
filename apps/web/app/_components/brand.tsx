@@ -6,10 +6,10 @@ export const Brand: React.FC<{ href?: string }> = ({ href = '/' }) => (
     <Image
       src="/assets/logo.svg"
       alt="logo"
-      width={28}
-      height={28}
+      width={40}
+      height={40}
       className="object-cover dark:invert"
     />
-    <span className="text-xl font-bold">Yuki</span>
+    <span className="sr-only text-2xl font-bold md:not-sr-only">Yuki</span>
   </Link>
 )

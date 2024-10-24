@@ -48,7 +48,7 @@ export const ProductComments: React.FC<{
               <p>{comment.user.name}</p>
               <div className="flex items-center gap-1">
                 {Array.from({ length: comment.stars }).map((_, i) => (
-                  <StarIcon key={i} className="size-4 fill-warning stroke-warning" />
+                  <StarIcon key={i} className="fill-warning stroke-warning size-4" />
                 ))}
                 {Array.from({ length: 5 - comment.stars }).map((_, i) => (
                   <StarIcon key={i} className="size-4 stroke-muted-foreground" />
