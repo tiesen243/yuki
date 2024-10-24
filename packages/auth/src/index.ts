@@ -1,17 +1,15 @@
-import 'server-only'
-
 import { cookies } from 'next/headers'
 import { cache } from 'react'
 
 import type { Session, User } from '@yuki/db'
+import { authEnv } from '@yuki/auth/env'
 
 import { lucia } from './lucia'
 
 type Auth = null | (Session & { user: User })
 
 const uncachedAuth = async (): Promise<Auth> => {
-  const cookie = await cookies()
-  const sessionId = cookie.get(lucia.sessionCookieName)?.value ?? null
+  const sessionId = cookies().get(lucia.sessionCookieName)?.value ?? null
   if (!sessionId) return null
 
   const result = await lucia.validateSession(sessionId)
@@ -19,11 +17,17 @@ const uncachedAuth = async (): Promise<Auth> => {
   try {
     if (result.session?.fresh) {
       const sessionCookie = lucia.createSessionCookie(result.session.id)
-      cookie.set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes)
+      cookies().set(sessionCookie.name, sessionCookie.value, {
+        ...sessionCookie.attributes,
+        domain: authEnv.VERCEL_PROJECT_PRODUCTION_URL?.replace('dashboard.', '') ?? 'localhost',
+      })
     }
     if (!result.session) {
       const sessionCookie = lucia.createBlankSessionCookie()
-      cookie.set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes)
+      cookies().set(sessionCookie.name, sessionCookie.value, {
+        ...sessionCookie.attributes,
+        domain: authEnv.VERCEL_PROJECT_PRODUCTION_URL?.replace('dashboard.', '') ?? 'localhost',
+      })
     }
   } catch {
     return null

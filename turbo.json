@@ -20,19 +20,20 @@
     "db:generate": { "cache": false }
   },
   "globalEnv": [
-    "DATABASE_URL",
-    "DISCORD_CLIENT_ID",
     "DISCORD_CLIENT_SECRET",
+    "DISCORD_CLIENT_ID",
     "UPLOADTHING_TOKEN",
+    "DATABASE_URL",
     "RESEND_KEY",
     "PORT"
   ],
   "globalPassThroughEnv": [
     "CI",
-    "NODE_ENV",
     "VERCEL",
+    "NODE_ENV",
     "VERCEL_ENV",
     "VERCEL_URL",
+    "VERCEL_PROJECT_PRODUCTION_URL",
     "npm_lifecycle_event"
   ]
 }

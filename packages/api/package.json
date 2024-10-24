@@ -18,17 +18,17 @@
     "typecheck": "tsc --noEmit --emitDeclarationOnly false"
   },
   "dependencies": {
-    "@yuki/uploader": "workspace:*",
-    "@yuki/auth": "workspace:*",
     "@yuki/db": "workspace:*",
+    "@yuki/auth": "workspace:*",
+    "@yuki/uploader": "workspace:*",
     "@trpc/server": "^11.0.0-rc.593",
     "zod": "^3.23.8",
     "superjson": "^2.2.1"
   },
   "devDependencies": {
-    "@yuki/prettier-config": "workspace:*",
-    "@yuki/eslint-config": "workspace:*",
     "@yuki/tsconfig": "workspace:*",
+    "@yuki/eslint-config": "workspace:*",
+    "@yuki/prettier-config": "workspace:*",
     "typescript": "latest",
     "prettier": "latest",
     "eslint": "latest"

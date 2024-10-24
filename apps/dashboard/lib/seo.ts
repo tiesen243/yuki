@@ -34,6 +34,10 @@ export function seo(params: SeoParams): Metadata {
     openGraph: { url, images, siteName: 'Yuki', type: 'website' },
     twitter: { card: 'summary_large_image', creatorId: '@tiesen243' },
     keywords: ['e-commerce', 'turborepo', 'next.js', 'tailwindcss', 'prisma', 'trpc'],
-    icons: { icon: '/favicon.ico', shortcut: '/favicon-16x16.png', apple: '/apple-touch-icon.png' },
+    icons: {
+      icon: `${getWebsiteUrl()}/favicon.ico`,
+      shortcut: `${getWebsiteUrl()}/favicon-16x16.png`,
+      apple: `${getWebsiteUrl()}/apple-touch-icon.png`,
+    },
   }
 }

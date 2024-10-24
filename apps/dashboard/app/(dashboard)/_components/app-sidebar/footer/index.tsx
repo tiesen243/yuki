@@ -10,7 +10,6 @@ import {
 } from '@yuki/ui/dropdown-menu'
 import { ShieldIcon, ShoppingCart, UserIcon } from '@yuki/ui/icons'
 
-import { SignoutBtn } from './signout-btn'
 import { UserCard } from './user-card'
 import { UserMenu } from './user-menu'
 
@@ -38,10 +37,6 @@ export const Footer: React.FC = () => {
             { title: 'Security', url: '/account/security', icon: ShieldIcon },
           ]}
         />
-
-        <DropdownMenuSeparator />
-
-        <SignoutBtn />
       </DropdownMenuContent>
     </DropdownMenu>
   )

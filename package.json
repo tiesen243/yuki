@@ -16,7 +16,8 @@
     "format:fix": "turbo run format --continue -- --write --cache --cache-location .cache/.prettiercache",
     "lint": "turbo run lint --continue -- --cache --cache-location .cache/.eslintcache",
     "lint:fix": "turbo run lint --continue -- --fix --cache --cache-location .cache/.eslintcache",
-    "typecheck": "turbo run typecheck"
+    "typecheck": "turbo run typecheck",
+    "postinstall": "turbo run db:generate"
   },
   "devDependencies": {
     "@yuki/prettier-config": "workspace:*",
@@ -34,5 +35,8 @@
     "tooling/*",
     "packages/*"
   ],
-  "prettier": "@yuki/prettier-config"
+  "prettier": "@yuki/prettier-config",
+  "dependencies": {
+    "next": "14.2.16"
+  }
 }

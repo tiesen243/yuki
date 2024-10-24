@@ -1,5 +1,6 @@
 import { env } from '@/env'
 
+
 /*
  * Get the base URL of the current environment
  * @returns {string} The base URL

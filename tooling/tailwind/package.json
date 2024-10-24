@@ -18,9 +18,9 @@
     "tailwindcss-animate": "latest"
   },
   "devDependencies": {
-    "@yuki/prettier-config": "workspace:*",
-    "@yuki/eslint-config": "workspace:*",
     "@yuki/tsconfig": "workspace:*",
+    "@yuki/eslint-config": "workspace:*",
+    "@yuki/prettier-config": "workspace:*",
     "typescript": "latest",
     "prettier": "latest",
     "eslint": "latest"

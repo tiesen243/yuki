@@ -24,8 +24,8 @@
     "typescript-eslint": "^8.11.0"
   },
   "devDependencies": {
-    "@yuki/prettier-config": "workspace:*",
     "@yuki/tsconfig": "workspace:*",
+    "@yuki/prettier-config": "workspace:*",
     "typescript": "latest",
     "prettier": "latest",
     "eslint": "latest"

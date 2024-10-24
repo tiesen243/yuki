@@ -18,18 +18,26 @@ import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader } from '@yuki/ui/
 import type { SidebarItem } from '@/app/(dashboard)/_components/app-sidebar/sidebar-contents'
 import { Footer } from '@/app/(dashboard)/_components/app-sidebar/footer'
 import { SidebarContents } from '@/app/(dashboard)/_components/app-sidebar/sidebar-contents'
+import { SidebarSettings } from '@/app/(dashboard)/_components/app-sidebar/sidebar-settings'
 import { getWebsiteUrl } from '@/lib/utils'
 
 export const AppSidebar: React.FC = () => (
   <Sidebar>
-    <SidebarHeader className="flex-row items-center">
-      <Image src="/assets/logo.svg" alt="Yuki" width={32} height={32} className="dark:invert" />
+    <SidebarHeader className="flex-row items-center gap-4 px-4">
+      <Image
+        src={`${getWebsiteUrl()}/assets/logo.svg`}
+        alt="Yuki"
+        width={32}
+        height={32}
+        className="dark:invert"
+      />
       <span className="text-xl font-bold">Yuki</span>
     </SidebarHeader>
 
     <SidebarContent className="list-none">
       <SidebarContents label="Admin" items={adminItems} />
       <SidebarContents label="User" items={userItems} />
+      <SidebarSettings />
     </SidebarContent>
 
     <SidebarFooter>
