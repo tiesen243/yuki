@@ -1,4 +1,4 @@
-import { Brand } from './brand'
+import { Brand } from '@/app/_components/brand'
 import { Category } from './category'
 import { MobileSidebar } from './mobile-sidebar'
 import { Search } from './search'
@@ -9,9 +9,7 @@ export const Header: React.FC = () => (
     <div className="container flex items-center justify-between gap-4">
       <MobileSidebar />
 
-      <Brand>
-        <span className="text-xl font-bold">Yuki</span>
-      </Brand>
+      <Brand />
 
       <Category limit={3} className="hidden md:flex" itemClassName="hover:text-muted-foreground" />
 

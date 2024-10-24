@@ -10,7 +10,7 @@ import {
   SheetTrigger,
 } from '@yuki/ui/sheet'
 
-import { Brand } from './brand'
+import { Brand } from '@/app/_components/brand'
 import { Category } from './category'
 import { Search } from './search'
 
@@ -24,9 +24,8 @@ export const MobileSidebar: React.FC = () => (
 
     <SheetContent side="left" className="flex flex-col gap-4">
       <SheetHeader>
-        <Brand>
-          <SheetTitle className="text-2xl">Yuki</SheetTitle>
-        </Brand>
+        <Brand />
+        <SheetTitle className="sr-only">Yuki</SheetTitle>
       </SheetHeader>
 
       <Search />

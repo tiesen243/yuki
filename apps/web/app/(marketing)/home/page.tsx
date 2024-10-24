@@ -4,8 +4,8 @@ import { ChevronRightIcon, ShoppingCartIcon, StarIcon } from '@yuki/ui/icons'
 import { Input } from '@yuki/ui/input'
 import { Typography } from '@yuki/ui/typography'
 
-import { faqs, features, reviews, techStacks } from '@/app/(marketing)/_data/home'
 import { getDashboardUrl } from '@/lib/utils'
+import { faqs, features, reviews, techStacks } from './_data'
 
 const Page: React.FC = () => (
   <main className="scroll-smooth">

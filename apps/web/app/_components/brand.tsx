@@ -1,8 +1,8 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
-export const Brand: React.FC<React.PropsWithChildren> = ({ children }) => (
-  <Link href="/" className="flex items-center gap-2">
+export const Brand: React.FC<{ href?: string }> = ({ href = '/' }) => (
+  <Link href={href} className="flex items-center gap-2">
     <Image
       src="/assets/logo.svg"
       alt="logo"
@@ -10,6 +10,6 @@ export const Brand: React.FC<React.PropsWithChildren> = ({ children }) => (
       height={28}
       className="object-cover dark:invert"
     />
-    {children}
+    <span className="text-xl font-bold">Yuki</span>
   </Link>
 )
