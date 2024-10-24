@@ -23,10 +23,8 @@ type DiscordUser {
 
 type Address {
   address String
-  city    String
   state   String
   country String
-  zipCode Int
 }
 
 model User {

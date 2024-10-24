@@ -84,13 +84,7 @@ export const userRouter = createTRPCRouter({
       data: {
         name: input.name,
         avatar: input.avatar,
-        address: {
-          address: input.address,
-          city: input.city,
-          state: input.state,
-          zipCode: input.zipCode,
-          country: input.country,
-        },
+        address: { address: input.address, state: input.state, country: input.country },
       },
     })
 
