@@ -120,8 +120,8 @@ export default function PrivacyPolicy() {
           If you have any questions about this Privacy Policy, please contact us at:
         </Typography>
         <Typography level="ul">
-          <li>Email: tiesen@tiesen.id.vn</li>
-          <li>Postal Address: 123 Main Street, Alabama, AL 12345, United States</li>
+          <li>Email: support@yuki.tiesen.id.vn</li>
+          <li>Postal Address: 69 Xi Street, SaiGon, Vietnam</li>
         </Typography>
       </div>
     </article>

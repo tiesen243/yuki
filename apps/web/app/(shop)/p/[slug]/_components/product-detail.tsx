@@ -2,6 +2,7 @@ import Image from 'next/image'
 
 import type { Product } from '@yuki/db'
 import { Button } from '@yuki/ui/button'
+import { ShoppingCartIcon } from '@yuki/ui/icons'
 import { Typography } from '@yuki/ui/typography'
 
 export const ProductDetail: React.FC<{ product: Product & { category: { name: string } } }> = ({
@@ -43,7 +44,9 @@ export const ProductDetail: React.FC<{ product: Product & { category: { name: st
         </span>
       </Typography>
 
-      <Button className="mt-4 w-full">Add to Cart</Button>
+      <Button className="mt-4 w-full">
+        <ShoppingCartIcon /> Add to Cart
+      </Button>
     </article>
   </section>
 )
