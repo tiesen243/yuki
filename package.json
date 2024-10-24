@@ -20,8 +20,8 @@
   },
   "devDependencies": {
     "@yuki/prettier-config": "workspace:*",
-    "@turbo/gen": "^2.2.2",
-    "turbo": "^2.2.2",
+    "@turbo/gen": "^2.2.3",
+    "turbo": "^2.2.3",
     "prettier": "latest",
     "eslint": "latest"
   },
