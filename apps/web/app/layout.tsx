@@ -8,7 +8,7 @@ import { TRPCReactProvider } from '@/lib/trpc/react'
 import { Footer } from './_components/footer'
 
 const RootLayout: React.FC<React.PropsWithChildren> = ({ children }) => (
-  <html lang="en" className="scroll-smooth" suppressHydrationWarning>
+  <html lang="en" suppressHydrationWarning>
     <body className={cn('flex min-h-dvh flex-col font-sans', geistSans.variable)}>
       <ThemeProvider attribute="class" defaultTheme="dark" disableTransitionOnChange>
         <TRPCReactProvider>
