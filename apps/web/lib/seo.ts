@@ -28,7 +28,7 @@ export function seo(params: SeoParams): Metadata {
     description,
     creator: 'tiesen243',
     category: 'e-commerce',
-    alternates: { canonical: url },
+    alternates: { canonical: getBaseUrl() },
     facebook: { appId: '523462826928110' },
     authors: { name: 'tiesen243', url: 'https://tiesen.id.vn' },
     openGraph: { url, images, siteName: 'Yuki', type: 'website' },

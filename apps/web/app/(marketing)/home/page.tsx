@@ -6,6 +6,7 @@ import { ChevronRightIcon, ShoppingCartIcon, StarIcon } from '@yuki/ui/icons'
 import { Input } from '@yuki/ui/input'
 import { Typography } from '@yuki/ui/typography'
 
+import { seo } from '@/lib/seo'
 import { getDashboardUrl } from '@/lib/utils'
 import { faqs, features, reviews, techStacks } from './_data'
 
@@ -147,3 +148,10 @@ const Page: React.FC = () => (
 )
 
 export default Page
+
+export const metadata = seo({
+  title: 'Yuki: Price Cheaper, Quality Better!',
+  description:
+    'The best place to find quality products at the best prices. Sign up now and get started for free. No credit card required. Cancel anytime. No questions asked.',
+  url: '/home',
+})

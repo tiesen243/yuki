@@ -3,6 +3,8 @@ import Image from 'next/image'
 import { Card, CardContent, CardHeader } from '@yuki/ui/card'
 import { Typography } from '@yuki/ui/typography'
 
+import { seo } from '@/lib/seo'
+
 const Page: React.FC = () => (
   <main className="container py-12">
     <Typography level="h1" className="mb-8 text-center">
@@ -94,6 +96,13 @@ const Page: React.FC = () => (
 )
 
 export default Page
+
+export const metadata = seo({
+  title: 'About Yuki',
+  description:
+    'Learn more about Yuki, a global brand that offers high-quality, stylish products to fashion-conscious individuals around the world.',
+  url: '/about',
+})
 
 const team = [
   {

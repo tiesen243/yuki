@@ -1,5 +1,7 @@
 import { Typography } from '@yuki/ui/typography'
 
+import { seo } from '@/lib/seo'
+
 export default function PrivacyPolicy() {
   return (
     <article className="container mx-auto py-8">
@@ -127,3 +129,9 @@ export default function PrivacyPolicy() {
     </article>
   )
 }
+
+export const metadata = seo({
+  title: 'Privacy Policy',
+  description: 'Learn how we respect your privacy and protect your personal data.',
+  url: '/privacy-policy',
+})

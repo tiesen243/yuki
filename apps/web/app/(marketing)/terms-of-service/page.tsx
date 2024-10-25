@@ -1,5 +1,7 @@
 import { Typography } from '@yuki/ui/typography'
 
+import { seo } from '@/lib/seo'
+
 const Page: React.FC = () => (
   <article className="container py-8">
     <div className="mb-6 text-center">
@@ -95,3 +97,10 @@ const Page: React.FC = () => (
 )
 
 export default Page
+
+export const metadata = seo({
+  title: 'Terms of Service',
+  description:
+    'Read our Terms of Service to learn more about the rules and guidelines of our Site.',
+  url: '/terms-of-service',
+})

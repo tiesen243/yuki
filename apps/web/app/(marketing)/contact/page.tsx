@@ -3,6 +3,7 @@ import { Mail, MapPin, Phone } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@yuki/ui/card'
 import { Typography } from '@yuki/ui/typography'
 
+import { seo } from '@/lib/seo'
 import { ContactForm } from './_form'
 
 const Page: React.FC = () => (
@@ -71,3 +72,10 @@ const Page: React.FC = () => (
 )
 
 export default Page
+
+export const metadata = seo({
+  title: 'Contact Us',
+  description:
+    'Get in touch with the Yuki team. We are here to help you with any questions or concerns you may have.',
+  url: '/contact',
+})
