@@ -3,7 +3,6 @@ import { SearchIcon } from '@yuki/ui/icons'
 import { Input } from '@yuki/ui/input'
 
 import { Brand } from '@/app/_components/brand'
-import { Categories } from './categories'
 import { User } from './user'
 
 export const Header: React.FC = () => (
@@ -16,9 +15,9 @@ export const Header: React.FC = () => (
           <Input name="q" type="search" placeholder="What are you looking for?" />
           <Button variant="outline" size="icon" className="aspect-square">
             <SearchIcon />
+            <span className="sr-only">Search</span>
           </Button>
         </form>
-        <Categories />
       </div>
 
       <User />

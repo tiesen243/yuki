@@ -12,7 +12,7 @@ export const Footer: React.FC = () => (
           <Link href="/" className="flex items-center gap-4">
             <Image
               src="/assets/logo.svg"
-              alt="Yuki"
+              alt="logo"
               width={32}
               height={32}
               className="dark:invert"
