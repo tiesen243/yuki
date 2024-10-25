@@ -4,42 +4,42 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "bun with-env next dev -p 3001",
     "build": "bun with-env next build",
-    "start": "bun with-env next start",
     "clean": "git clean -xdf .cache .turbo dist node_modules",
+    "dev": "bun with-env next dev -p 3001",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
+    "start": "bun with-env next start",
     "typecheck": "tsc --noEmit",
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
-    "@yuki/ui": "workspace:*",
-    "@yuki/db": "workspace:*",
-    "@yuki/api": "workspace:*",
-    "@yuki/auth": "workspace:*",
     "@t3-oss/env-nextjs": "^0.11.1",
     "@tanstack/react-query": "^5.59.16",
     "@trpc/react-query": "^11.0.0-rc.593",
-    "zod": "^3.23.8",
+    "@yuki/api": "workspace:*",
+    "@yuki/auth": "workspace:*",
+    "@yuki/db": "workspace:*",
+    "@yuki/ui": "workspace:*",
     "next": "14.2.16",
     "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "superjson": "^2.2.1",
-    "react-dom": "^18.3.1"
+    "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@yuki/tsconfig": "workspace:*",
-    "@yuki/eslint-config": "workspace:*",
-    "@yuki/prettier-config": "workspace:*",
-    "@yuki/tailwind-config": "workspace:*",
     "@types/node": "^22.7.9",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
+    "@yuki/eslint-config": "workspace:*",
+    "@yuki/prettier-config": "workspace:*",
+    "@yuki/tailwind-config": "workspace:*",
+    "@yuki/tsconfig": "workspace:*",
+    "eslint": "^9.13.0",
     "postcss": "^8.4.47",
-    "tailwindcss": "^3.4.14",
-    "typescript": "^5.6.3",
     "prettier": "^3.3.3",
-    "eslint": "^9.13.0"
+    "tailwindcss": "^3.4.14",
+    "typescript": "^5.6.3"
   },
   "prettier": "@yuki/prettier-config"
 }

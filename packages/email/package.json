@@ -9,29 +9,29 @@
     "./env": "./env.js"
   },
   "scripts": {
-    "email:dev": "email dev -d ./src/components -p 3002",
     "clean": "git clean -xdf .cache .turbo dist node_modules",
+    "email:dev": "email dev -d ./src/components -p 3002",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
     "typecheck": "tsc --noEmit --emitDeclarationOnly false"
   },
   "dependencies": {
-    "zod": "^3.23.8",
-    "sharp": "^0.33.5",
-    "resend": "^4.0.0",
+    "@react-email/components": "^0.0.25",
     "@t3-oss/env-nextjs": "^0.11.1",
-    "@react-email/components": "^0.0.25"
+    "resend": "^4.0.0",
+    "sharp": "^0.33.5",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@yuki/tsconfig": "workspace:*",
+    "@types/react": "^18.3.12",
     "@yuki/eslint-config": "workspace:*",
     "@yuki/prettier-config": "workspace:*",
+    "@yuki/tsconfig": "workspace:*",
+    "eslint": "latest",
+    "prettier": "latest",
     "react": "^18.3.1",
     "react-email": "^3.0.1",
-    "@types/react": "^18.3.12",
-    "typescript": "latest",
-    "prettier": "latest",
-    "eslint": "latest"
+    "typescript": "latest"
   },
   "prettier": "@yuki/prettier-config"
 }

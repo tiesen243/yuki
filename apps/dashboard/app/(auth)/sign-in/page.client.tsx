@@ -2,19 +2,18 @@
 
 import { useRouter } from 'next/navigation'
 
+import { logIn } from '@yuki/auth'
 import { Button } from '@yuki/ui/button'
 import { FormField } from '@yuki/ui/form-field'
 
 import { api } from '@/lib/trpc/react'
-import { setCookie } from './page.action'
 
 export const PageClient: React.FC<{ redirect?: string }> = ({ redirect }) => {
   const router = useRouter()
 
   const signIn = api.auth.signIn.useMutation({
-    onSuccess: async (cookie) => {
-      // @ts-expect-error - `cookie.attributes` is Record<string, string>
-      await setCookie(cookie)
+    onSuccess: async (user) => {
+      await logIn(user)
       router.push(redirect ?? '/')
     },
   })

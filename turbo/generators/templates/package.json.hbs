@@ -7,20 +7,20 @@
     ".": "./src/index.ts"
   },
   "scripts": {
-    "dev": "tsc -w",
     "build": "tsc",
     "clean": "git clean -xdf .cache .turbo dist node_modules",
+    "dev": "tsc -w",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
     "typecheck": "tsc --noEmit --emitDeclarationOnly false"
   },
   "devDependencies": {
-    "@yuki/tsconfig": "workspace:*",
     "@yuki/eslint-config": "workspace:*",
     "@yuki/prettier-config": "workspace:*",
-    "typescript": "latest",
+    "@yuki/tsconfig": "workspace:*",
+    "eslint": "latest",
     "prettier": "latest",
-    "eslint": "latest"
+    "typescript": "latest"
   },
   "prettier": "@yuki/prettier-config"
 }

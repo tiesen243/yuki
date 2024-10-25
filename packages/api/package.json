@@ -10,28 +10,28 @@
     }
   },
   "scripts": {
-    "dev": "tsc -w",
     "build": "tsc",
     "clean": "git clean -xdf .cache .turbo dist node_modules",
+    "dev": "tsc -w",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
     "typecheck": "tsc --noEmit --emitDeclarationOnly false"
   },
   "dependencies": {
-    "@yuki/db": "workspace:*",
-    "@yuki/auth": "workspace:*",
-    "@yuki/uploader": "workspace:*",
     "@trpc/server": "^11.0.0-rc.593",
-    "zod": "^3.23.8",
-    "superjson": "^2.2.1"
+    "@yuki/auth": "workspace:*",
+    "@yuki/db": "workspace:*",
+    "@yuki/uploader": "workspace:*",
+    "superjson": "^2.2.1",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@yuki/tsconfig": "workspace:*",
     "@yuki/eslint-config": "workspace:*",
     "@yuki/prettier-config": "workspace:*",
-    "typescript": "latest",
+    "@yuki/tsconfig": "workspace:*",
+    "eslint": "latest",
     "prettier": "latest",
-    "eslint": "latest"
+    "typescript": "latest"
   },
   "prettier": "@yuki/prettier-config"
 }

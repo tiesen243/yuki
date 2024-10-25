@@ -7,14 +7,14 @@
     ".": "./src/index.ts"
   },
   "scripts": {
-    "dev": "tsc -w",
     "build": "tsc",
-    "push": "bun with-env prisma db push",
-    "studio": "bun with-env prisma studio",
-    "db:generate": "prisma generate",
     "clean": "git clean -xdf .cache .turbo dist node_modules",
+    "db:generate": "prisma generate",
+    "dev": "tsc -w",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
+    "push": "bun with-env prisma db push",
+    "studio": "bun with-env prisma studio",
     "typecheck": "tsc --noEmit --emitDeclarationOnly false",
     "with-env": "dotenv -e ../../.env --"
   },
@@ -22,14 +22,14 @@
     "@prisma/client": "^5.21.1"
   },
   "devDependencies": {
-    "@yuki/tsconfig": "workspace:*",
     "@yuki/eslint-config": "workspace:*",
     "@yuki/prettier-config": "workspace:*",
-    "prisma": "^5.21.1",
+    "@yuki/tsconfig": "workspace:*",
     "dotenv-cli": "^7.4.2",
-    "typescript": "latest",
+    "eslint": "latest",
     "prettier": "latest",
-    "eslint": "latest"
+    "prisma": "^5.21.1",
+    "typescript": "latest"
   },
   "prettier": "@yuki/prettier-config"
 }

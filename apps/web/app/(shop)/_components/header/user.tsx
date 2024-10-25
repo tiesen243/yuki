@@ -2,7 +2,7 @@ import { auth } from '@yuki/auth'
 import { Avatar, AvatarFallback, AvatarImage } from '@yuki/ui/avatar'
 import { Button } from '@yuki/ui/button'
 
-import { getDashboardUrl } from '@/lib/utils'
+import { getBaseUrl, getDashboardUrl } from '@/lib/utils'
 
 export const User: React.FC = async () => {
   const session = await auth()
@@ -10,7 +10,7 @@ export const User: React.FC = async () => {
   if (!session)
     return (
       <Button variant="outline" asChild>
-        <a href={`${getDashboardUrl()}/sign-in`}>Sign In</a>
+        <a href={`${getDashboardUrl()}/sign-in?redirect=${getBaseUrl()}`}>Sign In</a>
       </Button>
     )
 

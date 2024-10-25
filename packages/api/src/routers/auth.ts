@@ -42,10 +42,7 @@ export const authRouter = createTRPCRouter({
     if (!isPasswordCorrect)
       throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Incorrect password' })
 
-    const session = await lucia.createSession(user.id, {})
-    const sessionCookie = lucia.createSessionCookie(session.id)
-
-    return sessionCookie
+    return user
   }),
 
   // [POST] /api/trpc/auth.unlinkDiscord

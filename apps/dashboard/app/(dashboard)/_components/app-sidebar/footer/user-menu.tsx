@@ -1,9 +1,8 @@
 import Link from 'next/link'
 
+import { logOut } from '@yuki/auth'
 import { DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator } from '@yuki/ui/dropdown-menu'
 import { LogOutIcon } from '@yuki/ui/icons'
-
-import { signOut } from './actions'
 
 export const UserMenu: React.FC<{ items: UserMenuItem[] }> = ({ items }) => (
   <DropdownMenuGroup>
@@ -18,7 +17,7 @@ export const UserMenu: React.FC<{ items: UserMenuItem[] }> = ({ items }) => (
 
     <DropdownMenuSeparator />
 
-    <DropdownMenuItem className="gap-2" onClick={() => signOut()}>
+    <DropdownMenuItem className="gap-2" onClick={() => logOut()}>
       <LogOutIcon className="h-4 w-4 text-muted-foreground" />
       Sign out
     </DropdownMenuItem>
