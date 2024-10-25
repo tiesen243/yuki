@@ -6,7 +6,7 @@ import { seo } from '@/lib/seo'
 import { PageClient } from './page.client'
 
 const Page: NextPage<{ searchParams: Query }> = ({ searchParams }) => (
-  <main className="container grid flex-1 grid-cols-1 gap-4 py-4 md:grid-cols-4">
+  <main className="container flex-1 py-4">
     <PageClient searchParams={searchParams} />
   </main>
 )
