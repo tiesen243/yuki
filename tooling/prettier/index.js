@@ -6,6 +6,7 @@ import { fileURLToPath } from 'url'
 
 /** @type { PrettierConfig | SortImportsConfig | TailwindConfig } */
 const config = {
+  /* General Prettier Config */
   semi: false,
   tabWidth: 2,
   printWidth: 100,
@@ -14,17 +15,16 @@ const config = {
 
   plugins: ['@ianvs/prettier-plugin-sort-imports', 'prettier-plugin-tailwindcss'],
 
-  // Tailwind
-  tailwindConfig: fileURLToPath(new URL('../../tooling/tailwind/index.ts', import.meta.url)),
+  /* Tailwind Classname Sorting Config */
+  tailwindConfig: fileURLToPath(new URL('../../tooling/tailwind/web.ts', import.meta.url)),
   tailwindFunctions: ['cn', 'cva'],
 
-  // Sort Imports
-  importOrderParserPlugins: ['typescript', 'jsx', 'decorators-legacy'],
+  /* Sort Imports Config */
   importOrder: [
     '<TYPES>',
+    '^(react/(.*)$)|^(react$)|^(react-native(.*)$)',
     '^(next/(.*)$)|^(next$)',
     '^(expo(.*)$)|^(expo$)',
-    '^(react/(.*)$)|^(react$)|^(react-native(.*)$)',
     '<THIRD_PARTY_MODULES>',
     '',
     '<TYPES>^@yuki',
@@ -33,14 +33,14 @@ const config = {
     '<TYPES>^(@/(.*)$)',
     '<TYPES>^[.|..]',
     '^@/',
-    '^[..]',
-    '^[.]',
+    '^[../]',
+    '^[./]',
   ],
-
-  // Others
+  importOrderParserPlugins: ['typescript', 'jsx', 'decorators-legacy'],
+  importOrderTypeScriptVersion: '4.4.0',
   overrides: [
-    { files: '*.json.hbs', options: { parser: 'json' } },
     { files: '*.js.hbs', options: { parser: 'babel' } },
+    { files: '*.json.hbs', options: { parser: 'json' } },
   ],
 }
 

@@ -4,7 +4,7 @@
   "rsc": true,
   "tsx": true,
   "tailwind": {
-    "config": "../../tooling/tailwind/index.ts",
+    "config": "../../tooling/tailwind/web.ts",
     "css": "styles/tailwind.css",
     "baseColor": "neutral",
     "cssVariables": true,
@@ -13,8 +13,9 @@
   "aliases": {
     "components": "@yuki/ui",
     "utils": "@yuki/ui",
-    "ui": "@yuki/ui",
+    "ui": "@yuki/ui/ui",
     "lib": "@yuki/ui",
     "hooks": "@yuki/ui/hooks"
-  }
+  },
+  "iconLibrary": "lucide"
 }

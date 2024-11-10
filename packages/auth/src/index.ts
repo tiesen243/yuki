@@ -1,12 +1,10 @@
 'use server'
 
-import { cookies } from 'next/headers'
+import type { Session, User } from '@prisma/client'
 import { cache } from 'react'
+import { cookies } from 'next/headers'
 
-import type { Session, User } from '@yuki/db'
-import { authEnv } from '@yuki/auth/env'
-
-import { lucia } from './lucia'
+import { lucia } from '@yuki/auth/lucia'
 
 type Auth = null | (Session & { user: User })
 
@@ -19,17 +17,11 @@ const uncachedAuth = async (): Promise<Auth> => {
   try {
     if (result.session?.fresh) {
       const sessionCookie = lucia.createSessionCookie(result.session.id)
-      cookies().set(sessionCookie.name, sessionCookie.value, {
-        ...sessionCookie.attributes,
-        domain: authEnv.VERCEL_PROJECT_PRODUCTION_URL?.replace('dashboard.', '') ?? 'localhost',
-      })
+      cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes)
     }
     if (!result.session) {
       const sessionCookie = lucia.createBlankSessionCookie()
-      cookies().set(sessionCookie.name, sessionCookie.value, {
-        ...sessionCookie.attributes,
-        domain: authEnv.VERCEL_PROJECT_PRODUCTION_URL?.replace('dashboard.', '') ?? 'localhost',
-      })
+      cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes)
     }
   } catch {
     return null
@@ -41,25 +33,12 @@ const uncachedAuth = async (): Promise<Auth> => {
 
 export const auth = cache(uncachedAuth)
 
-export const logIn = async (user: User) => {
-  const session = await lucia.createSession(user.id, {})
-  const sessionCookie = lucia.createSessionCookie(session.id)
-
-  cookies().set(sessionCookie.name, sessionCookie.value, {
-    ...sessionCookie.attributes,
-    domain: authEnv.VERCEL_PROJECT_PRODUCTION_URL?.replace('dashboard.', '') ?? 'localhost',
-  })
-}
-
-export const logOut = async () => {
+export const signOut = async () => {
   const session = await auth()
   if (!session) return
 
   await lucia.invalidateSession(session.id)
 
   const sessionCookie = lucia.createBlankSessionCookie()
-  cookies().set(sessionCookie.name, sessionCookie.value, {
-    ...sessionCookie.attributes,
-    domain: authEnv.VERCEL_PROJECT_PRODUCTION_URL?.replace('dashboard.', '') ?? 'localhost',
-  })
+  cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes)
 }

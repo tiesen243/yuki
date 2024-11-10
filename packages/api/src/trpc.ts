@@ -1,18 +1,10 @@
-/**
- * YOU PROBABLY DON'T NEED TO EDIT THIS FILE, UNLESS:
- * 1. You want to modify request context (see Part 1)
- * 2. You want to create a new middleware or type of procedure (see Part 3)
- *
- * tl;dr - this is where all the tRPC server stuff is created and plugged in.
- * The pieces you will need to use are documented accordingly near the end
- */
 import { initTRPC, TRPCError } from '@trpc/server'
-import superjson from 'superjson'
+import SuperJSON from 'superjson'
 import { ZodError } from 'zod'
 
 import { auth } from '@yuki/auth'
+import { lucia } from '@yuki/auth/lucia'
 import { db } from '@yuki/db'
-import { utapi } from '@yuki/uploader'
 
 /**
  * 1. CONTEXT
@@ -28,14 +20,14 @@ import { utapi } from '@yuki/uploader'
  */
 export const createTRPCContext = async (opts: { headers: Headers }) => {
   const session = await auth()
-
   const source = opts.headers.get('x-trpc-source') ?? 'unknown'
-  console.log('>>> tRPC Request from', source, 'by', session?.user.name)
+  console.log('>>> tRPC Request from', source, 'by', 'unknown')
 
   return {
-    session,
-    utapi,
     db,
+    lucia,
+    session,
+    ...opts,
   }
 }
 
@@ -46,20 +38,14 @@ export const createTRPCContext = async (opts: { headers: Headers }) => {
  * transformer
  */
 const t = initTRPC.context<typeof createTRPCContext>().create({
-  transformer: superjson,
-  errorFormatter: ({ shape, error }) => {
-    const formatError = (error: ZodError) =>
-      Object.fromEntries(
-        Object.entries(error.flatten().fieldErrors).map(([key, value]) => [key, value?.[0]]),
-      )
-    return {
-      ...shape,
-      data: {
-        ...shape.data,
-        zodError: error.cause instanceof ZodError ? formatError(error.cause) : null,
-      },
-    }
-  },
+  transformer: SuperJSON,
+  errorFormatter: ({ shape, error }) => ({
+    ...shape,
+    data: {
+      ...shape.data,
+      zodError: error.cause instanceof ZodError ? error.cause.flatten().fieldErrors : null,
+    },
+  }),
 })
 
 /**
@@ -122,7 +108,7 @@ export const publicProcedure = t.procedure.use(timingMiddleware)
  * @see https://trpc.io/docs/procedures
  */
 export const protectedProcedure = t.procedure.use(timingMiddleware).use(({ ctx, next }) => {
-  if (!ctx.session?.user) throw new TRPCError({ code: 'UNAUTHORIZED' })
+  if (!ctx.session) throw new TRPCError({ code: 'UNAUTHORIZED' })
 
   return next({
     ctx: {

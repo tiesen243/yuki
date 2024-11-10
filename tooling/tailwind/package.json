@@ -1,21 +1,25 @@
 {
   "name": "@yuki/tailwind-config",
-  "version": "0.6.9",
+  "version": "0.1.0",
   "private": true,
+  "license": "MIT",
   "type": "module",
   "exports": {
-    ".": "./index.ts"
+    "./web": "./web.ts",
+    "./native": "./native.ts"
   },
   "scripts": {
-    "clean": "git clean -xdf .cache .turbo node_modules",
+    "build": "tsc",
+    "clean": "git clean -xdf .cache .turbo dist node_modules",
+    "dev": "tsc",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit --emitDeclarationOnly false"
   },
   "dependencies": {
-    "postcss": "latest",
-    "tailwindcss": "latest",
-    "tailwindcss-animate": "latest"
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.14",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@yuki/eslint-config": "workspace:*",

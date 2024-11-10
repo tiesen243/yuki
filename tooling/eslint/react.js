@@ -13,8 +13,6 @@ export default [
       ...reactPlugin.configs['jsx-runtime'].rules,
       ...hooksPlugin.configs.recommended.rules,
     },
-    languageOptions: {
-      globals: { React: 'writable' },
-    },
+    languageOptions: { globals: { React: 'writable' } },
   },
 ]

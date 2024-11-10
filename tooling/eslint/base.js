@@ -1,3 +1,5 @@
+/// <reference types="./types.d.ts" />
+
 import * as path from 'node:path'
 import { includeIgnoreFile } from '@eslint/compat'
 import eslint from '@eslint/js'
@@ -9,7 +11,7 @@ import tseslint from 'typescript-eslint'
  * All packages that leverage t3-env should use this rule
  */
 export const restrictEnvAccess = tseslint.config(
-  { ignores: ['**/env.ts', '**/env.js'] },
+  { ignores: ['**/env.js', '**/env.ts'] },
   {
     files: ['**/*.js', '**/*.ts', '**/*.tsx'],
     rules: {
@@ -51,20 +53,21 @@ export default tseslint.config(
     ],
     rules: {
       ...turboPlugin.configs.recommended.rules,
-      '@typescript-eslint/array-type': 'off',
-      '@typescript-eslint/require-await': 'off',
-      '@typescript-eslint/consistent-type-definitions': 'off',
-      '@typescript-eslint/no-unnecessary-condition': [2, { allowConstantLoopConditions: true }],
-      '@typescript-eslint/no-misused-promises': [2, { checksVoidReturn: { attributes: false } }],
-      '@typescript-eslint/no-unused-vars': [
-        'error',
-        { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
-      ],
       '@typescript-eslint/consistent-type-imports': [
         'warn',
         { prefer: 'type-imports', fixStyle: 'separate-type-imports' },
       ],
+      '@typescript-eslint/no-misused-promises': [2, { checksVoidReturn: { attributes: false } }],
       '@typescript-eslint/no-non-null-assertion': 'error',
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
+      ],
+      '@typescript-eslint/no-unnecessary-condition': [
+        'error',
+        { allowConstantLoopConditions: true },
+      ],
+      '@typescript-eslint/require-await': 'off',
       'import/consistent-type-specifier-style': ['error', 'prefer-top-level'],
     },
   },

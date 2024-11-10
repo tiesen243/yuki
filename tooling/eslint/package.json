@@ -1,11 +1,11 @@
 {
   "name": "@yuki/eslint-config",
-  "version": "0.6.9",
+  "version": "0.3.0",
   "private": true,
   "type": "module",
   "exports": {
     "./base": "./base.js",
-    "./next": "./next.js",
+    "./nextjs": "./next.js",
     "./react": "./react.js"
   },
   "scripts": {
@@ -13,22 +13,23 @@
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "typecheck": "tsc --noEmit"
   },
-  "dependencies": {
-    "@eslint/compat": "^1.2.1",
-    "@next/eslint-plugin-next": "^14.2.16",
-    "eslint-plugin-import": "^2.31.0",
-    "eslint-plugin-jsx-a11y": "^6.10.1",
-    "eslint-plugin-react": "^7.37.2",
-    "eslint-plugin-react-hooks": "rc",
-    "eslint-plugin-turbo": "^2.2.3",
-    "typescript-eslint": "^8.11.0"
-  },
   "devDependencies": {
+    "@types/eslint__js": "^8.42.3",
     "@yuki/prettier-config": "workspace:*",
     "@yuki/tsconfig": "workspace:*",
     "eslint": "latest",
     "prettier": "latest",
     "typescript": "latest"
   },
-  "prettier": "@yuki/prettier-config"
+  "prettier": "@yuki/prettier-config",
+  "dependencies": {
+    "@eslint/compat": "^1.2.2",
+    "@next/eslint-plugin-next": "^15.0.3",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react": "^7.37.2",
+    "eslint-plugin-react-hooks": "^5.0.0",
+    "eslint-plugin-turbo": "^2.2.3",
+    "typescript-eslint": "^8.13.0"
+  }
 }

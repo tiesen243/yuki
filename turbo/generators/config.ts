@@ -1,5 +1,4 @@
 import { execSync } from 'node:child_process'
-
 import type { PlopTypes } from '@turbo/gen'
 
 interface PackageJson {
@@ -21,7 +20,7 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
       {
         type: 'input',
         name: 'deps',
-        message: 'Enter a space separated list of dependencies you would like to install',
+        message: 'Enter a space separated list of dependencies you would like to install: ',
       },
     ],
     actions: [
@@ -76,10 +75,7 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
          * Install deps and format everything
          */
         if ('name' in answers && typeof answers.name === 'string') {
-          // execSync("pnpm dlx sherif@latest --fix", {
-          //   stdio: "inherit",
-          // });
-          execSync('bun add', { stdio: 'inherit' })
+          execSync('bun i', { stdio: 'inherit' })
           execSync(`bun prettier --write packages/${answers.name}/** --list-different`)
           return 'Package scaffolded'
         }
