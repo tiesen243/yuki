@@ -10,6 +10,7 @@ import { TRPCReactProvider } from '@/lib/tprc/react'
 
 const RootLayout: React.FC<React.PropsWithChildren> = async ({ children }) => {
   const session = await auth()
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={cn('min-h-dvh font-sans antialiased', geistSans.variable)}>
