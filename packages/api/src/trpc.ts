@@ -20,8 +20,9 @@ import { db } from '@yuki/db'
  */
 export const createTRPCContext = async (opts: { headers: Headers }) => {
   const session = await auth()
+
   const source = opts.headers.get('x-trpc-source') ?? 'unknown'
-  console.log('>>> tRPC Request from', source, 'by', 'unknown')
+  console.log('>>> tRPC Request from', source, 'by', session?.user)
 
   return {
     db,
@@ -41,6 +42,7 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
   transformer: SuperJSON,
   errorFormatter: ({ shape, error }) => ({
     ...shape,
+    message: error.cause instanceof ZodError ? 'Validation error' : error.message,
     data: {
       ...shape.data,
       zodError: error.cause instanceof ZodError ? error.cause.flatten().fieldErrors : null,

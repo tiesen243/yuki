@@ -15,18 +15,22 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
+enum Role {
+  USER
+  ADMIN
+}
+
 model User {
-  id        String @id @default(cuid())
-  discordId String @unique
-  username  String @unique
-  email     String @unique
-
-  name   String
-  avatar String
-
-  address String?
-  city    String?
-  country String?
+  id        String  @id @default(cuid())
+  discordId String? @unique
+  email     String  @unique
+  name      String
+  role      Role    @default(USER)
+  avatar    String?
+  password  String?
+  address   String?
+  city      String?
+  country   String?
 
   sessions Session[]
 

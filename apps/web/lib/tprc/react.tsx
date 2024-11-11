@@ -3,27 +3,30 @@
 import type { QueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { createTRPCReact, loggerLink, unstable_httpBatchStreamLink } from '@trpc/react-query'
+import { loggerLink, unstable_httpBatchStreamLink } from '@trpc/client'
+import { createTRPCReact } from '@trpc/react-query'
 import SuperJSON from 'superjson'
 
 import type { AppRouter } from '@yuki/api/root'
 
-import { createQueryClient } from '@/lib/tprc/query-client'
+import { env } from '@/env'
 import { getBaseUrl } from '@/lib/utils'
+import { createQueryClient } from './query-client'
 
 let clientQueryClientSingleton: QueryClient | undefined = undefined
 const getQueryClient = () => {
   if (typeof window === 'undefined') {
     // Server: always make a new query client
     return createQueryClient()
+  } else {
+    // Browser: use singleton pattern to keep the same query client
+    return (clientQueryClientSingleton ??= createQueryClient())
   }
-  // Browser: use singleton pattern to keep the same query client
-  return (clientQueryClientSingleton ??= createQueryClient())
 }
 
 export const api = createTRPCReact<AppRouter>()
 
-export const TRPCReactProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
+export function TRPCReactProvider(props: { children: React.ReactNode }) {
   const queryClient = getQueryClient()
 
   const [trpcClient] = useState(() =>
@@ -31,14 +34,13 @@ export const TRPCReactProvider: React.FC<React.PropsWithChildren> = ({ children 
       links: [
         loggerLink({
           enabled: (op) =>
-            // eslint-disable-next-line no-restricted-properties
-            process.env.NODE_ENV === 'development' ||
+            env.NODE_ENV === 'development' ||
             (op.direction === 'down' && op.result instanceof Error),
         }),
         unstable_httpBatchStreamLink({
           transformer: SuperJSON,
           url: getBaseUrl() + '/api/trpc',
-          headers: () => {
+          headers() {
             const headers = new Headers()
             headers.set('x-trpc-source', 'nextjs-react')
             return headers
@@ -51,7 +53,7 @@ export const TRPCReactProvider: React.FC<React.PropsWithChildren> = ({ children 
   return (
     <QueryClientProvider client={queryClient}>
       <api.Provider client={trpcClient} queryClient={queryClient}>
-        {children}
+        {props.children}
       </api.Provider>
     </QueryClientProvider>
   )

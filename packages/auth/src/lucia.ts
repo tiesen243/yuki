@@ -12,6 +12,8 @@ export const lucia = new Lucia(adapter, {
   getUserAttributes: (user) => user,
 })
 
+export * from 'lucia'
+
 declare module 'lucia' {
   interface Register {
     Lucia: typeof lucia

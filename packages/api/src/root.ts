@@ -1,7 +1,8 @@
 import type { inferRouterInputs, inferRouterOutputs } from '@trpc/server'
 
-import { postRouter } from '@yuki/api/routers/post'
 import { createCallerFactory, createTRPCRouter } from '@yuki/api/trpc'
+
+import { userRouter } from './routers/user'
 
 /**
  * This is the primary router for your server.
@@ -9,7 +10,7 @@ import { createCallerFactory, createTRPCRouter } from '@yuki/api/trpc'
  * All routers added in /api/routers should be manually added here.
  */
 const appRouter = createTRPCRouter({
-  post: postRouter,
+  user: userRouter,
 })
 
 // export type definition of API

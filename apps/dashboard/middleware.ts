@@ -9,21 +9,17 @@ export const middleware = async (req: NextRequest) => {
   const session = await uncachedAuth()
   const pathName = new URL(req.url).pathname
 
-  if (!session) {
-    if (!publicPaths.includes(pathName) && !pathName.startsWith('/api/auth'))
-      return NextResponse.redirect(new URL('/sign-in', req.url))
-  } else {
-    if (publicPaths.includes(pathName) || pathName.startsWith('/api/auth'))
-      return NextResponse.redirect(new URL('/', req.url))
-  }
+  if (!session && !publicPaths.includes(pathName))
+    return NextResponse.redirect(new URL('/sign-in', req.url))
+  if (session && publicPaths.includes(pathName)) return NextResponse.redirect(new URL('/', req.url))
+
+  if (pathName.startsWith('/admin') && session?.user.role !== 'ADMIN')
+    return NextResponse.redirect(new URL('/', req.url))
 
   return NextResponse.next()
 }
 
 // See "Matching Paths" below to learn more
 export const config = {
-  matcher: [
-    '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
-    '/(api|trpc)(.*)',
-  ],
+  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
 }

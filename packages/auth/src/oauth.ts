@@ -49,7 +49,6 @@ export const discordCallback = (callbackUrl: string) => {
         .then((user) => ({
           discordId: user.id,
           email: user.email,
-          username: user.username,
           name: user.global_name,
           avatar: `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`,
         }))
@@ -61,7 +60,6 @@ export const discordCallback = (callbackUrl: string) => {
         where: { OR: [{ discordId: response.discordId }, { email: response.email }] },
       })
       if (!user) user = await db.user.create({ data: response })
-      else user = await db.user.update({ where: { id: user.id }, data: response })
 
       const session = await lucia.createSession(user.id, {})
       const sessionCookie = lucia.createSessionCookie(session.id)
