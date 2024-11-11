@@ -21,7 +21,6 @@
     "prettier": "latest",
     "typescript": "latest"
   },
-  "prettier": "@yuki/prettier-config",
   "dependencies": {
     "@eslint/compat": "^1.2.2",
     "@next/eslint-plugin-next": "^15.0.3",
@@ -31,5 +30,6 @@
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-turbo": "^2.2.3",
     "typescript-eslint": "^8.14.0"
-  }
+  },
+  "prettier": "@yuki/prettier-config"
 }
