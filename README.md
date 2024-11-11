@@ -38,9 +38,9 @@ packages
   ├─ ui
   |   └─ Start of a UI package for the webapp using shadcn-ui
   ├─ email (ongoing)
-  |   └─ Email package using [resend](https://resend.com) with [React Email](https://react.email)
+  |   └─ Email package using Resend with React Email
   └─ uploader (ongoing)
-      └─ Upload images to S3 using [Uploadthing](https://uploadthing.com)
+      └─ Upload images to S3 using Uploadthing
 tooling
   ├─ eslint
   |   └─ shared, fine-grained, eslint presets
