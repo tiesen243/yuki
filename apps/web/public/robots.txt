@@ -1,0 +1,4 @@
+User-Agent: *
+
+Host: https://tiesen.id.vn
+Sitemap: https://tiesen.id.vn/sitemap.xml

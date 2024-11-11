@@ -17,4 +17,6 @@ const RootLayout: React.FC<React.PropsWithChildren> = ({ children }) => (
 
 export default RootLayout
 
-export const metadata = seo({})
+export const metadata = seo({
+  title: 'Dashboard',
+})

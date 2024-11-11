@@ -10,10 +10,11 @@ interface Prams {
 }
 
 export const seo = (params: Prams): Metadata => {
-  const siteName = 'Create Yuki Turbo'
-  const title = params.title ? `${params.title} | Create Yuki Turbo` : 'Create Yuki Turbo'
+  const siteName = 'Yuki'
+  const title = params.title ? `${params.title} | ${siteName}` : siteName
   const description =
-    params.description ?? 'Clean and typesafe starter monorepo using Turborepo along with Next.js'
+    params.description ??
+    'A fullstack e-commerce application built with Turborepo, Next.js, React, Tailwind CSS, Prisma, and tRPC. This project has a features like authentication, database, and UI components.'
   const images = [...(params.images ?? []), '/api/og']
   const url = params.url ? `${getBaseUrl()}${params.url}` : getBaseUrl()
 
@@ -22,9 +23,11 @@ export const seo = (params: Prams): Metadata => {
     title,
     description,
     applicationName: siteName,
-    twitter: { card: 'summary_large_image' },
+    facebook: { appId: '523462826928110' },
     openGraph: { url, images, siteName, type: 'website' },
-    icons: { icon: 'https://tiesen.id.vn/favicon.ico' },
+    twitter: { card: 'summary_large_image', creatorId: '@tiesen243' },
+    keywords: ['Turbo', 'Next.js', 'React', 'Tailwind CSS', 'Prisma', 'tRPC', 'E-commerce'],
+    icons: { icon: '/favicon.ico', shortcut: '/favicon-16x16.png', apple: '/apple-touch-icon.png' },
     alternates: { canonical: url },
   }
 }
