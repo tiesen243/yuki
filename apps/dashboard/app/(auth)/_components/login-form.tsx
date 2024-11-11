@@ -1,8 +1,6 @@
 import Link from 'next/link'
 
 import { Button } from '@yuki/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@yuki/ui/card'
-import { DiscordIcon } from '@yuki/ui/icons'
 import { Input } from '@yuki/ui/input'
 import { Label } from '@yuki/ui/label'
 

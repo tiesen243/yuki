@@ -1,5 +1,3 @@
-import Link from 'next/link'
-
 import { Button } from '@yuki/ui/button'
 import { Input } from '@yuki/ui/input'
 import { Label } from '@yuki/ui/label'
