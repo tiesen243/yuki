@@ -9,13 +9,13 @@ export const middleware = async (req: NextRequest) => {
   const session = await uncachedAuth()
   const pathName = new URL(req.url).pathname
 
-  // Redirect to sign-in page if not authenticated
-  if (!session && !publicPaths.includes(pathName) && !pathName.startsWith('/api'))
-    return NextResponse.redirect(new URL('/sign-in', req.url))
-
-  // Redirect to home page if authenticated and trying to access public paths
-  if ((session && publicPaths.includes(pathName)) || pathName.startsWith('/api/auth'))
-    return NextResponse.redirect(new URL('/', req.url))
+  if (!session) {
+    if (!publicPaths.includes(pathName) && !pathName.startsWith('/api/auth'))
+      return NextResponse.redirect(new URL('/sign-in', req.url))
+  } else {
+    if (publicPaths.includes(pathName) || pathName.startsWith('/api/auth'))
+      return NextResponse.redirect(new URL('/', req.url))
+  }
 
   return NextResponse.next()
 }
