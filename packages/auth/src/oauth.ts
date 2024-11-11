@@ -65,7 +65,10 @@ export const discordCallback = (callbackUrl: string) => {
 
       const session = await lucia.createSession(user.id, {})
       const sessionCookie = lucia.createSessionCookie(session.id)
-      cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes)
+      cookies().set(sessionCookie.name, sessionCookie.value, {
+        ...sessionCookie.attributes,
+        domain: callbackUrl.replace('dashboard.', ''),
+      })
 
       return NextResponse.redirect(new URL('/', req.url))
     } catch (e) {
