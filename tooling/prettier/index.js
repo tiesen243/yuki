@@ -22,8 +22,8 @@ const config = {
   /* Sort Imports Config */
   importOrder: [
     '<TYPES>',
-    '^(react/(.*)$)|^(react$)|^(react-native(.*)$)',
     '^(next/(.*)$)|^(next$)',
+    '^(react/(.*)$)|^(react$)|^(react-native(.*)$)',
     '^(expo(.*)$)|^(expo$)',
     '<THIRD_PARTY_MODULES>',
     '',

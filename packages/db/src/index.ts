@@ -8,6 +8,7 @@ import { dbEnv } from '@yuki/db/env'
 const pool = new Pool({ connectionString: dbEnv.DATABASE_URL })
 const adapter = new PrismaNeon(pool)
 
+// Prisma configuration
 const createPrismaClient = () =>
   new PrismaClient({
     adapter,
