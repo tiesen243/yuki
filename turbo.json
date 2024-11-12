@@ -18,7 +18,7 @@
     "db:generate": { "cache": false, "persistent": false },
     "ui-add": { "cache": false, "interactive": true }
   },
-  "globalEnv": ["DATABASE_URL", "DISCORD_CLIENT_ID", "DISCORD_CLIENT_SECRET", "PORT"],
+  "globalEnv": ["DATABASE_URL", "DIRECT_URL", "DISCORD_CLIENT_ID", "DISCORD_CLIENT_SECRET", "PORT"],
   "globalPassThroughEnv": [
     "NODE_ENV",
     "CI",

@@ -1,7 +1,15 @@
+import { Pool } from '@neondatabase/serverless'
+import { PrismaNeon } from '@prisma/adapter-neon'
 import { PrismaClient } from '@prisma/client'
+import { dbEnv } from '@yuki/db/env'
+
+// Neon configuration
+const pool = new Pool({ connectionString: dbEnv.DATABASE_URL })
+const adapter = new PrismaNeon(pool)
 
 const createPrismaClient = () =>
   new PrismaClient({
+    adapter,
     log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
   })
 
