@@ -30,7 +30,7 @@
   "packageManager": "bun@1.1.34",
   "engines": {
     "node": ">=22.11.0",
-    "pnpm": "^1.1.34"
+    "bun": "^1.1.34"
   },
   "prettier": "@yuki/prettier-config"
 }
