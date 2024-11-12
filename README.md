@@ -1,5 +1,12 @@
 # Yuki
 
+> [!NOTE]
+> This template is customized from [create-t3-turbo](https://github.com/t3-oss/create-t3-turbo) with some changes:
+>
+> - PNPM -> Bun
+> - Dizzle -> Prisma
+> - NextAuth -> Lucia
+
 ## Installation
 
 > [!NOTE]
@@ -17,6 +24,9 @@ bun create turbo@latest --example https://github.com/tiesen243/yuki --package-ma
 A fullstack e-commerce application built with Turborepo, Next.js, React, Tailwind CSS, Prisma, and tRPC. This project has a features like authentication, database, and UI components. Users can sign up, sign in, view products, and add them to their cart. Admins can manage products, orders, and users. The project is a monorepo that contains multiple packages and apps:
 
 ```text
+.github
+  └─ workflows
+        └─ CI to check lint, format and type
 apps
  ├─ web
  |    ├─ Next.js 14
