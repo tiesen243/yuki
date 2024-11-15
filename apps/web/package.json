@@ -40,7 +40,7 @@
     "jiti": "^2.4.0",
     "postcss": "^8.4.49",
     "prettier": "latest",
-    "tailwindcss": "^3.4.14",
+    "tailwindcss": "^3.4.15",
     "typescript": "latest"
   },
   "prettier": "@yuki/prettier-config"
