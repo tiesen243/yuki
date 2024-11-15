@@ -22,7 +22,7 @@
     "typescript": "latest"
   },
   "dependencies": {
-    "@eslint/compat": "^1.2.2",
+    "@eslint/compat": "^1.2.3",
     "@next/eslint-plugin-next": "^15.0.3",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",
