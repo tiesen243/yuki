@@ -21,10 +21,10 @@
     "ui-add": "turbo run ui-add"
   },
   "devDependencies": {
-    "@turbo/gen": "^2.2.3",
+    "@turbo/gen": "^2.3.0",
     "@yuki/prettier-config": "workspace:*",
     "prettier": "latest",
-    "turbo": "^2.2.3",
+    "turbo": "^2.3.0",
     "typescript": "latest"
   },
   "packageManager": "bun@1.1.34",
