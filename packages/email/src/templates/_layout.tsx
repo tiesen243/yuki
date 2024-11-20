@@ -64,7 +64,12 @@ export const Layout: React.FC<{
         <Container className="mx-auto py-10">
           <Row className="mx-auto w-1/3">
             <Column>
-              <Img width="69" height="69" alt="Yuki" src={`${getAppUrl()}/assets/logo.svg`} />
+              <Img
+                width="69"
+                height="69"
+                alt="Yuki"
+                src={`${getAppUrl()}/android-chrome-512x512.png`}
+              />
             </Column>
 
             <Column>
