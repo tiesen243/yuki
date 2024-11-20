@@ -1,10 +1,11 @@
 import type { LucideIcon } from '@yuki/ui/icons'
 import {
-  BoxIcon,
+  Grid2x2Icon,
+  Grid2x2PlusIcon,
   HomeIcon,
   KeyRoundIcon,
-  LayoutDashboardIcon,
-  PlusIcon,
+  PackageIcon,
+  PackagePlusIcon,
   ShoppingCartIcon,
   TicketSlashIcon,
   UserPenIcon,
@@ -64,22 +65,22 @@ export const sidebarContent = {
       title: 'Admin',
       items: [
         {
-          icon: LayoutDashboardIcon,
+          icon: Grid2x2Icon,
           title: 'Categories',
           url: '/admin/categories',
         },
         {
-          icon: PlusIcon,
+          icon: Grid2x2PlusIcon,
           title: 'Create Category',
           url: '/admin/categories/create',
         },
         {
-          icon: BoxIcon,
+          icon: PackageIcon,
           title: 'Products',
           url: '/admin/products',
         },
         {
-          icon: PlusIcon,
+          icon: PackagePlusIcon,
           title: 'Create Product',
           url: '/admin/products/create',
         },
