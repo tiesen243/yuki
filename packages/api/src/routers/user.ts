@@ -4,8 +4,21 @@ import { createTRPCRouter, protectedProcedure, publicProcedure } from '@yuki/api
 import { userSchema } from '@yuki/api/validators/user'
 import { Scrypt } from '@yuki/auth/lucia'
 import { db } from '@yuki/db'
+import { sendEmail } from '@yuki/email'
 
 export const userRouter = createTRPCRouter({
+  test: publicProcedure.query(async () => {
+    await sendEmail({
+      email: 'ttien56906@gmail.com',
+      subject: 'Test email',
+      message: 'Hello world',
+      preview: 'Hello world',
+      data: { name: 'Tien' },
+      type: 'Welcome',
+    })
+    return { success: true }
+  }),
+
   // [POST] /api/trpc/user.register
   register: publicProcedure.input(userSchema.register).mutation(async ({ input, ctx }) => {
     const existingUser = await ctx.db.user.findUnique({ where: { email: input.email } })
