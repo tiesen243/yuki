@@ -31,7 +31,7 @@
     "@yuki/eslint-config": "workspace:*",
     "@yuki/prettier-config": "workspace:*",
     "@yuki/tsconfig": "workspace:*",
-    "dotenv-cli": "^7.4.2",
+    "dotenv-cli": "^7.4.3",
     "eslint": "latest",
     "prettier": "latest",
     "prisma": "^5.22.0",

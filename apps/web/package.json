@@ -35,7 +35,7 @@
     "@yuki/prettier-config": "workspace:*",
     "@yuki/tailwind-config": "workspace:*",
     "@yuki/tsconfig": "workspace:*",
-    "dotenv-cli": "^7.4.2",
+    "dotenv-cli": "^7.4.3",
     "eslint": "latest",
     "jiti": "^2.4.0",
     "postcss": "^8.4.49",
