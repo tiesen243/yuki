@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@t3-oss/env-nextjs": "^0.11.1",
-    "@tanstack/react-query": "^5.60.5",
+    "@tanstack/react-query": "^5.60.6",
     "@trpc/react-query": "^11.0.0-rc.638",
     "@yuki/api": "workspace:*",
     "@yuki/auth": "workspace:*",
