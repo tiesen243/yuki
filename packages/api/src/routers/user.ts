@@ -7,18 +7,6 @@ import { db } from '@yuki/db'
 import { sendEmail } from '@yuki/email'
 
 export const userRouter = createTRPCRouter({
-  test: publicProcedure.query(async () => {
-    await sendEmail({
-      email: 'ttien56906@gmail.com',
-      subject: 'Test email',
-      message: 'Hello world',
-      preview: 'Hello world',
-      data: { name: 'Tien' },
-      type: 'Welcome',
-    })
-    return { success: true }
-  }),
-
   // [POST] /api/trpc/user.register
   register: publicProcedure.input(userSchema.register).mutation(async ({ input, ctx }) => {
     const existingUser = await ctx.db.user.findUnique({ where: { email: input.email } })
@@ -30,6 +18,13 @@ export const userRouter = createTRPCRouter({
         email: input.email,
         password: await new Scrypt().hash(input.password),
       },
+    })
+
+    await sendEmail({
+      email: user.email,
+      type: 'Welcome',
+      subject: 'Welcome to our website',
+      data: { name: user.name },
     })
 
     return { user }

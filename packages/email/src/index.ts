@@ -9,8 +9,6 @@ import * as templates from './templates'
 const resend = new Resend(emailEnv.RESEND_KEY)
 
 export interface EmailProps {
-  preview: string
-  message: string
   data: Record<string, string>
 }
 
@@ -28,7 +26,6 @@ export const sendEmail = async ({
     from: 'Yuki <no-reply@tiesen.id.vn>',
     to: [email],
     subject,
-    text: rest.preview,
     react: templates[type](rest),
   })
 
