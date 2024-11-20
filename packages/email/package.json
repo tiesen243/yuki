@@ -9,7 +9,6 @@
     "./env": "./src/env.ts"
   },
   "scripts": {
-    "build": "email build --dir src/templates",
     "clean": "git clean -xdf .cache .turbo dist node_modules",
     "dev": "email dev --dir src/templates --port 3002",
     "format": "prettier --check . --ignore-path ../../.gitignore",

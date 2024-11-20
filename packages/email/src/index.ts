@@ -8,6 +8,12 @@ import * as templates from './templates'
 
 const resend = new Resend(emailEnv.RESEND_KEY)
 
+export interface EmailProps {
+  preview: string
+  message: string
+  data: Record<string, string>
+}
+
 export const sendEmail = async ({
   email,
   subject,

@@ -1,5 +1,7 @@
 import { Button, Text } from '@react-email/components'
 
+import type { EmailProps } from '@yuki/email'
+
 import { getAppUrl, Layout } from './_layout'
 
 export const Welcome = (props: EmailProps) => (
