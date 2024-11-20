@@ -4,10 +4,11 @@ import { createTRPCRouter, protectedProcedure, publicProcedure } from '@yuki/api
 import { userSchema } from '@yuki/api/validators/user'
 import { Scrypt } from '@yuki/auth/lucia'
 import { db } from '@yuki/db'
+import { sendEmail } from '@yuki/email'
 
 export const userRouter = createTRPCRouter({
-  test: publicProcedure.query(async ({ ctx }) => {
-    await ctx.sendEmail({
+  test: publicProcedure.query(async () => {
+    await sendEmail({
       message: 'Hello from Yuki',
       subject: 'Hello',
       type: 'Welcome',
