@@ -11,7 +11,6 @@ export const dbEnv = createEnv({
    */
   server: {
     DATABASE_URL: z.string().url(),
-    DIRECT_URL: z.string().url(),
   },
 
   /**
