@@ -14,7 +14,7 @@
   "dependencies": {
     "@ianvs/prettier-plugin-sort-imports": "^4.4.0",
     "prettier": "latest",
-    "prettier-plugin-tailwindcss": "^0.6.8"
+    "prettier-plugin-tailwindcss": "^0.6.9"
   },
   "devDependencies": {
     "@yuki/tsconfig": "workspace:*",
