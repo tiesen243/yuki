@@ -5,6 +5,7 @@ import { ZodError } from 'zod'
 import { auth } from '@yuki/auth'
 import { lucia } from '@yuki/auth/lucia'
 import { db } from '@yuki/db'
+import { sendEmail } from '@yuki/email'
 
 /**
  * 1. CONTEXT
@@ -28,6 +29,7 @@ export const createTRPCContext = async (opts: { headers: Headers }) => {
     db,
     lucia,
     session,
+    sendEmail,
     ...opts,
   }
 }

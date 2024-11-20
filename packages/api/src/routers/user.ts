@@ -1,12 +1,22 @@
 import { TRPCError } from '@trpc/server'
 
 import { createTRPCRouter, protectedProcedure, publicProcedure } from '@yuki/api/trpc'
+import { userSchema } from '@yuki/api/validators/user'
 import { Scrypt } from '@yuki/auth/lucia'
 import { db } from '@yuki/db'
 
-import { userSchema } from '../validators/user'
-
 export const userRouter = createTRPCRouter({
+  test: publicProcedure.query(async ({ ctx }) => {
+    await ctx.sendEmail({
+      message: 'Hello from Yuki',
+      subject: 'Hello',
+      type: 'Welcome',
+      preview: 'Hello from Yuki',
+      email: 'ttien56906@gmail.com',
+      data: { name: 'Tien' },
+    })
+    return { succesfully: true }
+  }),
   // [POST] /api/trpc/user.register
   register: publicProcedure.input(userSchema.register).mutation(async ({ input, ctx }) => {
     const existingUser = await ctx.db.user.findUnique({ where: { email: input.email } })

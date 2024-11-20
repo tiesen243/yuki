@@ -26,6 +26,7 @@ apps/expo/android
 
 # production
 build
+.react-email
 
 # misc
 .DS_Store
