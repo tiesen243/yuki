@@ -1,14 +1,12 @@
-'use server'
-
 import { cookies } from 'next/headers'
-import { redirect } from 'next/navigation'
-import { cache } from 'react'
 
 import type { Session, User } from '@yuki/db'
-import { authEnv } from '@yuki/auth/env'
-import { lucia } from '@yuki/auth/lucia'
 
-const auth = cache(async (): Promise<null | (Session & { user: User })> => {
+import { lucia } from './lucia'
+
+type Auth = null | (Session & { user: User })
+
+const auth = async (): Promise<Auth> => {
   const sessionId = cookies().get(lucia.sessionCookieName)?.value ?? null
   if (!sessionId) return null
 
@@ -29,16 +27,12 @@ const auth = cache(async (): Promise<null | (Session & { user: User })> => {
 
   if (!result.session) return null
   return { ...result.session, user: result.user }
-})
-
-const domain = authEnv.VERCEL_PROJECT_PRODUCTION_URL
-  ? authEnv.VERCEL_PROJECT_PRODUCTION_URL.replace('dashboard.', '')
-  : 'localhost'
+}
 
 const signIn = async (userId: string) => {
   const session = await lucia.createSession(userId, {})
   const sessionCookie = lucia.createSessionCookie(session.id)
-  cookies().set(sessionCookie.name, sessionCookie.value, { ...sessionCookie.attributes, domain })
+  cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes)
 }
 
 const signOut = async () => {
@@ -46,10 +40,24 @@ const signOut = async () => {
   if (!session) return
 
   await lucia.invalidateSession(session.id)
-
   const sessionCookie = lucia.createBlankSessionCookie()
-  cookies().set(sessionCookie.name, sessionCookie.value, { ...sessionCookie.attributes, domain })
-  redirect('/sign-in')
+  cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes)
 }
 
-export { auth, signIn, signOut }
+const validateToken = async (token: string): Promise<Auth> => {
+  const sessionToken = token.slice('Bearer '.length)
+  const session = await lucia.validateSession(sessionToken)
+  return session.user
+    ? {
+        ...session.session,
+        user: session.user,
+      }
+    : null
+}
+
+const invalidateSessionToken = async (token: string) => {
+  const sessionToken = token.slice('Bearer '.length)
+  await lucia.invalidateSession(sessionToken)
+}
+
+export { auth, signIn, signOut, validateToken, invalidateSessionToken }

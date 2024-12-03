@@ -1,10 +1,6 @@
 {
-  "extends": "@yuki/tsconfig/internal-package.json",
-  "compilerOptions": {
-    "lib": ["ES2022", "dom", "dom.iterable"],
-    "jsx": "preserve",
-    "rootDir": "."
-  },
-  "include": ["*.ts", "src"],
+  "extends": "@yuki/tsconfig/base.json",
+  "compilerOptions": { "rootDir": "." },
+  "include": ["src", "*.ts"],
   "exclude": ["node_modules"]
 }

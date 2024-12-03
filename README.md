@@ -1,19 +1,10 @@
 # Yuki
 
-> [!NOTE]
-> This template is customized from [create-t3-turbo](https://github.com/t3-oss/create-t3-turbo) with some changes:
->
-> - PNPM -> Bun
-> - Dizzle -> Prisma
-> - NextAuth -> Lucia
-
 ## Installation
 
 > [!NOTE]
 >
-> Make sure to follow the system requirements specified in [`package.json#engines`](./package.json#L31) before proceeding.
-
-Use Turbo's CLI to init your project (use Bun as package manager):
+> Make sure to follow the system requirements specified in [`package.json#engines`](./package.json#L33) before proceeding.
 
 ```bash
 bun create turbo@latest --example https://github.com/tiesen243/yuki --package-manager bun
@@ -21,19 +12,21 @@ bun create turbo@latest --example https://github.com/tiesen243/yuki --package-ma
 
 ## About
 
-A fullstack e-commerce application built with Turborepo, Next.js, React, Tailwind CSS, Prisma, and tRPC. This project has a features like authentication, database, and UI components. Users can sign up, sign in, view products, and add them to their cart. Admins can manage products, orders, and users. The project is a monorepo that contains multiple packages and apps:
+Ever wondered how to migrate your Yuki application into a monorepo? Stop right here! This is the perfect starter repo to get you running with the perfect stack!
+
+It uses [Turborepo](https://turborepo.org) and contains:
 
 ```text
 .github
   └─ workflows
-        └─ CI to check lint, format and type
+        └─ CI with pnpm cache setup
 apps
- ├─ web
- |    ├─ Next.js 14
- |    ├─ React 18
- |    ├─ Tailwind CSS
- |    └─ E2E Typesafe API Server & Client
- └─ dashboard
+  ├─ www
+  |   ├─ Next.js 14
+  |   ├─ React 18
+  |   ├─ Tailwind CSS
+  |   └─ E2E Typesafe API Server & Client
+  └─ dashboard
       ├─ Next.js 14
       ├─ React 18
       ├─ Tailwind CSS
@@ -42,15 +35,11 @@ packages
   ├─ api
   |   └─ tRPC v11 router definition
   ├─ auth
-  |   └─ Authentication using lucia-auth and arctic.
+  |   └─ Authentication using lucia-auth.
   ├─ db
-  |   └─ Typesafe db calls using Prisma & Neon (PostgreSQL)
-  ├─ ui
-  |   └─ Start of a UI package for the webapp using shadcn-ui
-  ├─ email (ongoing)
-  |   └─ Email package using Resend with React Email
-  └─ uploader (ongoing)
-      └─ Upload images to S3 using Uploadthing
+  |   └─ Typesafe db calls using Prisma & Neon
+  └─ ui
+      └─ Start of a UI package for the webapp using shadcn-ui
 tooling
   ├─ eslint
   |   └─ shared, fine-grained, eslint presets
@@ -62,13 +51,12 @@ tooling
       └─ shared tsconfig you can extend from
 ```
 
-> In this template, we use `@yuki` as a placeholder for package names. As a user, you might want to replace it with your own organization or project name. You can use find-and-replace to change all the instances of `@yuki` to something like `@my-company` or `@project-name`.
-
 ## Quick Start
 
-> **Note**
+> [!NOTE]
+>
 > The [db](./packages/db) package is preconfigured to use PostgreSQL. If you're using something else, make the necessary modifications to the [schema](./packages/db/prisma/schema.prisma) as well as the [client](./packages/db/src/index.ts). Neon is a serverless database, so it can be used with Next.js edge functions. If you're using a different database, you can use the [Prisma Accelerate](https://www.prisma.io/accelerate) package to do the same.
-> To get it running, follow the steps below:
+> To get it running, follow the steps below
 
 ### 1. Setup dependencies
 
@@ -104,7 +92,8 @@ The generator sets up the `package.json`, `tsconfig.json` and a `index.ts`, as w
 
 ### Prerequisites
 
-> **Note**
+> [!NOTE]
+>
 > Please note that the Next.js application with tRPC must be deployed in order for the Expo app to communicate with the server in a production environment.
 
 ### Deploy to Vercel
@@ -119,7 +108,7 @@ Let's deploy the Next.js application to [Vercel](https://vercel.com). If you've 
 
 ## References
 
-The stack originates from [create-yuki-turbo](https://github.com/tiesen243/create-yuki-turbo) and [create-yuki-app](https://github.com/tiesen243/create-yuki-app).
+The stack originates from [create-yuki-app](https://github.com/tiesen243/create-yuki-app).
 
 ## License
 

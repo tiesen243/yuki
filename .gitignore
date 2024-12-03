@@ -24,9 +24,11 @@ apps/expo/.gitignore
 apps/expo/ios
 apps/expo/android
 
+# react-router
+.react-router
+
 # production
 build
-.react-email
 
 # misc
 .DS_Store
@@ -39,8 +41,8 @@ yarn-error.log*
 .pnpm-debug.log*
 
 # local env files
-.env
-.env*.local
+.env*
+!.env.example
 
 # vercel
 .vercel
@@ -48,6 +50,7 @@ yarn-error.log*
 # typescript
 dist/
 .cache
+*.tsbuildinfo
 
 # turbo
 .turbo

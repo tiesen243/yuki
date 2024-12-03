@@ -2,9 +2,8 @@ import type { Config } from 'tailwindcss'
 
 const base = {
   darkMode: ['class'],
-  content: ['src/**/*.{ts,tsx}', 'app/**/*.{ts,tsx}', 'components/**/*.{ts,tsx}'],
+  content: ['app/**/*.{ts,tsx}', 'components/**/*.{ts,tsx}'],
   theme: {
-    container: { center: true, padding: '2rem', screens: { '2xl': '1400px' } },
     extend: {
       colors: {
         background: 'hsl(var(--background))',
@@ -48,7 +47,6 @@ const base = {
           '5': 'hsl(var(--chart-5))',
         },
       },
-      borderColor: { DEFAULT: 'hsl(var(--border))' },
     },
   },
 } satisfies Config

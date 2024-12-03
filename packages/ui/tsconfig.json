@@ -5,9 +5,7 @@
     "jsx": "preserve",
     "rootDir": ".",
     "baseUrl": ".",
-    "paths": {
-      "@yuki/ui/*": ["src/*"]
-    }
+    "paths": { "@yuki/*": ["src/*"] }
   },
   "include": ["*.ts", "src"],
   "exclude": ["node_modules"]

@@ -23,6 +23,7 @@
         "./src/hooks/*.tsx"
       ]
     },
+    "./fonts": "./src/fonts/index.ts",
     "./tailwind.css": "./src/tailwind.css"
   },
   "scripts": {
@@ -35,21 +36,12 @@
     "ui-add": "bunx --bun shadcn@latest add && prettier src --write --list-different"
   },
   "dependencies": {
-    "@radix-ui/react-alert-dialog": "^1.1.2",
-    "@radix-ui/react-avatar": "^1.1.1",
-    "@radix-ui/react-checkbox": "^1.1.2",
-    "@radix-ui/react-dialog": "^1.1.2",
-    "@radix-ui/react-label": "^2.1.0",
-    "@radix-ui/react-separator": "^1.1.0",
     "@radix-ui/react-slot": "^1.1.0",
-    "@radix-ui/react-tooltip": "^1.1.4",
-    "class-variance-authority": "^0.7.0",
+    "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "lucide-react": "^0.460.0",
-    "next": "14.2.18",
+    "lucide-react": "^0.462.0",
     "next-themes": "^0.4.3",
-    "sonner": "^1.7.0",
-    "tailwind-merge": "^2.5.4"
+    "tailwind-merge": "^2.5.5"
   },
   "devDependencies": {
     "@types/react": "^18.3.12",

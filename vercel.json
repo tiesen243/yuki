@@ -1,5 +1,0 @@
-{
-  "git": {
-    "deploymentEnabled": { "dev": false, "renovate/*": false }
-  }
-}

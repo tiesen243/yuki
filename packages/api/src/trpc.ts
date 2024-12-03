@@ -1,10 +1,28 @@
+/**
+ * YOU PROBABLY DON'T NEED TO EDIT THIS FILE, UNLESS:
+ * 1. You want to modify request context (see Part 1)
+ * 2. You want to create a new middleware or type of procedure (see Part 3)
+ *
+ * tl;dr - this is where all the tRPC server stuff is created and plugged in.
+ * The pieces you will need to use are documented accordingly near the end
+ */
 import { initTRPC, TRPCError } from '@trpc/server'
 import SuperJSON from 'superjson'
 import { ZodError } from 'zod'
 
-import { auth } from '@yuki/auth'
-import { lucia } from '@yuki/auth/lucia'
+import { auth, validateToken } from '@yuki/auth'
 import { db } from '@yuki/db'
+
+/**
+ * Isomorphic Session getter for API requests
+ * - Expo requests will have a session token in the Authorization header
+ * - Next.js requests will have a session token in cookies
+ */
+const isomorphicGetSession = async (headers: Headers) => {
+  const authToken = headers.get('Authorization') ?? ''
+  if (authToken) return validateToken(authToken)
+  return auth()
+}
 
 /**
  * 1. CONTEXT
@@ -19,15 +37,16 @@ import { db } from '@yuki/db'
  * @see https://trpc.io/docs/server/context
  */
 export const createTRPCContext = async (opts: { headers: Headers }) => {
-  const session = await auth()
+  const authToken = opts.headers.get('Authorization') ?? null
+  const session = await isomorphicGetSession(opts.headers)
 
   const source = opts.headers.get('x-trpc-source') ?? 'unknown'
-  console.log('>>> tRPC Request from', source, 'by', session?.user)
+  console.log('>>> tRPC Request from', source, 'by', session?.user.id)
 
   return {
     db,
-    lucia,
     session,
+    token: authToken,
     ...opts,
   }
 }
@@ -42,7 +61,6 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
   transformer: SuperJSON,
   errorFormatter: ({ shape, error }) => ({
     ...shape,
-    message: error.cause instanceof ZodError ? 'Validation error' : error.message,
     data: {
       ...shape.data,
       zodError: error.cause instanceof ZodError ? error.cause.flatten().fieldErrors : null,

@@ -5,8 +5,11 @@
   "license": "MIT",
   "type": "module",
   "exports": {
-    ".": "./src/index.ts",
-    "./env": "./src/env.ts"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./src/index.ts"
+    },
+    "./env": "./env.ts"
   },
   "scripts": {
     "build": "tsc",
@@ -21,18 +24,23 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
-    "@prisma/client": "^5.22.0",
+    "@neondatabase/serverless": "^0.10.4",
+    "@prisma/adapter-neon": "^6.0.1",
+    "@prisma/client": "^6.0.1",
     "@t3-oss/env-nextjs": "^0.11.1",
+    "ws": "^8.18.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@types/ws": "^8.5.13",
     "@yuki/eslint-config": "workspace:*",
     "@yuki/prettier-config": "workspace:*",
     "@yuki/tsconfig": "workspace:*",
-    "dotenv-cli": "^7.4.3",
+    "bufferutil": "^4.0.8",
+    "dotenv-cli": "^7.4.4",
     "eslint": "latest",
     "prettier": "latest",
-    "prisma": "^5.22.0",
+    "prisma": "^6.0.1",
     "typescript": "latest"
   },
   "prettier": "@yuki/prettier-config"

@@ -6,30 +6,25 @@
   "type": "module",
   "exports": {
     ".": {
-      "types": "./dist/src/index.d.ts",
+      "react-server": "./src/index.rsc.ts",
       "default": "./src/index.ts"
     },
-    "./*": {
-      "types": "./dist/src/*.d.ts",
-      "default": [
-        "./src/*.ts",
-        "./src/*.tsx"
-      ]
-    }
+    "./lucia": "./src/lucia.ts",
+    "./env": "./env.ts"
   },
   "scripts": {
     "build": "tsc",
     "clean": "git clean -xdf .cache .turbo dist node_modules",
-    "dev": "tsc --watch",
+    "dev": "tsc",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
     "typecheck": "tsc --noEmit --emitDeclarationOnly false"
   },
   "dependencies": {
-    "@yuki/db": "workspace:*",
     "@lucia-auth/adapter-prisma": "^4.0.1",
     "@t3-oss/env-nextjs": "^0.11.1",
-    "arctic": "^2.2.2",
+    "@yuki/db": "workspace:*",
+    "arctic": "^2.3.0",
     "lucia": "^3.2.2",
     "next": "14.2.18",
     "zod": "^3.23.8"

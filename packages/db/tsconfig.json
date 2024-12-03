@@ -1,8 +1,6 @@
 {
   "extends": "@yuki/tsconfig/internal-package.json",
-  "compilerOptions": {
-    "rootDir": "."
-  },
-  "include": ["*.ts", "src"],
+  "compilerOptions": { "rootDir": "." },
+  "include": ["src", "*.ts"],
   "exclude": ["node_modules"]
 }

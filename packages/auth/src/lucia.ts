@@ -12,7 +12,7 @@ export const lucia = new Lucia(adapter, {
   getUserAttributes: (user) => user,
 })
 
-export * from 'lucia'
+export * from 'arctic'
 
 declare module 'lucia' {
   interface Register {

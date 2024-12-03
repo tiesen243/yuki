@@ -11,7 +11,7 @@ import tseslint from 'typescript-eslint'
  * All packages that leverage t3-env should use this rule
  */
 export const restrictEnvAccess = tseslint.config(
-  { ignores: ['**/env.js', '**/env.ts'] },
+  { ignores: ['**/env.ts'] },
   {
     files: ['**/*.js', '**/*.ts', '**/*.tsx'],
     rules: {
@@ -53,21 +53,20 @@ export default tseslint.config(
     ],
     rules: {
       ...turboPlugin.configs.recommended.rules,
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
+      ],
       '@typescript-eslint/consistent-type-imports': [
         'warn',
         { prefer: 'type-imports', fixStyle: 'separate-type-imports' },
       ],
       '@typescript-eslint/no-misused-promises': [2, { checksVoidReturn: { attributes: false } }],
-      '@typescript-eslint/no-non-null-assertion': 'error',
-      '@typescript-eslint/no-unused-vars': [
-        'error',
-        { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
-      ],
       '@typescript-eslint/no-unnecessary-condition': [
         'error',
         { allowConstantLoopConditions: true },
       ],
-      '@typescript-eslint/require-await': 'off',
+      '@typescript-eslint/no-non-null-assertion': 'error',
       'import/consistent-type-specifier-style': ['error', 'prefer-top-level'],
     },
   },
