@@ -1,6 +1,6 @@
 import type { inferRouterInputs, inferRouterOutputs } from '@trpc/server'
 
-import { postRouter } from './routers/post'
+import { userRouter } from './routers/user'
 import { createCallerFactory, createTRPCContext, createTRPCRouter } from './trpc'
 
 /**
@@ -9,7 +9,7 @@ import { createCallerFactory, createTRPCContext, createTRPCRouter } from './trpc
  * All routers added in /api/routers should be manually added here.
  */
 const appRouter = createTRPCRouter({
-  post: postRouter,
+  user: userRouter,
 })
 
 // export type definition of API

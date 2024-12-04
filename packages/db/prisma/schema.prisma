@@ -14,14 +14,20 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id        String @id @default(cuid())
-  discordId String @unique
-  username  String @unique
-  email     String @unique
+enum Role {
+  USER
+  ADMIN
+}
 
-  name   String
-  avatar String
+model User {
+  id        String  @id @default(cuid())
+  discordId String? @unique
+  username  String? @unique
+  email     String  @unique
+  name      String
+  role      Role    @default(USER)
+  avatar    String?
+  password  String?
 
   sessions Session[]
   posts    Post[]

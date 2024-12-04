@@ -3,10 +3,9 @@ import { vercel } from '@t3-oss/env-nextjs/presets'
 import { z } from 'zod'
 
 import { authEnv } from '@yuki/auth/env'
-import { dbEnv } from '@yuki/db/env'
 
 export const env = createEnv({
-  extends: [authEnv, dbEnv, vercel()],
+  extends: [authEnv, vercel()],
   shared: {
     NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
   },
@@ -16,6 +15,7 @@ export const env = createEnv({
    */
   server: {
     // SERVERVAR: z.string()
+    DATABASE_URL: z.string().url(),
   },
 
   /**

@@ -1,3 +1,5 @@
+'use server'
+
 import { cookies } from 'next/headers'
 
 import type { Session, User } from '@yuki/db'
@@ -47,12 +49,7 @@ const signOut = async () => {
 const validateToken = async (token: string): Promise<Auth> => {
   const sessionToken = token.slice('Bearer '.length)
   const session = await lucia.validateSession(sessionToken)
-  return session.user
-    ? {
-        ...session.session,
-        user: session.user,
-      }
-    : null
+  return session.user ? { ...session.session, user: session.user } : null
 }
 
 const invalidateSessionToken = async (token: string) => {
