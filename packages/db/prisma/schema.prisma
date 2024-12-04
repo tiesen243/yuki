@@ -20,19 +20,21 @@ enum Role {
 }
 
 model User {
-  id        String  @id @default(cuid())
-  discordId String? @unique
-  username  String? @unique
-  email     String  @unique
+  id    String @id @default(cuid())
+  email String @unique
+
+  discordId String?
+  username  String?
+
   name      String
-  role      Role    @default(USER)
+  role      Role     @default(USER)
   avatar    String?
   password  String?
+  createdAt DateTime @default(now())
 
   sessions Session[]
-  posts    Post[]
-
-  createdAt DateTime @default(now())
+  products Product[]
+  comments Comment[]
 }
 
 model Session {
@@ -45,12 +47,39 @@ model Session {
   @@index([userId])
 }
 
-model Post {
-  id      String @id @default(cuid())
-  content String
+model Category {
+  id       String    @id @default(cuid())
+  name     String
+  image    String
+  products Product[]
+}
 
-  author   User   @relation(fields: [authorId], references: [id])
-  authorId String
+model Product {
+  id          String    @id @default(cuid())
+  name        String
+  description String
+  image       String
+  price       Int
+  stock       Int
+  comments    Comment[]
+  createdAt   DateTime  @default(now())
 
-  createdAt DateTime @default(now())
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  categoryId String
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+}
+
+model Comment {
+  id         String   @id @default(cuid())
+  evaluation Int
+  content    String
+  createdAt  DateTime @default(now())
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  products  Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String
 }

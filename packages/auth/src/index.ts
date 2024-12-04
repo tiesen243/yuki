@@ -6,7 +6,7 @@ import type { Session, User } from '@yuki/db'
 
 import { lucia } from './lucia'
 
-type Auth = null | (Session & { user: User })
+type Auth = (Session & { user: User }) | null
 
 const auth = async (): Promise<Auth> => {
   const sessionId = cookies().get(lucia.sessionCookieName)?.value ?? null

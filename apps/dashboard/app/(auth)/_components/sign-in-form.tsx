@@ -70,7 +70,12 @@ export const SignInForm: React.FC = () => {
 
         <CardDescription>
           Don&apos;t have an account?{' '}
-          <Button type="button" variant="link" onClick={() => router.push('/sign-up')}>
+          <Button
+            type="button"
+            variant="link"
+            onClick={() => router.push('/sign-up')}
+            disabled={isPending}
+          >
             Sign up
           </Button>
         </CardDescription>

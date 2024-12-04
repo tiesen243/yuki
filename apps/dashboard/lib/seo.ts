@@ -8,7 +8,7 @@ export const seo = (params: {
   images?: string[]
   url?: string
 }): Metadata => {
-  const siteName = 'Create Yuki Turbo'
+  const siteName = 'Yuki'
   const title = params.title ? `${siteName} | ${params.title}` : siteName
   const description =
     params.description ??

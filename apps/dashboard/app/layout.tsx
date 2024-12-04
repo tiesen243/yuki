@@ -4,7 +4,6 @@ import { cn, ThemeProvider } from '@yuki/ui'
 import { geistMono, geistSans } from '@yuki/ui/fonts'
 import { Toaster } from '@yuki/ui/toaster'
 
-import { seo } from '@/lib/seo'
 import { TRPCReactProvider } from '@/lib/trpc/react'
 
 export default ({ children }: Readonly<{ children: React.ReactNode }>) => (
@@ -17,5 +16,3 @@ export default ({ children }: Readonly<{ children: React.ReactNode }>) => (
     </body>
   </html>
 )
-
-export const metadata = seo({})

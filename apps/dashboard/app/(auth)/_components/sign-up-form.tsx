@@ -42,14 +42,26 @@ export const SignUpForm: React.FC = () => {
       </CardContent>
 
       <CardFooter className="flex-col gap-4 *:w-full">
-        <Button type="submit">Register</Button>
-        <Button type="button" variant="outline" onClick={() => router.push('/api/auth/discord')}>
+        <Button type="submit" disabled={signUp.isPending}>
+          Register
+        </Button>
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => router.push('/api/auth/discord')}
+          disabled={signUp.isPending}
+        >
           Sign up with Discord
         </Button>
 
         <CardDescription>
           Already have an account?{' '}
-          <Button type="button" variant="link" onClick={() => router.push('/sign-in')}>
+          <Button
+            type="button"
+            variant="link"
+            onClick={() => router.push('/sign-in')}
+            disabled={signUp.isPending}
+          >
             Sign in
           </Button>
         </CardDescription>

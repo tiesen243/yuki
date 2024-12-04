@@ -47,7 +47,7 @@ export const GET = async (req: NextRequest, { params }: { params: { auth: [strin
     const tokens = await oauthProvider.validateAuthorizationCode(code)
     const accessToken = tokens.accessToken()
 
-    const response = await fetch('https://discord.com/api/users/@me', {
+    const res = await fetch('https://discord.com/api/users/@me', {
       headers: { Authorization: `Bearer ${accessToken}` },
     })
       .then((res) => res.json() as Promise<DiscordUser>)
@@ -62,9 +62,11 @@ export const GET = async (req: NextRequest, { params }: { params: { auth: [strin
         throw new Error('Failed to fetch user data from Discord')
       })
 
-    let user = await db.user.findFirst({ where: { discordId: response.discordId } })
-    if (!user) user = await db.user.create({ data: response })
-    else user = await db.user.update({ where: { discordId: response.discordId }, data: response })
+    let user = await db.user.findFirst({
+      where: { OR: [{ discordId: res.discordId }, { email: res.email }] },
+    })
+    if (!user) user = await db.user.create({ data: res })
+    else user = await db.user.update({ where: { email: user.email }, data: res })
 
     const session = await lucia.createSession(user.id, {})
     const sessionCookie = lucia.createSessionCookie(session.id)
