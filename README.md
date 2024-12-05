@@ -38,6 +38,8 @@ packages
   |   └─ Authentication using lucia-auth.
   ├─ db
   |   └─ Typesafe db calls using Prisma & Neon
+  ├─ email
+  |   └─ Email API using Resend and React Email
   └─ ui
       └─ Start of a UI package for the webapp using shadcn-ui
 tooling
