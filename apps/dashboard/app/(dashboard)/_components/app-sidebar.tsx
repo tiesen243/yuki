@@ -1,5 +1,3 @@
-'use client'
-
 import { Sidebar, SidebarContent, SidebarFooter, SidebarRail } from '@yuki/ui/sidebar'
 
 import { content } from './content'

@@ -37,3 +37,21 @@ export const changePassword = z
     message: 'Passwords do not match',
   })
 export type ChangePassword = z.infer<typeof changePassword>
+
+export const forgotPassword = z.object({
+  email: z.string().email(),
+})
+export type ForgotPassword = z.infer<typeof forgotPassword>
+
+export const resetPassword = z
+  .object({
+    email: z.string().email(),
+    token: z.string(),
+    password: passwordSchema,
+    confirmPassword: passwordSchema,
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    path: ['confirmPassword'],
+    message: 'Passwords do not match',
+  })
+export type ResetPassword = z.infer<typeof resetPassword>

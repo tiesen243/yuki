@@ -1,6 +1,7 @@
 'use client'
 
 import { Fragment } from 'react'
+import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
 import {
@@ -19,17 +20,19 @@ export const NavLink: React.FC = () => {
     <Breadcrumb className="capitalize">
       <BreadcrumbList>
         <BreadcrumbItem className="hidden md:block">
-          <BreadcrumbLink href="/">Dashboard</BreadcrumbLink>
+          <BreadcrumbLink asChild>
+            <Link href="/">Dashboard</Link>
+          </BreadcrumbLink>
         </BreadcrumbItem>
         {pathNames.length > 0 && <BreadcrumbSeparator className="hidden md:block" />}
 
         {pathNames.slice(0, -1).map((path) => (
           <Fragment key={path}>
             <BreadcrumbItem className="hidden md:block">
-              <BreadcrumbLink
-                href={`/${pathNames.slice(0, pathNames.indexOf(path) + 1).join('/')}`}
-              >
-                {path}
+              <BreadcrumbLink asChild>
+                <Link href={`/${pathNames.slice(0, pathNames.indexOf(path) + 1).join('/')}`}>
+                  {path}
+                </Link>
               </BreadcrumbLink>
             </BreadcrumbItem>
 

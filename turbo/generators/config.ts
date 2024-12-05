@@ -75,9 +75,7 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
          * Install deps and format everything
          */
         if ('name' in answers && typeof answers.name === 'string') {
-          // execSync("pnpm dlx sherif@latest --fix", {
-          //   stdio: "inherit",
-          // });
+          execSync('bunx --bun sherif@latest --fix', { stdio: 'inherit' })
           execSync('bun i', { stdio: 'inherit' })
           execSync(`bun prettier --write packages/${answers.name}/** --list-different`)
           return 'Package scaffolded'

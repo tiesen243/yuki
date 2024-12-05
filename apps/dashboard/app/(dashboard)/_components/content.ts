@@ -8,12 +8,15 @@ import {
   UsersIcon,
 } from '@yuki/ui/icons'
 
+import { getWebsiteUrl } from '@/lib/utils'
+
 export const content = {
   user: [
     {
       title: 'Website',
       icon: PanelTopIcon,
-      url: '',
+      isExternal: true,
+      url: getWebsiteUrl(),
     },
     {
       title: 'Information',
@@ -79,12 +82,14 @@ export const content = {
   navSecondary: [
     {
       title: 'Support',
-      url: '#',
+      url: 'https://youtu.be/dQw4w9WgXcQ',
+      isExternal: true,
       icon: LifeBuoyIcon,
     },
     {
       title: 'Feedback',
-      url: '#',
+      url: 'https://youtu.be/dQw4w9WgXcQ',
+      isExternal: true,
       icon: SendIcon,
     },
   ],

@@ -17,7 +17,7 @@ export const SignUpForm: React.FC = () => {
     onSuccess: async () => {
       toast({ title: 'Register successfully', description: 'You will be navigate to sign in' })
       await new Promise((resolve) => setTimeout(resolve, 100))
-      router.push('/')
+      router.push('/sign-in')
     },
   })
 
@@ -27,7 +27,7 @@ export const SignUpForm: React.FC = () => {
         e.preventDefault()
         const data = Object.fromEntries(new FormData(e.currentTarget)) as SignUp
         signUp.mutate(data)
-        //         e.currentTarget.reset()
+        e.currentTarget.reset()
       }}
     >
       <CardContent className="space-y-4">

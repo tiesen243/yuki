@@ -19,11 +19,13 @@ export const NavMain: React.FC<{
   items: {
     title: string
     url: string
+    isExternal?: boolean
     icon?: LucideIcon
     isActive?: boolean
     items?: {
       title: string
       url: string
+      isExternal?: boolean
     }[]
   }[]
 }> = ({ title, items }) => (
@@ -35,7 +37,10 @@ export const NavMain: React.FC<{
           return (
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton tooltip={item.title} asChild>
-                <Link href={item.url}>
+                <Link
+                  href={item.url}
+                  {...(item.isExternal && { target: '_blank', rel: 'noopener noreferrer' })}
+                >
                   {item.icon && <item.icon />}
                   <span>{item.title}</span>
                 </Link>
@@ -63,7 +68,12 @@ export const NavMain: React.FC<{
                   {item.items.map((subItem) => (
                     <SidebarMenuSubItem key={subItem.title}>
                       <SidebarMenuSubButton asChild>
-                        <Link href={subItem.url}>{subItem.title}</Link>
+                        <Link
+                          href={subItem.url}
+                          {...(item.isExternal && { target: '_blank', rel: 'noopener noreferrer' })}
+                        >
+                          {subItem.title}
+                        </Link>
                       </SidebarMenuSubButton>
                     </SidebarMenuSubItem>
                   ))}

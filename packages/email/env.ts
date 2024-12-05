@@ -2,7 +2,7 @@ import { createEnv } from '@t3-oss/env-nextjs'
 import { vercel } from '@t3-oss/env-nextjs/presets'
 import { z } from 'zod'
 
-export const authEnv = createEnv({
+export const emailEnv = createEnv({
   extends: [vercel()],
   /**
    * Specify your server-side environment variables schema here.
@@ -10,8 +10,7 @@ export const authEnv = createEnv({
    */
   server: {
     NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
-    DISCORD_CLIENT_ID: z.string(),
-    DISCORD_CLIENT_SECRET: z.string(),
+    RESEND_KEY: z.string().optional(),
   },
   /**
    * Specify your client-side environment variables schema here.
