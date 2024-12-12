@@ -1,6 +1,7 @@
 import { Button, Text } from '@react-email/components'
 
-import { emailEnv } from '../../env'
+import { emailEnv } from '@yuki/email/env'
+
 import { EmailLayout } from './_layout'
 
 export const Welcome = (data: Record<string, string>) => ({

@@ -2,6 +2,7 @@ import {
   Body,
   Column,
   Container,
+  Font,
   Head,
   Html,
   Img,
@@ -19,7 +20,18 @@ export const EmailLayout: React.FC<{
 }> = (props) => (
   <Tailwind>
     <Html lang="en">
-      <Head />
+      <Head>
+        <Font
+          fontFamily="Geist"
+          fallbackFontFamily="Verdana"
+          webFont={{
+            url: 'https://fonts.gstatic.com/s/geist/v1/gyByhwUxId8gMEwcGFU.woff2',
+            format: 'woff2',
+          }}
+          fontWeight={400}
+          fontStyle="normal"
+        />{' '}
+      </Head>
       <Preview>{props.preview}</Preview>
 
       <Body className="bg-white">

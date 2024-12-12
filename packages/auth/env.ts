@@ -9,9 +9,9 @@ export const authEnv = createEnv({
    * This way you can ensure the app isn't built with invalid env vars.
    */
   server: {
-    NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
     DISCORD_CLIENT_ID: z.string(),
     DISCORD_CLIENT_SECRET: z.string(),
+    NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
   },
   /**
    * Specify your client-side environment variables schema here.

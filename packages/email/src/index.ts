@@ -2,7 +2,8 @@
 
 import { Resend } from 'resend'
 
-import { emailEnv } from '../env'
+import { emailEnv } from '@yuki/email/env'
+
 import * as templates from './emails'
 
 export const sendEmail = async ({

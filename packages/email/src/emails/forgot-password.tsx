@@ -1,6 +1,7 @@
 import { Button, Link, Text } from '@react-email/components'
 
-import { emailEnv } from '../../env'
+import { emailEnv } from '@yuki/email/env'
+
 import { EmailLayout } from './_layout'
 
 const formattedDate = new Intl.DateTimeFormat('en', {

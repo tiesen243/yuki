@@ -26,7 +26,7 @@ export const GET = async (req: NextRequest, { params }: { params: { auth: [strin
     const state = generateState()
     const scopes = ['email', 'identify']
     const url = oauthProvider.createAuthorizationURL(state, scopes)
-    cookies().set('oauth_state', state, {
+    ;(await cookies()).set('oauth_state', state, {
       path: '/',
       secure: env.NODE_ENV === 'production',
       httpOnly: true,
@@ -41,7 +41,7 @@ export const GET = async (req: NextRequest, { params }: { params: { auth: [strin
     const code = url.searchParams.get('code') ?? ''
     const state = url.searchParams.get('state') ?? ''
     const storedState = req.cookies.get('oauth_state')?.value ?? ''
-    cookies().delete('oauth_state')
+    ;(await cookies()).delete('oauth_state')
     if (!code || !state || state !== storedState) throw new Error('Invalid state')
 
     const tokens = await oauthProvider.validateAuthorizationCode(code)
@@ -70,7 +70,7 @@ export const GET = async (req: NextRequest, { params }: { params: { auth: [strin
 
     const session = await lucia.createSession(user.id, {})
     const sessionCookie = lucia.createSessionCookie(session.id)
-    cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes)
+    ;(await cookies()).set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes)
 
     return NextResponse.redirect(new URL('/', req.url))
   } catch (e) {

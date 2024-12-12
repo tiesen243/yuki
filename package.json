@@ -8,8 +8,10 @@
   ],
   "scripts": {
     "build": "turbo run build",
+    "bump-deps": "bunx --bun npm-check-updates --deep -u -x react-day-picker && bun install",
     "clean": "git clean -xdf node_modules",
     "clean:workspaces": "turbo run clean",
+    "db:generate": "turbo -F @yuki/db db:generate",
     "db:push": "turbo -F @yuki/db push",
     "db:studio": "turbo -F @yuki/db studio",
     "dev": "turbo watch dev --continue",
