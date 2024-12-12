@@ -1,5 +1,6 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
 import { BadgeCheck, Bell, ChevronsUpDown, LogOut, Shield } from 'lucide-react'
 
 import { signOut } from '@yuki/auth'
@@ -19,6 +20,7 @@ import { useSession } from '@/lib/auth'
 
 export const NavUser = () => {
   const { isMobile } = useSidebar()
+  const router = useRouter()
   const session = useSession()
   if (!session) return null
 
@@ -67,7 +69,7 @@ export const NavUser = () => {
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <Shield />
-                Sercurity
+                Security
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <Bell />
@@ -75,7 +77,12 @@ export const NavUser = () => {
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => signOut()}>
+            <DropdownMenuItem
+              onClick={async () => {
+                await signOut()
+                router.refresh()
+              }}
+            >
               <LogOut />
               Log out
             </DropdownMenuItem>
