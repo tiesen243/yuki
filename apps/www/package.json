@@ -20,7 +20,6 @@
     "@trpc/react-query": "^11.0.0-rc.648",
     "@yuki/api": "workspace:*",
     "@yuki/auth": "workspace:*",
-    "@yuki/db": "workspace:*",
     "@yuki/ui": "workspace:*",
     "next": "15.1.0",
     "react": "^19.0.0",

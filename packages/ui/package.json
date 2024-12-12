@@ -11,17 +11,11 @@
     },
     "./*": {
       "types": "./dist/src/ui/*.d.ts",
-      "default": [
-        "./src/ui/*.ts",
-        "./src/ui/*.tsx"
-      ]
+      "default": "./src/ui/*.tsx"
     },
     "./hooks/*": {
       "types": "./dist/src/hooks/*.d.ts",
-      "default": [
-        "./src/hooks/*.ts",
-        "./src/hooks/*.tsx"
-      ]
+      "default": "./src/hooks/*.ts"
     },
     "./fonts": "./src/fonts/index.ts",
     "./tailwind.css": "./src/tailwind.css"

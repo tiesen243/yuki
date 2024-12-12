@@ -22,13 +22,13 @@ It uses [Turborepo](https://turborepo.org) and contains:
         └─ CI with pnpm cache setup
 apps
   ├─ www
-  |   ├─ Next.js 14
-  |   ├─ React 18
+  |   ├─ Next.js 15
+  |   ├─ React 19
   |   ├─ Tailwind CSS
   |   └─ E2E Typesafe API Server & Client
   └─ dashboard
-      ├─ Next.js 14
-      ├─ React 18
+      ├─ Next.js 15
+      ├─ React 19
       ├─ Tailwind CSS
       └─ E2E Typesafe API Server & Client
 packages
