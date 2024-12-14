@@ -31,7 +31,7 @@ export const NavLink: React.FC = () => {
             <BreadcrumbItem className="hidden md:block">
               <BreadcrumbLink asChild>
                 <Link href={`/${pathNames.slice(0, pathNames.indexOf(path) + 1).join('/')}`}>
-                  {path}
+                  {path.replace('-', ' ')}
                 </Link>
               </BreadcrumbLink>
             </BreadcrumbItem>
@@ -41,7 +41,7 @@ export const NavLink: React.FC = () => {
         ))}
 
         <BreadcrumbItem>
-          <BreadcrumbPage>{pathNames.at(-1)}</BreadcrumbPage>
+          <BreadcrumbPage>{pathNames.at(-1)?.replace('-', ' ')}</BreadcrumbPage>
         </BreadcrumbItem>
       </BreadcrumbList>
     </Breadcrumb>
