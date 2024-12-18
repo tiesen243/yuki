@@ -31,7 +31,7 @@
     "turbo": "^2.3.3",
     "typescript": "latest"
   },
-  "packageManager": "bun@1.1.38",
+  "packageManager": "bun@1.1.40",
   "engines": {
     "bun": "^1.1.38",
     "node": ">=22.18.1"
