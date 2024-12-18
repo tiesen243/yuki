@@ -1,5 +1,6 @@
 'use client'
 
+import { ChangePassword } from '@yuki/api/types/user'
 import { Button } from '@yuki/ui/button'
 import { FormField } from '@yuki/ui/form-field'
 import { toast } from '@yuki/ui/hooks/use-toast'
@@ -19,11 +20,7 @@ export const ChangePasswordForm: React.FC<{ hasPassword: boolean }> = ({ hasPass
       className="grid gap-4"
       onSubmit={(e) => {
         e.preventDefault()
-        changePassword.mutate({
-          oldPassword: e.currentTarget.oldPassword.value,
-          newPassword: e.currentTarget.newPassword.value,
-          confirmNewPassword: e.currentTarget.confirmNewPassword.value,
-        })
+        changePassword.mutate(Object.fromEntries(new FormData(e.currentTarget)) as ChangePassword)
       }}
     >
       {hasPassword && (
