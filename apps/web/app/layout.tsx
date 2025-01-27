@@ -9,6 +9,7 @@ import { cn } from '@yuki/ui/utils'
 import { SessionProvider } from '@/hooks/use-session'
 import { createMetadata } from '@/lib/metadata'
 import { TRPCReactProvider } from '@/lib/trpc/react'
+import { Footer } from './_components/footer'
 import { Header } from './_components/header'
 
 const geistSans = Geist({ variable: '--font-sans', subsets: ['latin'] })
@@ -21,7 +22,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         className={cn(
-          'min-h-dvh font-sans antialiased',
+          'flex min-h-dvh flex-col font-sans antialiased',
           geistSans.variable,
           geistMono.variable,
         )}
@@ -31,6 +32,7 @@ export default function RootLayout({
             <SessionProvider>
               <Header />
               {children}
+              <Footer />
             </SessionProvider>
           </TRPCReactProvider>
           <Toaster />

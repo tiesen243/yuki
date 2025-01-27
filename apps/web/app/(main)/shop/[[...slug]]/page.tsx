@@ -2,7 +2,7 @@ import { createMetadata } from '@/lib/metadata'
 
 export default function ShopPage() {
   return (
-    <main className="container py-4">
+    <main className="container grow py-4">
       <p>Shop</p>
     </main>
   )
