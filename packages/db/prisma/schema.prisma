@@ -50,6 +50,12 @@ model Session {
   createdAt DateTime @default(now())
 }
 
+model Category {
+  id       String    @id @default(cuid())
+  name     String
+  products Product[]
+}
+
 model Product {
   id          String       @id @default(cuid())
   name        String
@@ -58,6 +64,9 @@ model Product {
   image       String
   stock       Int          @default(0)
   evaluations Evaluation[]
+
+  Category   Category @relation(fields: [categoryId], references: [id])
+  categoryId String
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String

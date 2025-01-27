@@ -1,0 +1,29 @@
+'use client'
+
+import Link from 'next/link'
+
+import { Avatar, AvatarFallback, AvatarImage } from '@yuki/ui/avatar'
+import { buttonVariants } from '@yuki/ui/button'
+import { Skeleton } from '@yuki/ui/skeleton'
+
+import { useSession } from '@/hooks/use-session'
+
+export const User = () => {
+  const { session, isLoading } = useSession()
+
+  if (isLoading) return <Skeleton className="size-9 rounded-full" />
+
+  if (!session?.user)
+    return (
+      <Link href="/auth/sign-in" className={buttonVariants({ size: 'sm' })}>
+        Sign in
+      </Link>
+    )
+
+  return (
+    <Avatar className="ring-ring size-9 hover:ring-2">
+      <AvatarImage src={session.user.image} alt={session.user.name} />
+      <AvatarFallback>{session.user.name[0]}</AvatarFallback>
+    </Avatar>
+  )
+}

@@ -20,7 +20,7 @@ export const createMetadata = (
   return {
     ...override,
     metadataBase: new URL(getBaseUrl()),
-    title: override.title ? `${siteName} | ${override.title}` : siteName,
+    title: override.title ? `${override.title} | ${siteName}` : siteName,
     description: override.description ?? description,
     applicationName: siteName,
     alternates: { canonical: url },

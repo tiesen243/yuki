@@ -33,6 +33,7 @@
   },
   "prettier": "@yuki/prettier-config",
   "dependencies": {
+    "@radix-ui/react-avatar": "^1.1.2",
     "@radix-ui/react-slot": "^1.1.1",
     "@radix-ui/react-toast": "^1.2.5",
     "class-variance-authority": "^0.7.1",

@@ -8,3 +8,13 @@ export const getBaseUrl = () => {
   // eslint-disable-next-line no-restricted-properties
   return `http://localhost:${process.env.PORT ?? 3000}`
 }
+
+export const slugify = (text: string) => {
+  return text
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/\W+/g, '-')
+    .replace(/^-+/, '')
+    .replace(/-+$/, '')
+}
