@@ -8,16 +8,23 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  USER
+  ADMIN
+}
+
 model User {
   id       String    @id @default(cuid())
-  name     String
   email    String    @unique
+  name     String
   image    String
+  role     Role      @default(USER)
   password String?
   accounts Account[]
   sessions Session[]
 
-  posts Post[]
+  products Product[]
+  orders   Order[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -43,13 +50,52 @@ model Session {
   createdAt DateTime @default(now())
 }
 
-model Post {
-  id      String @id @default(cuid())
-  title   String
-  content String
+model Product {
+  id          String       @id @default(cuid())
+  name        String
+  description String
+  price       Float
+  image       String
+  stock       Int          @default(0)
+  evaluations Evaluation[]
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  orders OrderItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Evaluation {
+  id      String  @id @default(cuid())
+  rating  Int
+  comment String?
+
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String
+
+  createdAt DateTime @default(now())
+}
+
+model Order {
+  id       String      @id @default(cuid())
+  products OrderItem[]
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model OrderItem {
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String
+
+  order   Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orderId String
+
+  @@id([productId, orderId])
 }
