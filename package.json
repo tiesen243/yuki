@@ -1,0 +1,44 @@
+{
+  "name": "create-yuki-turbo",
+  "version": "2.0.1",
+  "private": true,
+  "description": "Turborepo template for doing stuff",
+  "license": "MIT",
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "tooling/*"
+  ],
+  "scripts": {
+    "build": "turbo run build",
+    "bump-deps": "bunx --bun npm-check-updates --deep -u -x react-day-picker && bun install",
+    "clean": "git clean -xdf node_modules",
+    "clean:workspaces": "turbo run clean",
+    "db:generate": "turbo -F @yuki/db gnr",
+    "db:push": "turbo -F @yuki/db push",
+    "db:studio": "turbo -F @yuki/db studio",
+    "dev": "turbo watch dev --continue",
+    "format": "turbo run format --continue -- --cache --cache-location .cache/.prettiercache",
+    "format:fix": "turbo run format --continue -- --write --cache --cache-location .cache/.prettiercache",
+    "postinstall": "bun lint:ws",
+    "lint": "turbo run lint --continue -- --cache --cache-location .cache/.eslintcache",
+    "lint:fix": "turbo run lint --continue -- --fix --cache --cache-location .cache/.eslintcache",
+    "lint:ws": "bunx --bun sherif@latest",
+    "typecheck": "turbo run typecheck",
+    "ui-add": "turbo run ui-add"
+  },
+  "prettier": "@yuki/prettier-config",
+  "devDependencies": {
+    "@turbo/gen": "^2.3.4",
+    "@yuki/prettier-config": "workspace:*",
+    "@yuki/tsconfig": "workspace:*",
+    "prettier": "^3.4.2",
+    "turbo": "^2.3.4",
+    "typescript": "^5.7.3"
+  },
+  "packageManager": "bun@1.2.0",
+  "engines": {
+    "bun": ">=1.2.0",
+    "node": ">=20.18.1"
+  }
+}

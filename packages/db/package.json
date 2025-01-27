@@ -1,0 +1,41 @@
+{
+  "name": "@yuki/db",
+  "version": "2.0.0",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "type": "./dist/index.d.ts",
+      "default": "./src/index.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "clean": "git clean -xdf .cache .turbo dist node_modules",
+    "dev": "tsc --watch",
+    "format": "prettier --check . --ignore-path ../../.gitignore",
+    "gnr": "bun with-env prisma generate",
+    "lint": "eslint",
+    "push": "bun with-env prisma db push",
+    "studio": "bun with-env prisma studio",
+    "typecheck": "tsc --noEmit --emitDeclarationOnly false",
+    "with-env": "dotenv -e ../../.env --"
+  },
+  "prettier": "@yuki/prettier-config",
+  "dependencies": {
+    "@neondatabase/serverless": "^0.10.4",
+    "@prisma/adapter-neon": "^6.2.1",
+    "@prisma/client": "^6.2.1"
+  },
+  "devDependencies": {
+    "@yuki/eslint-config": "workspace:*",
+    "@yuki/prettier-config": "workspace:*",
+    "@yuki/tsconfig": "workspace:*",
+    "dotenv-cli": "^8.0.0",
+    "eslint": "latest",
+    "prettier": "latest",
+    "prisma": "^6.2.1",
+    "typescript": "latest"
+  }
+}
