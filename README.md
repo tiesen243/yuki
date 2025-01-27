@@ -1,8 +1,8 @@
 # Yuki
 
-## Installation
-
 An innovative E-Commerce application built using Turbo repo and Next.js, offering a seamless shopping experience with fast performance and modern design.
+
+## Installation
 
 > [!NOTE]
 >
