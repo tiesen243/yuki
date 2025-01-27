@@ -1,0 +1,2 @@
+@import '@yuki/ui/tailwind.css';
+@source '../../../packages/ui/src/components/*.tsx';

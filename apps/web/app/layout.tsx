@@ -1,4 +1,4 @@
-import '@yuki/ui/tailwind.css'
+import '@/app/globals.css'
 
 import { Geist, Geist_Mono } from 'next/font/google'
 import { ThemeProvider } from 'next-themes'
@@ -6,9 +6,10 @@ import { ThemeProvider } from 'next-themes'
 import { Toaster } from '@yuki/ui/toaster'
 import { cn } from '@yuki/ui/utils'
 
+import { SessionProvider } from '@/hooks/use-session'
 import { createMetadata } from '@/lib/metadata'
-import { SessionProvider } from '@/lib/session'
 import { TRPCReactProvider } from '@/lib/trpc/react'
+import { Header } from './_components/header'
 
 const geistSans = Geist({ variable: '--font-sans', subsets: ['latin'] })
 const geistMono = Geist_Mono({ variable: '--font-mono', subsets: ['latin'] })
@@ -27,7 +28,10 @@ export default function RootLayout({
       >
         <ThemeProvider attribute="class" defaultTheme="dark" disableTransitionOnChange>
           <TRPCReactProvider>
-            <SessionProvider>{children}</SessionProvider>
+            <SessionProvider>
+              <Header />
+              {children}
+            </SessionProvider>
           </TRPCReactProvider>
           <Toaster />
         </ThemeProvider>
