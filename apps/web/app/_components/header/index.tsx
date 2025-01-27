@@ -5,7 +5,6 @@ import Link from 'next/link'
 import { SearchIcon } from '@yuki/ui/icons'
 import { Input } from '@yuki/ui/input'
 
-import Logo from '@/public/assets/logo.svg'
 import { MobileMenu } from './mobile-menu'
 import { ThemeBtn } from './theme-btn'
 import { User } from './user'
@@ -16,8 +15,13 @@ export const Header: React.FC = () => (
       <MobileMenu navLinks={navLinks} />
 
       <Link href="/" className="flex items-center gap-2 text-3xl font-bold">
-        {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
-        <Image src={Logo} alt="Logo" className="size-9 dark:invert" />
+        <Image
+          src="/assets/logo.svg"
+          alt="Logo"
+          width={36}
+          height={36}
+          className="size-9 dark:invert"
+        />
         <span className="sr-only md:not-sr-only">Yuki</span>
       </Link>
 

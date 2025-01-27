@@ -11,7 +11,6 @@ import { Input } from '@yuki/ui/input'
 import { cn } from '@yuki/ui/utils'
 
 import { slugify } from '@/lib/utils'
-import Logo from '@/public/assets/logo.svg'
 
 export const MobileMenu: React.FC<{
   navLinks: { title: string; href: string }[]
@@ -44,8 +43,14 @@ export const MobileMenu: React.FC<{
         )}
       >
         <Link href="/" className="mx-2 my-4 flex items-center gap-2 text-xl font-bold">
-          {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
-          <Image src={Logo} alt="Logo" className="size-8 dark:invert" />
+          <Image
+            src="/assets/logo.svg"
+            alt="Logo"
+            width={36}
+            height={36}
+            className="size-9 dark:invert"
+          />
+
           <span>Yuki</span>
         </Link>
 
