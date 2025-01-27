@@ -5,9 +5,9 @@ import { getBaseUrl } from '@/lib/utils'
 export const createMetadata = (
   override: Omit<Metadata, 'title'> & { title?: string },
 ): Metadata => {
-  const siteName = 'Create Yuki Turbo'
+  const siteName = 'Yuki'
   const description =
-    'Clean and typesafe starter monorepo using Turborepo along with Next.js and tRPC '
+    'An innovative E-Commerce application built using Turbo repo and Next.js, offering a seamless shopping experience with fast performance and modern design.'
 
   const url = override.openGraph?.url
     ? `${getBaseUrl()}${override.openGraph.url}`
@@ -27,10 +27,9 @@ export const createMetadata = (
     twitter: { card: 'summary_large_image' },
     openGraph: { url, images, siteName, type: 'website', ...override.openGraph },
     icons: {
-      // Replace with your own icons
-      icon: 'https://tiesen.id.vn/favicon.ico',
-      shortcut: 'https://tiesen.id.vn/favicon-16x16.png',
-      apple: 'https://tiesen.id.vn/apple-touch-icon.png',
+      icon: '/favicon.ico',
+      shortcut: '/favicon-16x16.png',
+      apple: '/apple-touch-icon.png',
     },
   }
 }
