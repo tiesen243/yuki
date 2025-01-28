@@ -27,7 +27,7 @@ const nextConfig: NextConfig = {
         headers: [
           {
             key: 'Access-Control-Allow-Origin',
-            value: env.DASHBOARD_URL,
+            value: String(env.DASHBOARD_URL),
           },
           { key: 'Access-Control-Allow-Credentials', value: 'true' },
           {
