@@ -40,7 +40,7 @@ export default tseslint.config(
   includeIgnoreFile(path.join(import.meta.dirname, '../../.gitignore')),
   { ignores: ['*.config.js'] },
   {
-    files: ['**/*.js', '**/*.ts', '**/*.tsx'],
+    files: ['**/*.js', '**/*.ts', '**/*.tsx', '**/*.vue'],
     plugins: { import: importPlugin },
     extends: [
       jseslint.configs.recommended,
@@ -78,9 +78,6 @@ export default tseslint.config(
   },
   {
     linterOptions: { reportUnusedDisableDirectives: true },
-    languageOptions: {
-      parser: tseslint.parser,
-      parserOptions: { projectService: true },
-    },
+    languageOptions: { parserOptions: { projectService: true } },
   },
 )
