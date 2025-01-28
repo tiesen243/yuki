@@ -19,7 +19,7 @@ export const env = createEnv({
    */
   clientPrefix: 'VITE_',
   client: {
-    VITE_WEB_URL: z.string().default('http://localhost:3000'),
+    VITE_WEB_URL: z.string().optional(),
     // VITE_CLIENTVAR: z.string(),
   },
   /**

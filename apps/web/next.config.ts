@@ -23,7 +23,10 @@ const nextConfig: NextConfig = {
       {
         source: '/api/:path*',
         headers: [
-          { key: 'Access-Control-Allow-Origin', value: String(env.DASHBOARD_URL) },
+          {
+            key: 'Access-Control-Allow-Origin',
+            value: String(env.DASHBOARD_URL ?? 'http://localhost:3001'),
+          },
           { key: 'Access-Control-Request-Method', value: '*' },
           { key: 'Access-Control-Allow-Methods', value: 'OPTIONS,GET,POST' },
           { key: 'Access-Control-Allow-Headers', value: '*' },
