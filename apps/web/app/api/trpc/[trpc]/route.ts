@@ -16,7 +16,10 @@ const setCorsHeaders = (res: Response) => {
   )
   res.headers.set('Access-Control-Request-Method', '*')
   res.headers.set('Access-Control-Allow-Methods', 'OPTIONS,GET,POST')
-  res.headers.set('Access-Control-Allow-Headers', '*')
+  res.headers.set(
+    'Access-Control-Allow-Headers',
+    'x-trpc-source,authorization,content-type,accept',
+  )
 }
 
 export const OPTIONS = () => {
