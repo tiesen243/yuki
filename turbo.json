@@ -3,28 +3,66 @@
   "ui": "tui",
   "tasks": {
     "build": {
-      "dependsOn": ["^gnr", "^build"],
-      "outputs": [".cache/tsbuildinfo.json", "dist/**"]
+      "dependsOn": [
+        "^gnr",
+        "^build"
+      ],
+      "outputs": [
+        ".cache/tsbuildinfo.json",
+        "dist/**"
+      ]
     },
-    "clean": { "cache": false },
-    "//#clean": { "cache": false },
-    "dev": { "dependsOn": ["^dev"], "cache": false, "persistent": false },
+    "clean": {
+      "cache": false
+    },
+    "//#clean": {
+      "cache": false
+    },
+    "dev": {
+      "dependsOn": [
+        "^dev"
+      ],
+      "cache": false,
+      "persistent": false
+    },
     "format": {
-      "outputs": [".cache/.prettiercache"],
+      "outputs": [
+        ".cache/.prettiercache"
+      ],
       "outputLogs": "new-only"
     },
     "lint": {
-      "dependsOn": ["^lint"],
-      "outputs": [".cache/.eslintcache"]
+      "dependsOn": [
+        "^lint"
+      ],
+      "outputs": [
+        ".cache/.eslintcache"
+      ]
     },
     "typecheck": {
-      "dependsOn": ["^typecheck"],
-      "outputs": [".cache/tsbuildinfo.json"]
+      "dependsOn": [
+        "^typecheck"
+      ],
+      "outputs": [
+        ".cache/tsbuildinfo.json"
+      ]
     },
-    "push": { "cache": false, "interactive": true },
-    "studio": { "cache": false, "persistent": false },
-    "gnr": { "cache": false, "interactive": false },
-    "ui-add": { "cache": false, "interactive": true }
+    "push": {
+      "cache": false,
+      "interactive": true
+    },
+    "studio": {
+      "cache": false,
+      "persistent": false
+    },
+    "gnr": {
+      "cache": false,
+      "interactive": false
+    },
+    "ui-add": {
+      "cache": false,
+      "interactive": true
+    }
   },
   "globalEnv": [
     "DATABASE_URL",
