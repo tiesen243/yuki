@@ -6,6 +6,8 @@ import '@/env'
 
 import type { NextConfig } from 'next'
 
+import { env } from '@/env'
+
 const nextConfig: NextConfig = {
   reactStrictMode: true,
 
@@ -23,7 +25,10 @@ const nextConfig: NextConfig = {
       {
         source: '/api/:path*',
         headers: [
-          { key: 'Access-Control-Allow-Origin', value: '*' },
+          {
+            key: 'Access-Control-Allow-Origin',
+            value: env.DASHBOARD_URL,
+          },
           { key: 'Access-Control-Allow-Credentials', value: 'true' },
           {
             key: 'Access-Control-Allow-Methods',

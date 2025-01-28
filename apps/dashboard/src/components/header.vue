@@ -11,13 +11,13 @@ import {
   SunIcon,
 } from '@yuki/ui/vue'
 
+import { env } from '@/env'
 import { useSession } from '@/hooks/use-session'
-import { getAppUrl } from '@/lib/utils'
 
 const { session, isLoading } = useSession()
 const mode = useColorMode()
 
-const logoUrl = `${getAppUrl()}/assets/logo.svg`
+const logoUrl = `${env.VITE_WEB_URL}/assets/logo.svg`
 
 const navLinks = [
   { label: 'Categories', href: '/categories' },

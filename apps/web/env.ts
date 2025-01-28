@@ -8,6 +8,7 @@ export const env = createEnv({
   extends: [vercel(), authEnv],
   shared: {
     NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
+    DASHBOARD_URL: z.string().default('http://localhost:3001'),
   },
   /**
    * Specify your server-side environment variables schema here.
@@ -29,6 +30,7 @@ export const env = createEnv({
    */
   experimental__runtimeEnv: {
     NODE_ENV: process.env.NODE_ENV,
+    DASHBOARD_URL: process.env.DASHBOARD,
 
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },

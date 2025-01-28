@@ -3,14 +3,8 @@
   "ui": "tui",
   "tasks": {
     "build": {
-      "dependsOn": [
-        "^gnr",
-        "^build"
-      ],
-      "outputs": [
-        ".cache/tsbuildinfo.json",
-        "dist/**"
-      ]
+      "dependsOn": ["^gnr", "^build"],
+      "outputs": [".cache/tsbuildinfo.json", "dist/**"]
     },
     "clean": {
       "cache": false
@@ -19,33 +13,21 @@
       "cache": false
     },
     "dev": {
-      "dependsOn": [
-        "^dev"
-      ],
+      "dependsOn": ["^dev"],
       "cache": false,
       "persistent": false
     },
     "format": {
-      "outputs": [
-        ".cache/.prettiercache"
-      ],
+      "outputs": [".cache/.prettiercache"],
       "outputLogs": "new-only"
     },
     "lint": {
-      "dependsOn": [
-        "^lint"
-      ],
-      "outputs": [
-        ".cache/.eslintcache"
-      ]
+      "dependsOn": ["^lint"],
+      "outputs": [".cache/.eslintcache"]
     },
     "typecheck": {
-      "dependsOn": [
-        "^typecheck"
-      ],
-      "outputs": [
-        ".cache/tsbuildinfo.json"
-      ]
+      "dependsOn": ["^typecheck"],
+      "outputs": [".cache/tsbuildinfo.json"]
     },
     "push": {
       "cache": false,
@@ -70,6 +52,8 @@
     "DISCORD_SECRET",
     "GITHUB_ID",
     "GITHUB_SECRET",
+    "VITE_WEB_URL",
+    "DASHBOARD_URL",
     "PORT"
   ],
   "globalPassThroughEnv": [

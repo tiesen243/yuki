@@ -5,7 +5,6 @@ import SuperJSON from 'superjson'
 import type { AppRouter } from '@yuki/api'
 
 import { env } from '@/env'
-import { getAppUrl } from '@/lib/utils'
 
 export const api = createTRPCClient<AppRouter>({
   links: [
@@ -16,7 +15,7 @@ export const api = createTRPCClient<AppRouter>({
     }),
     unstable_httpBatchStreamLink({
       transformer: SuperJSON,
-      url: getAppUrl() + '/api/trpc',
+      url: env.VITE_WEB_URL + '/api/trpc',
       headers() {
         const headers = new Headers()
         headers.set('x-trpc-source', 'vue')
