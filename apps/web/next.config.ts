@@ -1,11 +1,9 @@
+import type { NextConfig } from 'next'
+
 /**
  * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially useful
  * for Docker builds.
  */
-import '@/env'
-
-import type { NextConfig } from 'next'
-
 import { env } from '@/env'
 
 const nextConfig: NextConfig = {
@@ -25,19 +23,10 @@ const nextConfig: NextConfig = {
       {
         source: '/api/:path*',
         headers: [
-          {
-            key: 'Access-Control-Allow-Origin',
-            value: String(env.DASHBOARD_URL),
-          },
-          { key: 'Access-Control-Allow-Credentials', value: 'true' },
-          {
-            key: 'Access-Control-Allow-Methods',
-            value: 'GET,DELETE,PATCH,POST,PUT',
-          },
-          {
-            key: 'Access-Control-Allow-Headers',
-            value: 'x-trpc-source,X-Requested-With,Content-Type,Authorization',
-          },
+          { key: 'Access-Control-Allow-Origin', value: String(env.DASHBOARD_URL) },
+          { key: 'Access-Control-Request-Method', value: '*' },
+          { key: 'Access-Control-Allow-Methods', value: 'OPTIONS,GET,POST' },
+          { key: 'Access-Control-Allow-Headers', value: '*' },
         ],
       },
     ]
