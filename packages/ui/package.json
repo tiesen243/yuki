@@ -13,6 +13,10 @@
       "types": "./dist/components/*.d.ts",
       "default": "./src/components/*.tsx"
     },
+    "./vue": {
+      "types": "./dist/components/vue/index.d.ts",
+      "default": "./src/components/vue/index.ts"
+    },
     "./hooks/*": {
       "types": "./dist/hooks/*.d.ts",
       "default": [
@@ -23,12 +27,12 @@
     "./tailwind.css": "./src/tailwind.css"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "vue-tsc",
     "clean": "git clean -xdf .cache .turbo dist node_modules",
-    "dev": "tsc --watch",
+    "dev": "vue-tsc --watch",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
-    "typecheck": "tsc --noEmit --emitDeclarationOnly false",
+    "typecheck": "vue-tsc --noEmit --emitDeclarationOnly false",
     "ui-add": "bunx --bun shadcn@canary add && prettier src --write --list-different"
   },
   "prettier": "@yuki/prettier-config",
@@ -40,10 +44,13 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.474.0",
+    "lucide-vue-next": "^0.474.0",
     "next-themes": "^0.4.4",
+    "radix-vue": "^1.9.13",
     "react": "^19.0.0",
     "tailwind-merge": "^2.6.0",
-    "tailwindcss": "^4.0.0"
+    "tailwindcss": "^4.0.0",
+    "vue": "^3.5.13"
   },
   "devDependencies": {
     "@types/react": "^19.0.8",
@@ -52,6 +59,7 @@
     "@yuki/tsconfig": "workspace:*",
     "eslint": "latest",
     "prettier": "latest",
-    "typescript": "latest"
+    "typescript": "latest",
+    "vue-tsc": "^2.2.0"
   }
 }

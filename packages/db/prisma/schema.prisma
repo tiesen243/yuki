@@ -20,6 +20,7 @@ model User {
   image    String
   role     Role      @default(USER)
   password String?
+  address  String?
   accounts Account[]
   sessions Session[]
 
@@ -88,9 +89,17 @@ model Evaluation {
   createdAt DateTime @default(now())
 }
 
+enum Status {
+  PENDING
+  DELIVERED
+  CANCELED
+}
+
 model Order {
   id       String      @id @default(cuid())
   products OrderItem[]
+  total    Float
+  status   Status      @default(PENDING)
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String

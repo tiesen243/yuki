@@ -14,7 +14,7 @@ export const Header: React.FC = () => (
     <div className="container flex items-center justify-between gap-4">
       <MobileMenu navLinks={navLinks} />
 
-      <Link href="/" className="flex items-center gap-2 text-3xl font-bold">
+      <Link href="/" className="flex items-center gap-2 text-2xl font-bold">
         <Image
           src="/assets/logo.svg"
           alt="Logo"

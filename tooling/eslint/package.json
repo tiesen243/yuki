@@ -6,7 +6,8 @@
   "exports": {
     "./base": "./base.js",
     "./nextjs": "./next.js",
-    "./react": "./react.js"
+    "./react": "./react.js",
+    "./vue": "./vue.js"
   },
   "scripts": {
     "clean": "git clean -xdf .cache .turbo node_modules",
@@ -22,7 +23,7 @@
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-turbo": "^2.3.4",
     "eslint-plugin-vue": "^9.32.0",
-    "typescript-eslint": "^8.21.0"
+    "typescript-eslint": "^8.22.0"
   },
   "devDependencies": {
     "@yuki/prettier-config": "workspace:*",

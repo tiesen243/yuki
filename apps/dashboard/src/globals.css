@@ -1,0 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap');
+
+@import '@yuki/ui/tailwind.css';
+@source '../../../packages/ui/src/components/vue/*.vue';
+
+@theme {
+  --font-sans: 'Geist', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+}
