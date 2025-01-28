@@ -1,4 +1,4 @@
-import { createTRPCClient, loggerLink, unstable_httpBatchStreamLink } from '@trpc/client'
+import { createTRPCClient, httpBatchLink, loggerLink } from '@trpc/client'
 import { useCookies } from '@vueuse/integrations/useCookies'
 import SuperJSON from 'superjson'
 
@@ -13,7 +13,7 @@ export const api = createTRPCClient<AppRouter>({
         env.NODE_ENV === 'development' ||
         (op.direction === 'down' && op.result instanceof Error),
     }),
-    unstable_httpBatchStreamLink({
+    httpBatchLink({
       transformer: SuperJSON,
       url: env.VITE_WEB_URL + '/api/trpc',
       headers() {
