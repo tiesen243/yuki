@@ -15,25 +15,6 @@ const nextConfig: NextConfig = {
   /** We already do linting and typechecking as separate tasks in CI */
   eslint: { ignoreDuringBuilds: true },
   typescript: { ignoreBuildErrors: true },
-
-  /** Cors */
-  // eslint-disable-next-line @typescript-eslint/require-await
-  async headers() {
-    return [
-      {
-        source: '/api/:path*',
-        headers: [
-          {
-            key: 'Access-Control-Allow-Origin',
-            value: 'https://yuki-dashboard.vercel.app',
-          },
-          { key: 'Access-Control-Request-Method', value: '*' },
-          { key: 'Access-Control-Allow-Methods', value: 'OPTIONS,GET,POST' },
-          { key: 'Access-Control-Allow-Headers', value: '*' },
-        ],
-      },
-    ]
-  },
 }
 
 export default nextConfig
