@@ -25,7 +25,9 @@ const nextConfig: NextConfig = {
         headers: [
           {
             key: 'Access-Control-Allow-Origin',
-            value: String(env.DASHBOARD_URL ?? 'http://localhost:3001'),
+            value: env.DASHBOARD_URL
+              ? `https://${env.DASHBOARD_URL}`
+              : 'http://localhost:3001',
           },
           { key: 'Access-Control-Request-Method', value: '*' },
           { key: 'Access-Control-Allow-Methods', value: 'OPTIONS,GET,POST' },
