@@ -11,6 +11,7 @@ export const env = createEnv({
    */
   server: {
     DATABASE_URL: z.string(),
+    WEB_URL: z.string().optional(),
   },
 
   /**

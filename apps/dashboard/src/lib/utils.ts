@@ -1,6 +1,6 @@
 import { env } from '@/env'
 
 export const getAppUrl = () => {
-  if (env.NODE_ENV === 'production') return 'https://yuki.vercel.app'
+  if (env.WEB_URL) return `https://${env.WEB_URL}`
   return 'http://localhost:3000'
 }
