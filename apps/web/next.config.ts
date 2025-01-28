@@ -1,10 +1,10 @@
-import type { NextConfig } from 'next'
-
 /**
  * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially useful
  * for Docker builds.
  */
-import { env } from '@/env'
+import '@/env'
+
+import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
@@ -25,9 +25,7 @@ const nextConfig: NextConfig = {
         headers: [
           {
             key: 'Access-Control-Allow-Origin',
-            value: env.DASHBOARD_URL
-              ? `https://${env.DASHBOARD_URL}`
-              : 'http://localhost:3001',
+            value: 'https://yuki-dashboard.vercel.app',
           },
           { key: 'Access-Control-Request-Method', value: '*' },
           { key: 'Access-Control-Allow-Methods', value: 'OPTIONS,GET,POST' },
