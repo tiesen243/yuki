@@ -3,8 +3,10 @@ import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 import { OAuth2RequestError } from 'arctic'
 
-import { auth, signIn } from '../config'
+import { auth } from '../config'
+import { env } from '../env'
 import { OAuth } from './OAuth'
+import { createSession } from './session'
 
 export const handlers = async (
   req: NextRequest,
@@ -31,7 +33,14 @@ export const handlers = async (
       nextUrl,
       req.cookies.get('oauth_state')?.value,
     )
-    await signIn(user.id)
+    const { token, expiresAt } = await createSession(user.id)
+    ;(await cookies()).set('auth_token', token, {
+      httpOnly: true,
+      path: '/',
+      secure: env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      expires: expiresAt,
+    })
     ;(await cookies()).delete('oauth_state')
 
     return NextResponse.redirect(new URL('/', nextUrl))

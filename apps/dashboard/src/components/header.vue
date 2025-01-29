@@ -32,8 +32,11 @@ const navLinks = [
     class="bg-background/70 sticky inset-0 z-50 border-b py-4 shadow-md backdrop-blur-xl backdrop-saturate-150"
   >
     <div class="container flex items-center justify-between gap-4">
-      <RouterLink to="/" class="flex items-center gap-2 text-2xl font-bold">
-        <img class="size-9 dark:invert" :src="logoUrl" alt="Logo" />
+      <RouterLink
+        to="/"
+        class="flex grow items-center gap-2 text-2xl font-bold md:grow-0"
+      >
+        <img class="size-9 dark:invert" :src="logoUrl" alt="Logo">
         <span class="sr-only not-sr-only">Dashboard</span>
       </RouterLink>
 
@@ -50,7 +53,9 @@ const navLinks = [
       </nav>
 
       <Skeleton v-if="isLoading" class="size-9 rounded-full" />
-      <Button v-else-if="!session?.user"> Login </Button>
+      <Button v-else-if="!session?.user" as="RouterLink" to="/auth/sign-in">
+        Login
+      </Button>
       <Avatar v-else class="ring-ring size-9 hover:ring-2">
         <AvatarFallback>{session.user.name[0]}</AvatarFallback>
         <AvatarImage :src="session.user.image" :alt="session.user.name" />

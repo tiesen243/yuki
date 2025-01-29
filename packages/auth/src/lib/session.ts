@@ -1,7 +1,7 @@
 import { sha256 } from '@oslojs/crypto/sha2'
 import { encodeBase32LowerCaseNoPadding, encodeHexLowerCase } from '@oslojs/encoding'
 
-import type { Session as PrismaSession, User } from '@yuki/db'
+import type { User } from '@yuki/db'
 import { db } from '@yuki/db'
 
 interface Session {
@@ -18,14 +18,18 @@ const generateSessionToken = (): string => {
   return token
 }
 
-const createSession = async (token: string, userId: string): Promise<PrismaSession> => {
+const createSession = async (
+  userId: string,
+): Promise<{ token: string; expiresAt: Date }> => {
+  const token = generateSessionToken()
   const session = {
     sessionToken: encodeHexLowerCase(sha256(new TextEncoder().encode(token))),
     expiresAt: new Date(Date.now() + EXPIRES_IN),
     user: { connect: { id: userId } },
   }
 
-  return await db.session.create({ data: session })
+  await db.session.create({ data: session })
+  return { token, expiresAt: session.expiresAt }
 }
 
 const validateSessionToken = async (token: string): Promise<Session> => {

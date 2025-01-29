@@ -1,17 +1,22 @@
 <script setup lang="ts">
-import type { HTMLAttributes } from 'vue'
-
 import { cn } from '@yuki/ui/utils'
 
-const props = defineProps<{
-  class?: HTMLAttributes['class']
-}>()
+interface Props {
+  as?: string
+}
+
+withDefaults(defineProps<Props>(), {
+  as: 'div',
+})
 </script>
 
 <template>
-  <div
-    :class="cn('bg-card text-card-foreground rounded-xl border shadow-sm', props.class)"
+  <component
+    :is="as"
+    :class="
+      cn('bg-card text-card-foreground rounded-xl border shadow-sm', $attrs.class ?? '')
+    "
   >
     <slot />
-  </div>
+  </component>
 </template>

@@ -5,6 +5,7 @@ import { createApp } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 import App from './App.vue'
+import SignInPage from './routes/auth/sign-in.vue'
 import CategoriesPage from './routes/categories.vue'
 import CustomersPage from './routes/customers.vue'
 import HomePage from './routes/home.vue'
@@ -15,6 +16,7 @@ import ProductsPage from './routes/products.vue'
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 const routes = [
   { path: '/', component: HomePage },
+  { path: '/auth/sign-in', component: SignInPage },
   { path: '/categories', component: CategoriesPage },
   { path: '/customers', component: CustomersPage },
   { path: '/orders', component: OrdersPage },
