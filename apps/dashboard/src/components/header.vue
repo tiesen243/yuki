@@ -14,7 +14,7 @@ import {
 import { useSession } from '@/hooks/use-session'
 import { getWebUrl } from '@/lib/utils'
 
-const { session, isLoading } = useSession()
+const { session, isLoading, signOut, isSigningOut } = useSession()
 const mode = useColorMode()
 
 const logoUrl = `${getWebUrl()}/assets/logo.svg`
@@ -60,6 +60,15 @@ const navLinks = [
         <AvatarFallback>{session.user.name[0]}</AvatarFallback>
         <AvatarImage :src="session.user.image" :alt="session.user.name" />
       </Avatar>
+
+      <Button
+        v-if="session?.user"
+        variant="ghost"
+        :disabled="isSigningOut"
+        @click="signOut()"
+      >
+        Logout
+      </Button>
 
       <Button
         variant="ghost"

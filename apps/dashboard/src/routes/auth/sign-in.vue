@@ -28,7 +28,7 @@ const handleSubmit = () => {
 
 <template>
   <main class="container grid min-h-[90dvh] place-items-center">
-    <Card as="form" class="min-w-3/5" @submit.prevent="handleSubmit">
+    <Card as="form" class="w-full max-w-xl" @submit.prevent="handleSubmit">
       <CardHeader>
         <CardTitle>Sign In</CardTitle>
         <CardDescription>Sign in to your account</CardDescription>
@@ -37,10 +37,18 @@ const handleSubmit = () => {
       <CardContent class="space-y-4">
         <Input v-model="formData.email" placeholder="Email" />
         <Input v-model="formData.password" placeholder="Password" type="password" />
+
+        <p>
+          Don't have an account?
+          <RouterLink to="/auth/sign-up" class="hover:underline">
+            Register now
+          </RouterLink>
+        </p>
       </CardContent>
+
       <CardFooter>
         <Button type="submit" class="w-full" :disabled="isSigningIn">
-          Sign In
+          Login
         </Button>
       </CardFooter>
     </Card>

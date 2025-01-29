@@ -43,7 +43,7 @@ export const useSession = () => {
     onSuccess: async () => {
       authToken.remove('auth_token')
       await getSession.refetch()
-      await router.push('/sign-in')
+      await router.push('/auth/sign-in')
     },
   })
 
