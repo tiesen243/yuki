@@ -36,7 +36,7 @@ const navLinks = [
         to="/"
         class="flex grow items-center gap-2 text-2xl font-bold md:grow-0"
       >
-        <img class="size-9 dark:invert" :src="logoUrl" alt="Logo">
+        <img class="size-9 dark:invert" :src="logoUrl" alt="Logo" />
         <span class="sr-only not-sr-only">Dashboard</span>
       </RouterLink>
 

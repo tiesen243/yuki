@@ -47,9 +47,7 @@ const handleSubmit = () => {
       </CardContent>
 
       <CardFooter>
-        <Button type="submit" class="w-full" :disabled="isSigningIn">
-          Login
-        </Button>
+        <Button type="submit" class="w-full" :disabled="isSigningIn"> Login </Button>
       </CardFooter>
     </Card>
   </main>

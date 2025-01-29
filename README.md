@@ -29,11 +29,15 @@ It uses [Turborepo](https://turborepo.org) and contains:
   └─ workflows
         └─ CI to check the monorepo: format, lint, and typecheck
 apps
-  └─ web
-      ├─ Next.js 15
-      ├─ React 19
+  ├─ web
+  |   ├─ Next.js 15
+  |   ├─ React 19
+  |   ├─ Tailwind CSS
+  |   └─ E2E Typesafe API Server & Client
+  └─ dashboard
+      ├─ Vue 3
       ├─ Tailwind CSS
-      └─ E2E Typesafe API Server & Client
+      └─ E2E Typesafe Client
 packages
   ├─ api
   |   └─ tRPC v11 router definition
@@ -43,6 +47,7 @@ packages
   |   └─ Typesafe db calls using Prisma & Neon
   └─ ui
       └─ Start of a UI package for the webapp using shadcn-ui
+         └─ Migration React components to Vue components
 tooling
   ├─ eslint
   |   └─ shared, fine-grained, eslint presets
