@@ -1,16 +1,17 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
+import { Button } from '@yuki/ui/vue/button'
 import {
-  Button,
   Card,
   CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
-  Input,
-} from '@yuki/ui/vue'
+} from '@yuki/ui/vue/card'
+import { Input } from '@yuki/ui/vue/input'
+import { Label } from '@yuki/ui/vue/label'
 
 import { useSession } from '@/hooks/use-session'
 
@@ -35,8 +36,15 @@ const handleSubmit = () => {
       </CardHeader>
 
       <CardContent class="space-y-4">
-        <Input v-model="formData.email" placeholder="Email" />
-        <Input v-model="formData.password" placeholder="Password" type="password" />
+        <fieldset class="space-y-2">
+          <Label for="email">Email</Label>
+          <Input v-model="formData.email" placeholder="Email" />
+        </fieldset>
+
+        <fieldset class="space-y-2">
+          <Label for="password">Password</Label>
+          <Input v-model="formData.password" placeholder="Password" type="password" />
+        </fieldset>
 
         <p>
           Don't have an account?
@@ -47,7 +55,9 @@ const handleSubmit = () => {
       </CardContent>
 
       <CardFooter>
-        <Button type="submit" class="w-full" :disabled="isSigningIn"> Login </Button>
+        <Button type="submit" class="w-full" :disabled="isSigningIn">
+          Login
+        </Button>
       </CardFooter>
     </Card>
   </main>

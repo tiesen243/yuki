@@ -3,7 +3,7 @@ import type { Ref } from 'vue'
 import { ref } from 'vue'
 
 import type { Category, Product } from '@yuki/db'
-import { Button } from '@yuki/ui/vue'
+import { Button } from '@yuki/ui/vue/button'
 
 const headers = ref(['Name', 'Category', 'Price', 'Stock', 'Updated At', 'Actions'])
 const products: Ref<(Partial<Product> & { updatedAt: Date; category: Category })[]> = ref(
@@ -144,8 +144,12 @@ const products: Ref<(Partial<Product> & { updatedAt: Date; category: Category })
           <td
             class="grid grid-cols-2 gap-2 border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right"
           >
-            <Button size="sm"> Edit </Button>
-            <Button variant="destructive" size="sm"> Delete </Button>
+            <Button size="sm">
+              Edit
+            </Button>
+            <Button variant="destructive" size="sm">
+              Delete
+            </Button>
           </td>
         </tr>
       </tbody>

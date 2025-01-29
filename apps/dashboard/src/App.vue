@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useColorMode } from '@vueuse/core'
 
-import { Toaster } from '@yuki/ui/vue'
+import { Toaster } from '@yuki/ui/vue/toast'
 
 import Header from '@/components/header.vue'
 

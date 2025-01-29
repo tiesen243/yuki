@@ -1,15 +1,11 @@
 <script setup lang="ts">
 import { useColorMode } from '@vueuse/core'
 
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-  Button,
-  MoonIcon,
-  Skeleton,
-  SunIcon,
-} from '@yuki/ui/vue'
+import { buttonVariants } from '@yuki/ui/button'
+import { Avatar, AvatarFallback, AvatarImage } from '@yuki/ui/vue/avatar'
+import { Button } from '@yuki/ui/vue/button'
+import { LogOutIcon, MoonIcon, SunIcon } from '@yuki/ui/vue/icons'
+import { Skeleton } from '@yuki/ui/vue/skeleton'
 
 import { useSession } from '@/hooks/use-session'
 import { getWebUrl } from '@/lib/utils'
@@ -36,7 +32,7 @@ const navLinks = [
         to="/"
         class="flex grow items-center gap-2 text-2xl font-bold md:grow-0"
       >
-        <img class="size-9 dark:invert" :src="logoUrl" alt="Logo" />
+        <img class="size-9 dark:invert" :src="logoUrl" alt="Logo">
         <span class="sr-only not-sr-only">Dashboard</span>
       </RouterLink>
 
@@ -53,9 +49,13 @@ const navLinks = [
       </nav>
 
       <Skeleton v-if="isLoading" class="size-9 rounded-full" />
-      <Button v-else-if="!session?.user" as="RouterLink" to="/auth/sign-in">
+      <RouterLink
+        v-else-if="!session?.user"
+        to="/auth/sign-in"
+        :class="buttonVariants({ variant: 'ghost' })"
+      >
         Login
-      </Button>
+      </RouterLink>
       <Avatar v-else class="ring-ring size-9 hover:ring-2">
         <AvatarFallback>{session.user.name[0]}</AvatarFallback>
         <AvatarImage :src="session.user.image" :alt="session.user.name" />
@@ -64,10 +64,11 @@ const navLinks = [
       <Button
         v-if="session?.user"
         variant="ghost"
+        size="icon"
         :disabled="isSigningOut"
         @click="signOut()"
       >
-        Logout
+        <LogOutIcon />
       </Button>
 
       <Button

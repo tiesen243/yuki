@@ -3,7 +3,7 @@ import type { Ref } from 'vue'
 import { ref } from 'vue'
 
 import type { Category } from '@yuki/db'
-import { Button } from '@yuki/ui/vue'
+import { Button } from '@yuki/ui/vue/button'
 
 const headers = ref(['Name', 'Number of Products', 'Actions'])
 const categories: Ref<(Category & { NoP: number })[]> = ref([
@@ -57,8 +57,12 @@ const categories: Ref<(Category & { NoP: number })[]> = ref([
           <td
             class="grid grid-cols-2 gap-2 border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right"
           >
-            <Button size="sm"> Edit </Button>
-            <Button variant="destructive" size="sm"> Delete </Button>
+            <Button size="sm">
+              Edit
+            </Button>
+            <Button variant="destructive" size="sm">
+              Delete
+            </Button>
           </td>
         </tr>
       </tbody>

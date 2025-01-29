@@ -4,17 +4,18 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 import type { SignUp } from '@yuki/api/validators/auth'
+import { Button } from '@yuki/ui/vue/button'
 import {
-  Button,
   Card,
   CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
-  Input,
-  toast,
-} from '@yuki/ui/vue'
+} from '@yuki/ui/vue/card'
+import { Input } from '@yuki/ui/vue/input'
+import { Label } from '@yuki/ui/vue/label'
+import { toast } from '@yuki/ui/vue/toast'
 
 import { api } from '@/lib/api'
 
@@ -23,9 +24,7 @@ const router = useRouter()
 const { mutate, isPending } = useMutation({
   mutationKey: ['signUp'],
   mutationFn: (data: SignUp) => api.auth.signUp.mutate(data),
-  onError: (error) => {
-    toast.error(error.message)
-  },
+  onError: (error) => toast.error(error.message),
   onSuccess: async () => {
     toast.success('Sign up successfully!')
     await router.push('/auth/sign-in')
@@ -56,23 +55,42 @@ const handleSubmit = () => {
       </CardHeader>
 
       <CardContent class="space-y-4">
-        <Input v-model="formData.name" placeholder="Name" />
-        <Input v-model="formData.email" placeholder="Email" />
-        <Input v-model="formData.password" placeholder="Password" type="password" />
-        <Input
-          v-model="formData.confirmPassword"
-          placeholder="Confirm Password"
-          type="password"
-        />
+        <fieldset class="space-y-2">
+          <Label for="name">Name</Label>
+          <Input v-model="formData.name" placeholder="Name" />
+        </fieldset>
+
+        <fieldset class="space-y-2">
+          <Label for="email">Email</Label>
+          <Input v-model="formData.email" placeholder="Email" />
+        </fieldset>
+
+        <fieldset class="space-y-2">
+          <Label for="password">Password</Label>
+          <Input v-model="formData.password" placeholder="Password" type="password" />
+        </fieldset>
+
+        <fieldset class="space-y-2">
+          <Label for="confirmPassword">Confirm Password</Label>
+          <Input
+            v-model="formData.confirmPassword"
+            placeholder="Confirm Password"
+            type="password"
+          />
+        </fieldset>
 
         <p>
           Already have an account?
-          <RouterLink to="/auth/sign-in" class="hover:underline"> Login here </RouterLink>
+          <RouterLink to="/auth/sign-in" class="hover:underline">
+            Login here
+          </RouterLink>
         </p>
       </CardContent>
 
       <CardFooter>
-        <Button type="submit" class="w-full" :disabled="isPending"> Register </Button>
+        <Button type="submit" class="w-full" :disabled="isPending">
+          Register
+        </Button>
       </CardFooter>
     </Card>
   </main>

@@ -13,9 +13,9 @@
       "types": "./dist/components/*.d.ts",
       "default": "./src/components/*.tsx"
     },
-    "./vue": {
-      "types": "./dist/components/vue/index.d.ts",
-      "default": "./src/components/vue/index.ts"
+    "./vue/*": {
+      "types": "./dist/components/*.vue.d.ts",
+      "default": "./src/components/*.vue.ts"
     },
     "./hooks/*": {
       "types": "./dist/hooks/*.d.ts",
@@ -27,12 +27,12 @@
     "./tailwind.css": "./src/tailwind.css"
   },
   "scripts": {
-    "build": "vue-tsc",
+    "build": "tsc",
     "clean": "git clean -xdf .cache .turbo dist node_modules",
     "dev": "vue-tsc --watch",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
-    "typecheck": "vue-tsc --noEmit --emitDeclarationOnly false",
+    "typecheck": "tsc --noEmit --emitDeclarationOnly false",
     "ui-add": "bunx --bun shadcn@canary add && prettier src --write --list-different"
   },
   "prettier": "@yuki/prettier-config",
@@ -60,7 +60,6 @@
     "@yuki/tsconfig": "workspace:*",
     "eslint": "latest",
     "prettier": "latest",
-    "typescript": "latest",
-    "vue-tsc": "^2.2.0"
+    "typescript": "latest"
   }
 }
