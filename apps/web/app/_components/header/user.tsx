@@ -15,7 +15,7 @@ export const User = () => {
 
   if (!session?.user)
     return (
-      <Link href="/auth/sign-in" className={buttonVariants({ size: 'sm' })}>
+      <Link href="/sign-in" className={buttonVariants({ size: 'sm' })}>
         Sign in
       </Link>
     )

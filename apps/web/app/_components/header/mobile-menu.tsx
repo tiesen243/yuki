@@ -61,7 +61,7 @@ export const MobileMenu: React.FC<{
             placeholder="Search..."
             className="bg-background w-full pr-8"
           />
-          <button className="absolute top-2 right-2 z-[4] cursor-pointer">
+          <button className="absolute top-2.5 right-2 cursor-pointer">
             <SearchIcon size={16} />
           </button>
         </Form>
