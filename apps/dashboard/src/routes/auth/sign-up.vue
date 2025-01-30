@@ -81,7 +81,7 @@ const handleSubmit = () => {
 
         <p>
           Already have an account?
-          <RouterLink to="/auth/sign-in" class="hover:underline">
+          <RouterLink to="/sign-in" class="hover:underline">
             Login here
           </RouterLink>
         </p>

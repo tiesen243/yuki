@@ -48,7 +48,7 @@ const handleSubmit = () => {
 
         <p>
           Don't have an account?
-          <RouterLink to="/auth/sign-up" class="hover:underline">
+          <RouterLink to="/sign-up" class="hover:underline">
             Register now
           </RouterLink>
         </p>

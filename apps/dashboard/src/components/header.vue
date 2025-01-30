@@ -51,7 +51,7 @@ const navLinks = [
       <Skeleton v-if="isLoading" class="size-9 rounded-full" />
       <RouterLink
         v-else-if="!session?.user"
-        to="/auth/sign-in"
+        to="/sign-in"
         :class="buttonVariants({ variant: 'ghost' })"
       >
         Login
