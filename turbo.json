@@ -41,6 +41,10 @@
       "cache": false,
       "interactive": false
     },
+    "seed": {
+      "cache": false,
+      "interactive": false
+    },
     "ui-add": {
       "cache": false,
       "interactive": true

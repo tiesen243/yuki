@@ -12,11 +12,12 @@
   "scripts": {
     "build": "turbo run build",
     "bump-deps": "bunx --bun npm-check-updates --deep -u -x react-day-picker && bun install",
-    "clean": "git clean -xdf node_modules",
+    "clean": "git clean -xdf .venv node_modules",
     "clean:workspaces": "turbo run clean",
     "db:generate": "turbo -F @yuki/db gnr",
     "db:push": "turbo -F @yuki/db push",
     "db:studio": "turbo -F @yuki/db studio",
+    "db:seed": "uv sync && turbo -F @yuki/db seed",
     "dev": "turbo watch dev --continue",
     "format": "turbo run format --continue -- --cache --cache-location .cache/.prettiercache",
     "format:fix": "turbo run format --continue -- --write --cache --cache-location .cache/.prettiercache",
@@ -39,6 +40,7 @@
   "packageManager": "bun@1.2.1",
   "engines": {
     "bun": ">=1.2.0",
-    "node": ">=20.18.1"
+    "node": ">=20.18.1",
+    "uv": ">=0.5.1"
   }
 }

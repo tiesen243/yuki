@@ -6,7 +6,7 @@ An innovative E-Commerce application built using Turbo repo and Next.js, offerin
 
 > [!NOTE]
 >
-> Make sure to follow the system requirements specified in [`package.json#engines`](./package.json#L40) before proceeding.
+> Make sure to follow the system requirements specified in [`package.json#engines`](./package.json#L41) before proceeding.
 
 There are two ways of initializing an app using the `create-yuki-turbo` starter. You can either use this repository as a template:
 

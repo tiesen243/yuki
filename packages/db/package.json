@@ -12,7 +12,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "clean": "git clean -xdf .cache .turbo .venv dist node_modules",
+    "clean": "git clean -xdf .cache .turbo dist node_modules",
     "dev": "tsc --watch",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "gnr": "bun with-env prisma generate",
