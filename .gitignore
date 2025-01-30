@@ -52,5 +52,10 @@ yarn-error.log*
 dist/
 .cache
 
+# python
+.python-version
+.venv/
+__pycache__/
+
 # turbo
 .turbo
