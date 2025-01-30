@@ -19,8 +19,8 @@ async def generate_users(db: Prisma):
     for _ in range(10):
         _ = await db.user.create(
             {
-                "name": faker.name(),
-                "email": faker.email(),
+                "name": faker.user_name(),
+                "email": faker.ascii_email(),
                 "image": faker.image_url(),
             }
         )

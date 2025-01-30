@@ -45,9 +45,10 @@ packages
   |   └─ Authentication from scratch using arctic for OAuth.
   ├─ db
   |   └─ Typesafe db calls using Prisma & Neon
+  |       └─ Seed data using Python and Faker
   └─ ui
       └─ Start of a UI package for the webapp using shadcn-ui
-         └─ Migration React components to Vue components
+          └─ Migration to Vue components
 tooling
   ├─ eslint
   |   └─ shared, fine-grained, eslint presets
