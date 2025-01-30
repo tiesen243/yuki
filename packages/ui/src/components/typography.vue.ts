@@ -13,6 +13,8 @@ const typographyVariants = cva('text-foreground font-sans text-base font-normal'
       h3: 'scroll-m-20 text-2xl font-semibold tracking-tight',
       h4: 'scroll-m-20 text-xl font-semibold tracking-tight',
       p: 'leading-7 [&:not(:first-child)]:mt-4',
+      ul: 'my-6 ml-6 list-disc [&>li]:mt-2',
+      ol: 'my-6 ml-6 list-decimal [&>li]:mt-2',
       blockquote: 'my-4 border-l-2 pl-6 italic',
       code: 'bg-muted relative rounded px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold',
     },
@@ -31,7 +33,7 @@ const typographyVariants = cva('text-foreground font-sans text-base font-normal'
 
 export interface TypographyProps
   extends Omit<React.HTMLAttributes<HTMLParagraphElement>, 'color'>,
-    VariantProps<typeof typographyVariants> {}
+  VariantProps<typeof typographyVariants> { }
 
 const Typography = defineComponent({
   name: 'Typography',
