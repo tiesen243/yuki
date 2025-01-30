@@ -3,10 +3,11 @@ import { redirect } from 'next/navigation'
 
 import { auth } from '@yuki/auth'
 import { Avatar, AvatarFallback, AvatarImage } from '@yuki/ui/avatar'
+import { Button } from '@yuki/ui/button'
 import { Typography } from '@yuki/ui/typography'
 
 import { api, HydrateClient } from '@/lib/trpc/server'
-import { LinkedAccountList, LinkedAccountSkeleton } from './page.client'
+import { LinkedAccountList, LinkedAccountSkeleton, SignOutButton } from './page.client'
 
 export default async function ProfilePage() {
   const [session] = await Promise.all([auth(), api.user.getLinkedAccounts.prefetch()])
@@ -44,11 +45,13 @@ export default async function ProfilePage() {
               </Suspense>
             </ul>
           </div>
-          <div className="grid place-items-center">
+          <div className="grid place-items-center gap-4">
             <Avatar className="size-40">
               <AvatarImage src={session.user.image} alt={session.user.name} />
               <AvatarFallback>{session.user.name[0]}</AvatarFallback>
             </Avatar>
+            <Button>Edit profile</Button>
+            <SignOutButton />
           </div>
         </section>
       </main>

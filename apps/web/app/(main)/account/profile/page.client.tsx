@@ -96,3 +96,25 @@ const LinkButton: React.FC<{ provider: string }> = ({ provider }) => (
     </Button>
   </form>
 )
+
+export const SignOutButton: React.FC = () => {
+  const router = useRouter()
+  const utils = api.useUtils()
+  const signOut = api.auth.signOut.useMutation({
+    onSuccess: async () => {
+      await utils.auth.getSession.invalidate()
+      router.push('/sign-in')
+    },
+  })
+  return (
+    <Button
+      variant="destructive"
+      onClick={() => {
+        signOut.mutate()
+      }}
+      disabled={signOut.isPending}
+    >
+      {signOut.isPending ? 'Signing out...' : 'Sign out'}
+    </Button>
+  )
+}

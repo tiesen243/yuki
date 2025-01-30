@@ -47,8 +47,7 @@ export const authRouter = {
     return await createSession(user.id)
   }),
   signOut: protectedProcedure.mutation(async ({ ctx }) => {
-    if (!ctx.token) return { success: false }
-    await invalidateSessionToken(ctx.token)
+    await invalidateSessionToken(ctx.token ?? '')
     return { success: true }
   }),
   changePassword: protectedProcedure

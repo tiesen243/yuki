@@ -1,5 +1,5 @@
 import { cache } from 'react'
-import { headers } from 'next/headers'
+import { cookies, headers } from 'next/headers'
 import { createHydrationHelpers } from '@trpc/react-query/rsc'
 
 import type { AppRouter } from '@yuki/api'
@@ -13,7 +13,9 @@ import { createQueryClient } from '@/lib/trpc/query-client'
  */
 const createContext = cache(async () => {
   const heads = new Headers(await headers())
+  const token = (await cookies()).get('auth_token')?.value
   heads.set('x-trpc-source', 'rsc')
+  heads.set('Authorization', `Bearer ${token}`)
   return createTRPCContext({ headers: heads })
 })
 
