@@ -48,16 +48,12 @@ const handleSubmit = () => {
 
         <p>
           Don't have an account?
-          <RouterLink to="/sign-up" class="hover:underline">
-            Register now
-          </RouterLink>
+          <RouterLink to="/sign-up" class="hover:underline"> Register now </RouterLink>
         </p>
       </CardContent>
 
       <CardFooter>
-        <Button type="submit" class="w-full" :disabled="isSigningIn">
-          Login
-        </Button>
+        <Button type="submit" class="w-full" :disabled="isSigningIn"> Login </Button>
       </CardFooter>
     </Card>
   </main>

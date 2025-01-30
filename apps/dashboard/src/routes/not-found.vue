@@ -6,9 +6,7 @@
       404
     </h1>
     <div class="inline-block">
-      <h2 class="m-0 text-sm leading-12 font-normal">
-        This page could not be found.
-      </h2>
+      <h2 class="m-0 text-sm leading-12 font-normal">This page could not be found.</h2>
     </div>
   </main>
 </template>
