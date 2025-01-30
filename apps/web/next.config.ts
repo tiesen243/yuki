@@ -8,6 +8,7 @@ import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  images: { unoptimized: true },
 
   /** Enables hot reloading for local packages without a build step */
   transpilePackages: ['@yuki/api', '@yuki/auth', '@yuki/db', '@yuki/ui'],

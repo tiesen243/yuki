@@ -1,10 +1,12 @@
 import type { inferRouterInputs, inferRouterOutputs } from '@trpc/server'
 
 import { authRouter } from './routers/auth'
+import { userRouter } from './routers/user'
 import { createCallerFactory, createTRPCContext, createTRPCRouter } from './trpc'
 
 const appRouter = createTRPCRouter({
   auth: authRouter,
+  user: userRouter,
 })
 
 // export type definition of API

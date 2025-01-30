@@ -14,15 +14,15 @@ enum Role {
 }
 
 model User {
-  id       String    @id @default(cuid())
-  email    String    @unique
-  name     String
-  image    String
-  role     Role      @default(USER)
-  password String?
-  address  String?
-  accounts Account[]
-  sessions Session[]
+  id        String    @id @default(cuid())
+  email     String    @unique
+  name      String
+  image     String
+  role      Role      @default(USER)
+  password  String?
+  addresses Address[]
+  accounts  Account[]
+  sessions  Session[]
 
   products Product[]
   orders   Order[]
@@ -40,6 +40,17 @@ model Account {
   userId String
 
   @@id([provider, providerId])
+}
+
+model Address {
+  id     String @id @default(cuid())
+  name   String
+  phone  String
+  state  String
+  street String
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
 }
 
 model Session {

@@ -63,6 +63,8 @@ export const authRouter = {
           throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid password' })
       }
 
+      await ctx.db.session.deleteMany()
+
       const password = await hashPassword(input.newPassword)
       return await ctx.db.user.update({
         where: { id: user.id },

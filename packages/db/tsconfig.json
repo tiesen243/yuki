@@ -1,10 +1,6 @@
 {
   "compilerOptions": {},
-  "exclude": [
-    "node_modules"
-  ],
+  "exclude": ["node_modules"],
   "extends": "@yuki/tsconfig/internal-package.json",
-  "include": [
-    "src"
-  ]
+  "include": ["src"]
 }

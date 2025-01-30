@@ -21,9 +21,11 @@ export const User = () => {
     )
 
   return (
-    <Avatar className="ring-ring size-9 hover:ring-2">
-      <AvatarImage src={session.user.image} alt={session.user.name} />
-      <AvatarFallback>{session.user.name[0]}</AvatarFallback>
-    </Avatar>
+    <Link href="/account/profile">
+      <Avatar className="ring-ring size-9 hover:ring-2">
+        <AvatarImage src={session.user.image} alt={session.user.name} />
+        <AvatarFallback>{session.user.name[0]}</AvatarFallback>
+      </Avatar>
+    </Link>
   )
 }

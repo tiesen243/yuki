@@ -1,7 +1,6 @@
 'use client'
 
 import Form from 'next/form'
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
 import { Button } from '@yuki/ui/button'
@@ -37,8 +36,8 @@ export const SignInForm: React.FC<{
         })
       }}
     >
-      <CardContent className="space-y-4">
-        <fieldset className="space-y-2">
+      <CardContent className="space-y-2">
+        <fieldset>
           <Label htmlFor="email">Email</Label>
           <Input name="email" placeholder="Email" />
           <span className="text-destructive text-xs">
@@ -56,9 +55,15 @@ export const SignInForm: React.FC<{
 
         <p className="text-xs">
           Don&apos;t have an account?{' '}
-          <Link href="/sign-up" className="hover:underline">
+          <Button
+            variant="link"
+            type="button"
+            onClick={() => {
+              router.push('/sign-up')
+            }}
+          >
             Register now
-          </Link>
+          </Button>
         </p>
         <Button type="submit" className="w-full" disabled={isPending}>
           Login

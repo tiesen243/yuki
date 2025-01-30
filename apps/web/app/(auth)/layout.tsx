@@ -1,9 +1,15 @@
+import { redirect } from 'next/navigation'
+
+import { auth } from '@yuki/auth'
 import { Button } from '@yuki/ui/button'
 import { Card, CardFooter } from '@yuki/ui/card'
 
-export default function AuthLayout({
+export default async function AuthLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const session = await auth()
+  // if (session.user) redirect('/')
+
   return (
     <main className="container grid min-h-[90dvh] place-items-center">
       <Card className="w-full max-w-xl">
