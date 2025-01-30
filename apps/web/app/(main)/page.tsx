@@ -12,7 +12,7 @@ export default async function HomePage() {
 
   return (
     <HydrateClient>
-      <main className="container grow py-4">
+      <main className="container flex grow flex-col gap-4 py-4">
         <Suspense
           fallback={
             <section className="grid gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
