@@ -9,13 +9,13 @@ import { env } from '@/env'
 import { api } from '@/lib/api'
 
 export const useSession = () => {
-  const authToken = useCookies(['auth_token'])
+  const cookies = useCookies(['auth_token'])
   const router = useRouter()
 
   const getSession = useQuery({
     queryKey: ['session'],
     queryFn: () => api.auth.getSession.query(),
-    enabled: !!authToken.get('auth_token'),
+    enabled: !!cookies.get('auth_token'),
   })
 
   const signIn = useMutation({
@@ -25,7 +25,7 @@ export const useSession = () => {
       toast.error(error.message)
     },
     onSuccess: async (data) => {
-      authToken.set('auth_token', data.token, {
+      cookies.set('auth_token', data.token, {
         path: '/',
         secure: env.NODE_ENV === 'production',
         sameSite: 'lax',
@@ -41,7 +41,7 @@ export const useSession = () => {
     mutationKey: ['signOut'],
     mutationFn: () => api.auth.signOut.mutate(),
     onSuccess: async () => {
-      authToken.remove('auth_token')
+      cookies.remove('auth_token')
       await getSession.refetch()
       await router.push('/auth/sign-in')
     },
