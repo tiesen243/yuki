@@ -14,9 +14,9 @@ export const Footer: React.FC = () => (
           <ul className="text-muted-foreground space-y-2 text-sm">
             {[
               { title: 'Contact Us', href: '/contact' },
-              { title: 'Shipping Information', href: '/shipping' },
-              { title: 'Returns & Exchanges', href: '/returns' },
-              { title: 'FAQ', href: '/faq' },
+              { title: 'Shipping Information', href: 'https://youtu.be/4ikryZx-URA' },
+              { title: 'Returns & Exchanges', href: 'https://youtu.be/JsMK2yZc3fE' },
+              { title: 'FAQ', href: 'https://youtu.be/ORV5v-8OU6Y' },
             ].map(({ title, href }) => (
               <li key={href} className="hover:text-foreground transition-colors">
                 <Link href={href}>{title}</Link>

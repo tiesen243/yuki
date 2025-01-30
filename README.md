@@ -12,7 +12,7 @@ There are two ways of initializing an app using the `create-yuki-turbo` starter.
 
 Click the "Use this template" button on the top right of the repository,
 
-or use Turbo's CLI to init your project (use PNPM as package manager):
+or use Turbo's CLI to init your project (use Bun as package manager):
 
 ```bash
 npx create-turbo@latest -e https://github.com/tiesen243/create-yuki-turbo

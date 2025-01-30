@@ -9,11 +9,9 @@ import { MenuIcon, SearchIcon } from '@yuki/ui/icons'
 import { Input } from '@yuki/ui/input'
 import { cn } from '@yuki/ui/utils'
 
-import { slugify } from '@/lib/utils'
+import { Nav } from './nav'
 
-export const MobileMenu: React.FC<{
-  navLinks: { title: string; href: string }[]
-}> = ({ navLinks }) => {
+export const MobileMenu: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
 
   return (
@@ -80,30 +78,16 @@ export const MobileMenu: React.FC<{
 
         <nav className="mx-2 my-4 flex flex-col gap-1">
           <span className="text-muted-foreground text-xs">Categories</span>
-          {mockCategories.map((category) => (
-            <Link
-              key={category.id}
-              href={`/shop/${slugify(category.name)}-${category.id}`}
-              className="text-foreground hover:bg-background/40 rounded-lg px-2 py-1 transition-colors"
-            >
-              {category.name}
-            </Link>
-          ))}
+          <Nav limit={10} isSidebar />
         </nav>
       </aside>
     </>
   )
 }
 
-const mockCategories: { id: string; name: string }[] = [
-  { id: '1', name: 'Category 1' },
-  { id: '2', name: 'Category 2' },
-  { id: '3', name: 'Category 3' },
-  { id: '4', name: 'Category 4' },
-  { id: '5', name: 'Category 5' },
-  { id: '6', name: 'Category 6' },
-  { id: '7', name: 'Category 7' },
-  { id: '8', name: 'Category 8' },
-  { id: '9', name: 'Category 9' },
-  { id: '10', name: 'Category 10' },
+const navLinks = [
+  { title: 'Shop', href: '/shop' },
+  { title: 'Deals', href: '/deals' },
+  { title: 'About', href: '/about' },
+  { title: 'Contact', href: '/contact' },
 ]

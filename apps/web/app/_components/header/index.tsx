@@ -6,13 +6,14 @@ import { SearchIcon } from '@yuki/ui/icons'
 import { Input } from '@yuki/ui/input'
 
 import { MobileMenu } from './mobile-menu'
+import { Nav } from './nav'
 import { ThemeBtn } from './theme-btn'
 import { User } from './user'
 
 export const Header: React.FC = () => (
   <header className="bg-background/70 sticky inset-0 z-50 border-b py-4 shadow-md backdrop-blur-xl backdrop-saturate-150">
     <div className="container flex items-center justify-between gap-4">
-      <MobileMenu navLinks={navLinks} />
+      <MobileMenu />
 
       <Link href="/" className="flex items-center gap-2 text-2xl font-bold">
         <Image
@@ -25,14 +26,11 @@ export const Header: React.FC = () => (
         <span className="sr-only md:not-sr-only">Yuki</span>
       </Link>
 
-      <nav className="hidden md:flex">
-        <ul className="flex gap-2">
-          {navLinks.map(({ title, href }) => (
-            <li key={title} className="text-muted-foreground hover:text-foreground">
-              <Link href={href}>{title}</Link>
-            </li>
-          ))}
-        </ul>
+      <nav className="hidden gap-2 md:flex">
+        <Link href="/shop" className="text-muted-foreground hover:text-foreground">
+          Shop
+        </Link>
+        <Nav />
       </nav>
 
       <Form action="/shop" className="relative hidden grow md:flex">
@@ -49,10 +47,3 @@ export const Header: React.FC = () => (
     </div>
   </header>
 )
-
-const navLinks = [
-  { title: 'Shop', href: '/shop' },
-  { title: 'Deals', href: '/deals' },
-  { title: 'About', href: '/about' },
-  { title: 'Contact', href: '/contact' },
-]
