@@ -3,7 +3,7 @@
 import Link from 'next/link'
 
 import type { Address } from '@yuki/db'
-import { buttonVariants } from '@yuki/ui/button'
+import { Button } from '@yuki/ui/button'
 
 import { api } from '@/lib/trpc/react'
 
@@ -12,38 +12,45 @@ export const AddressList: React.FC = () => {
   return addresses.map((address) => <AddressCard key={address.id} address={address} />)
 }
 
-export const AddressCard: React.FC<{ address: Address }> = ({ address }) => (
-  <div className="border-primary/20 flex w-full flex-col justify-between gap-4 border-b py-4 md:flex-row">
-    <div className="text-muted-foreground leading-7">
-      <div className="flex items-center gap-2">
-        <p className="text-foreground">{address.name}</p>
-        <p className="border-primary/20 border-l px-2">{address.phone}</p>
+export const AddressCard: React.FC<{ address: Address }> = ({ address }) => {
+  const utils = api.useUtils()
+  const { mutate, isPending } = api.user.deleteAddress.useMutation({
+    onSuccess: async () => {
+      await utils.user.getAddress.invalidate()
+    },
+  })
+  return (
+    <div className="border-primary/20 flex w-full flex-col justify-between gap-4 border-b py-4 md:flex-row">
+      <div className="text-muted-foreground leading-7">
+        <div className="flex items-center gap-2">
+          <p className="text-foreground">{address.name}</p>
+          <p className="border-primary/20 border-l px-2">{address.phone}</p>
+        </div>
+        <p>{address.state}</p>
+        <p>{address.street}</p>
       </div>
-      <p>{address.state}</p>
-      <p>{address.street}</p>
-    </div>
 
-    <div className="grid gap-2">
-      <Link
-        href={`/account/address/${address.id}`}
-        className={buttonVariants({
-          variant: 'outline',
-          className: 'bg-secondary hover:bg-primary/20 border-primary/20',
-        })}
-      >
-        Edit
-      </Link>
-      <Link
-        href={`/account/address/${address.id}`}
-        className={buttonVariants({
-          variant: 'destructive',
-        })}
-      >
-        Delete
-      </Link>
+      <div className="grid gap-2">
+        <Button
+          variant="outline"
+          className="bg-secondary hover:bg-primary/20 border-primary/20"
+          asChild
+        >
+          <Link href={`/account/address/${address.id}`}>Edit</Link>
+        </Button>
+        <Button
+          variant="destructive"
+          onClick={() => {
+            mutate({ id: address.id })
+          }}
+          disabled={isPending}
+        >
+          {isPending ? 'Deleting...' : 'Delete'}
+        </Button>
+      </div>
     </div>
-  </div>
-)
+  )
+}
 
 export const AddressCardSkeleton: React.FC = () => (
   <div className="border-primary/20 flex w-full flex-col justify-between gap-4 border-b py-4 md:flex-row">

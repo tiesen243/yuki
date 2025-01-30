@@ -2,8 +2,8 @@ import { z } from 'zod'
 
 const passwordSchema = z
   .string()
-  .min(8)
-  .max(100)
+  .min(8, 'Password must contain at least 8 characters')
+  .max(100, 'Password must contain at most 100 characters')
   .regex(
     /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
     'Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number and one special character',

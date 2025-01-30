@@ -1,15 +1,51 @@
 import type { TRPCRouterRecord } from '@trpc/server'
+import { TRPCError } from '@trpc/server'
 
-import { publicProcedure } from '../trpc'
-import { query } from '../validators/category'
+import { protectedProcedure, publicProcedure } from '../trpc'
+import { createSchema, getOneSchema, query, updateSchema } from '../validators/category'
 
 export const categoryRouter = {
+  /** Get category section */
   getAll: publicProcedure.input(query).query(async ({ ctx, input }) => {
     return ctx.db.category.findMany({
       take: input.limit,
       skip: (input.page - 1) * input.limit,
-      select: { id: true, name: true, image: true },
       orderBy: { products: { _count: 'desc' } },
+      include: { _count: { select: { products: true } } },
     })
   }),
+  getOne: publicProcedure.input(getOneSchema).query(async ({ ctx, input }) => {
+    return ctx.db.category.findFirst({
+      where: { id: input.id },
+      include: { products: { orderBy: { createdAt: 'desc' } } },
+    })
+  }),
+
+  /** Create category section */
+  create: protectedProcedure.input(createSchema).mutation(async ({ ctx, input }) => {
+    checkAdmin(ctx.session.user.role)
+    return ctx.db.category.create({ data: input })
+  }),
+
+  /** Update category section */
+  update: protectedProcedure
+    .input(updateSchema)
+    .mutation(async ({ ctx, input: { id, ...data } }) => {
+      checkAdmin(ctx.session.user.role)
+      return ctx.db.category.update({ where: { id }, data })
+    }),
+
+  /** Delete category section */
+  delete: protectedProcedure.input(getOneSchema).mutation(async ({ ctx, input }) => {
+    checkAdmin(ctx.session.user.role)
+    return ctx.db.category.delete({ where: { id: input.id } })
+  }),
 } satisfies TRPCRouterRecord
+
+const checkAdmin = (role: 'USER' | 'ADMIN') => {
+  if (role !== 'ADMIN')
+    throw new TRPCError({
+      code: 'UNAUTHORIZED',
+      message: 'You are not authorized to access this resource',
+    })
+}

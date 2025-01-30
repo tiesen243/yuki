@@ -16,6 +16,7 @@ export const authRouter = {
   getSession: publicProcedure.query(({ ctx }) => {
     return ctx.session
   }),
+
   signUp: publicProcedure.input(signUp).mutation(async ({ ctx, input }) => {
     const user = await ctx.db.user.findUnique({ where: { email: input.email } })
     if (user) throw new TRPCError({ code: 'CONFLICT', message: 'User already exists' })
@@ -30,6 +31,7 @@ export const authRouter = {
       },
     })
   }),
+
   signIn: publicProcedure.input(signIn).mutation(async ({ ctx, input }) => {
     const user = await ctx.db.user.findUnique({ where: { email: input.email } })
     if (!user) throw new TRPCError({ code: 'NOT_FOUND', message: 'User not found' })
@@ -46,10 +48,12 @@ export const authRouter = {
 
     return await createSession(user.id)
   }),
+
   signOut: protectedProcedure.mutation(async ({ ctx }) => {
     await invalidateSessionToken(ctx.token ?? '')
     return { success: true }
   }),
+
   changePassword: protectedProcedure
     .input(changePassword)
     .mutation(async ({ ctx, input }) => {
