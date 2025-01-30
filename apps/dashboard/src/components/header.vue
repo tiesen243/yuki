@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import { useDark, useToggle } from '@vueuse/core'
 
-import { buttonVariants } from '@yuki/ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from '@yuki/ui/vue/avatar'
-import { Button } from '@yuki/ui/vue/button'
+import { Button, buttonVariants } from '@yuki/ui/vue/button'
 import { LogOutIcon, MoonIcon, SunIcon } from '@yuki/ui/vue/icons'
-import { Skeleton } from '@yuki/ui/vue/skeleton'
 
 import { useSession } from '@/hooks/use-session'
 import { getWebUrl } from '@/lib/utils'
@@ -34,7 +32,7 @@ const navLinks = [
         to="/"
         class="flex grow items-center gap-2 text-2xl font-bold md:grow-0"
       >
-        <img class="size-9 dark:invert" :src="logoUrl" alt="Logo" />
+        <img class="size-9 dark:invert" :src="logoUrl" alt="Logo">
         <span class="sr-only not-sr-only">Dashboard</span>
       </RouterLink>
 
@@ -50,7 +48,7 @@ const navLinks = [
         </RouterLink>
       </nav>
 
-      <Skeleton v-if="isLoading" class="size-9 rounded-full" />
+      <div v-if="isLoading" class="size-9 animate-pulse rounded-full" />
       <RouterLink
         v-else-if="!session?.user"
         to="/sign-in"

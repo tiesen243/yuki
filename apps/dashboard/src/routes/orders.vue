@@ -21,7 +21,9 @@ const orders: Ref<(Partial<Order> & { customer: Partial<User> })[]> = ref([
 
 <template>
   <main class="container py-4">
-    <h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Orders</h1>
+    <h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
+      Orders
+    </h1>
 
     <table class="mt-4 w-full">
       <thead>

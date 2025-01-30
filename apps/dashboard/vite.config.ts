@@ -9,7 +9,11 @@ export default defineConfig(({ mode }) => {
 
   return {
     plugins: [vue(), tailwindcss()],
-    resolve: { alias: { '@': path.resolve(__dirname, './src') } },
+    resolve: {
+      alias: {
+        '@': path.resolve(__dirname, './src'),
+      },
+    },
     define: { 'process.env': { ...process.env, ...env } },
   }
 })
