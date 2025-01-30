@@ -32,7 +32,7 @@ export const OPTIONS = () => {
 const handler = async (req: NextRequest) => {
   const heads = new Headers(req.headers)
   const token = (await cookies()).get('auth_token')?.value ?? ''
-  heads.set('Authorization', `Bearer ${token}`)
+  if (!heads.get('Authorization')) heads.set('Authorization', `Bearer ${token}`)
 
   const response = await fetchRequestHandler({
     endpoint: '/api/trpc',

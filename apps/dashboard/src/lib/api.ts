@@ -22,8 +22,7 @@ export const api = createTRPCClient<AppRouter>({
         headers.set('x-trpc-source', 'vue')
 
         const cookies = useCookies(['auth_token'])
-        headers.set('authorization', `Bearer ${cookies.get('auth_token')}`)
-
+        headers.set('Authorization', `Bearer ${cookies.get('auth_token')}`)
         return headers
       },
     }),
