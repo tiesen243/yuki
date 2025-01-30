@@ -34,6 +34,8 @@ router.beforeEach(async (to, _, next) => {
 
   if (!session.user && to.path !== '/sign-in' && to.path !== '/sign-up') next('/sign-in')
   else if (session.user?.role === 'USER' && to.path !== '/denied') next('/denied')
+  else if (to.path === '/sign-in' || to.path === '/sign-up' || to.path === '/denied')
+    next('/')
   next()
 })
 
