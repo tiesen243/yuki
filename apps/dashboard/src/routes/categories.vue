@@ -6,7 +6,7 @@ import type { Category } from '@yuki/db'
 import { Button } from '@yuki/ui/vue/button'
 
 const headers = ref(['Name', 'Number of Products', 'Actions'])
-const categories: Ref<(Category & { NoP: number })[]> = ref([
+const categories: Ref<(Partial<Category> & { NoP: number })[]> = ref([
   { id: '1', name: 'Fiction', NoP: 25 },
   { id: '2', name: 'Non-Fiction', NoP: 18 },
   { id: '3', name: 'Mystery', NoP: 22 },

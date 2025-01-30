@@ -29,23 +29,25 @@ async def generate_users(db: Prisma):
 
 
 async def generate_categories(db: Prisma):
-    categories = [
-        "Electronics",
-        "Clothing",
-        "Books",
-        "Home",
-        "Health",
-        "Beauty",
-        "Sports",
-        "Toys",
-        "Automotive",
-        "Furniture",
-    ]
-
-    # delete all existing categories
     _ = await db.category.delete_many()
 
-    _ = await db.category.create_many(data=[{"name": c} for c in categories])
+    _ = await db.category.create_many(
+        data=[
+            {"name": c, "image": faker.image_url()}
+            for c in [
+                "Electronics",
+                "Clothing",
+                "Books",
+                "Home",
+                "Health",
+                "Beauty",
+                "Sports",
+                "Toys",
+                "Automotive",
+                "Furniture",
+            ]
+        ]
+    )
 
     print("Categories created successfully!")
 

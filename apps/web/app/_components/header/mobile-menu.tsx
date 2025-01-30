@@ -5,7 +5,6 @@ import Form from 'next/form'
 import Image from 'next/image'
 import Link from 'next/link'
 
-import type { Category } from '@yuki/db'
 import { MenuIcon, SearchIcon } from '@yuki/ui/icons'
 import { Input } from '@yuki/ui/input'
 import { cn } from '@yuki/ui/utils'
@@ -96,7 +95,7 @@ export const MobileMenu: React.FC<{
   )
 }
 
-const mockCategories: Category[] = [
+const mockCategories: { id: string; name: string }[] = [
   { id: '1', name: 'Category 1' },
   { id: '2', name: 'Category 2' },
   { id: '3', name: 'Category 3' },

@@ -12,13 +12,14 @@
   },
   "scripts": {
     "build": "tsc",
-    "clean": "git clean -xdf .cache .turbo dist node_modules",
+    "clean": "git clean -xdf .cache .turbo .venv dist node_modules",
     "dev": "tsc --watch",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "gnr": "bun with-env prisma generate",
     "lint": "eslint",
     "push": "bun with-env prisma db push",
     "studio": "bun with-env prisma studio",
+    "seed": "uv run prisma generate --schema=./prisma/schema.py.prisma && uv run src/seed.py",
     "typecheck": "tsc --noEmit --emitDeclarationOnly false",
     "with-env": "dotenv -e ../../.env --"
   },

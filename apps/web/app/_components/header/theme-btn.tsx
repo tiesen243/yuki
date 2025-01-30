@@ -1,8 +1,9 @@
 'use client'
 
+import { useTheme } from 'next-themes'
+
 import { Button } from '@yuki/ui/button'
 import { MoonIcon, SunIcon } from '@yuki/ui/icons'
-import { useTheme } from '@yuki/ui/utils'
 
 import { useMounted } from '@/hooks/use-mounted'
 

@@ -33,7 +33,7 @@ const typographyVariants = cva('text-foreground font-sans text-base font-normal'
 
 export interface TypographyProps
   extends Omit<React.HTMLAttributes<HTMLParagraphElement>, 'color'>,
-  VariantProps<typeof typographyVariants> { }
+    VariantProps<typeof typographyVariants> {}
 
 const Typography = defineComponent({
   name: 'Typography',
