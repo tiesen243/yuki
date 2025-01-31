@@ -3,7 +3,7 @@ import '@/app/globals.css'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { ThemeProvider } from 'next-themes'
 
-import { Toaster } from '@yuki/ui/toaster'
+import { Toaster } from '@yuki/ui/toast'
 import { cn } from '@yuki/ui/utils'
 
 import { SessionProvider } from '@/hooks/use-session'

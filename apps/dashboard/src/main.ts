@@ -6,7 +6,7 @@ import SuperJSON from 'superjson'
 import { createApp } from 'vue'
 
 import App from './App.vue'
-import { router } from './routes'
+import { router } from './router'
 
 const vueQueryPluginOptions: VueQueryPluginOptions = {
   queryClientConfig: {
@@ -29,4 +29,7 @@ const vueQueryPluginOptions: VueQueryPluginOptions = {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-createApp(App).use(router).use(VueQueryPlugin, vueQueryPluginOptions).mount('#app')
+const app = createApp(App)
+app.use(VueQueryPlugin, vueQueryPluginOptions)
+app.use(router)
+app.mount('#app')

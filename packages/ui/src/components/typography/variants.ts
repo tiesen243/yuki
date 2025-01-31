@@ -1,8 +1,5 @@
 import type { VariantProps } from 'class-variance-authority'
-import * as React from 'react'
 import { cva } from 'class-variance-authority'
-
-import { cn } from '@yuki/ui/utils'
 
 const typographyVariants = cva('text-foreground font-sans text-base font-normal', {
   variants: {
@@ -29,24 +26,7 @@ const typographyVariants = cva('text-foreground font-sans text-base font-normal'
     color: 'primary',
   },
 })
+type TypographyVariants = VariantProps<typeof typographyVariants>
 
-export interface TypographyProps
-  extends Omit<React.HTMLAttributes<HTMLParagraphElement>, 'color'>,
-    VariantProps<typeof typographyVariants> {}
-
-const Typography = React.forwardRef<HTMLButtonElement, TypographyProps>(
-  ({ className, level = 'p', color, ...props }, ref) => {
-    const Comp = level as React.ElementType
-
-    return (
-      <Comp
-        className={cn(typographyVariants({ level, color, className }))}
-        ref={ref}
-        {...props}
-      />
-    )
-  },
-)
-Typography.displayName = 'Typography'
-
-export { Typography, typographyVariants }
+export type { TypographyVariants }
+export { typographyVariants }

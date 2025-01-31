@@ -1,2 +1,7 @@
 @import '@yuki/ui/tailwind.css';
-@source '../../../packages/ui/src/**/*.tsx';
+@source '../../../packages/ui/src/**/*.{ts,tsx}';
+
+@theme {
+  --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+}

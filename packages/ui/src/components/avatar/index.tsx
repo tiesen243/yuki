@@ -3,16 +3,20 @@ import * as AvatarPrimitive from '@radix-ui/react-avatar'
 
 import { cn } from '@yuki/ui/utils'
 
+import type {
+  AvatarFallbackVariants,
+  AvatarImageVariants,
+  AvatarVariants,
+} from './variants'
+import { avatarFallbackVariants, avatarImageVariants, avatarVariants } from './variants'
+
 const Avatar = React.forwardRef<
   React.ComponentRef<typeof AvatarPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Root>
->(({ className, ...props }, ref) => (
+  React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Root> & AvatarVariants
+>(({ shape, className, ...props }, ref) => (
   <AvatarPrimitive.Root
     ref={ref}
-    className={cn(
-      'relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full',
-      className,
-    )}
+    className={cn(avatarVariants({ shape, className }))}
     {...props}
   />
 ))
@@ -20,11 +24,11 @@ Avatar.displayName = AvatarPrimitive.Root.displayName
 
 const AvatarImage = React.forwardRef<
   React.ComponentRef<typeof AvatarPrimitive.Image>,
-  React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Image>
+  React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Image> & AvatarImageVariants
 >(({ className, ...props }, ref) => (
   <AvatarPrimitive.Image
     ref={ref}
-    className={cn('aspect-square h-full w-full', className)}
+    className={cn(avatarImageVariants({ className }))}
     {...props}
   />
 ))
@@ -32,14 +36,11 @@ AvatarImage.displayName = AvatarPrimitive.Image.displayName
 
 const AvatarFallback = React.forwardRef<
   React.ComponentRef<typeof AvatarPrimitive.Fallback>,
-  React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Fallback>
->(({ className, ...props }, ref) => (
+  React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Fallback> & AvatarFallbackVariants
+>(({ shape, className, ...props }, ref) => (
   <AvatarPrimitive.Fallback
     ref={ref}
-    className={cn(
-      'bg-muted flex h-full w-full items-center justify-center rounded-full',
-      className,
-    )}
+    className={cn(avatarFallbackVariants({ shape, className }))}
     {...props}
   />
 ))

@@ -4,6 +4,7 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 import type { SignUp } from '@yuki/api/validators/auth'
+import { toast } from '@yuki/ui/hooks/use-toast.vue'
 import { Button } from '@yuki/ui/vue/button'
 import {
   Card,
@@ -15,7 +16,6 @@ import {
 } from '@yuki/ui/vue/card'
 import { Input } from '@yuki/ui/vue/input'
 import { Label } from '@yuki/ui/vue/label'
-import { toast } from '@yuki/ui/vue/toast'
 
 import { api } from '@/lib/api'
 
@@ -24,9 +24,9 @@ const router = useRouter()
 const { mutate, isPending } = useMutation({
   mutationKey: ['signUp'],
   mutationFn: (data: SignUp) => api.auth.signUp.mutate(data),
-  onError: (error) => toast.error(error.message),
+  onError: (error) => toast({ variant: 'error', description: error.message }),
   onSuccess: async () => {
-    toast.success('Sign up successfully!')
+    toast({ variant: 'success', description: 'Sign up successfully!' })
     await router.push('/auth/sign-in')
   },
 })
@@ -81,16 +81,12 @@ const handleSubmit = () => {
 
         <p>
           Already have an account?
-          <RouterLink to="/sign-in" class="hover:underline">
-            Login here
-          </RouterLink>
+          <RouterLink to="/sign-in" class="hover:underline"> Login here </RouterLink>
         </p>
       </CardContent>
 
       <CardFooter>
-        <Button type="submit" class="w-full" :disabled="isPending">
-          Register
-        </Button>
+        <Button type="submit" class="w-full" :disabled="isPending"> Register </Button>
       </CardFooter>
     </Card>
   </main>
