@@ -5,9 +5,9 @@ import { useRouter } from 'next/navigation'
 
 import { Button } from '@yuki/ui/button'
 import { CardContent } from '@yuki/ui/card'
-import { toast } from '@yuki/ui/hooks/use-toast'
 import { Input } from '@yuki/ui/input'
 import { Label } from '@yuki/ui/label'
+import { toast } from '@yuki/ui/toast'
 
 import { api } from '@/lib/trpc/react'
 
@@ -17,13 +17,13 @@ export const SignInForm: React.FC<{
   const router = useRouter()
   const utils = api.useUtils()
   const { mutate, isPending, error } = api.auth.signIn.useMutation({
-    onError: (error) => toast({ description: error.message, variant: 'error' }),
+    onError: (error) => toast.error(error.message),
     onSuccess: async (data) => {
       await setToken(data.token, data.expiresAt)
       await utils.auth.getSession.invalidate()
       router.refresh()
       router.push('/')
-      toast({ description: 'Logged in successfully', variant: 'success' })
+      toast.success('Logged in successfully')
     },
   })
 

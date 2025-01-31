@@ -7,12 +7,19 @@ import { Button } from '@yuki/ui/button'
 import { CardContent } from '@yuki/ui/card'
 import { Input } from '@yuki/ui/input'
 import { Label } from '@yuki/ui/label'
+import { toast } from '@yuki/ui/toast'
 
 import { api } from '@/lib/trpc/react'
 
 export const SignUpForm = () => {
   const router = useRouter()
-  const { mutate, isPending, error } = api.auth.signUp.useMutation()
+  const { mutate, isPending, error } = api.auth.signUp.useMutation({
+    onError: (error) => toast.error(error.message),
+    onSuccess: () => {
+      toast.success('Account created successfully')
+      router.push('/sign-in')
+    },
+  })
 
   return (
     <Form

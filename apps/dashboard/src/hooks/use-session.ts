@@ -3,7 +3,7 @@ import { useCookies } from '@vueuse/integrations/useCookies'
 import { useRouter } from 'vue-router'
 
 import type { SignIn } from '@yuki/api/validators/auth'
-import { toast } from '@yuki/ui/hooks/use-toast.vue'
+import { toast } from '@yuki/ui/vue/toast'
 
 import { env } from '@/env'
 import { api } from '@/lib/api'
@@ -30,10 +30,7 @@ export const useSession = () => {
       })
       await getSession.refetch()
       await router.push('/')
-      toast({
-        variant: 'success',
-        description: 'You have successfully signed in.',
-      })
+      toast.success('You have successfully signed in.')
     },
   })
 

@@ -4,21 +4,19 @@ import Form from 'next/form'
 import { useRouter } from 'next/navigation'
 
 import { Button } from '@yuki/ui/button'
-import { toast } from '@yuki/ui/hooks/use-toast'
 import { Input } from '@yuki/ui/input'
 import { Label } from '@yuki/ui/label'
+import { toast } from '@yuki/ui/toast'
 
 import { api } from '@/lib/trpc/react'
 
 export const ChangePasswordForm = () => {
   const router = useRouter()
   const { mutate, isPending, error } = api.auth.changePassword.useMutation({
-    onSuccess() {
+    onError: (data) => toast.error(data.message),
+    onSuccess: () => {
       router.push('/sign-in')
-      toast({ variant: 'success', description: 'Password changed successfully' })
-    },
-    onError(data) {
-      toast({ variant: 'error', description: data.message })
+      toast.success('Password changed successfully')
     },
   })
 

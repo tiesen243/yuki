@@ -35,7 +35,7 @@ export default function RootLayout({
               <Footer />
             </SessionProvider>
           </TRPCReactProvider>
-          <Toaster />
+          <Toaster richColors />
         </ThemeProvider>
       </body>
     </html>
