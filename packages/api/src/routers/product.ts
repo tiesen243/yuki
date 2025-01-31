@@ -12,6 +12,7 @@ export const productRouter = {
       take: input.limit,
       skip: (input.page - 1) * input.limit,
       orderBy: { createdAt: 'desc' },
+      include: { category: { select: { id: true, name: true } } },
     })
   }),
   getOne: publicProcedure.input(getOneSchema).query(async ({ ctx, input }) => {

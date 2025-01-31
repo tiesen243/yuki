@@ -3,17 +3,42 @@ import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 
 import { protectedProcedure, publicProcedure } from '../trpc'
-import { getOneSchema, newAddressSchema, updateAddressSchema } from '../validators/user'
+import {
+  getOneSchema,
+  newAddressSchema,
+  query,
+  updateAddressSchema,
+} from '../validators/user'
 
 export const userRouter = {
   /** Get user session */
-  getAll: protectedProcedure.query(async ({ ctx }) => {
+  getAll: protectedProcedure.input(query).query(async ({ ctx, input }) => {
     if (ctx.session.user.role !== 'ADMIN')
       throw new TRPCError({
         code: 'UNAUTHORIZED',
         message: 'You are not authorized to access this resource',
       })
-    return ctx.db.user.findMany({ orderBy: { createdAt: 'desc' } })
+    const users = await ctx.db.user.findMany({
+      where: {
+        OR: [
+          { name: { contains: input.query, mode: 'insensitive' } },
+          { email: { contains: input.query, mode: 'insensitive' } },
+          {},
+        ],
+      },
+      include: { _count: { select: { orders: true } } },
+      take: input.limit,
+      skip: (input.page - 1) * input.limit,
+      orderBy: { createdAt: 'desc' },
+    })
+
+    return users.map((user) => ({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      numberOfOrders: user._count.orders,
+    }))
   }),
 
   /** Link account section */

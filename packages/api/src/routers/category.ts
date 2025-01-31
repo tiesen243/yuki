@@ -7,12 +7,19 @@ import { createSchema, getOneSchema, query, updateSchema } from '../validators/c
 export const categoryRouter = {
   /** Get category section */
   getAll: publicProcedure.input(query).query(async ({ ctx, input }) => {
-    return ctx.db.category.findMany({
+    const categories = await ctx.db.category.findMany({
       take: input.limit,
       skip: (input.page - 1) * input.limit,
       orderBy: { products: { _count: 'desc' } },
       include: { _count: { select: { products: true } } },
     })
+
+    return categories.map((category) => ({
+      id: category.id,
+      name: category.name,
+      image: category.image,
+      numberOfProducts: category._count.products,
+    }))
   }),
   getOne: publicProcedure.input(getOneSchema).query(async ({ ctx, input }) => {
     return ctx.db.category.findFirst({

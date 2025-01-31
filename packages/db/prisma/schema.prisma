@@ -78,7 +78,7 @@ model Product {
   stock       Int          @default(0)
   evaluations Evaluation[]
 
-  Category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   categoryId String
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)

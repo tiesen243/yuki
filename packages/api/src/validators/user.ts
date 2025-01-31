@@ -1,5 +1,12 @@
 import { z } from 'zod'
 
+export const query = z.object({
+  query: z.string().optional(),
+  page: z.number().default(1),
+  limit: z.number().default(8),
+})
+export type Query = z.infer<typeof query>
+
 export const getOneSchema = z.object({ id: z.string() })
 export type GetOneInput = z.infer<typeof getOneSchema>
 
