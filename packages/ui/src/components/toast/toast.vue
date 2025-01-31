@@ -1,19 +1,12 @@
 <script setup lang="ts">
-import type { ToastRootEmits, ToastRootProps } from 'radix-vue'
-import type { HTMLAttributes } from 'vue'
+import type { ToastRootEmits } from 'radix-vue'
 import { ToastRoot, useForwardPropsEmits } from 'radix-vue'
 import { computed } from 'vue'
 
 import { cn } from '@yuki/ui/utils'
 
-import type { ToastVariants } from './variants'
+import type { ToastProps } from './index.vue'
 import { toastVariants } from './variants'
-
-interface ToastProps extends ToastRootProps {
-  class?: HTMLAttributes['class']
-  variant?: ToastVariants['variant']
-  onOpenChange?: ((value: boolean) => void) | undefined
-}
 
 const props = defineProps<ToastProps>()
 
