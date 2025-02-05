@@ -20,5 +20,8 @@ const props = withDefaults(
 </script>
 
 <template>
-  <AvatarImage v-bind="props" :class="cn(avatarImageVariants({ class: props.class }))" />
+  <AvatarImage
+    v-bind="props"
+    :class="cn(avatarImageVariants({ class: props.class }))"
+  />
 </template>

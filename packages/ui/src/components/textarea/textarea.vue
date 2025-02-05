@@ -21,5 +21,8 @@ const modelValue = useVModel(props, 'modelValue', emits, {
 </script>
 
 <template>
-  <textarea v-model="modelValue" :class="cn(textareaVariants({ class: props.class }))" />
+  <textarea
+    v-model="modelValue"
+    :class="cn(textareaVariants({ class: props.class }))"
+  />
 </template>

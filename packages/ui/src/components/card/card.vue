@@ -21,7 +21,10 @@ const props = withDefaults(defineProps<Props>(), {
 </script>
 
 <template>
-  <Primitive :as="as" :class="cn(cardVariants({ variant, class: props.class }))">
+  <Primitive
+    :as="as"
+    :class="cn(cardVariants({ variant, class: props.class }))"
+  >
     <slot />
   </Primitive>
 </template>

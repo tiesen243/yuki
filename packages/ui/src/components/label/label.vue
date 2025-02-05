@@ -18,7 +18,10 @@ const delegatedProps = computed(() => {
 </script>
 
 <template>
-  <Label v-bind="delegatedProps" :class="cn(labelVariants({ class: props.class }))">
+  <Label
+    v-bind="delegatedProps"
+    :class="cn(labelVariants({ class: props.class }))"
+  >
     <slot />
   </Label>
 </template>
