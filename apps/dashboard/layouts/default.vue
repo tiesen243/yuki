@@ -4,8 +4,14 @@
       class="bg-background/70 sticky inset-0 flex h-20 items-center border-b shadow-md backdrop-blur-xl backdrop-saturate-150"
     >
       <div class="container flex items-center justify-between gap-4">
-        <RouterLink to="/" class="flex items-center gap-4 text-xl font-bold">
-          <img src="https://tiesen.id.vn/assets/logo.svg" class="size-9 dark:invert" />
+        <RouterLink
+          to="/"
+          class="flex items-center gap-4 text-xl font-bold"
+        >
+          <img
+            src="https://tiesen.id.vn/assets/logo.svg"
+            class="size-9 dark:invert"
+          >
           <span class="sr-only md:not-sr-only">Dashboard</span>
         </RouterLink>
 
@@ -20,7 +26,11 @@
           </RouterLink>
         </nav>
 
-        <Button variant="outline" size="icon" @click="toggleTheme">
+        <Button
+          variant="outline"
+          size="icon"
+          @click="toggleTheme"
+        >
           <SunIcon v-if="colorMode.preference === 'light'" />
           <MoonIcon v-else />
         </Button>
