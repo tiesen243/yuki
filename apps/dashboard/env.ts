@@ -15,7 +15,6 @@ export const env = createEnv({
    */
   server: {
     DATABASE_URL: z.string(),
-    WEB_URL: z.string().optional(),
   },
 
   /**
@@ -24,6 +23,7 @@ export const env = createEnv({
    */
   client: {
     // NUXT_PUBLIC_CLIENTVAR: z.string(),
+    NUXT_PUBLIC_WEB_URL: z.string().optional(),
   },
   skipValidation: !!process.env.CI || process.env.npm_lifecycle_event === 'lint',
 })

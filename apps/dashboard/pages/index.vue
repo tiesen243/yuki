@@ -1,11 +1,21 @@
-<script setup lang="ts">
-import { Button } from '@yuki/ui/vue/button'
-</script>
 <template>
-  <main class="container flex flex-col text-red-500 antialiased">
-    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facilis ipsum possimus,
-    labore praesentium rem blanditiis distinctio temporibus alias exercitationem, modi
-    perspiciatis saepe odio nemo voluptate quae reiciendis autem, unde ipsam.
-    <Button variant="outline"> dasdas </Button>
+  <main class="container py-4">
+    <div v-if="isLoading">Loading</div>
+
+    <table v-else>
+      <tbody>
+        <tr v-for="product in products" :key="product.id">
+          <td>
+            {{ product.name }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </main>
 </template>
+
+<script setup lang="ts">
+import { useProducts } from '@/hooks/use-products'
+
+const { isLoading, products } = useProducts({})
+</script>
