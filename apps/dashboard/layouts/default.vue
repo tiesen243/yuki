@@ -1,7 +1,7 @@
 <template>
   <div>
     <header
-      className="bg-background/70 sticky inset-0 z-50 flex h-20 items-center border-b shadow-md backdrop-blur-xl backdrop-saturate-150"
+      class="bg-background/70 sticky inset-0 flex h-20 items-center border-b shadow-md backdrop-blur-xl backdrop-saturate-150"
     >
       <div class="container flex items-center justify-between gap-4">
         <RouterLink to="/" class="flex items-center gap-4 text-xl font-bold">
@@ -9,10 +9,13 @@
           <span class="sr-only md:not-sr-only">Dashboard</span>
         </RouterLink>
 
-        <nav
-          class="*:text-muted-foreground *:hover:text-foreground flex grow items-center gap-2 transition-colors"
-        >
-          <RouterLink v-for="link in navLinks" :key="link.href" :to="link.href">
+        <nav class="flex grow items-center gap-2">
+          <RouterLink
+            v-for="link in navLinks"
+            :key="link.href"
+            :to="link.href"
+            class="text-muted-foreground hover:text-foreground transition-colors"
+          >
             {{ link.name }}
           </RouterLink>
         </nav>

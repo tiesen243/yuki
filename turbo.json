@@ -56,7 +56,7 @@
     "DISCORD_SECRET",
     "GITHUB_ID",
     "GITHUB_SECRET",
-    "VITE_WEB_URL",
+    "NUXT_PUBLIC_WEB_URL",
     "DASHBOARD_URL",
     "PORT"
   ],
