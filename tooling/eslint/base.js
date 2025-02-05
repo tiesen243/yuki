@@ -3,7 +3,6 @@
 import * as path from 'node:path'
 import { includeIgnoreFile } from '@eslint/compat'
 import jseslint from '@eslint/js'
-import prettier from 'eslint-config-prettier'
 import importPlugin from 'eslint-plugin-import'
 import turboPlugin from 'eslint-plugin-turbo'
 import tseslint from 'typescript-eslint'
@@ -34,7 +33,6 @@ export const restrictEnvAccess = tseslint.config(
       ],
     },
   },
-  prettier,
 )
 
 export default tseslint.config(

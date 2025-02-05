@@ -21,8 +21,5 @@ const modelValue = useVModel(props, 'modelValue', emits, {
 </script>
 
 <template>
-  <input
-    v-model="modelValue"
-    :class="cn(inputVariants({ class: props.class }))"
-  >
+  <input v-model="modelValue" :class="cn(inputVariants({ class: props.class }))" />
 </template>

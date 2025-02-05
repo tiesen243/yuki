@@ -1,41 +1,41 @@
 {
-  "name": "@yuki/dasboard",
+  "name": "@yuki/dashboard",
+  "version": "2.0.0",
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "nuxt build --dotenv ../../.env",
-    "clean": "git clean -xdf .cache .nuxt .output .turbo node_modules",
-    "dev": "nuxt dev --port 3001 --dotenv ../../.env",
+    "build": "vue-tsc -b && vite build",
+    "clean": "git clean -xdf .cache .turbo dist node_modules",
+    "dev": "vite",
     "format": "prettier --check . --ignore-path ../../.gitignore",
-    "generate": "nuxt generate",
-    "postinstall": "nuxt prepare",
     "lint": "eslint",
-    "start": "nuxt preview --port 3001 --dotenv ../../.env",
-    "typecheck": "nuxt typecheck --dotenv ../../.env"
+    "start": "vite preview",
+    "typecheck": "vue-tsc --noEmit"
   },
   "prettier": "@yuki/prettier-config",
   "dependencies": {
-    "@nuxt/fonts": "^0.10.3",
-    "@nuxtjs/color-mode": "^3.5.2",
     "@tanstack/vue-query": "^5.66.0",
-    "@trpc-vue-query/client": "^0.2.0",
     "@trpc/client": "^11.0.0-rc.730",
+    "@vueuse/core": "^12.5.0",
+    "@vueuse/integrations": "^12.5.0",
     "@yuki/api": "workspace:*",
     "@yuki/ui": "workspace:*",
-    "nuxt": "^3.15.4",
     "superjson": "^2.2.2",
-    "vue": "latest",
-    "vue-router": "latest",
-    "zod": "^3.24.1"
+    "universal-cookie": "^7.2.2",
+    "vue": "^3.5.13",
+    "vue-router": "^4.5.0"
   },
   "devDependencies": {
-    "@nuxt/eslint": "^1.0.0",
     "@tailwindcss/vite": "^4.0.3",
+    "@vitejs/plugin-vue": "^5.2.1",
     "@yuki/eslint-config": "workspace:*",
     "@yuki/prettier-config": "workspace:*",
+    "@yuki/tsconfig": "workspace:*",
     "eslint": "^9.19.0",
     "prettier": "^3.4.2",
     "tailwindcss": "^4.0.3",
-    "typescript": "^5.7.3"
+    "typescript": "^5.7.3",
+    "vite": "^6.0.5",
+    "vue-tsc": "^2.2.0"
   }
 }

@@ -18,8 +18,8 @@
     "gnr": "bun with-env prisma generate",
     "lint": "eslint",
     "push": "bun with-env prisma db push",
-    "studio": "bun with-env prisma studio",
     "seed": "uv run prisma generate --schema=./prisma/schema.py.prisma && uv run src/seed.py",
+    "studio": "bun with-env prisma studio",
     "typecheck": "tsc --noEmit --emitDeclarationOnly false",
     "with-env": "dotenv -e ../../.env --"
   },

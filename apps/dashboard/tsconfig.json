@@ -1,9 +1,8 @@
 {
-  // https://nuxt.com/docs/guide/concepts/typescript
-  "extends": ["./.nuxt/tsconfig.json"],
+  "extends": "@yuki/tsconfig/internal-package.json",
   "compilerOptions": {
-    "paths": {
-      "@/*": ["./*"]
-    }
-  }
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "paths": { "@/*": ["./src/*"] }
+  },
+  "include": ["vite.config.ts", "src/**/*.ts", "src/**/*.vue"]
 }

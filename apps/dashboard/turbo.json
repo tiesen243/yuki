@@ -4,11 +4,8 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": [".nuxt/**", ".output/**"]
+      "outputs": ["dist/**"]
     },
-    "dev": { "persistent": true },
-    "typecheck": {
-      "outputs": []
-    }
+    "dev": { "persistent": true }
   }
 }

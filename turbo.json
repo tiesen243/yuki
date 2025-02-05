@@ -61,6 +61,7 @@
     "PORT"
   ],
   "globalPassThroughEnv": [
+    "DEV",
     "NODE_ENV",
     "CI",
     "VERCEL",
