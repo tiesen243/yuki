@@ -17,6 +17,14 @@ next-env.d.ts
 .nitro/
 .output/
 
+# Nuxt dev/build outputs
+.output
+.data
+.nuxt
+.nitro
+.cache
+dist
+
 # expo
 .expo/
 expo-env.d.ts

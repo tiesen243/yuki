@@ -13,7 +13,7 @@ import tseslint from 'typescript-eslint'
 export const restrictEnvAccess = tseslint.config(
   { ignores: ['**/env.ts'] },
   {
-    files: ['**/*.js', '**/*.ts', '**/*.tsx'],
+    files: ['**/*.js', '**/*.ts', '**/*.tsx', '**/*.vue'],
     rules: {
       'no-restricted-properties': [
         'error',

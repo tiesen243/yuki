@@ -1,11 +1,10 @@
 {
-  "extends": "@yuki/tsconfig/internal-package.json",
+  // https://nuxt.com/docs/guide/concepts/typescript
+  "extends": ["./.nuxt/tsconfig.json"],
   "compilerOptions": {
-    "jsx": "preserve",
-    "jsxImportSource": "vue",
-    "baseUrl": ".",
-    "paths": { "@/*": ["./src/*"] }
+    "paths": {
+      "@/*": ["./*"]
+    }
   },
-  "include": [".", "src/**/*.ts", "src/**/*.vue"],
-  "exclude": ["node_modules", "dist"]
+  "exclude": ["node_modules"]
 }
