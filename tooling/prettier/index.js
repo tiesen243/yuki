@@ -24,6 +24,7 @@ const config = {
     '<TYPES>',
     '^(react/(.*)$)|^(react$)|^(react-native(.*)$)',
     '^(next/(.*)$)|^(next$)',
+    '^(nuxt$)|^(vue$)|^(vue-router$)',
     '^(expo(.*)$)|^(expo$)',
     '<THIRD_PARTY_MODULES>',
     '',

@@ -6,6 +6,9 @@
       "dependsOn": ["^build"],
       "outputs": [".nuxt/**", ".output/**"]
     },
-    "dev": { "persistent": true }
+    "dev": { "persistent": true },
+    "typecheck": {
+      "outputs": []
+    }
   }
 }

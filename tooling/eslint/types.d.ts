@@ -12,6 +12,8 @@ declare module 'eslint-plugin-import' {
   export const rules: Record<string, Rule.RuleModule>
 }
 
+declare module 'eslint-config-prettier' {}
+
 declare module 'eslint-plugin-react' {
   import type { Linter, Rule } from 'eslint'
 

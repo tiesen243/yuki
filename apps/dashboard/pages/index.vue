@@ -2,7 +2,7 @@
 import { Button } from '@yuki/ui/vue/button'
 </script>
 <template>
-  <main class="container">
+  <main class="container flex flex-col text-red-500 antialiased">
     Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facilis ipsum possimus,
     labore praesentium rem blanditiis distinctio temporibus alias exercitationem, modi
     perspiciatis saepe odio nemo voluptate quae reiciendis autem, unde ipsam.

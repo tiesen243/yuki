@@ -1,7 +1,7 @@
 import type { VariantProps } from 'class-variance-authority'
 import type { PropType } from 'vue'
-import { cva } from 'class-variance-authority'
 import { defineComponent, h } from 'vue'
+import { cva } from 'class-variance-authority'
 
 import { cn } from '@yuki/ui/utils'
 

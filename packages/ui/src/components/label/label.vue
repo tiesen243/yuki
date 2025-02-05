@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { LabelProps } from 'radix-vue'
 import type { HTMLAttributes } from 'vue'
-import { Label } from 'radix-vue'
 import { computed } from 'vue'
+import { Label } from 'radix-vue'
 
 import { cn } from '@yuki/ui/utils'
 
