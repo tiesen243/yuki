@@ -1,32 +1,33 @@
 import Image from 'next/image'
+import Link from 'next/link'
 
 import type { Product } from '@yuki/db'
-import { Button } from '@yuki/ui/button'
-import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@yuki/ui/card'
+import { Card, CardDescription, CardHeader, CardTitle } from '@yuki/ui/card'
+
+import { slugify } from '@/lib/utils'
 
 export const ProductCard: React.FC<{ product: Product }> = ({ product }) => (
-  <Card>
-    <Image
-      src={product.image}
-      alt={product.name}
-      width={300}
-      height={300}
-      className="aspect-square w-full rounded-t-xl"
-      onError={(e) => {
-        e.currentTarget.src = '/assets/logo.svg'
-        e.currentTarget.className = 'aspect-square w-full rounded-t-xl dark:invert'
-      }}
-    />
-    <CardHeader>
-      <CardTitle>{product.name}</CardTitle>
-      <CardDescription className="flex items-center justify-between">
-        <span>${product.price}</span>
-        <span>Stock: {product.stock}</span>
-      </CardDescription>
-    </CardHeader>
-    <CardFooter>
-      <Button className="w-full">Add to cart</Button>
-    </CardFooter>
+  <Card variant="pressable" asChild>
+    <Link href={`/p/${slugify(product.name)}.${product.id}`}>
+      <Image
+        src={product.image}
+        alt={product.name}
+        width={300}
+        height={300}
+        className="aspect-square w-full rounded-t-xl"
+        onError={(e) => {
+          e.currentTarget.src = '/assets/logo.svg'
+          e.currentTarget.className = 'aspect-square w-full rounded-t-xl dark:invert'
+        }}
+      />
+      <CardHeader>
+        <CardTitle className="truncate">{product.name}</CardTitle>
+        <CardDescription className="flex items-center justify-between">
+          <span>${product.price}</span>
+          <span>Stock: {product.stock}</span>
+        </CardDescription>
+      </CardHeader>
+    </Link>
   </Card>
 )
 
@@ -40,9 +41,5 @@ export const ProductCardSkeleton: React.FC = () => (
         <span className="w-1/4 animate-pulse rounded bg-current"> &nbsp;</span>
       </CardDescription>
     </CardHeader>
-
-    <CardFooter>
-      <Button className="w-full animate-pulse"> &nbsp;</Button>
-    </CardFooter>
   </Card>
 )

@@ -7,29 +7,30 @@ import Link from 'next/link'
 import { Button } from '@yuki/ui/button'
 import { cn } from '@yuki/ui/utils'
 
+import Hero1 from '@/public/assets/imgs/hero-1.png'
+import Hero2 from '@/public/assets/imgs/hero-2.png'
+import Hero3 from '@/public/assets/imgs/hero-3.png'
+
 const slides = [
   {
     id: 0,
     title: 'Summer Sale Collections',
     description: 'Sale! Up to 50% off!',
-    img: 'https://images.pexels.com/photos/1926769/pexels-photo-1926769.jpeg?auto=compress&cs=tinysrgb&w=800',
-    url: '/shop',
+    img: Hero1,
     bg: 'bg-gradient-to-r from-yellow-50 to-pink-50 dark:from-yellow-900 dark:to-pink-900',
   },
   {
     id: 1,
     title: 'Winter Sale Collections',
     description: 'Sale! Up to 50% off!',
-    img: 'https://images.pexels.com/photos/1021693/pexels-photo-1021693.jpeg?auto=compress&cs=tinysrgb&w=800',
-    url: '/shop',
+    img: Hero2,
     bg: 'bg-gradient-to-r from-pink-50 to-blue-50 dark:from-pink-900 dark:to-blue-900',
   },
   {
     id: 2,
     title: 'Spring Sale Collections',
     description: 'Sale! Up to 50% off!',
-    img: 'https://images.pexels.com/photos/1183266/pexels-photo-1183266.jpeg?auto=compress&cs=tinysrgb&w=800',
-    url: '/shop',
+    img: Hero3,
     bg: 'bg-gradient-to-r from-blue-50 to-yellow-50 dark:from-blue-900 dark:to-yellow-900',
   },
 ]
@@ -56,9 +57,7 @@ export const Slider: React.FC = () => {
               'flex h-full w-screen flex-col gap-16 transition-transform duration-1000 ease-in-out xl:flex-row',
               s.bg,
             )}
-            style={{
-              transform: `translateX(-${current * 100}vw)`,
-            }}
+            style={{ transform: `translateX(-${current * 100}vw)` }}
           >
             <div className="flex h-1/2 flex-col items-center justify-center gap-8 text-center text-balance xl:h-full xl:w-1/2 xl:gap-12">
               <h2 className="text-xl lg:text-3xl 2xl:text-5xl">{s.description}</h2>
@@ -66,19 +65,16 @@ export const Slider: React.FC = () => {
                 {s.title}
               </h1>
               <Button size="lg" asChild>
-                <Link href={s.url}>Shop Now</Link>
+                <Link href="/shop">Shop Now</Link>
               </Button>
             </div>
 
-            <div className="relative h-1/2 w-full xl:h-full xl:w-1/2">
-              <Image
-                src={s.img}
-                alt={s.title}
-                sizes="100%"
-                className="object-cover"
-                fill
-              />
-            </div>
+            <Image
+              src={s.img}
+              alt={s.title}
+              className="h-1/2 w-full object-cover xl:h-full xl:w-1/2"
+              priority
+            />
           </div>
         ))}
       </div>

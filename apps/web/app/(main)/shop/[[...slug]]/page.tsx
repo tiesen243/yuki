@@ -1,9 +1,22 @@
 import { createMetadata } from '@/lib/metadata'
+import { getIdFromSlug } from '@/lib/utils'
 
-export default function ShopPage() {
+export default async function ShopPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ slug?: string[] }>
+  searchParams: Promise<{ page: number }>
+}) {
+  const { slug } = await params
+  const { page = 1 } = await searchParams
+
+  const id = getIdFromSlug(slug)
+
   return (
     <main className="container grow py-4">
-      <p>Shop</p>
+      <p>Shop {id}</p>
+      <p>Page {page}</p>
     </main>
   )
 }
