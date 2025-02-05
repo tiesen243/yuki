@@ -1,5 +1,5 @@
 import type { VueQueryPluginOptions } from '@tanstack/vue-query'
-import { defaultShouldDehydrateQuery } from '@tanstack/react-query'
+import { defaultShouldDehydrateQuery } from '@tanstack/vue-query'
 import SuperJSON from 'superjson'
 
 export const queryClientConfigs = {
