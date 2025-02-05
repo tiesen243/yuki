@@ -11,6 +11,7 @@ export default tseslint.config({
     },
   },
   rules: {
+    '@stylistic/arrow-parens': 'off',
     'vue/multi-word-component-names': 'off',
   },
 })

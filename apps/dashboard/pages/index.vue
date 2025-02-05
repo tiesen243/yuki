@@ -1,21 +1,9 @@
 <template>
   <main class="container py-4">
-    <div v-if="isLoading">Loading</div>
-
-    <table v-else>
-      <tbody>
-        <tr v-for="product in products" :key="product.id">
-          <td>
-            {{ product.name }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos nostrum tempore
+    sunt. Rem iusto doloribus sapiente et atque ipsam, modi consectetur ullam animi
+    dolorum cum dignissimos incidunt dolores aut? Vitae!
   </main>
 </template>
 
-<script setup lang="ts">
-import { useProducts } from '@/hooks/use-products'
-
-const { isLoading, products } = useProducts({})
-</script>
+<script setup lang="ts"></script>
