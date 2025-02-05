@@ -10,6 +10,7 @@ import { Input } from '@yuki/ui/input'
 import { cn } from '@yuki/ui/utils'
 
 import { Nav } from './nav'
+import { SidebarThemeToggle } from './theme-toggle'
 
 export const MobileMenu: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
@@ -79,6 +80,11 @@ export const MobileMenu: React.FC = () => {
         <nav className="mx-2 my-4 flex flex-col gap-1">
           <span className="text-muted-foreground text-xs">Categories</span>
           <Nav limit={10} isSidebar />
+        </nav>
+
+        <nav className="mx-2 my-4 flex flex-col gap-1">
+          <span className="text-muted-foreground text-xs">Settings</span>
+          <SidebarThemeToggle />
         </nav>
       </aside>
     </>

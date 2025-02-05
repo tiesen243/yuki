@@ -1,3 +1,5 @@
+'use client'
+
 import Image from 'next/image'
 
 import type { Category } from '@yuki/db'
@@ -11,6 +13,10 @@ export const CategoryCard: React.FC<{ category: Category }> = ({ category }) => 
       width={300}
       height={300}
       className="aspect-square w-full rounded-t-xl"
+      onError={(e) => {
+        e.currentTarget.src = '/assets/logo.svg'
+        e.currentTarget.className = 'aspect-square w-full rounded-t-xl dark:invert'
+      }}
     />
     <CardHeader>
       <CardTitle>{category.name}</CardTitle>

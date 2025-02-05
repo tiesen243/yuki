@@ -7,11 +7,11 @@ import { Input } from '@yuki/ui/input'
 
 import { MobileMenu } from './mobile-menu'
 import { Nav } from './nav'
-import { ThemeBtn } from './theme-btn'
+import { ThemeBtn } from './theme-toggle'
 import { User } from './user'
 
 export const Header: React.FC = () => (
-  <header className="bg-background/70 sticky inset-0 z-50 border-b py-4 shadow-md backdrop-blur-xl backdrop-saturate-150">
+  <header className="bg-background/70 sticky inset-0 z-50 flex h-20 items-center border-b shadow-md backdrop-blur-xl backdrop-saturate-150">
     <div className="container flex items-center justify-between gap-4">
       <MobileMenu />
 

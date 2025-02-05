@@ -1,8 +1,6 @@
 import './env'
 
 import tailwindcss from '@tailwindcss/vite'
-import { defaultShouldDehydrateQuery } from '@tanstack/vue-query'
-import SuperJSON from 'superjson'
 
 export default defineNuxtConfig({
   modules: [
@@ -15,6 +13,13 @@ export default defineNuxtConfig({
   app: {
     head: {
       title: 'Dashboard | Yuki',
+      meta: [
+        {
+          name: 'description',
+          content:
+            'An innovative E-Commerce application built using Turbo repo and Next.js, offering a seamless shopping experience with fast performance and modern design.',
+        },
+      ],
       link: [
         { rel: 'icon', type: 'image/x-icon', href: 'https://tiesen.id.vn/favicon.ico' },
       ],
@@ -26,26 +31,8 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-02-05',
   vite: { plugins: [tailwindcss()] },
   eslint: { config: { standalone: false, stylistic: true } },
-  fonts: {
-    experimental: { processCSSVariables: true },
-  },
+  fonts: { experimental: { processCSSVariables: true } },
   vueQuery: {
-    queryClientOptions: {
-      defaultOptions: {
-        queries: {
-          // With SSR, we usually want to set some default staleTime
-          // above 0 to avoid refetching immediately on the client
-          staleTime: 60 * 1000,
-        },
-        dehydrate: {
-          serializeData: SuperJSON.serialize,
-          shouldDehydrateQuery: (query) =>
-            defaultShouldDehydrateQuery(query) || query.state.status === 'pending',
-        },
-        hydrate: {
-          deserializeData: SuperJSON.deserialize,
-        },
-      },
-    },
+    queryClientOptions: { defaultOptions: { queries: { staleTime: 60 * 1000 } } },
   },
 })

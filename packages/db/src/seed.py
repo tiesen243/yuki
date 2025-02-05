@@ -21,7 +21,7 @@ async def generate_users(db: Prisma):
             {
                 "name": faker.user_name(),
                 "email": faker.ascii_email(),
-                "image": faker.image_url(),
+                "image": 'https://dummyimage.com/400x400',
             }
         )
 
@@ -33,7 +33,7 @@ async def generate_categories(db: Prisma):
 
     _ = await db.category.create_many(
         data=[
-            {"name": c, "image": faker.image_url()}
+            {"name": c,"image": 'https://dummyimage.com/400x400'}
             for c in [
                 "Electronics",
                 "Clothing",
@@ -64,7 +64,7 @@ async def generate_products(db: Prisma):
             {
                 "name": faker.sentence(nb_words=2),
                 "description": faker.sentence(),
-                "image": faker.image_url(),
+                "image": 'https://dummyimage.com/400x400',
                 "price": faker.random_number(2),
                 "stock": faker.random_number(2),
                 "categoryId": faker.random_element(categories),

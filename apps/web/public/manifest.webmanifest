@@ -1,7 +1,7 @@
 {
   "name": "Yuki",
   "short_name": "Yuki",
-  "description": "Weeb devalowopu with a love for all things anime",
+  "description": "An innovative E-Commerce application built using Turbo repo and Next.js, offering a seamless shopping experience with fast performance and modern design.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
