@@ -68,4 +68,24 @@ export const cartRouter = {
 
       return true
     }),
+
+  deleteItemFromCart: protectedProcedure
+    .input(cartSchema)
+    .mutation(async ({ ctx, input }) => {
+      const cart = await ctx.db.cart.findUnique({ where: { id: input.cartId } })
+      if (!cart) throw new TRPCError({ code: 'NOT_FOUND', message: 'Cart not found' })
+
+      try {
+        await ctx.db.cartItem.delete({
+          where: { cartId_productId: { cartId: cart.id, productId: input.productId } },
+        })
+      } catch {
+        throw new TRPCError({
+          code: 'BAD_GATEWAY',
+          message: 'Fail to delete item from cart',
+        })
+      }
+
+      return true
+    }),
 } satisfies TRPCRouterRecord

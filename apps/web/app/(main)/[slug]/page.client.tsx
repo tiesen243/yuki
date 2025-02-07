@@ -32,8 +32,10 @@ export const ProductDetails: React.FC<{ id: string }> = ({ id }) => {
     }
   }, 0)
 
+  const utils = api.useUtils()
   const addToCart = api.cart.updateCart.useMutation({
-    onSuccess: () => {
+    onSuccess: async () => {
+      await utils.cart.getCart.invalidate()
       toast.success('Item added to cart!')
     },
     onError: (e) => toast.error(e.message),
@@ -69,11 +71,6 @@ export const ProductDetails: React.FC<{ id: string }> = ({ id }) => {
         <section className="flex items-center text-lg">
           <h3 className="sr-only">Product Price Section</h3>
           <Typography>${product.price.toFixed(2)}</Typography>
-        </section>
-
-        <section className="flex items-center text-lg">
-          <h3 className="sr-only">Product Stock Section</h3>
-          <Typography>Stock: {product.stock}</Typography>
         </section>
 
         <div className="flex items-center gap-4">
@@ -116,37 +113,32 @@ export const ProductDetails: React.FC<{ id: string }> = ({ id }) => {
               +
             </Button>
           </div>
+
+          <span className="text-muted-foreground text-xs">
+            {product.stock} items available
+          </span>
         </div>
 
-        <div className="mt-4">
-          <div className="grid grid-cols-2 items-center gap-4 md:flex">
-            <Button
-              variant="outline"
-              disabled={quantity <= 0 || quantity > product.stock || addToCart.isPending}
-              onClick={() => {
-                addToCart.mutate({ productId: product.id, quantity })
-              }}
-            >
-              <ShoppingCartIcon />
-              {addToCart.isPending ? 'Adding...' : 'Add to cart'}
-            </Button>
-            <Button
-              disabled={quantity <= 0 || quantity > product.stock || addToCart.isPending}
-              onClick={() => {
-                addToCart.mutate({ productId: product.id, quantity })
-                router.push('/account/cart')
-              }}
-            >
-              Buy now
-            </Button>
-          </div>
-          {quantity <= 0 ||
-            (quantity > product.stock && (
-              <span className="text-muted-foreground text-xs">
-                * Quantity must be greater than 0 and less than available stock (
-                {product.stock} items available)
-              </span>
-            ))}
+        <div className="mt-4 grid grid-cols-2 items-center gap-4 md:flex">
+          <Button
+            variant="outline"
+            disabled={quantity <= 0 || quantity > product.stock || addToCart.isPending}
+            onClick={() => {
+              addToCart.mutate({ productId: product.id, quantity })
+            }}
+          >
+            <ShoppingCartIcon />
+            {addToCart.isPending ? 'Adding...' : 'Add to cart'}
+          </Button>
+          <Button
+            disabled={quantity <= 0 || quantity > product.stock || addToCart.isPending}
+            onClick={() => {
+              addToCart.mutate({ productId: product.id, quantity })
+              router.push('/account/cart')
+            }}
+          >
+            Buy now
+          </Button>
         </div>
       </section>
     </section>

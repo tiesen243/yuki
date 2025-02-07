@@ -21,7 +21,10 @@ export default function AddressPage() {
             </Typography>
           </div>
 
-          <Link href="/account/address/new" className={buttonVariants({ size: 'sm' })}>
+          <Link
+            href="/account/address/new"
+            className={buttonVariants({ size: 'sm', className: 'mt-4' })}
+          >
             + Add new address
           </Link>
         </div>
