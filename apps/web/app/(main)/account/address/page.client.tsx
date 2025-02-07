@@ -4,23 +4,39 @@ import Link from 'next/link'
 
 import type { Address } from '@yuki/db'
 import { Button } from '@yuki/ui/button'
+import { cn } from '@yuki/ui/utils'
 
 import { api } from '@/lib/trpc/react'
 
 export const AddressList: React.FC = () => {
   const [addresses] = api.user.getAddress.useSuspenseQuery()
-  return addresses.map((address) => <AddressCard key={address.id} address={address} />)
+  return addresses.map((address, i) => (
+    <AddressCard
+      key={address.id}
+      address={address}
+      isLatest={i === addresses.length - 1}
+    />
+  ))
 }
 
-export const AddressCard: React.FC<{ address: Address }> = ({ address }) => {
+export const AddressCard: React.FC<{ address: Address; isLatest?: boolean }> = ({
+  address,
+  isLatest = false,
+}) => {
   const utils = api.useUtils()
   const { mutate, isPending } = api.user.deleteAddress.useMutation({
     onSuccess: async () => {
       await utils.user.getAddress.invalidate()
     },
   })
+
   return (
-    <div className="border-primary/20 flex w-full flex-col justify-between gap-4 border-b py-4 md:flex-row">
+    <div
+      className={cn(
+        'border-primary/20 flex w-full flex-col justify-between gap-4 py-4 md:flex-row',
+        !isLatest && 'border-b',
+      )}
+    >
       <div className="text-muted-foreground leading-7">
         <div className="flex items-center gap-2">
           <p className="text-foreground">{address.name}</p>
@@ -52,8 +68,15 @@ export const AddressCard: React.FC<{ address: Address }> = ({ address }) => {
   )
 }
 
-export const AddressCardSkeleton: React.FC = () => (
-  <div className="border-primary/20 flex w-full flex-col justify-between gap-4 border-b py-4 md:flex-row">
+export const AddressCardSkeleton: React.FC<{ isLatest?: boolean }> = ({
+  isLatest = false,
+}) => (
+  <div
+    className={cn(
+      'border-primary/20 flex w-full flex-col justify-between gap-4 py-4 md:flex-row',
+      !isLatest && 'border-b',
+    )}
+  >
     <div className="text-muted-foreground leading-7">
       <div className="flex items-center gap-2">
         <p className="w-16 animate-pulse rounded bg-current">&nbsp;</p>

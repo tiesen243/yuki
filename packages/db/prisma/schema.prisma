@@ -25,7 +25,7 @@ model User {
   sessions  Session[]
 
   products Product[]
-  orders   Order[]
+  carts    Cart[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -84,7 +84,7 @@ model Product {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 
-  orders OrderItem[]
+  carts CartItem[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -102,16 +102,16 @@ model Evaluation {
 }
 
 enum Status {
+  NEW
   PENDING
   DELIVERED
   CANCELED
 }
 
-model Order {
-  id       String      @id @default(cuid())
-  products OrderItem[]
-  total    Float
-  status   Status      @default(PENDING)
+model Cart {
+  id     String     @id @default(cuid())
+  items  CartItem[]
+  status Status     @default(NEW)
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
@@ -120,12 +120,13 @@ model Order {
   updatedAt DateTime @updatedAt
 }
 
-model OrderItem {
+model CartItem {
   product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId String
+  quantity  Int
 
-  order   Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  orderId String
+  cart   Cart   @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  cartId String
 
-  @@id([productId, orderId])
+  @@id([cartId, productId])
 }

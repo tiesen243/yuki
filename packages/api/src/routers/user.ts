@@ -26,7 +26,7 @@ export const userRouter = {
           {},
         ],
       },
-      include: { _count: { select: { orders: true } } },
+      include: { _count: { select: { carts: true } } },
       take: input.limit,
       skip: (input.page - 1) * input.limit,
       orderBy: { createdAt: 'desc' },
@@ -37,7 +37,7 @@ export const userRouter = {
       name: user.name,
       email: user.email,
       role: user.role,
-      numberOfOrders: user._count.orders,
+      numberOfOrders: user._count.carts,
     }))
   }),
 

@@ -11,7 +11,7 @@ export default async function ShopPage({
   const { slug } = await params
   const { page = 1 } = await searchParams
 
-  const id = getIdFromSlug(slug)
+  const id = getIdFromSlug(slug?.at(0))
 
   return (
     <main className="container grow py-4">

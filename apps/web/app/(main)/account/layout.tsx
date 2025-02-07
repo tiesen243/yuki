@@ -13,12 +13,22 @@ export default async function AccountLayout({
     <div className="container flex grow flex-col gap-4 py-4 md:flex-row">
       <aside className="md:w-1/6">
         <nav className="*:text-muted-foreground *:hover:text-foreground flex gap-2 md:flex-col">
-          <Link href="/account/profile">Profile</Link>
-          <Link href="/account/address">Address</Link>
-          <Link href="/account/change-password">Change Password</Link>
+          {navs.map((nav) => (
+            <Link key={nav.href} href={nav.href}>
+              {nav.title}
+            </Link>
+          ))}
         </nav>
       </aside>
       {children}
     </div>
   )
 }
+
+const navs = [
+  { title: 'Profile', href: '/account/profile' },
+  { title: 'Address', href: '/account/address' },
+  { title: 'Cart', href: '/account/cart' },
+  { title: 'Orders', href: '/account/orders' },
+  { title: 'Change Password', href: '/account/change-password' },
+]

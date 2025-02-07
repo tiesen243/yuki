@@ -1,6 +1,5 @@
 'use client'
 
-import type { StaticImageData } from 'next/image'
 import * as React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -18,7 +17,7 @@ export const Slider: React.FC<{
     id: number
     title: string
     description: string
-    img: StaticImageData
+    img: string
     bg: string
   }[]
 }> = ({ slides }) => {
@@ -58,6 +57,8 @@ export const Slider: React.FC<{
             <Image
               src={s.img}
               alt={s.title}
+              width={800}
+              height={1200}
               className="h-1/2 w-full object-cover xl:h-full xl:w-1/2"
               priority
             />

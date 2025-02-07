@@ -16,9 +16,30 @@ export const productRouter = {
     })
   }),
   getOne: publicProcedure.input(getOneSchema).query(async ({ ctx, input }) => {
-    return ctx.db.product.findFirst({
+    const product = await ctx.db.product.findUnique({
       where: { id: input.id },
+      include: {
+        _count: { select: { evaluations: true, carts: true } },
+        evaluations: { select: { rating: true } },
+      },
     })
+    if (!product) throw new TRPCError({ code: 'NOT_FOUND', message: 'Product not found' })
+
+    const averageRating =
+      product.evaluations.reduce((acc, cur) => acc + cur.rating, 0) /
+      product._count.evaluations
+
+    return {
+      id: product.id,
+      name: product.name,
+      description: product.description,
+      image: product.image,
+      price: product.price,
+      stock: product.stock,
+      rating: product._count.evaluations !== 0 ? averageRating : 0,
+      evaluations: product._count.evaluations,
+      sold: product._count.carts,
+    }
   }),
 
   /** Create product section */

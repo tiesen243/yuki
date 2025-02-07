@@ -8,7 +8,7 @@ export function GET(req: NextRequest) {
 
   const metadata = createMetadata({})
   const title = searchParams.get('title') ?? 'Welcome to Yuki'
-  const description = searchParams.get('description') ?? metadata.description
+  const description = searchParams.get('description') ?? metadata.description ?? ''
   const image = searchParams.get('image') ?? ''
 
   return new ImageResponse(
@@ -44,7 +44,7 @@ export function GET(req: NextRequest) {
             {title}
           </p>
           <p style={{ fontSize: '32px', color: 'rgba(240,240,240,0.8)' }}>
-            {description}
+            {description.length > 200 ? `${description.slice(0, 201)}...` : description}
           </p>
         </div>
 

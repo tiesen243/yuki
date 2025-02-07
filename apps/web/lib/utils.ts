@@ -19,8 +19,7 @@ export const slugify = (text: string) => {
     .replace(/-+$/, '')
 }
 
-export const getIdFromSlug = (slug?: string[]) => {
-  if (!slug) return
-  if (slug.length === 0) return ''
-  return slug.at(0)?.split('-').pop()
+export const getIdFromSlug = (slug?: string): string => {
+  if (!slug) return ''
+  return slug.split('-').pop() ?? ''
 }

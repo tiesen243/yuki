@@ -34,6 +34,7 @@ export default function AddressPage() {
               <>
                 <AddressCardSkeleton />
                 <AddressCardSkeleton />
+                <AddressCardSkeleton isLatest />
               </>
             }
           >
