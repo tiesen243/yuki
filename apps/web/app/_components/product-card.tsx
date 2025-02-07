@@ -8,7 +8,7 @@ import { slugify } from '@/lib/utils'
 
 export const ProductCard: React.FC<{ product: Product }> = ({ product }) => (
   <Card variant="pressable" asChild>
-    <Link href={`/p/${slugify(product.name)}.${product.id}`}>
+    <Link href={`/${slugify(product.name)}.${product.id}`}>
       <Image
         src={product.image}
         alt={product.name}
