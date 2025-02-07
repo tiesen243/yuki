@@ -1,14 +1,16 @@
 'use client'
 
-import { useReducer } from 'react'
+import React, { useReducer } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
+import { Avatar, AvatarFallback, AvatarImage } from '@yuki/ui/avatar'
 import { Button } from '@yuki/ui/button'
 import { ShoppingCartIcon, Star } from '@yuki/ui/icons'
 import { toast } from '@yuki/ui/toast'
 import { Typography } from '@yuki/ui/typography'
 
+import { ProductCard } from '@/app/_components/product-card'
 import { api } from '@/lib/trpc/react'
 
 type CounterAction =
@@ -36,6 +38,7 @@ export const ProductDetails: React.FC<{ id: string }> = ({ id }) => {
   const addToCart = api.cart.updateCart.useMutation({
     onSuccess: async () => {
       await utils.cart.getCart.invalidate()
+      dispatch({ type: 'SET', payload: 0 })
       toast.success('Item added to cart!')
     },
     onError: (e) => toast.error(e.message),
@@ -145,6 +148,136 @@ export const ProductDetails: React.FC<{ id: string }> = ({ id }) => {
   )
 }
 
+export const ProductDetailsSkeleton: React.FC = () => (
+  <section className="grid gap-4 md:grid-cols-12">
+    <section className="md:col-span-5">
+      <h2 className="sr-only">Product Image Section</h2>
+      <div className="aspect-square w-full animate-pulse rounded-md bg-current object-cover" />
+    </section>
+
+    <section className="flex max-h-full flex-col md:col-span-7">
+      <h2 className="sr-only">Product Information Section</h2>
+      <Typography level="h3" className="animate-pulse rounded-md bg-current">
+        &nbsp;
+      </Typography>
+      <div className="my-4 flex items-center gap-4">
+        <StarRating rating={0} />
+        <hr className="bg-border h-6 w-0.5" />
+        <p>0 Evaluations</p>
+        <hr className="bg-border h-6 w-0.5" />
+        <p>0 Sold</p>
+      </div>
+
+      <Typography className="w-full grow animate-pulse rounded-md bg-current">
+        &nbsp;
+      </Typography>
+
+      <section className="flex items-center text-lg">
+        <h3 className="sr-only">Product Price Section</h3>
+        <Typography className="mb-4 w-1/6 animate-pulse rounded-md bg-current">
+          &nbsp;
+        </Typography>
+      </section>
+
+      <div className="flex items-center gap-4">
+        <span>Quantity:</span>
+
+        <div className="flex items-center rounded-md border">
+          <Button
+            variant="outline"
+            size="icon"
+            className="rounded-r-none border-none"
+            disabled
+          >
+            -
+          </Button>
+          <input
+            className="text-muted-foreground flex h-9 w-16 items-center justify-center border-x text-center focus-visible:outline-none"
+            value={0}
+            disabled
+          />
+          <Button
+            variant="outline"
+            size="icon"
+            className="rounded-l-none border-none"
+            disabled
+          >
+            +
+          </Button>
+        </div>
+
+        <span className="text-muted-foreground text-xs">0 items available</span>
+      </div>
+
+      <div className="mt-4 grid grid-cols-2 items-center gap-4 md:flex">
+        <Button variant="outline" disabled>
+          <ShoppingCartIcon />
+          Add to cart
+        </Button>
+        <Button disabled>Buy now</Button>
+      </div>
+    </section>
+  </section>
+)
+
+export const ProductReviews: React.FC<{ id: string }> = ({ id }) => {
+  const [{ reviews, rating }] = api.product.getProductReviews.useSuspenseQuery({ id })
+
+  return (
+    <div>
+      <StarRating rating={rating} />
+
+      <div className="my-4">
+        {reviews.length <= 0 ? (
+          <span className="text-muted-foreground">
+            No reviews yet. Be the first to review this product!
+          </span>
+        ) : (
+          reviews.map((r) => (
+            <div key={r.id} className="border-b py-4">
+              <div className="flex items-center gap-2">
+                <Avatar className="size-9">
+                  <AvatarImage src={r.user.image} />
+                  <AvatarFallback>{r.user.name.at(0)}</AvatarFallback>
+                </Avatar>
+                <div className="flex flex-col gap-1">
+                  <span>{r.user.name}</span>
+                  <StarRating rating={r.rating} />
+                </div>
+              </div>
+              <Typography className="pl-11">{r.comment}</Typography>
+            </div>
+          ))
+        )}
+      </div>
+    </div>
+  )
+}
+
+export const ProductReviewsSkeleton: React.FC = () => (
+  <>
+    <StarRating rating={0} />
+
+    <div className="my-4">
+      <span className="text-muted-foreground">
+        No reviews yet. Be the first to review this product!
+      </span>
+    </div>
+  </>
+)
+
+export const RelativeProducts: React.FC<{ id: string }> = ({ id }) => {
+  const [relativeProducts] = api.product.getRelativeProducts.useSuspenseQuery({ id })
+
+  return (
+    <div className="grid grid-cols-5 gap-4">
+      {relativeProducts.map((p) => (
+        <ProductCard key={p.id} product={p} />
+      ))}
+    </div>
+  )
+}
+
 const StarRating: React.FC<{ rating: number }> = ({ rating }) => {
   const stars = []
   const roundedRating = Math.round(rating * 2) / 2
@@ -162,9 +295,9 @@ const StarRating: React.FC<{ rating: number }> = ({ rating }) => {
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
           className="size-4 stroke-yellow-400"
         >
           <defs>

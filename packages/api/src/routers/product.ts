@@ -8,7 +8,7 @@ export const productRouter = {
   /** Get product section */
   getAll: publicProcedure.input(query).query(async ({ ctx, input }) => {
     return ctx.db.product.findMany({
-      where: { name: { contains: input.query, mode: 'insensitive' } },
+      where: { name: { contains: input.query, mode: 'insensitive' }, stock: { gt: 0 } },
       take: input.limit,
       skip: (input.page - 1) * input.limit,
       orderBy: { createdAt: 'desc' },
@@ -19,15 +19,14 @@ export const productRouter = {
     const product = await ctx.db.product.findUnique({
       where: { id: input.id },
       include: {
-        _count: { select: { evaluations: true, carts: true } },
-        evaluations: { select: { rating: true } },
+        _count: { select: { reviews: true, carts: true } },
+        reviews: { select: { rating: true } },
       },
     })
     if (!product) throw new TRPCError({ code: 'NOT_FOUND', message: 'Product not found' })
 
     const averageRating =
-      product.evaluations.reduce((acc, cur) => acc + cur.rating, 0) /
-      product._count.evaluations
+      product.reviews.reduce((acc, cur) => acc + cur.rating, 0) / product._count.reviews
 
     return {
       id: product.id,
@@ -36,11 +35,35 @@ export const productRouter = {
       image: product.image,
       price: product.price,
       stock: product.stock,
-      rating: product._count.evaluations !== 0 ? averageRating : 0,
-      evaluations: product._count.evaluations,
+      rating: product._count.reviews !== 0 ? averageRating : 0,
+      evaluations: product._count.reviews,
       sold: product._count.carts,
     }
   }),
+  getProductReviews: publicProcedure.input(getOneSchema).query(async ({ ctx, input }) => {
+    const reviews = await ctx.db.review.findMany({
+      where: { product: { id: input.id } },
+      include: { user: { select: { id: true, name: true, image: true } } },
+    })
+
+    const averageRating =
+      reviews.reduce((acc, cur) => acc + cur.rating, 0) / reviews.length
+
+    return {
+      reviews,
+      rating: reviews.length <= 0 ? 0 : averageRating,
+    }
+  }),
+  getRelativeProducts: publicProcedure
+    .input(getOneSchema)
+    .query(async ({ ctx, input }) => {
+      const c = await ctx.db.category.findFirst({
+        where: { products: { some: { id: input.id } } },
+        include: { products: true },
+      })
+
+      return c?.products ?? []
+    }),
 
   /** Create product section */
   create: protectedProcedure.input(createSchema).mutation(async ({ ctx, input }) => {
