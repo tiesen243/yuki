@@ -20,12 +20,22 @@ export const cartRouter = {
     const select = { id: true, name: true, image: true, price: true }
     let cart = await ctx.db.cart.findFirst({
       where: { userId, status: 'NEW' },
-      include: { items: { include: { product: { select } } } },
+      include: {
+        items: {
+          include: { product: { select } },
+          orderBy: { product: { name: 'desc' } },
+        },
+      },
     })
     if (!cart)
       cart = await ctx.db.cart.create({
         data: { userId },
-        include: { items: { include: { product: { select } } } },
+        include: {
+          items: {
+            include: { product: { select } },
+            orderBy: { product: { name: 'desc' } },
+          },
+        },
       })
 
     const total = cart.items.reduce(
@@ -55,18 +65,16 @@ export const cartRouter = {
       if (!cart) cart = await ctx.db.cart.create({ data: { userId } })
 
       if (isUpdate)
-        await ctx.db.cartItem.update({
+        return await ctx.db.cartItem.update({
           where: { cartId_productId: { cartId: cart.id, productId } },
           data: { quantity },
         })
       else
-        await ctx.db.cartItem.upsert({
+        return await ctx.db.cartItem.upsert({
           where: { cartId_productId: { cartId: cart.id, productId } },
           create: { cartId: cart.id, productId, quantity },
           update: { quantity: { increment: quantity } },
         })
-
-      return true
     }),
 
   deleteItemFromCart: protectedProcedure
