@@ -96,8 +96,8 @@ export default async function ShopPage({
           <SubmitButton />
         </Form>
 
-        <div className="grid grid-cols-12 gap-4">
-          <section className="col-span-2 flex max-h-[50dvh] flex-col gap-2 overflow-y-auto">
+        <div className="grid gap-4 md:grid-cols-12">
+          <section className="col-span-2 hidden max-h-[50dvh] flex-col gap-2 overflow-y-auto md:flex">
             <h3 className="sr-only">Category List Section</h3>
             {categories.map((c) => (
               <Link
@@ -113,7 +113,7 @@ export default async function ShopPage({
             ))}
           </section>
 
-          <section className="col-span-10">
+          <section className="md:col-span-10">
             <h3 className="sr-only">Product List Section</h3>
 
             <Suspense fallback={<ProductListSkeleton limit={+limit} />}>
