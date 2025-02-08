@@ -89,7 +89,7 @@ export const Slider: React.FC<{
 }
 
 export const ProductList: React.FC = () => {
-  const [products] = api.product.getAll.useSuspenseQuery({})
+  const [{ products }] = api.product.getAll.useSuspenseQuery({})
   return (
     <section className="container grid grid-cols-3 gap-4 md:grid-cols-4 lg:grid-cols-6">
       <Typography level="h3" className="col-span-3 md:col-span-4 lg:col-span-6">

@@ -1,23 +1,70 @@
+import { Suspense } from 'react'
+
+import type { Query } from '@yuki/api/validators/product'
+
 import { createMetadata } from '@/lib/metadata'
+import { api, HydrateClient } from '@/lib/trpc/server'
 import { getIdFromSlug } from '@/lib/utils'
+import {
+  ProductList,
+  ProductListSkeleton,
+  ProductPagination,
+  ProductPaginationSkeleton,
+} from './page.client'
 
 export default async function ShopPage({
   params,
   searchParams,
 }: {
   params: Promise<{ slug?: string[] }>
-  searchParams: Promise<{ page: number }>
+  searchParams: Promise<Query>
 }) {
   const { slug } = await params
-  const { page = 1 } = await searchParams
+  const {
+    page = 1,
+    limit = 6 * 4,
+    orderBy = 'createdAt',
+    sortBy = 'desc',
+    query,
+  } = await searchParams
 
-  const id = getIdFromSlug(slug?.at(0))
+  const categoryId = getIdFromSlug(slug?.at(0))
+
+  void api.product.getAll.prefetch({
+    page: +page,
+    limit,
+    query,
+    orderBy,
+    sortBy,
+    category: categoryId,
+  })
 
   return (
-    <main className="container grow py-4">
-      <p>Shop {id}</p>
-      <p>Page {page}</p>
-    </main>
+    <HydrateClient>
+      <main className="container grow py-4">
+        <Suspense fallback={<ProductListSkeleton limit={+limit} />}>
+          <ProductList
+            page={+page}
+            limit={+limit}
+            query={query}
+            orderBy={orderBy}
+            sortBy={sortBy}
+            category={categoryId}
+          />
+        </Suspense>
+
+        <Suspense fallback={<ProductPaginationSkeleton />}>
+          <ProductPagination
+            page={+page}
+            limit={+limit}
+            query={query}
+            orderBy={orderBy}
+            sortBy={sortBy}
+            category={categoryId}
+          />
+        </Suspense>
+      </main>
+    </HydrateClient>
   )
 }
 

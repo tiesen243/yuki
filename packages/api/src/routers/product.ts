@@ -7,13 +7,24 @@ import * as schemas from '../validators/product'
 export const productRouter = {
   // [GET] /api/trpc/product.getAll
   getAll: publicProcedure.input(schemas.query).query(async ({ ctx, input }) => {
-    return ctx.db.product.findMany({
-      where: { name: { contains: input.query, mode: 'insensitive' }, stock: { gt: 0 } },
+    const products = await ctx.db.product.findMany({
+      where: {
+        name: { contains: input.query, mode: 'insensitive' },
+        ...(input.category && { categoryId: input.category }),
+        stock: { gt: 0 },
+      },
       take: input.limit,
       skip: (input.page - 1) * input.limit,
-      orderBy: { createdAt: 'desc' },
+      orderBy: { [input.orderBy]: input.sortBy },
       include: { category: { select: { id: true, name: true } } },
     })
+
+    const totalPage = Math.ceil((await ctx.db.product.count()) / input.limit)
+
+    return {
+      products,
+      totalPage,
+    }
   }),
 
   // [GET] /api/trpc/product.getOne
