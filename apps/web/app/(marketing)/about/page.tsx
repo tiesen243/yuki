@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { Avatar, AvatarFallback, AvatarImage } from '@yuki/ui/avatar'
 import { Button } from '@yuki/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@yuki/ui/card'
+import { Typography } from '@yuki/ui/typography'
 
 import { createMetadata } from '@/lib/metadata'
 
@@ -11,13 +12,12 @@ export default function AboutPage() {
     <main className="container space-y-12 py-16">
       {/* Hero Section */}
       <div className="space-y-4 text-center">
-        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">About Yuki</h1>
+        <Typography level="h1">About Yuki</Typography>
         <p className="text-muted-foreground text-xl">
           Bringing quality products to your doorstep since {new Date().getFullYear()}.
         </p>
       </div>
 
-      {/* Mission Statement */}
       <Card>
         <CardHeader>
           <CardTitle>Our Mission</CardTitle>
@@ -29,7 +29,6 @@ export default function AboutPage() {
         </CardContent>
       </Card>
 
-      {/* Values Section */}
       <div className="grid gap-6 md:grid-cols-3">
         {[
           {
@@ -59,9 +58,8 @@ export default function AboutPage() {
         ))}
       </div>
 
-      {/* Team Section */}
       <div className="space-y-8">
-        <h2 className="text-center text-3xl font-bold">Our Team</h2>
+        <Typography level="h2">Our Team</Typography>
         <div className="grid gap-6 md:grid-cols-4">
           {[
             {
@@ -107,7 +105,6 @@ export default function AboutPage() {
         </div>
       </div>
 
-      {/* Contact Section */}
       <Card className="text-center">
         <CardHeader>
           <CardTitle>Get in Touch</CardTitle>

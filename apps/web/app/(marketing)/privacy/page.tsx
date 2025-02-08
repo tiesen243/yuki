@@ -8,15 +8,23 @@ export default function PrivacyPolicyPage() {
       </Typography>
 
       <article>
-        <Typography level="h2">Introduction</Typography>
-        <Typography>Last updated: {new Date().toLocaleDateString()}</Typography>
+        <Typography level="h2" className="border-b">
+          Introduction
+        </Typography>
+        <Typography className="mb-4">
+          Last updated: {new Date().toLocaleDateString()}
+        </Typography>
 
-        <Typography level="h2">Information We Collect</Typography>
+        <Typography level="h2" className="border-b">
+          Information We Collect
+        </Typography>
         <Typography className="mb-4">
           We collect information that you provide directly to us when using our services.
         </Typography>
 
-        <Typography level="h2">How We Use Your Information</Typography>
+        <Typography level="h2" className="border-b">
+          How We Use Your Information
+        </Typography>
         <Typography level="ul" className="mb-4">
           <li>To provide and maintain our service</li>
           <li>To notify you about changes to our service</li>
@@ -24,18 +32,24 @@ export default function PrivacyPolicyPage() {
           <li>To detect, prevent and address technical issues</li>
         </Typography>
 
-        <Typography level="h2">Data Security</Typography>
+        <Typography level="h2" className="border-b">
+          Data Security
+        </Typography>
         <Typography className="mb-4">
           We implement appropriate security measures to protect your personal information.
         </Typography>
 
-        <Typography level="h2">Changes to This Privacy Policy</Typography>
+        <Typography level="h2" className="border-b">
+          Changes to This Privacy Policy
+        </Typography>
         <Typography className="mb-4">
           We may update our Privacy Policy from time to time. We will notify you of any
           changes by posting the new Privacy Policy on this page.
         </Typography>
 
-        <Typography level="h2">Contact Us</Typography>
+        <Typography level="h2" className="border-b">
+          Contact Us
+        </Typography>
         <Typography className="mb-4">
           If you have any questions about this Privacy Policy, please contact us.
         </Typography>
