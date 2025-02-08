@@ -70,7 +70,7 @@ export const MobileMenu: React.FC = () => {
             <Link
               key={title}
               href={href}
-              className="text-foreground hover:bg-background/40 rounded-lg px-2 py-1 transition-colors"
+              className="text-foreground hover:bg-background rounded-lg px-2 py-1 transition-colors"
             >
               {title}
             </Link>
@@ -93,7 +93,6 @@ export const MobileMenu: React.FC = () => {
 
 const navLinks = [
   { title: 'Shop', href: '/shop' },
-  { title: 'Deals', href: '/deals' },
   { title: 'About', href: '/about' },
   { title: 'Contact', href: '/contact' },
 ]

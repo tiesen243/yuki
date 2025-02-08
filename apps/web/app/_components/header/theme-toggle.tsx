@@ -46,12 +46,14 @@ export const SidebarThemeToggle: React.FC = () => {
 
   return (
     <button
-      className="text-foreground hover:bg-background/40 rounded-lg px-2 py-1 text-start capitalize transition-colors"
+      className="text-foreground hover:bg-background/40 inline-flex items-center gap-2 rounded-lg px-2 py-1 text-start capitalize transition-colors"
       onClick={() => {
         setTheme(theme === 'dark' ? 'light' : 'dark')
       }}
     >
-      {theme} Mode
+      {theme === 'dark' ? <SunIcon size={16} /> : <MoonIcon size={16} />}
+
+      <span>{theme} Mode</span>
     </button>
   )
 }

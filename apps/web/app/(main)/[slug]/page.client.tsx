@@ -41,6 +41,7 @@ export const ProductDetails: React.FC<{ id: string }> = ({ id }) => {
   const addToCart = api.cart.updateCart.useMutation({
     onSuccess: async () => {
       await utils.cart.getCart.invalidate()
+      await utils.product.getOne.invalidate({ id })
       dispatch({ type: 'SET', payload: 0 })
       toast.success('Item added to cart!')
     },
@@ -67,7 +68,7 @@ export const ProductDetails: React.FC<{ id: string }> = ({ id }) => {
         <div className="my-4 flex items-center gap-4">
           <StarRating rating={product.rating} />
           <hr className="bg-border h-6 w-0.5" />
-          <p>{product.evaluations} Evaluations</p>
+          <p>{product.reviews} Reviews</p>
           <hr className="bg-border h-6 w-0.5" />
           <p>{product.sold} Sold</p>
         </div>
@@ -166,7 +167,7 @@ export const ProductDetailsSkeleton: React.FC = () => (
       <div className="my-4 flex items-center gap-4">
         <StarRating rating={0} />
         <hr className="bg-border h-6 w-0.5" />
-        <p>0 Evaluations</p>
+        <p>0 Reviews</p>
         <hr className="bg-border h-6 w-0.5" />
         <p>0 Sold</p>
       </div>

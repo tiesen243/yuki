@@ -2,17 +2,12 @@ import type { TRPCRouterRecord } from '@trpc/server'
 import { TRPCError } from '@trpc/server'
 
 import { protectedProcedure, publicProcedure } from '../trpc'
-import {
-  createSchema,
-  getOneSchema,
-  getReviews,
-  query,
-  updateSchema,
-} from '../validators/product'
+import * as schemas from '../validators/product'
 
 export const productRouter = {
   /** Get product section */
-  getAll: publicProcedure.input(query).query(async ({ ctx, input }) => {
+  // [GET] /api/trpc/product.getAll
+  getAll: publicProcedure.input(schemas.query).query(async ({ ctx, input }) => {
     return ctx.db.product.findMany({
       where: { name: { contains: input.query, mode: 'insensitive' }, stock: { gt: 0 } },
       take: input.limit,
@@ -21,12 +16,17 @@ export const productRouter = {
       include: { category: { select: { id: true, name: true } } },
     })
   }),
-  getOne: publicProcedure.input(getOneSchema).query(async ({ ctx, input }) => {
+  // [GET] /api/trpc/product.getOne
+  getOne: publicProcedure.input(schemas.getOneSchema).query(async ({ ctx, input }) => {
     const product = await ctx.db.product.findUnique({
       where: { id: input.id },
       include: {
-        _count: { select: { reviews: true, carts: true } },
+        _count: { select: { reviews: true } },
         reviews: { select: { rating: true } },
+        carts: {
+          where: { cart: { status: 'DELIVERED' } },
+          select: { quantity: true },
+        },
       },
     })
     if (!product) throw new TRPCError({ code: 'NOT_FOUND', message: 'Product not found' })
@@ -42,36 +42,39 @@ export const productRouter = {
       price: product.price,
       stock: product.stock,
       rating: product._count.reviews !== 0 ? averageRating : 0,
-      evaluations: product._count.reviews,
-      sold: product._count.carts,
+      reviews: product._count.reviews,
+      sold: product.carts.reduce((acc, cur) => acc + cur.quantity, 0),
     }
   }),
-  getProductReviews: publicProcedure.input(getReviews).query(async ({ ctx, input }) => {
-    const limit = 5
-    const reviews = await ctx.db.review.findMany({
-      where: { product: { id: input.productId } },
-      take: limit,
-      skip: limit * (input.page - 1),
-      include: { user: { select: { id: true, name: true, image: true } } },
-    })
+  // [GET] /api/trpc/product.getProductReviews
+  getProductReviews: publicProcedure
+    .input(schemas.getReviews)
+    .query(async ({ ctx, input }) => {
+      const limit = 5
+      const reviews = await ctx.db.review.findMany({
+        where: { product: { id: input.productId } },
+        take: limit,
+        skip: limit * (input.page - 1),
+        include: { user: { select: { id: true, name: true, image: true } } },
+      })
 
-    const fullReviews = await ctx.db.review.findMany({
-      where: { product: { id: input.productId } },
-      select: { rating: true },
-    })
-    const averageRating =
-      fullReviews.reduce((acc, cur) => acc + cur.rating, 0) / fullReviews.length
+      const fullReviews = await ctx.db.review.findMany({
+        where: { product: { id: input.productId } },
+        select: { rating: true },
+      })
+      const averageRating =
+        fullReviews.reduce((acc, cur) => acc + cur.rating, 0) / fullReviews.length
 
-    const totalPage = Math.ceil(fullReviews.length / limit)
+      const totalPage = Math.ceil(fullReviews.length / limit)
 
-    return {
-      reviews,
-      rating: fullReviews.length <= 0 ? 0 : averageRating,
-      totalPage,
-    }
-  }),
+      return {
+        reviews,
+        rating: fullReviews.length <= 0 ? 0 : averageRating,
+        totalPage,
+      }
+    }),
   getRelativeProducts: publicProcedure
-    .input(getOneSchema)
+    .input(schemas.getOneSchema)
     .query(async ({ ctx, input }) => {
       const c = await ctx.db.category.findFirst({
         where: { products: { some: { id: input.id } } },
@@ -82,29 +85,33 @@ export const productRouter = {
     }),
 
   /** Create product section */
-  create: protectedProcedure.input(createSchema).mutation(async ({ ctx, input }) => {
-    checkAdmin(ctx.session.user.role)
-    return ctx.db.product.create({
-      data: {
-        ...input,
-        userId: ctx.session.user.id,
-      },
-    })
-  }),
+  create: protectedProcedure
+    .input(schemas.createSchema)
+    .mutation(async ({ ctx, input }) => {
+      checkAdmin(ctx.session.user.role)
+      return ctx.db.product.create({
+        data: {
+          ...input,
+          userId: ctx.session.user.id,
+        },
+      })
+    }),
 
   /** Update product section */
   update: protectedProcedure
-    .input(updateSchema)
+    .input(schemas.updateSchema)
     .mutation(async ({ ctx, input: { id, ...data } }) => {
       checkAdmin(ctx.session.user.role)
       return ctx.db.product.update({ where: { id }, data })
     }),
 
   /** Delete product section */
-  delete: protectedProcedure.input(getOneSchema).mutation(async ({ ctx, input }) => {
-    checkAdmin(ctx.session.user.role)
-    return ctx.db.product.delete({ where: { id: input.id } })
-  }),
+  delete: protectedProcedure
+    .input(schemas.getOneSchema)
+    .mutation(async ({ ctx, input }) => {
+      checkAdmin(ctx.session.user.role)
+      return ctx.db.product.delete({ where: { id: input.id } })
+    }),
 } satisfies TRPCRouterRecord
 
 const checkAdmin = (role: 'USER' | 'ADMIN') => {
