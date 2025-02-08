@@ -19,7 +19,15 @@ export const productRouter = {
       include: { category: { select: { id: true, name: true } } },
     })
 
-    const totalPage = Math.ceil((await ctx.db.product.count()) / input.limit)
+    const totalPage = Math.ceil(
+      (await ctx.db.product.count({
+        where: {
+          name: { contains: input.query, mode: 'insensitive' },
+          ...(input.category && { categoryId: input.category }),
+          stock: { gt: 0 },
+        },
+      })) / input.limit,
+    )
 
     return {
       products,

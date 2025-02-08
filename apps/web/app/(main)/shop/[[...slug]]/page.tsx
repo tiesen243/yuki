@@ -46,7 +46,7 @@ export default async function ShopPage({
     api.category.getAll({ limit: 999 }),
     api.product.getAll.prefetch({
       page: +page,
-      limit,
+      limit: +limit,
       query,
       orderBy,
       sortBy,
@@ -92,6 +92,9 @@ export default async function ShopPage({
               <SelectItem value="desc">High to Low</SelectItem>
             </SelectContent>
           </Select>
+
+          <input name="limit" defaultValue={limit} hidden readOnly />
+          <input name="page" defaultValue={page} hidden readOnly />
 
           <SubmitButton />
         </Form>

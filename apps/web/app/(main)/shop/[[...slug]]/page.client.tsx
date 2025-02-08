@@ -48,11 +48,16 @@ export const ProductPagination: React.FC<Query> = (query) => {
       className={p === query.page ? 'bg-accent text-accent-foreground' : ''}
       asChild
     >
-      <Link href={{ query: { page: p } }}>{p}</Link>
+      <Link href={{ query: { ...query, page: p } }}>{p}</Link>
     </Button>
   )
 
   const renderPageNumbers = () => {
+    if (totalPage <= 5)
+      return (
+        <>{Array.from({ length: totalPage }).map((_, p) => renderPageButton(p + 1))}</>
+      )
+
     if (query.page <= 5) {
       // First 4 pages: show 1,2,3,...,totalPage-1,totalPage
       return (
@@ -94,13 +99,13 @@ export const ProductPagination: React.FC<Query> = (query) => {
       {query.page > 1 && (
         <>
           <Button variant="outline" size="icon" asChild>
-            <Link href={{ query: { page: 1 } }}>
+            <Link href={{ query: { ...query, page: 1 } }}>
               <ChevronsLeftIcon />
             </Link>
           </Button>
 
           <Button variant="outline" size="icon" asChild>
-            <Link href={{ query: { page: prevPage } }} aria-disabled>
+            <Link href={{ query: { ...query, page: prevPage } }} aria-disabled>
               <ChevronLeftIcon />
             </Link>
           </Button>
@@ -112,13 +117,13 @@ export const ProductPagination: React.FC<Query> = (query) => {
       {query.page < totalPage && (
         <>
           <Button variant="outline" size="icon" asChild>
-            <Link href={{ query: { page: nextPage } }}>
+            <Link href={{ query: { ...query, page: nextPage } }}>
               <ChevronRightIcon />
             </Link>
           </Button>
 
           <Button variant="outline" size="icon" asChild>
-            <Link href={{ query: { page: totalPage } }}>
+            <Link href={{ query: { ...query, page: totalPage } }}>
               <ChevronsRightIcon />
             </Link>
           </Button>
