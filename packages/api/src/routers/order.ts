@@ -9,10 +9,28 @@ export const orderRouter = {
   getHistories: protectedProcedure.query(async ({ ctx }) => {
     const orders = await ctx.db.cart.findMany({
       where: { userId: ctx.session.user.id, status: { not: 'NEW' } },
+      include: {
+        items: {
+          select: {
+            quantity: true,
+            product: { select: { id: true, name: true, image: true, price: true } },
+          },
+        },
+      },
       orderBy: { updatedAt: 'desc' },
     })
 
-    return orders
+    return orders.map((o) => {
+      const price = o.items.reduce(
+        (acc, cur) => acc + cur.quantity * cur.product.price,
+        0,
+      )
+
+      return {
+        ...o,
+        price,
+      }
+    })
   }),
 
   // [GET] /api/trpc/order.getDetails
