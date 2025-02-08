@@ -2,7 +2,13 @@ import type { TRPCRouterRecord } from '@trpc/server'
 import { TRPCError } from '@trpc/server'
 
 import { protectedProcedure, publicProcedure } from '../trpc'
-import { createSchema, getOneSchema, query, updateSchema } from '../validators/product'
+import {
+  createSchema,
+  getOneSchema,
+  getReviews,
+  query,
+  updateSchema,
+} from '../validators/product'
 
 export const productRouter = {
   /** Get product section */
@@ -40,18 +46,28 @@ export const productRouter = {
       sold: product._count.carts,
     }
   }),
-  getProductReviews: publicProcedure.input(getOneSchema).query(async ({ ctx, input }) => {
+  getProductReviews: publicProcedure.input(getReviews).query(async ({ ctx, input }) => {
+    const limit = 5
     const reviews = await ctx.db.review.findMany({
-      where: { product: { id: input.id } },
+      where: { product: { id: input.productId } },
+      take: limit,
+      skip: limit * (input.page - 1),
       include: { user: { select: { id: true, name: true, image: true } } },
     })
 
+    const fullReviews = await ctx.db.review.findMany({
+      where: { product: { id: input.productId } },
+      select: { rating: true },
+    })
     const averageRating =
-      reviews.reduce((acc, cur) => acc + cur.rating, 0) / reviews.length
+      fullReviews.reduce((acc, cur) => acc + cur.rating, 0) / fullReviews.length
+
+    const totalPage = Math.ceil(fullReviews.length / limit)
 
     return {
       reviews,
-      rating: reviews.length <= 0 ? 0 : averageRating,
+      rating: fullReviews.length <= 0 ? 0 : averageRating,
+      totalPage,
     }
   }),
   getRelativeProducts: publicProcedure

@@ -1,12 +1,12 @@
 'use client'
 
-import React, { useReducer } from 'react'
+import * as React from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@yuki/ui/avatar'
 import { Button } from '@yuki/ui/button'
-import { ShoppingCartIcon, Star } from '@yuki/ui/icons'
+import { ChevronLeftIcon, ChevronRightIcon, ShoppingCartIcon, Star } from '@yuki/ui/icons'
 import { toast } from '@yuki/ui/toast'
 import { Typography } from '@yuki/ui/typography'
 
@@ -21,18 +21,21 @@ type CounterAction =
 export const ProductDetails: React.FC<{ id: string }> = ({ id }) => {
   const router = useRouter()
   const [product] = api.product.getOne.useSuspenseQuery({ id })
-  const [quantity, dispatch] = useReducer((quantity: number, action: CounterAction) => {
-    switch (action.type) {
-      case 'INCREMENT':
-        return quantity + 1
-      case 'DECREMENT':
-        return quantity <= 0 ? 0 : quantity - 1
-      case 'SET':
-        return action.payload < 0 ? 0 : action.payload
-      default:
-        return quantity
-    }
-  }, 0)
+  const [quantity, dispatch] = React.useReducer(
+    (quantity: number, action: CounterAction) => {
+      switch (action.type) {
+        case 'INCREMENT':
+          return quantity + 1
+        case 'DECREMENT':
+          return quantity <= 0 ? 0 : quantity - 1
+        case 'SET':
+          return action.payload < 0 ? 0 : action.payload
+        default:
+          return quantity
+      }
+    },
+    0,
+  )
 
   const utils = api.useUtils()
   const addToCart = api.cart.updateCart.useMutation({
@@ -221,7 +224,10 @@ export const ProductDetailsSkeleton: React.FC = () => (
 )
 
 export const ProductReviews: React.FC<{ id: string }> = ({ id }) => {
-  const [{ reviews, rating }] = api.product.getProductReviews.useSuspenseQuery({ id })
+  const [page, setPage] = React.useState<number>(1)
+  const [{ reviews, rating, totalPage }] = api.product.getProductReviews.useSuspenseQuery(
+    { productId: id, page },
+  )
 
   return (
     <div>
@@ -249,6 +255,44 @@ export const ProductReviews: React.FC<{ id: string }> = ({ id }) => {
             </div>
           ))
         )}
+      </div>
+
+      <div className="flex items-center justify-center gap-2">
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={() => {
+            setPage(Math.max(1, page - 1))
+          }}
+          disabled={page === 1}
+        >
+          <ChevronLeftIcon />
+        </Button>
+
+        {Array.from({ length: totalPage }).map((_, i) => (
+          <Button
+            key={i + 1}
+            variant="outline"
+            size="icon"
+            className={page === i + 1 ? 'bg-accent text-accent-foreground' : ''}
+            onClick={() => {
+              setPage(i + 1)
+            }}
+          >
+            {i + 1}
+          </Button>
+        ))}
+
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={() => {
+            setPage(Math.min(totalPage, page + 1))
+          }}
+          disabled={page === totalPage}
+        >
+          <ChevronRightIcon />
+        </Button>
       </div>
     </div>
   )

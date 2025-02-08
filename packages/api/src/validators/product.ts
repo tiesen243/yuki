@@ -10,6 +10,9 @@ export type Query = z.infer<typeof query>
 export const getOneSchema = z.object({ id: z.string() })
 export type GetOneInput = z.infer<typeof getOneSchema>
 
+export const getReviews = z.object({ productId: z.string(), page: z.number().default(1) })
+export type GetReviews = z.infer<typeof getReviews>
+
 export const createSchema = z.object({
   name: z.string().min(1, 'Name is required'),
   description: z.string().min(1, 'Description is required'),

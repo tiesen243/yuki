@@ -23,7 +23,7 @@ export default async function ProductPage({ params }: Props) {
 
   void Promise.all([
     api.product.getOne.prefetch({ id }),
-    api.product.getProductReviews.prefetch({ id }),
+    api.product.getProductReviews.prefetch({ productId: id }),
     api.product.getRelativeProducts.prefetch({ id }),
   ])
 
