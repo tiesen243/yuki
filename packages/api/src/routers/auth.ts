@@ -10,14 +10,16 @@ import {
 } from '@yuki/auth'
 
 import { protectedProcedure, publicProcedure } from '../trpc'
-import { changePassword, signIn, signUp } from '../validators/auth'
+import * as schemas from '../validators/auth'
 
 export const authRouter = {
+  // [GET] /api/trpc/auth.getSession
   getSession: publicProcedure.query(({ ctx }) => {
     return ctx.session
   }),
 
-  signUp: publicProcedure.input(signUp).mutation(async ({ ctx, input }) => {
+  // [POST] /api/trpc/auth.signUp
+  signUp: publicProcedure.input(schemas.signUpSchema).mutation(async ({ ctx, input }) => {
     const user = await ctx.db.user.findUnique({ where: { email: input.email } })
     if (user) throw new TRPCError({ code: 'CONFLICT', message: 'User already exists' })
 
@@ -32,7 +34,8 @@ export const authRouter = {
     })
   }),
 
-  signIn: publicProcedure.input(signIn).mutation(async ({ ctx, input }) => {
+  // [POST] /api/trpc/auth.signIn
+  signIn: publicProcedure.input(schemas.signInSchema).mutation(async ({ ctx, input }) => {
     const user = await ctx.db.user.findUnique({ where: { email: input.email } })
     if (!user) throw new TRPCError({ code: 'NOT_FOUND', message: 'User not found' })
 
@@ -49,13 +52,15 @@ export const authRouter = {
     return await createSession(user.id)
   }),
 
+  // [POST] /api/trpc/auth.signOut
   signOut: protectedProcedure.mutation(async ({ ctx }) => {
     await invalidateSessionToken(ctx.token ?? '')
     return { success: true }
   }),
 
+  // [POST] /api/trpc/auth.changePassword
   changePassword: protectedProcedure
-    .input(changePassword)
+    .input(schemas.changePasswordSchema)
     .mutation(async ({ ctx, input }) => {
       const user = await ctx.db.user.findUnique({ where: { id: ctx.session.user.id } })
       if (!user) throw new TRPCError({ code: 'NOT_FOUND', message: 'User not found' })

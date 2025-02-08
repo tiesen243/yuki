@@ -2,11 +2,11 @@ import type { TRPCRouterRecord } from '@trpc/server'
 import { TRPCError } from '@trpc/server'
 
 import { protectedProcedure, publicProcedure } from '../trpc'
-import { createSchema, getOneSchema, query, updateSchema } from '../validators/category'
+import * as schemas from '../validators/category'
 
 export const categoryRouter = {
   /** Get category section */
-  getAll: publicProcedure.input(query).query(async ({ ctx, input }) => {
+  getAll: publicProcedure.input(schemas.query).query(async ({ ctx, input }) => {
     const categories = await ctx.db.category.findMany({
       take: input.limit,
       skip: (input.page - 1) * input.limit,
@@ -21,7 +21,7 @@ export const categoryRouter = {
       numberOfProducts: category._count.products,
     }))
   }),
-  getOne: publicProcedure.input(getOneSchema).query(async ({ ctx, input }) => {
+  getOne: publicProcedure.input(schemas.getOneSchema).query(async ({ ctx, input }) => {
     return ctx.db.category.findFirst({
       where: { id: input.id },
       include: { products: { orderBy: { createdAt: 'desc' } } },
@@ -29,24 +29,28 @@ export const categoryRouter = {
   }),
 
   /** Create category section */
-  create: protectedProcedure.input(createSchema).mutation(async ({ ctx, input }) => {
-    checkAdmin(ctx.session.user.role)
-    return ctx.db.category.create({ data: input })
-  }),
+  create: protectedProcedure
+    .input(schemas.createSchema)
+    .mutation(async ({ ctx, input }) => {
+      checkAdmin(ctx.session.user.role)
+      return ctx.db.category.create({ data: input })
+    }),
 
   /** Update category section */
   update: protectedProcedure
-    .input(updateSchema)
+    .input(schemas.updateSchema)
     .mutation(async ({ ctx, input: { id, ...data } }) => {
       checkAdmin(ctx.session.user.role)
       return ctx.db.category.update({ where: { id }, data })
     }),
 
   /** Delete category section */
-  delete: protectedProcedure.input(getOneSchema).mutation(async ({ ctx, input }) => {
-    checkAdmin(ctx.session.user.role)
-    return ctx.db.category.delete({ where: { id: input.id } })
-  }),
+  delete: protectedProcedure
+    .input(schemas.getOneSchema)
+    .mutation(async ({ ctx, input }) => {
+      checkAdmin(ctx.session.user.role)
+      return ctx.db.category.delete({ where: { id: input.id } })
+    }),
 } satisfies TRPCRouterRecord
 
 const checkAdmin = (role: 'USER' | 'ADMIN') => {

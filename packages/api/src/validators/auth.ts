@@ -9,13 +9,13 @@ const passwordSchema = z
     'Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number and one special character',
   )
 
-export const signIn = z.object({
+export const signInSchema = z.object({
   email: z.string().email(),
   password: passwordSchema,
 })
-export type SignIn = z.infer<typeof signIn>
+export type SignInSchema = z.infer<typeof signInSchema>
 
-export const signUp = z
+export const signUpSchema = z
   .object({
     name: z.string().min(1, 'Name is required'),
     email: z.string().email(),
@@ -26,9 +26,9 @@ export const signUp = z
     message: 'Passwords do not match',
     path: ['confirmPassword'],
   })
-export type SignUp = z.infer<typeof signUp>
+export type SignUpSchema = z.infer<typeof signUpSchema>
 
-export const changePassword = z
+export const changePasswordSchema = z
   .object({
     currentPassword: passwordSchema.optional(),
     newPassword: passwordSchema,
@@ -38,9 +38,9 @@ export const changePassword = z
     message: 'Passwords do not match',
     path: ['confirmNewPassword'],
   })
-export type ChangePassword = z.infer<typeof changePassword>
+export type ChangePasswordSchema = z.infer<typeof changePasswordSchema>
 
-export const forgotPassword = z.object({
+export const forgotPasswordSchema = z.object({
   email: z.string().email(),
 })
-export type ForgotPassword = z.infer<typeof forgotPassword>
+export type ForgotPasswordSchema = z.infer<typeof forgotPasswordSchema>

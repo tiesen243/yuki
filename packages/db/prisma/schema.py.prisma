@@ -53,6 +53,8 @@ model Address {
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
+
+  orders Cart[]
 }
 
 model Session {
@@ -117,6 +119,9 @@ model Cart {
   id     String     @id @default(cuid())
   items  CartItem[]
   status Status     @default(NEW)
+
+  address   Address? @relation(fields: [addressId], references: [id])
+  addressId String?
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String

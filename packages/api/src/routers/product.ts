@@ -5,7 +5,6 @@ import { protectedProcedure, publicProcedure } from '../trpc'
 import * as schemas from '../validators/product'
 
 export const productRouter = {
-  /** Get product section */
   // [GET] /api/trpc/product.getAll
   getAll: publicProcedure.input(schemas.query).query(async ({ ctx, input }) => {
     return ctx.db.product.findMany({
@@ -16,6 +15,7 @@ export const productRouter = {
       include: { category: { select: { id: true, name: true } } },
     })
   }),
+
   // [GET] /api/trpc/product.getOne
   getOne: publicProcedure.input(schemas.getOneSchema).query(async ({ ctx, input }) => {
     const product = await ctx.db.product.findUnique({
@@ -46,6 +46,7 @@ export const productRouter = {
       sold: product.carts.reduce((acc, cur) => acc + cur.quantity, 0),
     }
   }),
+
   // [GET] /api/trpc/product.getProductReviews
   getProductReviews: publicProcedure
     .input(schemas.getReviews)
@@ -73,6 +74,8 @@ export const productRouter = {
         totalPage,
       }
     }),
+
+  // [GET] /api/trpc/product.getRelativeProducts
   getRelativeProducts: publicProcedure
     .input(schemas.getOneSchema)
     .query(async ({ ctx, input }) => {
@@ -84,7 +87,7 @@ export const productRouter = {
       return c?.products ?? []
     }),
 
-  /** Create product section */
+  // [POST] /api/trpc/product.create
   create: protectedProcedure
     .input(schemas.createSchema)
     .mutation(async ({ ctx, input }) => {
@@ -97,7 +100,7 @@ export const productRouter = {
       })
     }),
 
-  /** Update product section */
+  // [POST] /api/trpc/product.update
   update: protectedProcedure
     .input(schemas.updateSchema)
     .mutation(async ({ ctx, input: { id, ...data } }) => {
@@ -105,7 +108,7 @@ export const productRouter = {
       return ctx.db.product.update({ where: { id }, data })
     }),
 
-  /** Delete product section */
+  // [POST] /api/trpc/product.delete
   delete: protectedProcedure
     .input(schemas.getOneSchema)
     .mutation(async ({ ctx, input }) => {

@@ -2,19 +2,42 @@
 
 import { useState } from 'react'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 
 import type { RouterOutputs } from '@yuki/api'
 import { Button } from '@yuki/ui/button'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@yuki/ui/select'
 import { toast } from '@yuki/ui/toast'
 
 import { useDebounce } from '@/hooks/use-debounce'
 import { api } from '@/lib/trpc/react'
 
 export const CartDetails: React.FC = () => {
+  const router = useRouter()
+  const utils = api.useUtils()
+
   const [cart] = api.cart.getCart.useSuspenseQuery()
 
+  const { data } = api.user.getAddress.useQuery()
+  const [address, setAddress] = useState<string>('')
+
+  const confirmOrder = api.order.updateOrder.useMutation({
+    onError: (e) => toast.error(e.message),
+    onSuccess: async (d) => {
+      await utils.order.getDetails.invalidate({ id: cart.id })
+      router.push(`/account/orders/${cart.id}`)
+      toast.success(d.message)
+    },
+  })
+
   return (
-    <div className="overflow-x-auto">
+    <div className="space-y-4 overflow-x-auto">
       <table className="w-full">
         <thead className="border-primary/20 border-b py-2">
           <tr className="text-muted-foreground m-0 p-0">
@@ -55,6 +78,39 @@ export const CartDetails: React.FC = () => {
           </tr>
         </tfoot>
       </table>
+
+      <div className="flex items-center justify-between">
+        <Select value={address} onValueChange={setAddress}>
+          <SelectTrigger className="border-primary/20 basis-1/3 text-start focus:ring-transparent">
+            <SelectValue placeholder="Address" />
+          </SelectTrigger>
+
+          <SelectContent className="bg-secondary border-primary/20">
+            {data?.map((a) => (
+              <SelectItem key={a.id} value={a.id} className="focus:bg-background/40">
+                <div>
+                  {a.name} | {a.phone}
+                </div>
+                <div>{a.state}</div>
+                <div>{a.street}</div>
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+
+        <Button
+          disabled={confirmOrder.isPending}
+          onClick={() => {
+            confirmOrder.mutate({
+              id: cart.id,
+              status: 'PENDING',
+              addressId: address,
+            })
+          }}
+        >
+          Confirm
+        </Button>
+      </div>
     </div>
   )
 }

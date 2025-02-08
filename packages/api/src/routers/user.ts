@@ -3,16 +3,11 @@ import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 
 import { protectedProcedure, publicProcedure } from '../trpc'
-import {
-  getOneSchema,
-  newAddressSchema,
-  query,
-  updateAddressSchema,
-} from '../validators/user'
+import * as schemas from '../validators/user'
 
 export const userRouter = {
   /** Get user session */
-  getAll: protectedProcedure.input(query).query(async ({ ctx, input }) => {
+  getAll: protectedProcedure.input(schemas.query).query(async ({ ctx, input }) => {
     if (ctx.session.user.role !== 'ADMIN')
       throw new TRPCError({
         code: 'UNAUTHORIZED',
@@ -72,13 +67,15 @@ export const userRouter = {
       where: { userId: ctx.session.user.id },
     })
   }),
-  getOneAddress: protectedProcedure.input(getOneSchema).query(async ({ ctx, input }) => {
-    return ctx.db.address.findFirst({
-      where: { id: input.id, userId: ctx.session.user.id },
-    })
-  }),
+  getOneAddress: protectedProcedure
+    .input(schemas.getOneSchema)
+    .query(async ({ ctx, input }) => {
+      return ctx.db.address.findFirst({
+        where: { id: input.id, userId: ctx.session.user.id },
+      })
+    }),
   newAddress: protectedProcedure
-    .input(newAddressSchema)
+    .input(schemas.newAddressSchema)
     .mutation(async ({ ctx, input }) => {
       return ctx.db.address.create({
         data: {
@@ -88,7 +85,7 @@ export const userRouter = {
       })
     }),
   updateAddress: protectedProcedure
-    .input(updateAddressSchema)
+    .input(schemas.updateAddressSchema)
     .mutation(async ({ ctx, input: { id, ...data } }) => {
       return ctx.db.address.update({
         where: { id, userId: ctx.session.user.id },
@@ -96,7 +93,7 @@ export const userRouter = {
       })
     }),
   deleteAddress: protectedProcedure
-    .input(getOneSchema)
+    .input(schemas.getOneSchema)
     .mutation(async ({ ctx, input }) => {
       return ctx.db.address.delete({
         where: { id: input.id, userId: ctx.session.user.id },

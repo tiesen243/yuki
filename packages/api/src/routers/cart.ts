@@ -5,15 +5,7 @@ import { protectedProcedure } from '../trpc'
 import { cartSchema } from '../validators/cart'
 
 export const cartRouter = {
-  getCarts: protectedProcedure.query(async ({ ctx }) => {
-    const select = { id: true, name: true, image: true, price: true }
-
-    return await ctx.db.cart.findMany({
-      where: { userId: ctx.session.user.id },
-      include: { items: { include: { product: { select } } } },
-    })
-  }),
-
+  // [GET] /api/trpc/cart.getCart
   getCart: protectedProcedure.query(async ({ ctx }) => {
     const userId = ctx.session.user.id
 
@@ -46,6 +38,7 @@ export const cartRouter = {
     return { ...cart, total }
   }),
 
+  // [POST] /api/trpc/cart.updateCart
   updateCart: protectedProcedure
     .input(cartSchema)
     .mutation(async ({ ctx, input: { productId, quantity, isUpdate } }) => {
@@ -77,6 +70,7 @@ export const cartRouter = {
         })
     }),
 
+  // [POST] /api/trpc/cart.deleteItemFromCart
   deleteItemFromCart: protectedProcedure
     .input(cartSchema)
     .mutation(async ({ ctx, input }) => {
