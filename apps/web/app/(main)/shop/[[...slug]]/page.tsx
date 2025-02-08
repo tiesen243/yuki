@@ -1,15 +1,27 @@
 import { Suspense } from 'react'
+import Form from 'next/form'
+import Link from 'next/link'
 
 import type { Query } from '@yuki/api/validators/product'
+import { Input } from '@yuki/ui/input'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@yuki/ui/select'
+import { cn } from '@yuki/ui/utils'
 
 import { createMetadata } from '@/lib/metadata'
 import { api, HydrateClient } from '@/lib/trpc/server'
-import { getIdFromSlug } from '@/lib/utils'
+import { getIdFromSlug, slugify } from '@/lib/utils'
 import {
   ProductList,
   ProductListSkeleton,
   ProductPagination,
   ProductPaginationSkeleton,
+  SubmitButton,
 } from './page.client'
 
 export default async function ShopPage({
@@ -30,39 +42,103 @@ export default async function ShopPage({
 
   const categoryId = getIdFromSlug(slug?.at(0))
 
-  void api.product.getAll.prefetch({
-    page: +page,
-    limit,
-    query,
-    orderBy,
-    sortBy,
-    category: categoryId,
-  })
+  const [categories] = await Promise.all([
+    api.category.getAll({ limit: 999 }),
+    api.product.getAll.prefetch({
+      page: +page,
+      limit,
+      query,
+      orderBy,
+      sortBy,
+      category: categoryId,
+    }),
+  ])
 
   return (
     <HydrateClient>
       <main className="container grow py-4">
-        <Suspense fallback={<ProductListSkeleton limit={+limit} />}>
-          <ProductList
-            page={+page}
-            limit={+limit}
-            query={query}
-            orderBy={orderBy}
-            sortBy={sortBy}
-            category={categoryId}
-          />
-        </Suspense>
+        <h1 className="sr-only">All Product of Shop</h1>
 
-        <Suspense fallback={<ProductPaginationSkeleton />}>
-          <ProductPagination
-            page={+page}
-            limit={+limit}
-            query={query}
-            orderBy={orderBy}
-            sortBy={sortBy}
-            category={categoryId}
+        <Form
+          action={slug ? `/shop/${slug}` : '/shop'}
+          className="mb-4 flex flex-col items-center gap-4 md:flex-row"
+        >
+          <h2 className="sr-only">Product Filter Section</h2>
+
+          <Input
+            name="query"
+            type="search"
+            placeholder="Search..."
+            defaultValue={query}
           />
-        </Suspense>
+
+          <Select name="orderBy" defaultValue={orderBy}>
+            <SelectTrigger>
+              <SelectValue placeholder="Order By" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="createdAt">Created At</SelectItem>
+              <SelectItem value="price">Price</SelectItem>
+              <SelectItem value="name">Name</SelectItem>
+            </SelectContent>
+          </Select>
+
+          <Select name="sortBy" defaultValue={sortBy}>
+            <SelectTrigger>
+              <SelectValue placeholder="Sort By" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="asc">Low to High</SelectItem>
+              <SelectItem value="desc">High to Low</SelectItem>
+            </SelectContent>
+          </Select>
+
+          <SubmitButton />
+        </Form>
+
+        <div className="grid grid-cols-12 gap-4">
+          <section className="col-span-2 flex max-h-[50dvh] flex-col gap-2 overflow-y-auto">
+            <h3 className="sr-only">Category List Section</h3>
+            {categories.map((c) => (
+              <Link
+                key={c.id}
+                href={`/shop/${slugify(c.name)}-${c.id}`}
+                className={cn(
+                  'hover:bg-accent hover:text-accent-foreground rounded-md px-2 py-1',
+                  categoryId === c.id && 'bg-accent text-accent-foreground',
+                )}
+              >
+                {c.name}
+              </Link>
+            ))}
+          </section>
+
+          <section className="col-span-10">
+            <h3 className="sr-only">Product List Section</h3>
+
+            <Suspense fallback={<ProductListSkeleton limit={+limit} />}>
+              <ProductList
+                page={+page}
+                limit={+limit}
+                query={query}
+                orderBy={orderBy}
+                sortBy={sortBy}
+                category={categoryId}
+              />
+            </Suspense>
+
+            <Suspense fallback={<ProductPaginationSkeleton />}>
+              <ProductPagination
+                page={+page}
+                limit={+limit}
+                query={query}
+                orderBy={orderBy}
+                sortBy={sortBy}
+                category={categoryId}
+              />
+            </Suspense>
+          </section>
+        </div>
       </main>
     </HydrateClient>
   )

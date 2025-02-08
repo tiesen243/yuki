@@ -1,12 +1,10 @@
-import Form from 'next/form'
+import { Suspense } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
-import { SearchIcon } from '@yuki/ui/icons'
-import { Input } from '@yuki/ui/input'
-
 import { MobileMenu } from './mobile-menu'
 import { Nav } from './nav'
+import { Search } from './search'
 import { ThemeBtn } from './theme-toggle'
 import { User } from './user'
 
@@ -33,12 +31,9 @@ export const Header: React.FC = () => (
         <Nav />
       </nav>
 
-      <Form action="/shop" className="relative hidden grow md:flex">
-        <Input type="search" name="q" placeholder="Search..." className="w-full pr-8" />
-        <button className="absolute top-2.5 right-2 z-[4] cursor-pointer">
-          <SearchIcon size={16} />
-        </button>
-      </Form>
+      <Suspense>
+        <Search className="hidden grow md:flex" />
+      </Suspense>
 
       <div className="flex items-center gap-4">
         <User />

@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { useFormStatus } from 'react-dom'
 
 import type { Query } from '@yuki/api/validators/product'
 import { Button } from '@yuki/ui/button'
@@ -17,7 +18,7 @@ import { api } from '@/lib/trpc/react'
 export const ProductList: React.FC<Query> = (query) => {
   const [{ products }] = api.product.getAll.useSuspenseQuery(query)
   return (
-    <div className="container grid grid-cols-3 gap-4 md:grid-cols-4 lg:grid-cols-6">
+    <div className="grid grid-cols-3 gap-4 md:grid-cols-4 lg:grid-cols-6">
       {products.map((p) => (
         <ProductCard key={p.id} product={p} />
       ))}
@@ -26,7 +27,7 @@ export const ProductList: React.FC<Query> = (query) => {
 }
 
 export const ProductListSkeleton: React.FC<{ limit: number }> = ({ limit }) => (
-  <div className="container grid grid-cols-3 gap-4 md:grid-cols-4 lg:grid-cols-6">
+  <div className="grid grid-cols-3 gap-4 md:grid-cols-4 lg:grid-cols-6">
     {Array.from({ length: limit }).map((_, i) => (
       <ProductCardSkeleton key={i} />
     ))}
@@ -134,3 +135,9 @@ export const ProductPaginationSkeleton: React.FC = () => (
     ))}
   </div>
 )
+
+export const SubmitButton: React.FC = () => {
+  const { pending } = useFormStatus()
+
+  return <Button disabled={pending}>Apply</Button>
+}

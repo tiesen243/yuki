@@ -1,15 +1,14 @@
 'use client'
 
-import { useState } from 'react'
-import Form from 'next/form'
+import { Suspense, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
-import { MenuIcon, SearchIcon } from '@yuki/ui/icons'
-import { Input } from '@yuki/ui/input'
+import { MenuIcon } from '@yuki/ui/icons'
 import { cn } from '@yuki/ui/utils'
 
 import { Nav } from './nav'
+import { Search } from './search'
 import { SidebarThemeToggle } from './theme-toggle'
 
 export const MobileMenu: React.FC = () => {
@@ -52,17 +51,9 @@ export const MobileMenu: React.FC = () => {
           <span>Yuki</span>
         </Link>
 
-        <Form action="/shop" className="relative mx-2">
-          <Input
-            type="search"
-            name="q"
-            placeholder="Search..."
-            className="bg-background w-full pr-8"
-          />
-          <button className="absolute top-2.5 right-2 cursor-pointer">
-            <SearchIcon size={16} />
-          </button>
-        </Form>
+        <Suspense>
+          <Search className="mx-2" />
+        </Suspense>
 
         <nav className="mx-2 my-4 flex flex-col gap-1">
           <span className="text-muted-foreground px-2 text-xs">Menu</span>
