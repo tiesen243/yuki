@@ -102,6 +102,16 @@ export default async function ShopPage({
         <div className="grid gap-4 md:grid-cols-12">
           <section className="col-span-2 hidden max-h-[50dvh] flex-col gap-2 overflow-y-auto md:flex">
             <h3 className="sr-only">Category List Section</h3>
+            <Link
+              href="/shop"
+              className={cn(
+                'hover:bg-accent hover:text-accent-foreground rounded-md px-2 py-1',
+                !categoryId && 'bg-accent text-accent-foreground',
+              )}
+            >
+              All
+            </Link>
+
             {categories.map((c) => (
               <Link
                 key={c.id}
