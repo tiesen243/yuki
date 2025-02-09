@@ -1,12 +1,10 @@
 import asyncio
 
+# load env
+from dotenv import load_dotenv
 from faker import Faker
 from prisma import Prisma
 from prisma.enums import Role
-
-
-# load env
-from dotenv import load_dotenv
 
 _ = load_dotenv()
 
@@ -21,7 +19,7 @@ async def generate_users(db: Prisma):
             {
                 "name": faker.user_name(),
                 "email": faker.ascii_email(),
-                "image": 'https://dummyimage.com/400x400',
+                "image": "https://dummyimage.com/400x400",
             }
         )
 
@@ -33,18 +31,18 @@ async def generate_categories(db: Prisma):
 
     _ = await db.category.create_many(
         data=[
-            {"name": c,"image": 'https://dummyimage.com/400x400'}
+            {"name": c, "image": "https://dummyimage.com/400x400"}
             for c in [
-                "Electronics",
-                "Clothing",
-                "Books",
-                "Home",
-                "Health",
+                "Automotive",
                 "Beauty",
+                "Books",
+                "Child",
+                "Clothing",
+                "Electronics",
+                "Furniture",
+                "Health",
                 "Sports",
                 "Toys",
-                "Automotive",
-                "Furniture",
             ]
         ]
     )
@@ -59,12 +57,12 @@ async def generate_products(db: Prisma):
     categories = [c.id for c in await db.category.find_many()]
 
     _ = await db.product.delete_many()
-    for _ in range(20):
+    for _ in range(50):
         _ = await db.product.create(
             {
                 "name": faker.sentence(nb_words=2),
                 "description": faker.sentence(),
-                "image": 'https://dummyimage.com/400x400',
+                "image": "https://dummyimage.com/400x400",
                 "price": faker.random_number(2),
                 "stock": faker.random_number(2),
                 "categoryId": faker.random_element(categories),

@@ -34,9 +34,9 @@ model User {
 }
 
 model Account {
-  provider     String
-  providerId   String
-  providerName String
+  provider   String
+  providerId String
+  name       String
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String

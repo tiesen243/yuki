@@ -1,9 +1,10 @@
 <template>
   <main class="container py-4">
-    <p v-if="isLoading">Loading...</p>
-    <pre class="max-h-[500px] overflow-y-auto">{{
-      JSON.stringify(products, null, 2)
-    }}</pre>
+    <article>
+      Lorem, ipsum dolor sit amet consectetur adipisicing elit. Perferendis iste non qui
+      laudantium explicabo, enim beatae molestias aliquid tempore autem repellendus
+      consectetur eos amet iure sapiente animi quasi impedit natus!
+    </article>
 
     <Button
       variant="outline"
@@ -23,10 +24,6 @@ import { useDark, useToggle } from '@vueuse/core'
 import { Button } from '@yuki/ui/vue/button'
 import { MoonIcon, SunIcon } from '@yuki/ui/vue/icons'
 
-import { useProducts } from '@/hooks/use-products'
-
 const isDark = useDark()
 const toggle = useToggle(isDark)
-
-const { products = [], isLoading } = useProducts({ limit: 10 })
 </script>

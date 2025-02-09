@@ -3,7 +3,7 @@ import SuperJSON from 'superjson'
 
 import type { AppRouter } from '@yuki/api'
 
-import { useToken } from '@/hooks/use-token'
+import { useSession } from '@/hooks/use-session'
 
 export const api = createTRPCClient<AppRouter>({
   links: [
@@ -18,7 +18,7 @@ export const api = createTRPCClient<AppRouter>({
         const headers = new Headers()
         headers.set('x-trpc-source', 'vitejs-vue')
 
-        const { token } = useToken()
+        const { token } = useSession()
         headers.set('Authorization', `Bearer ${token}`)
 
         return headers

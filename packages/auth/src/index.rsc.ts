@@ -11,7 +11,7 @@ const auth = cache(uncachedAuth)
 export { OAuth2RequestError } from 'arctic'
 
 export type { Session } from './config'
-export { handlers } from './lib/handlers'
+export { handler } from './lib/handler'
 export { auth, generateGravatar }
 export { hashPassword, verifyHashedPassword } from './lib/password'
 export {

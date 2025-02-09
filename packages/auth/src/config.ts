@@ -7,28 +7,34 @@ import { Discord, GitHub } from 'arctic'
 
 import type { Session } from './lib/session'
 import { env } from './env'
+import { AUTH_KEY } from './lib/constants'
 import { validateSessionToken } from './lib/session'
 
 const getOAuthConfig = (callbackUrl: string) => ({
-  // add more configs based on the OAuth providers you want to use
-  // @see https://arcticjs.dev
+  /** add more configs based on the OAuth providers you want to use
+   * NOTE: mapFn is used for map user data form OAuth to database account schema
+   *
+   * @see https://arcticjs.dev
+   */
   discord: {
-    instance: new Discord(env.DISCORD_ID, env.DISCORD_SECRET, callbackUrl),
+    ins1: null,
+    ins2: new Discord(env.DISCORD_ID, env.DISCORD_SECRET, callbackUrl),
     scopes: ['identify', 'email'],
-    fetchUserUrl: 'https://discord.com/api/users/@me',
+    fetchUserUrl: 'https://discord.com/api/users/@me', // @see https://discord.com/developers/docs/resources/user#get-current-user
     mapFn: (data: { id: string; email: string; username: string; avatar: string }) => ({
-      id: data.id,
+      providerId: data.id,
       email: data.email,
       name: data.username,
       image: `https://cdn.discordapp.com/avatars/${data.id}/${data.avatar}.png`,
     }),
   },
   github: {
-    instance: new GitHub(env.GITHUB_ID, env.GITHUB_SECRET, callbackUrl),
+    ins1: new GitHub(env.GITHUB_ID, env.GITHUB_SECRET, callbackUrl),
+    ins2: null,
     scopes: ['user:email'],
-    fetchUserUrl: 'https://api.github.com/user',
+    fetchUserUrl: 'https://api.github.com/user', // @see https://docs.github.com/en/rest/users/users?apiVersion=2022-11-28#get-the-authenticated-user
     mapFn: (data: { id: string; email: string; login: string; avatar_url: string }) => ({
-      id: String(data.id),
+      providerId: String(data.id),
       email: data.email,
       name: data.login,
       image: data.avatar_url,
@@ -36,10 +42,8 @@ const getOAuthConfig = (callbackUrl: string) => ({
   },
 })
 
-const KEY = 'auth_token'
-
 const auth = async (): Promise<Session> => {
-  const token = (await cookies()).get(KEY)?.value ?? ''
+  const token = (await cookies()).get(AUTH_KEY)?.value ?? ''
   if (!token) return { expires: new Date(Date.now()) }
   return validateSessionToken(token)
 }

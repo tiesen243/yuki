@@ -28,7 +28,8 @@ export default async function ProfilePage() {
         <section className="container mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
           <div>
             <Typography>
-              <span className="text-muted-foreground">Name:</span> {session.user.name}{' '}
+              <span className="text-muted-foreground">Name:</span>{' '}
+              {session.user.name}{' '}
             </Typography>
             <Typography>
               <span className="text-muted-foreground">Role:</span> {session.user.role}

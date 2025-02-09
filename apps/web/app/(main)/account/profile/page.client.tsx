@@ -15,7 +15,7 @@ export const LinkedAccountList: React.FC = () => {
       {Icons[provider as 'discord' | 'github']}
       {linkedAccounts.some((acc) => acc.provider === provider) ? (
         <>
-          <p>{linkedAccounts.find((acc) => acc.provider === provider)?.providerName}</p>
+          <p>{linkedAccounts.find((acc) => acc.provider === provider)?.name}</p>
           <UnlinkButton provider={provider} />
         </>
       ) : (

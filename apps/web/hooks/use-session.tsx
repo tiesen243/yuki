@@ -1,10 +1,9 @@
 'use client'
 
 import * as React from 'react'
+import { useQuery } from '@tanstack/react-query'
 
 import type { Session } from '@yuki/auth'
-
-import { api } from '@/lib/trpc/react'
 
 const sessionContext = React.createContext<
   | {
@@ -17,7 +16,14 @@ const sessionContext = React.createContext<
 export const SessionProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const { data: session, isLoading } = api.auth.getSession.useQuery()
+  const { data: session, isLoading } = useQuery({
+    queryKey: ['auth'],
+    queryFn: async () => {
+      const res = await fetch('/api/auth')
+      return (await res.json()) as Session
+    },
+  })
+
   return (
     <sessionContext.Provider value={{ session, isLoading }}>
       {children}

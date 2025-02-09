@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation'
 import { auth } from '@yuki/auth'
 import { Button } from '@yuki/ui/button'
 import { Card, CardFooter } from '@yuki/ui/card'
+import { DiscordIcon, GithubIcon } from '@yuki/ui/icons'
 
 export default async function AuthLayout({
   children,
@@ -23,10 +24,10 @@ export default async function AuthLayout({
               <div className="bg-muted-foreground absolute top-1/2 right-0 h-px w-[48%]" />
             </span>
             <Button variant="outline" className="w-full" formAction="/api/auth/github">
-              Continue with Github
+              <GithubIcon /> Continue with Github
             </Button>
             <Button variant="outline" className="w-full" formAction="/api/auth/discord">
-              Continue with Discord
+              <DiscordIcon /> Continue with Discord
             </Button>
           </CardFooter>
         </form>

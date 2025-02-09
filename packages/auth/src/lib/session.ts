@@ -4,12 +4,12 @@ import { encodeBase32LowerCaseNoPadding, encodeHexLowerCase } from '@oslojs/enco
 import type { User } from '@yuki/db'
 import { db } from '@yuki/db'
 
+import { EXPIRES_IN } from './constants'
+
 interface Session {
   user?: User
   expires: Date
 }
-
-const EXPIRES_IN = 1000 * 60 * 60 * 24 * 30
 
 const generateSessionToken = (): string => {
   const bytes = new Uint8Array(20)
@@ -58,9 +58,8 @@ const validateSessionToken = async (token: string): Promise<Session> => {
 }
 
 const invalidateSessionToken = async (token: string): Promise<void> => {
-  const sessionToken = encodeHexLowerCase(
-    sha256(new TextEncoder().encode(token.slice('Bearer '.length))),
-  )
+  const sessionToken = encodeHexLowerCase(sha256(new TextEncoder().encode(token)))
+
   await db.session.delete({ where: { sessionToken } })
 }
 
