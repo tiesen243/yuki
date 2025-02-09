@@ -315,7 +315,7 @@ export const RelativeProducts: React.FC<{ id: string }> = ({ id }) => {
   const [relativeProducts] = api.product.getRelativeProducts.useSuspenseQuery({ id })
 
   return (
-    <div className="grid grid-cols-5 gap-4">
+    <div className="grid grid-cols-3 gap-4 md:grid-cols-4 lg:grid-cols-6">
       {relativeProducts.map((p) => (
         <ProductCard key={p.id} product={p} />
       ))}
