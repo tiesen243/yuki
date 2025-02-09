@@ -54,6 +54,15 @@ export default async function ShopPage({
     }),
   ])
 
+  const q = {
+    category: categoryId,
+    limit: +limit,
+    orderBy,
+    page: +page,
+    query: query,
+    sortBy,
+  }
+
   return (
     <HydrateClient>
       <main className="container grow py-4">
@@ -103,7 +112,7 @@ export default async function ShopPage({
           <section className="col-span-2 hidden max-h-[50dvh] flex-col gap-2 overflow-y-auto md:flex">
             <h3 className="sr-only">Category List Section</h3>
             <Link
-              href="/shop"
+              href={{ pathname: '/shop', query: { ...q, page: 1 } }}
               className={cn(
                 'hover:bg-accent hover:text-accent-foreground rounded-md px-2 py-1',
                 !categoryId && 'bg-accent text-accent-foreground',
@@ -115,7 +124,10 @@ export default async function ShopPage({
             {categories.map((c) => (
               <Link
                 key={c.id}
-                href={`/shop/${slugify(c.name)}-${c.id}`}
+                href={{
+                  pathname: `/shop/${slugify(c.name)}-${c.id}`,
+                  query: { ...q, page: 1 },
+                }}
                 className={cn(
                   'hover:bg-accent hover:text-accent-foreground rounded-md px-2 py-1',
                   categoryId === c.id && 'bg-accent text-accent-foreground',
@@ -130,25 +142,11 @@ export default async function ShopPage({
             <h3 className="sr-only">Product List Section</h3>
 
             <Suspense fallback={<ProductListSkeleton limit={+limit} />}>
-              <ProductList
-                page={+page}
-                limit={+limit}
-                query={query}
-                orderBy={orderBy}
-                sortBy={sortBy}
-                category={categoryId}
-              />
+              <ProductList {...q} />
             </Suspense>
 
             <Suspense fallback={<ProductPaginationSkeleton />}>
-              <ProductPagination
-                page={+page}
-                limit={+limit}
-                query={query}
-                orderBy={orderBy}
-                sortBy={sortBy}
-                category={categoryId}
-              />
+              <ProductPagination {...q} />
             </Suspense>
           </section>
         </div>
