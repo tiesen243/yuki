@@ -4,6 +4,6 @@
     "baseUrl": ".",
     "paths": { "@yuki/ui/*": ["./src/*"] }
   },
-  "exclude": ["node_modules"],
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": ["node_modules", "select-content.vue"]
 }

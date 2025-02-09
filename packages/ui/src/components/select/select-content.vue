@@ -1,4 +1,3 @@
-<!-- @ts-nocheck -->
 <script setup lang="ts">
 import type { SelectContentEmits, SelectContentProps } from 'radix-vue'
 import type { HTMLAttributes } from 'vue'
