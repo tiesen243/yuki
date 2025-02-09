@@ -35,7 +35,7 @@ export default async function ShopPage({
   const {
     page = 1,
     limit = 6 * 4,
-    orderBy = 'createdAt',
+    orderBy = 'updatedAt',
     sortBy = 'desc',
     query,
   } = await searchParams
