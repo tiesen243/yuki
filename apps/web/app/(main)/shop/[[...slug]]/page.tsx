@@ -86,9 +86,10 @@ export default async function ShopPage({
               <SelectValue placeholder="Order By" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="createdAt">Created At</SelectItem>
+              <SelectItem value="updatedAt">Recently Updated</SelectItem>
+              <SelectItem value="createdAt">Newest First</SelectItem>
               <SelectItem value="price">Price</SelectItem>
-              <SelectItem value="name">Name</SelectItem>
+              <SelectItem value="name">Product Name</SelectItem>
             </SelectContent>
           </Select>
 
@@ -97,8 +98,8 @@ export default async function ShopPage({
               <SelectValue placeholder="Sort By" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="asc">Low to High</SelectItem>
-              <SelectItem value="desc">High to Low</SelectItem>
+              <SelectItem value="asc">Ascending</SelectItem>
+              <SelectItem value="desc">Descending</SelectItem>
             </SelectContent>
           </Select>
 
