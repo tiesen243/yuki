@@ -7,7 +7,7 @@ import { Button } from '@yuki/ui/button'
 import { Typography } from '@yuki/ui/typography'
 
 import { api, HydrateClient } from '@/lib/trpc/server'
-import { LinkedAccountList, LinkedAccountSkeleton, SignOutButton } from './page.client'
+import { LinkedAccountList, LinkedAccountSkeleton } from './page.client'
 
 export default async function ProfilePage() {
   const [session] = await Promise.all([auth(), api.user.getLinkedAccounts.prefetch()])
@@ -52,7 +52,9 @@ export default async function ProfilePage() {
               <AvatarFallback>{session.user.name[0]}</AvatarFallback>
             </Avatar>
             <Button>Edit profile</Button>
-            <SignOutButton />
+            <form action="/api/auth/sign-out">
+              <Button variant="destructive">Sign Out</Button>
+            </form>
           </div>
         </section>
       </main>

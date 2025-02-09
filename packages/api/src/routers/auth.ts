@@ -5,7 +5,6 @@ import {
   createSession,
   generateGravatar,
   hashPassword,
-  invalidateSessionToken,
   verifyHashedPassword,
 } from '@yuki/auth'
 
@@ -13,11 +12,6 @@ import { protectedProcedure, publicProcedure } from '../trpc'
 import * as schemas from '../validators/auth'
 
 export const authRouter = {
-  // [GET] /api/trpc/auth.getSession
-  getSession: publicProcedure.query(({ ctx }) => {
-    return ctx.session
-  }),
-
   // [POST] /api/trpc/auth.signUp
   signUp: publicProcedure.input(schemas.signUpSchema).mutation(async ({ ctx, input }) => {
     const user = await ctx.db.user.findUnique({ where: { email: input.email } })
@@ -50,12 +44,6 @@ export const authRouter = {
       throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid password' })
 
     return await createSession(user.id)
-  }),
-
-  // [POST] /api/trpc/auth.signOut
-  signOut: protectedProcedure.mutation(async ({ ctx }) => {
-    await invalidateSessionToken(ctx.token ?? '')
-    return { success: true }
   }),
 
   // [POST] /api/trpc/auth.changePassword

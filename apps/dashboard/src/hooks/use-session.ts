@@ -46,7 +46,9 @@ export const useSession = () => {
   const signOut = useMutation({
     mutationKey: ['auth', 'signOut'],
     mutationFn: async () => {
-      const res = await fetch(`${baseUrl}/signOut`, { credentials: 'include' })
+      const res = await fetch(`${baseUrl}/signOut?dashboard=true`, {
+        credentials: 'include',
+      })
       const json = (await res.json()) as { message: string }
       if (!res.ok) throw new Error(json.message)
     },

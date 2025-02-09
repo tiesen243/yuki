@@ -2,6 +2,7 @@
 
 import Form from 'next/form'
 import { useRouter } from 'next/navigation'
+import { useQueryClient } from '@tanstack/react-query'
 
 import { Button } from '@yuki/ui/button'
 import { CardContent } from '@yuki/ui/card'
@@ -15,13 +16,13 @@ export const SignInForm: React.FC<{
   setToken: (token: string, expiresAt: Date) => Promise<void>
 }> = ({ setToken }) => {
   const router = useRouter()
-  const utils = api.useUtils()
+  const queryClient = useQueryClient()
+
   const { mutate, isPending, error } = api.auth.signIn.useMutation({
     onError: (error) => toast.error(error.message),
     onSuccess: async (data) => {
       await setToken(data.token, data.expiresAt)
-      await utils.auth.getSession.invalidate()
-      router.refresh()
+      await queryClient.invalidateQueries({ queryKey: ['auth'] })
       router.push('/')
       toast.success('Logged in successfully')
     },

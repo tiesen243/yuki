@@ -11,7 +11,7 @@ import { AUTH_KEY } from './constants'
 import { verifyHashedPassword } from './password'
 import { createSession, invalidateSessionToken, validateSessionToken } from './session'
 
-type Provider = 'credentials' | 'signOut' | 'discord' | 'github'
+type Provider = 'credentials' | 'sign-out' | 'discord' | 'github'
 
 const cookieAttributes = (expires: Date) => ({
   httpOnly: true,
@@ -61,15 +61,19 @@ export const handler = async (
       return NextResponse.json({ meesage: 'Login success', session })
     }
 
-    if (provider === 'signOut') {
+    if (provider === 'sign-out') {
       const token =
         nextCookies.get(AUTH_KEY)?.value ??
         req.headers.get('Authorization')?.replace('Bearer ', '') ??
         ''
+
       try {
         await invalidateSessionToken(token)
         nextCookies.delete(AUTH_KEY)
-        return NextResponse.json({ message: 'Sign out successfully' })
+
+        if (nextUrl.searchParams.get('dashboard') === 'true')
+          return NextResponse.json({ message: 'Sign out successfully' })
+        return NextResponse.redirect(new URL('/', nextUrl))
       } catch {
         return NextResponse.json({ message: 'Sign out fail' }, { status: 500 })
       }
