@@ -57,7 +57,7 @@ async def generate_products(db: Prisma):
     categories = [c.id for c in await db.category.find_many()]
 
     _ = await db.product.delete_many()
-    for _ in range(50):
+    for _ in range(500):
         _ = await db.product.create(
             {
                 "name": faker.sentence(nb_words=2),

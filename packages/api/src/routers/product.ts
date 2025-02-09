@@ -100,7 +100,7 @@ export const productRouter = {
     .query(async ({ ctx, input }) => {
       const c = await ctx.db.category.findFirst({
         where: { products: { some: { id: input.id } } },
-        include: { products: true },
+        include: { products: { take: 12, orderBy: { createdAt: 'desc' } } },
       })
 
       return c?.products ?? []
