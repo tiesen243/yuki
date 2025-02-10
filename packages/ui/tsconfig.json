@@ -5,5 +5,5 @@
     "paths": { "@yuki/ui/*": ["./src/*"] }
   },
   "include": ["src"],
-  "exclude": ["node_modules", "**/select-content.vue"]
+  "exclude": ["node_modules"]
 }
