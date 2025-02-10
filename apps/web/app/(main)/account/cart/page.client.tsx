@@ -31,6 +31,7 @@ export const CartDetails: React.FC = () => {
     onError: (e) => toast.error(e.message),
     onSuccess: async (d) => {
       await utils.order.getDetails.invalidate({ id: cart.id })
+      await utils.order.getHistories.invalidate()
       router.push(`/account/orders/${cart.id}`)
       toast.success(d.message)
     },

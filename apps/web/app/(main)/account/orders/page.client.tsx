@@ -16,7 +16,7 @@ export const OrderHistories: React.FC = () => {
           href={`/account/orders/${o.id}`}
           className="bg-background flex flex-col gap-4 rounded-md p-6 shadow-md"
         >
-          {o.items.map((i) => (
+          {o.items.slice(0, 2).map((i) => (
             <div key={i.product.id} className="flex items-center gap-4">
               <Image
                 src={i.product.image}
@@ -33,9 +33,16 @@ export const OrderHistories: React.FC = () => {
               <p>${i.product.price}</p>
             </div>
           ))}
+          {o.items.length > 2 && (
+            <div className="text-muted-foreground mt-2 text-sm">
+              And {o.items.length - 2} more item(s)...
+            </div>
+          )}
 
           <div className="flex items-center justify-between gap-4 capitalize">
-            <p>Status: {o.status}</p>
+            <p>
+              Status: <span className="lowercase">{o.status}</span>
+            </p>
             <p>Total: ${o.price}</p>
           </div>
         </Link>

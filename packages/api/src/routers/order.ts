@@ -37,21 +37,19 @@ export const orderRouter = {
   getDetails: protectedProcedure.input(getOneSchema).query(async ({ ctx, input }) => {
     const order = await ctx.db.cart.findUnique({
       where: { id: input.id },
-      include: {
-        items: { include: { product: true } },
-      },
+      include: { items: { include: { product: true } } },
     })
 
     if (!order) throw new TRPCError({ code: 'NOT_FOUND', message: 'Order not found' })
 
-    const price = order.items.reduce(
+    const total = order.items.reduce(
       (acc, cur) => acc + cur.quantity * cur.product.price,
       0,
     )
 
     return {
       ...order,
-      price,
+      total,
     }
   }),
 
@@ -61,6 +59,7 @@ export const orderRouter = {
     .mutation(async ({ ctx, input: { id, ...data } }) => {
       const cart = await ctx.db.cart.findUnique({
         where: { id },
+        include: { _count: { select: { items: true } } },
       })
       if (!cart) throw new TRPCError({ code: 'NOT_FOUND', message: 'Cart not found' })
 
@@ -70,17 +69,28 @@ export const orderRouter = {
           message: 'You are not authorized to access this resource',
         })
 
-      if (data.status === 'PENDING' && !data.addressId)
-        throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: 'You have not selected an address yet.',
-        })
+      if (data.status === 'PENDING') {
+        if (!data.addressId)
+          throw new TRPCError({
+            code: 'INTERNAL_SERVER_ERROR',
+            message: 'You have not selected an address yet.',
+          })
+
+        if (cart._count.items === 0)
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Cart is empty',
+          })
+      }
 
       if (data.status === 'DELIVERED') {
         const cartItems = await ctx.db.cartItem.findMany({
           where: { cartId: id },
           include: { product: true },
         })
+
+        if (cartItems.length === 0)
+          throw new TRPCError({ code: 'BAD_REQUEST', message: 'Cart is empty' })
 
         for (const item of cartItems)
           await ctx.db.product.update({
