@@ -1,4 +1,6 @@
 import asyncio
+import json
+from pathlib import Path
 
 # load env
 from dotenv import load_dotenv
@@ -57,12 +59,18 @@ async def generate_products(db: Prisma):
     categories = [c.id for c in await db.category.find_many()]
 
     _ = await db.product.delete_many()
-    for _ in range(500):
+
+    operators = []
+    operators_path = Path(__file__).parent / "operators.json"
+    with open(operators_path, "r") as f:
+        operators = json.load(f)
+
+    for operator in operators:
         _ = await db.product.create(
             {
-                "name": faker.sentence(nb_words=2),
-                "description": faker.sentence(),
-                "image": "https://dummyimage.com/400x400",
+                "name": operator["name"],
+                "description": operator["description"],
+                "image": operator["img"],
                 "price": faker.random_number(2),
                 "stock": faker.random_number(2),
                 "categoryId": faker.random_element(categories),
