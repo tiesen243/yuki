@@ -46,7 +46,11 @@ export const ProductPagination: React.FC<Query> = (query) => {
 
   return (
     <div className="mt-4 flex items-center justify-center gap-2">
-      {query.page < 4 ? (
+      {totalPage <= 5 ? (
+        Array.from({ length: totalPage }).map((_, idx) => (
+          <PageButton key={idx + idx} p={idx + 1} />
+        ))
+      ) : query.page < 4 ? (
         <>
           {Array.from({ length: 5 }).map((_, idx) => (
             <PageButton key={idx + 1} p={idx + 1} />
