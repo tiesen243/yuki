@@ -74,7 +74,11 @@ export const generateMetadata = async ({ params }: Props) => {
       title: product.name,
       description: product.description,
       openGraph: {
-        images: `/api/og?title=${product.name}&description=${product.description}&image=${product.image}`,
+        images: `/api/og?title=${encodeURIComponent(
+          product.name,
+        )}&description=${encodeURIComponent(
+          product.description,
+        )}&image=${encodeURIComponent(product.image)}`,
         url: `/${slug}`,
       },
     })

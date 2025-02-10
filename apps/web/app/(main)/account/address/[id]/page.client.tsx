@@ -15,7 +15,7 @@ export const UpdateAddressForm: React.FC<{ id: string }> = ({ id }) => {
   const { data, isLoading } = api.user.getOneAddress.useQuery({ id })
   const { mutate, isPending, error } = api.user.updateAddress.useMutation({
     onSuccess: async () => {
-      await utils.user.getAddress.invalidate()
+      await utils.user.getAddresses.invalidate()
       router.push('/account/address')
     },
   })

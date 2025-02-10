@@ -24,13 +24,12 @@ import {
   SubmitButton,
 } from './page.client'
 
-export default async function ShopPage({
-  params,
-  searchParams,
-}: {
+interface Props {
   params: Promise<{ slug?: string[] }>
   searchParams: Promise<Query>
-}) {
+}
+
+export default async function ShopPage({ params, searchParams }: Props) {
   const { slug } = await params
   const {
     page = 1,
@@ -156,11 +155,32 @@ export default async function ShopPage({
   )
 }
 
-export const metadata = createMetadata({
-  title: 'Shop',
-  description: 'A collection of all products for sale.',
-  openGraph: {
-    images: `/api/og?title=Shop&description=${encodeURIComponent('A collection of all products for sale.')}`,
-    url: '/shop',
-  },
-})
+export const generateMetadata = async ({ params }: Props) => {
+  const { slug } = await params
+  const id = getIdFromSlug(slug?.at(0))
+
+  const category = await api.category.getOne({ id })
+
+  if (!category)
+    return createMetadata({
+      title: 'Shop',
+      description: 'A collection of all products for sale.',
+      openGraph: {
+        images: `/api/og?title=Shop&description=${encodeURIComponent('A collection of all products for sale.')}`,
+        url: '/shop',
+      },
+    })
+
+  return createMetadata({
+    title: category.name,
+    description: `A collection of all products of ${category.name} for sale.`,
+    openGraph: {
+      images: `/api/og?title=${encodeURIComponent(
+        category.name,
+      )}&description=${encodeURIComponent(
+        `A collection of all products of ${category.name} for sale.`,
+      )}&image=${encodeURIComponent(category.image)}`,
+      url: `/shop/${slug}`,
+    },
+  })
+}

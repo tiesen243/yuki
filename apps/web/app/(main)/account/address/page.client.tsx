@@ -9,7 +9,7 @@ import { cn } from '@yuki/ui/utils'
 import { api } from '@/lib/trpc/react'
 
 export const AddressList: React.FC = () => {
-  const [addresses] = api.user.getAddress.useSuspenseQuery()
+  const [addresses] = api.user.getAddresses.useSuspenseQuery()
   return addresses.map((address, i) => (
     <AddressCard
       key={address.id}
@@ -25,9 +25,7 @@ export const AddressCard: React.FC<{ address: Address; isLatest?: boolean }> = (
 }) => {
   const utils = api.useUtils()
   const { mutate, isPending } = api.user.deleteAddress.useMutation({
-    onSuccess: async () => {
-      await utils.user.getAddress.invalidate()
-    },
+    onSuccess: () => utils.user.getAddresses.invalidate(),
   })
 
   return (

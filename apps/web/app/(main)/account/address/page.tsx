@@ -8,7 +8,7 @@ import { api, HydrateClient } from '@/lib/trpc/server'
 import { AddressCardSkeleton, AddressList } from './page.client'
 
 export default function AddressPage() {
-  void api.user.getAddress.prefetch()
+  void api.user.getAddresses.prefetch()
 
   return (
     <HydrateClient>

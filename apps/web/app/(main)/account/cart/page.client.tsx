@@ -24,7 +24,7 @@ export const CartDetails: React.FC = () => {
 
   const [cart] = api.cart.getCart.useSuspenseQuery()
 
-  const { data } = api.user.getAddress.useQuery()
+  const { data } = api.user.getAddresses.useQuery()
   const [address, setAddress] = useState<string>('')
 
   const confirmOrder = api.order.updateOrder.useMutation({

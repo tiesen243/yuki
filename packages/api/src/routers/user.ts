@@ -6,7 +6,7 @@ import { protectedProcedure, publicProcedure } from '../trpc'
 import * as schemas from '../validators/user'
 
 export const userRouter = {
-  /** Get user session */
+  // [GET] /api/trpc/user.getAll
   getAll: protectedProcedure.input(schemas.query).query(async ({ ctx, input }) => {
     if (ctx.session.user.role !== 'ADMIN')
       throw new TRPCError({
@@ -36,13 +36,15 @@ export const userRouter = {
     }))
   }),
 
-  /** Link account section */
+  // [GET] /api/trpc/user.getLinkedAccounts
   getLinkedAccounts: publicProcedure.query(async ({ ctx }) => {
     if (!ctx.session.user) return []
     return ctx.db.account.findMany({
       where: { userId: ctx.session.user.id },
     })
   }),
+
+  // [POST] /api/trpc/user.unlinkAccount
   unlinkAccount: protectedProcedure
     .input(z.object({ provider: z.string() }))
     .mutation(async ({ ctx, input }) => {
@@ -61,12 +63,14 @@ export const userRouter = {
       return true
     }),
 
-  /** Address section */
-  getAddress: protectedProcedure.query(async ({ ctx }) => {
+  // [GET] /api/trpc/user.getAddresses
+  getAddresses: protectedProcedure.query(async ({ ctx }) => {
     return ctx.db.address.findMany({
       where: { userId: ctx.session.user.id },
     })
   }),
+
+  // [GET] /api/trpc/user.getOneAddress
   getOneAddress: protectedProcedure
     .input(schemas.getOneSchema)
     .query(async ({ ctx, input }) => {
@@ -74,6 +78,8 @@ export const userRouter = {
         where: { id: input.id, userId: ctx.session.user.id },
       })
     }),
+
+  // [POST] /api/trpc/user.newAddress
   newAddress: protectedProcedure
     .input(schemas.newAddressSchema)
     .mutation(async ({ ctx, input }) => {
@@ -84,6 +90,8 @@ export const userRouter = {
         },
       })
     }),
+
+  // [POST] /api/trpc/user.updateAddress
   updateAddress: protectedProcedure
     .input(schemas.updateAddressSchema)
     .mutation(async ({ ctx, input: { id, ...data } }) => {
@@ -92,6 +100,8 @@ export const userRouter = {
         data,
       })
     }),
+
+  // [POST] /api/trpc/user.deleteAddress
   deleteAddress: protectedProcedure
     .input(schemas.getOneSchema)
     .mutation(async ({ ctx, input }) => {

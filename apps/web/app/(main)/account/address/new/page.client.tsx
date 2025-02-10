@@ -14,7 +14,7 @@ export const NewAddressForm: React.FC = () => {
   const utils = api.useUtils()
   const { mutate, isPending, error } = api.user.newAddress.useMutation({
     onSuccess: async () => {
-      await utils.user.getAddress.invalidate()
+      await utils.user.getAddresses.invalidate()
       router.push('/account/address')
     },
   })
