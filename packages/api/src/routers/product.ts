@@ -41,6 +41,7 @@ export const productRouter = {
       where: { id: input.id },
       include: {
         _count: { select: { reviews: true } },
+        category: { select: { id: true, name: true } },
         reviews: { select: { rating: true } },
         carts: {
           where: { cart: { status: 'DELIVERED' } },
@@ -54,12 +55,7 @@ export const productRouter = {
       product.reviews.reduce((acc, cur) => acc + cur.rating, 0) / product._count.reviews
 
     return {
-      id: product.id,
-      name: product.name,
-      description: product.description,
-      image: product.image,
-      price: product.price,
-      stock: product.stock,
+      ...product,
       rating: product._count.reviews !== 0 ? averageRating : 0,
       reviews: product._count.reviews,
       sold: product.carts.reduce((acc, cur) => acc + cur.quantity, 0),
@@ -100,7 +96,7 @@ export const productRouter = {
     .query(async ({ ctx, input }) => {
       const c = await ctx.db.category.findFirst({
         where: { products: { some: { id: input.id } } },
-        include: { products: { take: 12, orderBy: { createdAt: 'desc' } } },
+        include: { products: { take: 12 } },
       })
 
       return c?.products ?? []

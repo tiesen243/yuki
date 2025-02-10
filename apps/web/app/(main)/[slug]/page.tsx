@@ -48,8 +48,8 @@ export default async function ProductPage({ params }: Props) {
 
           <Suspense
             fallback={
-              <div className="grid grid-cols-3 gap-4 md:grid-cols-4 lg:grid-cols-6">
-                {Array.from({ length: 5 }).map((_, i) => (
+              <div className="grid grid-cols-3 gap-4 md:grid-cols-4 xl:grid-cols-6">
+                {Array.from({ length: 12 }).map((_, i) => (
                   <ProductCardSkeleton key={i} />
                 ))}
               </div>

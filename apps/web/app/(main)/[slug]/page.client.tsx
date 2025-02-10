@@ -2,16 +2,18 @@
 
 import * as React from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@yuki/ui/avatar'
 import { Button } from '@yuki/ui/button'
-import { ChevronLeftIcon, ChevronRightIcon, ShoppingCartIcon, Star } from '@yuki/ui/icons'
+import { ShoppingCartIcon, Star } from '@yuki/ui/icons'
 import { toast } from '@yuki/ui/toast'
 import { Typography } from '@yuki/ui/typography'
 
 import { ProductCard } from '@/app/_components/product-card'
 import { api } from '@/lib/trpc/react'
+import { slugify } from '@/lib/utils'
 
 type CounterAction =
   | { type: 'INCREMENT' }
@@ -73,6 +75,15 @@ export const ProductDetails: React.FC<{ id: string }> = ({ id }) => {
           <p>{product.sold} Sold</p>
         </div>
 
+        <Typography>
+          Category:{' '}
+          <Link
+            href={`/shop/${slugify(product.category.name)}-${product.category.id}`}
+            className="hover:underline"
+          >
+            {product.category.name}
+          </Link>
+        </Typography>
         <Typography className="grow">{product.description}</Typography>
 
         <section className="flex items-center text-lg">
@@ -172,6 +183,10 @@ export const ProductDetailsSkeleton: React.FC = () => (
         <p>0 Sold</p>
       </div>
 
+      <Typography className="w-1/3 animate-pulse rounded-md bg-current">
+        &nbsp;
+      </Typography>
+
       <Typography className="w-full grow animate-pulse rounded-md bg-current">
         &nbsp;
       </Typography>
@@ -258,43 +273,23 @@ export const ProductReviews: React.FC<{ id: string }> = ({ id }) => {
         )}
       </div>
 
-      <div className="flex items-center justify-center gap-2">
-        <Button
-          variant="outline"
-          size="icon"
-          onClick={() => {
-            setPage(Math.max(1, page - 1))
-          }}
-          disabled={page === 1}
-        >
-          <ChevronLeftIcon />
-        </Button>
-
-        {Array.from({ length: totalPage }).map((_, i) => (
-          <Button
-            key={i + 1}
-            variant="outline"
-            size="icon"
-            className={page === i + 1 ? 'bg-accent text-accent-foreground' : ''}
-            onClick={() => {
-              setPage(i + 1)
-            }}
-          >
-            {i + 1}
-          </Button>
-        ))}
-
-        <Button
-          variant="outline"
-          size="icon"
-          onClick={() => {
-            setPage(Math.min(totalPage, page + 1))
-          }}
-          disabled={page === totalPage}
-        >
-          <ChevronRightIcon />
-        </Button>
-      </div>
+      {totalPage >= 2 && (
+        <div className="flex items-center justify-center gap-2">
+          {Array.from({ length: totalPage }).map((_, i) => (
+            <Button
+              key={i + 1}
+              variant="outline"
+              size="icon"
+              className={page === i + 1 ? 'bg-accent text-accent-foreground' : ''}
+              onClick={() => {
+                setPage(i + 1)
+              }}
+            >
+              {i + 1}
+            </Button>
+          ))}
+        </div>
+      )}
     </div>
   )
 }
@@ -315,7 +310,7 @@ export const RelativeProducts: React.FC<{ id: string }> = ({ id }) => {
   const [relativeProducts] = api.product.getRelativeProducts.useSuspenseQuery({ id })
 
   return (
-    <div className="grid grid-cols-3 gap-4 md:grid-cols-4 lg:grid-cols-6">
+    <div className="grid grid-cols-3 gap-4 md:grid-cols-4 xl:grid-cols-6">
       {relativeProducts.map((p) => (
         <ProductCard key={p.id} product={p} />
       ))}
@@ -328,9 +323,9 @@ const StarRating: React.FC<{ rating: number }> = ({ rating }) => {
   const roundedRating = Math.round(rating * 2) / 2
 
   for (let i = 1; i <= 5; i++) {
-    if (i <= roundedRating) {
+    if (i <= roundedRating)
       stars.push(<Star key={i} className="size-4 fill-yellow-400 stroke-yellow-400" />)
-    } else if (i - 0.5 <= roundedRating) {
+    else if (i - 0.5 <= roundedRating)
       stars.push(
         <svg
           key={i}
@@ -357,9 +352,7 @@ const StarRating: React.FC<{ rating: number }> = ({ rating }) => {
           />
         </svg>,
       )
-    } else {
-      stars.push(<Star key={i} className="size-4 stroke-yellow-400" />)
-    }
+    else stars.push(<Star key={i} className="size-4 stroke-yellow-400" />)
   }
 
   return (

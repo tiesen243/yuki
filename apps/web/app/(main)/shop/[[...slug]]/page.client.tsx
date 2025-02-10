@@ -5,12 +5,6 @@ import { useFormStatus } from 'react-dom'
 
 import type { Query } from '@yuki/api/validators/product'
 import { Button } from '@yuki/ui/button'
-import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  ChevronsLeftIcon,
-  ChevronsRightIcon,
-} from '@yuki/ui/icons'
 
 import { ProductCard, ProductCardSkeleton } from '@/app/_components/product-card'
 import { api } from '@/lib/trpc/react'
@@ -18,7 +12,7 @@ import { api } from '@/lib/trpc/react'
 export const ProductList: React.FC<Query> = (query) => {
   const [{ products }] = api.product.getAll.useSuspenseQuery(query)
   return (
-    <div className="grid grid-cols-3 gap-4 md:grid-cols-4 lg:grid-cols-6">
+    <div className="grid grid-cols-3 gap-4 md:grid-cols-4 xl:grid-cols-6">
       {products.map((p) => (
         <ProductCard key={p.id} product={p} />
       ))}
@@ -27,7 +21,7 @@ export const ProductList: React.FC<Query> = (query) => {
 }
 
 export const ProductListSkeleton: React.FC<{ limit: number }> = ({ limit }) => (
-  <div className="grid grid-cols-3 gap-4 md:grid-cols-4 lg:grid-cols-6">
+  <div className="grid grid-cols-3 gap-4 md:grid-cols-4 xl:grid-cols-6">
     {Array.from({ length: limit }).map((_, i) => (
       <ProductCardSkeleton key={i} />
     ))}
@@ -37,12 +31,10 @@ export const ProductListSkeleton: React.FC<{ limit: number }> = ({ limit }) => (
 export const ProductPagination: React.FC<Query> = (query) => {
   const [{ totalPage }] = api.product.getAll.useSuspenseQuery(query)
 
-  const nextPage = Math.min(totalPage, query.page + 1)
-  const prevPage = Math.max(1, query.page - 1)
+  if (totalPage <= 1) return
 
-  const renderPageButton = (p: number) => (
+  const PageButton = ({ p }: { p: number }) => (
     <Button
-      key={p}
       variant="outline"
       size="icon"
       className={p === query.page ? 'bg-accent text-accent-foreground' : ''}
@@ -52,81 +44,39 @@ export const ProductPagination: React.FC<Query> = (query) => {
     </Button>
   )
 
-  const renderPageNumbers = () => {
-    if (totalPage <= 5)
-      return (
-        <>{Array.from({ length: totalPage }).map((_, p) => renderPageButton(p + 1))}</>
-      )
-
-    if (query.page <= 5) {
-      // First 4 pages: show 1,2,3,...,totalPage-1,totalPage
-      return (
-        <>
-          {[1, 2, 3, 4, 5].map((p) => renderPageButton(p))}
-          <span className="px-2">...</span>
-        </>
-      )
-    }
-
-    if (query.page >= totalPage - 3)
-      return (
-        <>
-          {[1, 2].map((p) => renderPageButton(p))}
-          <span className="px-2">...</span>
-          {[totalPage - 3, totalPage - 2, totalPage - 1, totalPage].map((p) =>
-            renderPageButton(p),
-          )}
-        </>
-      )
-
-    return (
-      <>
-        {[1, 2].map((p) => renderPageButton(p))}
-        <span className="px-2">...</span>
-        {[query.page - 1, query.page, query.page + 1, query.page + 2].map((p) =>
-          renderPageButton(p),
-        )}
-        <span className="px-2">...</span>
-        {[totalPage - 1, totalPage].map((p) => renderPageButton(p))}
-      </>
-    )
-  }
-
-  if (totalPage <= 1) return
-
   return (
-    <div className="mt-4 flex items-center justify-center gap-4">
-      {query.page > 1 && (
+    <div className="mt-4 flex items-center justify-center gap-2">
+      {query.page < 4 ? (
         <>
-          <Button variant="outline" size="icon" asChild>
-            <Link href={{ query: { ...query, page: 1 } }}>
-              <ChevronsLeftIcon />
-            </Link>
-          </Button>
-
-          <Button variant="outline" size="icon" asChild>
-            <Link href={{ query: { ...query, page: prevPage } }} aria-disabled>
-              <ChevronLeftIcon />
-            </Link>
-          </Button>
+          {Array.from({ length: 5 }).map((_, p) => (
+            <PageButton key={p + 1} p={p + 1} />
+          ))}
+          <span>...</span>
+          <PageButton p={totalPage} />
         </>
-      )}
-
-      {renderPageNumbers()}
-
-      {query.page < totalPage && (
+      ) : query.page >= totalPage - 2 ? (
         <>
-          <Button variant="outline" size="icon" asChild>
-            <Link href={{ query: { ...query, page: nextPage } }}>
-              <ChevronRightIcon />
-            </Link>
-          </Button>
-
-          <Button variant="outline" size="icon" asChild>
-            <Link href={{ query: { ...query, page: totalPage } }}>
-              <ChevronsRightIcon />
-            </Link>
-          </Button>
+          {Array.from({ length: 5 }).map((_, p) => (
+            <PageButton key={p + 1} p={p + 1} />
+          ))}
+          <span>...</span>
+          <PageButton p={totalPage} />
+        </>
+      ) : (
+        <>
+          <PageButton p={1} />
+          <span>...</span>
+          {[
+            query.page - 2,
+            query.page - 1,
+            query.page,
+            query.page + 1,
+            query.page + 2,
+          ].map((p) => (
+            <PageButton key={p} p={p} />
+          ))}
+          <span>...</span>
+          <PageButton p={totalPage} />
         </>
       )}
     </div>

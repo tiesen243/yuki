@@ -63,12 +63,12 @@ async def generate_products(db: Prisma):
     operators = []
     operators_path = Path(__file__).parent / "operators.json"
     with open(operators_path, "r") as f:
-        operators = json.load(f)
+        operators: list[dict[str, str]] = json.load(f)
 
     for operator in operators:
         _ = await db.product.create(
             {
-                "name": operator["name"],
+                "name": operator["name"].replace("_", " ").replace("%27", "'"),
                 "description": operator["description"],
                 "image": operator["img"],
                 "price": faker.random_number(2),
