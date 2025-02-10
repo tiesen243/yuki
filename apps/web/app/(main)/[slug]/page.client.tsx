@@ -106,33 +106,28 @@ export const ProductDetails: React.FC<{ id: string }> = ({ id }) => {
               -
             </Button>
 
-            <div>
-              <label htmlFor="quantity" className="sr-only">
-                Quantity
-              </label>
-
-              <input
-                name="quantity"
-                className="flex h-9 w-16 [appearance:textfield] items-center justify-center border-x text-center focus-visible:outline-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-                value={quantity}
-                onChange={(e) => {
-                  dispatch({
-                    type: 'SET',
-                    payload: (() => {
-                      const value = parseInt(e.target.value, 10)
-                      if (!isNaN(value)) return value
-                      return quantity
-                    })(),
-                  })
-                }}
-                type="number"
-                aria-valuenow={quantity}
-                aria-valuemin={1}
-                aria-valuemax={999}
-                min={1}
-                max={999}
-              />
-            </div>
+            <input
+              name="quantity"
+              aria-label="quantity"
+              className="flex h-9 w-16 [appearance:textfield] items-center justify-center border-x text-center focus-visible:outline-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+              value={quantity}
+              onChange={(e) => {
+                dispatch({
+                  type: 'SET',
+                  payload: (() => {
+                    const value = parseInt(e.target.value, 10)
+                    if (!isNaN(value)) return value
+                    return quantity
+                  })(),
+                })
+              }}
+              type="number"
+              aria-valuenow={quantity}
+              aria-valuemin={1}
+              aria-valuemax={999}
+              min={1}
+              max={999}
+            />
 
             <Button
               variant="outline"
