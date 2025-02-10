@@ -20,6 +20,7 @@ export const createMetadata = (
   return {
     ...override,
     metadataBase: new URL(getBaseUrl()),
+    manifest: `${getBaseUrl()}/manifest.webmanifest`,
     title: override.title ? `${override.title} | ${siteName}` : siteName,
     description: override.description ?? description,
     applicationName: siteName,

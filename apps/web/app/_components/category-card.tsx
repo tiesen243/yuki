@@ -13,14 +13,10 @@ export const CategoryCard: React.FC<{ category: Category }> = ({ category }) => 
     <Link href={`/shop/${slugify(category.name)}-${category.id}`}>
       <Image
         src={category.image}
-        alt={category.name}
+        alt={`Category image for ${category.name.toLowerCase()}`}
         width={300}
         height={300}
         className="aspect-square w-full rounded-t-xl"
-        onError={(e) => {
-          e.currentTarget.src = '/assets/logo.svg'
-          e.currentTarget.className = 'aspect-square w-full rounded-t-xl dark:invert'
-        }}
       />
       <CardHeader className="text-center">
         <CardTitle>{category.name}</CardTitle>

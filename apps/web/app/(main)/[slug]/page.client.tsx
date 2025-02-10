@@ -95,6 +95,10 @@ export const ProductDetails: React.FC<{ id: string }> = ({ id }) => {
           <span>Quantity:</span>
 
           <div className="flex items-center rounded-md border">
+            <label htmlFor="quantity" className="sr-only">
+              Quantity
+            </label>
+
             <Button
               variant="outline"
               size="icon"
@@ -106,6 +110,7 @@ export const ProductDetails: React.FC<{ id: string }> = ({ id }) => {
               -
             </Button>
             <input
+              name="quantity"
               className="flex h-9 w-16 items-center justify-center border-x text-center focus-visible:outline-none"
               value={quantity}
               onChange={(e) => {
@@ -118,7 +123,12 @@ export const ProductDetails: React.FC<{ id: string }> = ({ id }) => {
                   })(),
                 })
               }}
+              type="number"
               aria-valuenow={quantity}
+              aria-valuemin={1}
+              aria-valuemax={999}
+              min={1}
+              max={999}
             />
             <Button
               variant="outline"
@@ -202,6 +212,9 @@ export const ProductDetailsSkeleton: React.FC = () => (
         <span>Quantity:</span>
 
         <div className="flex items-center rounded-md border">
+          <label htmlFor="quantity" className="sr-only">
+            Quantity
+          </label>
           <Button
             variant="outline"
             size="icon"
@@ -211,6 +224,7 @@ export const ProductDetailsSkeleton: React.FC = () => (
             -
           </Button>
           <input
+            name="quantity"
             className="text-muted-foreground flex h-9 w-16 items-center justify-center border-x text-center focus-visible:outline-none"
             value={0}
             disabled

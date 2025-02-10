@@ -25,11 +25,12 @@ export const Search: React.FC<{ className?: string }> = ({ className }) => {
         type="search"
         name="query"
         placeholder="Search..."
-        className="w-full pr-8"
+        className="w-full pr-12"
         defaultValue={query}
       />
-      <button className="absolute top-2.5 right-2 z-[4] cursor-pointer">
+      <button className="ite hover:text-muted-foreground absolute top-0 right-0 z-1 inline-flex h-full min-h-full min-w-10 cursor-pointer items-center justify-center px-4 transition-colors">
         <SearchIcon size={16} />
+        <span className="sr-only">search</span>
       </button>
     </Form>
   )

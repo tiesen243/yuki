@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 
-import { Product } from '@yuki/db'
+import type { Product } from '@yuki/db'
 
 import { api } from '@/lib/trpc/react'
 

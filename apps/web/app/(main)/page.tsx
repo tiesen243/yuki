@@ -39,13 +39,17 @@ export default async function HomePage() {
           ]}
         />
 
-        <Suspense fallback={<ProductCardSkeleton />}>
-          <ProductList />
-        </Suspense>
+        <section>
+          <h1 className="sr-only">Featured Products and Categories</h1>
 
-        <Suspense fallback={<CategoryCardSkeleton />}>
-          <CategoryList />
-        </Suspense>
+          <Suspense fallback={<ProductCardSkeleton />}>
+            <ProductList />
+          </Suspense>
+
+          <Suspense fallback={<CategoryCardSkeleton />}>
+            <CategoryList />
+          </Suspense>
+        </section>
       </main>
     </HydrateClient>
   )

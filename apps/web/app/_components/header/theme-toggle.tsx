@@ -28,6 +28,7 @@ export const ThemeBtn: React.FC = () => {
         setTheme(theme === 'dark' ? 'light' : 'dark')
       }}
     >
+      <span className="sr-only">Toggle theme</span>
       {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
     </Button>
   )
