@@ -48,32 +48,26 @@ export const ProductPagination: React.FC<Query> = (query) => {
     <div className="mt-4 flex items-center justify-center gap-2">
       {query.page < 4 ? (
         <>
-          {Array.from({ length: 5 }).map((_, p) => (
-            <PageButton key={p + 1} p={p + 1} />
+          {Array.from({ length: 5 }).map((_, idx) => (
+            <PageButton key={idx + 1} p={idx + 1} />
           ))}
           <span>...</span>
           <PageButton p={totalPage} />
         </>
       ) : query.page >= totalPage - 2 ? (
         <>
-          {Array.from({ length: 5 }).map((_, p) => (
-            <PageButton key={p + 1} p={p + 1} />
-          ))}
+          <PageButton p={1} />
           <span>...</span>
-          <PageButton p={totalPage} />
+          {Array.from({ length: 5 }).map((_, idx) => (
+            <PageButton key={totalPage - 4 + idx} p={totalPage - 4 + idx} />
+          ))}
         </>
       ) : (
         <>
           <PageButton p={1} />
           <span>...</span>
-          {[
-            query.page - 2,
-            query.page - 1,
-            query.page,
-            query.page + 1,
-            query.page + 2,
-          ].map((p) => (
-            <PageButton key={p} p={p} />
+          {Array.from({ length: 5 }, (_, i) => query.page - 2 + i).map((i) => (
+            <PageButton key={i} p={i} />
           ))}
           <span>...</span>
           <PageButton p={totalPage} />
