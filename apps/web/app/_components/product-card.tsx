@@ -22,7 +22,7 @@ export const ProductCard: React.FC<{ product: Product }> = ({ product }) => (
       />
       <CardHeader>
         <CardTitle className="truncate">{product.name}</CardTitle>
-        <CardDescription className="flex items-center justify-between">
+        <CardDescription className="flex flex-wrap items-center justify-between gap-0.5">
           <span>${product.price}</span>
           <span>Stock: {product.stock}</span>
         </CardDescription>
