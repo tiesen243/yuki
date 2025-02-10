@@ -95,10 +95,6 @@ export const ProductDetails: React.FC<{ id: string }> = ({ id }) => {
           <span>Quantity:</span>
 
           <div className="flex items-center rounded-md border">
-            <label htmlFor="quantity" className="sr-only">
-              Quantity
-            </label>
-
             <Button
               variant="outline"
               size="icon"
@@ -109,27 +105,35 @@ export const ProductDetails: React.FC<{ id: string }> = ({ id }) => {
             >
               -
             </Button>
-            <input
-              name="quantity"
-              className="flex h-9 w-16 items-center justify-center border-x text-center focus-visible:outline-none"
-              value={quantity}
-              onChange={(e) => {
-                dispatch({
-                  type: 'SET',
-                  payload: (() => {
-                    const value = parseInt(e.target.value, 10)
-                    if (!isNaN(value)) return value
-                    return quantity
-                  })(),
-                })
-              }}
-              type="number"
-              aria-valuenow={quantity}
-              aria-valuemin={1}
-              aria-valuemax={999}
-              min={1}
-              max={999}
-            />
+
+            <div>
+              <label htmlFor="quantity" className="sr-only">
+                Quantity
+              </label>
+
+              <input
+                name="quantity"
+                className="flex h-9 w-16 [appearance:textfield] items-center justify-center border-x text-center focus-visible:outline-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                value={quantity}
+                onChange={(e) => {
+                  dispatch({
+                    type: 'SET',
+                    payload: (() => {
+                      const value = parseInt(e.target.value, 10)
+                      if (!isNaN(value)) return value
+                      return quantity
+                    })(),
+                  })
+                }}
+                type="number"
+                aria-valuenow={quantity}
+                aria-valuemin={1}
+                aria-valuemax={999}
+                min={1}
+                max={999}
+              />
+            </div>
+
             <Button
               variant="outline"
               size="icon"
