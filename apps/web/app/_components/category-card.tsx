@@ -16,7 +16,7 @@ export const CategoryCard: React.FC<{ category: Category }> = ({ category }) => 
         alt={`Category image for ${category.name.toLowerCase()}`}
         width={300}
         height={300}
-        className="aspect-square w-full rounded-t-xl"
+        className="aspect-square h-auto w-full rounded-t-xl object-cover"
       />
       <CardHeader className="text-center">
         <CardTitle>{category.name}</CardTitle>

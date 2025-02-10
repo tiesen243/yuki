@@ -23,7 +23,7 @@ export const ThemeBtn: React.FC = () => {
     <Button
       variant="outline"
       size="icon"
-      className="hidden md:inline-flex"
+      className="hidden bg-transparent md:inline-flex"
       onClick={() => {
         setTheme(theme === 'dark' ? 'light' : 'dark')
       }}
