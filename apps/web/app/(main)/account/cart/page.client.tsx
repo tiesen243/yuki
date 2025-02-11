@@ -80,9 +80,9 @@ export const CartDetails: React.FC = () => {
         </TableBody>
 
         <TableFooter className="bg-background/50 border-primary/20">
-          <TableRow>
+          <TableRow className="hover:bg-background/50">
             <TableCell colSpan={5}>Total</TableCell>
-            <TableCell>${cart.total}</TableCell>
+            <TableCell className="text-end">${cart.total}</TableCell>
           </TableRow>
         </TableFooter>
       </Table>

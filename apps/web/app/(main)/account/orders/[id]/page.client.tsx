@@ -4,6 +4,15 @@ import Image from 'next/image'
 
 import type { Product } from '@yuki/db'
 import { Badge } from '@yuki/ui/badge'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@yuki/ui/table'
 
 import { api } from '@/lib/trpc/react'
 
@@ -11,40 +20,34 @@ export const OrderDetails: React.FC<{ id: string }> = ({ id }) => {
   const [order] = api.order.getDetails.useSuspenseQuery({ id })
 
   return (
-    <div className="space-y-4 overflow-x-auto">
-      <table className="w-full">
-        <thead className="border-primary/20 border-b py-2">
-          <tr className="text-muted-foreground m-0 p-0">
-            <td colSpan={2} />
+    <div className="my-6 space-y-4 overflow-x-auto">
+      <Table className="**:border-primary/20">
+        <TableHeader>
+          <TableRow>
+            <TableHead colSpan={2}>
+              Status: <Badge variant={order.status}>{order.status}</Badge>
+            </TableHead>
             {['Price', 'Quantity', 'Total'].map((h, i) => (
-              <td key={i} className="py-4 text-center">
+              <TableHead key={i} className="text-center">
                 {h}
-              </td>
+              </TableHead>
             ))}
-          </tr>
-        </thead>
+          </TableRow>
+        </TableHeader>
 
-        <tbody>
+        <TableBody>
           {order.items.map((i) => (
             <OrderItem key={i.productId} product={i.product} quantity={i.quantity} />
           ))}
-        </tbody>
+        </TableBody>
 
-        <tfoot className="border-primary/20 border-t">
-          <tr>
-            <td className="py-4" colSpan={4}>
-              Total
-            </td>
-            <td className="py-4 text-center">${order.total}</td>
-          </tr>
-          <tr>
-            <td className="py-4">Status</td>
-            <td className="py-4">
-              <Badge variant={order.status}>{order.status}</Badge>
-            </td>
-          </tr>
-        </tfoot>
-      </table>
+        <TableFooter className="bg-background/50 border-primary/20">
+          <TableRow className="hover:bg-background/50">
+            <TableCell colSpan={4}>Total</TableCell>
+            <TableCell className="text-center">${order.total}</TableCell>
+          </TableRow>
+        </TableFooter>
+      </Table>
     </div>
   )
 }
@@ -53,13 +56,13 @@ const OrderItem: React.FC<{ product: Product; quantity: number }> = ({
   product,
   quantity,
 }) => (
-  <tr>
-    <td className="min-w-[50px] py-4">
+  <TableRow className="hover:bg-background/50">
+    <TableCell className="min-w-[50px]">
       <Image src={product.image} alt={product.name} width={50} height={50} />
-    </td>
-    <td className="min-w-md p-4 text-start break-words">{product.name}</td>
-    <td className="p-4 text-center">${product.price}</td>
-    <td className="p-4 text-center">{quantity}</td>
-    <td className="p-4 text-center">${quantity * product.price}</td>
-  </tr>
+    </TableCell>
+    <TableCell className="min-w-md break-words">{product.name}</TableCell>
+    <TableCell className="text-center">${product.price}</TableCell>
+    <TableCell className="text-center">{quantity}</TableCell>
+    <TableCell className="text-center">${quantity * product.price}</TableCell>
+  </TableRow>
 )
