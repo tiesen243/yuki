@@ -13,6 +13,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@yuki/ui/select'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@yuki/ui/table'
 import { toast } from '@yuki/ui/toast'
 
 import { useDebounce } from '@/hooks/use-debounce'
@@ -38,26 +47,26 @@ export const CartDetails: React.FC = () => {
   })
 
   return (
-    <div className="space-y-4 overflow-x-auto">
-      <table className="w-full">
-        <thead className="border-primary/20 border-b py-2">
-          <tr className="text-muted-foreground m-0 p-0">
-            <td colSpan={2} />
+    <div className="mt-6 space-y-4 overflow-x-auto">
+      <Table className="**:border-primary/20">
+        <TableHeader>
+          <TableRow>
+            <TableHead colSpan={2} />
             {['Price', 'Quantity', 'Total', 'Action'].map((h, i) => (
-              <td key={i} className="py-4 text-center">
+              <TableHead key={i} className="text-center">
                 {h}
-              </td>
+              </TableHead>
             ))}
-          </tr>
-        </thead>
+          </TableRow>
+        </TableHeader>
 
-        <tbody>
+        <TableBody>
           {cart.items.length <= 0 ? (
-            <tr>
-              <td colSpan={6} className="text-muted-foreground py-4 text-center">
+            <TableRow>
+              <TableCell colSpan={6} className="text-muted-foreground text-center">
                 No items
-              </td>
-            </tr>
+              </TableCell>
+            </TableRow>
           ) : (
             cart.items.map((item) => (
               <CartItem
@@ -68,17 +77,15 @@ export const CartDetails: React.FC = () => {
               />
             ))
           )}
-        </tbody>
+        </TableBody>
 
-        <tfoot className="border-primary/20 border-t">
-          <tr>
-            <td className="py-4" colSpan={5}>
-              Total
-            </td>
-            <td className="py-4 text-center">${cart.total}</td>
-          </tr>
-        </tfoot>
-      </table>
+        <TableFooter className="bg-background/50 border-primary/20">
+          <TableRow>
+            <TableCell colSpan={5}>Total</TableCell>
+            <TableCell>${cart.total}</TableCell>
+          </TableRow>
+        </TableFooter>
+      </Table>
 
       <div className="flex items-center justify-between">
         <Select value={address} onValueChange={setAddress}>
@@ -154,14 +161,14 @@ const CartItem: React.FC<{
   }
 
   return (
-    <tr>
-      <td className="min-w-[50px] py-4">
+    <TableRow className="hover:bg-background/50">
+      <TableCell className="min-w-[50px]">
         <Image src={product.image} alt={product.name} width={50} height={50} />
-      </td>
+      </TableCell>
 
-      <td className="min-w-md p-4 text-start break-words">{product.name}</td>
-      <td className="p-4 text-center">${product.price}</td>
-      <td className="py-4 text-center">
+      <TableCell>{product.name}</TableCell>
+      <TableCell className="min-w-24 text-center">${product.price}</TableCell>
+      <TableCell className="text-center">
         <div className="border-primary/20 flex w-full items-center rounded-md border">
           <Button
             variant="outline"
@@ -174,7 +181,7 @@ const CartItem: React.FC<{
           >
             -
           </Button>
-          <span className="border-primary/20 flex h-9 min-w-10 grow items-center justify-center border-x">
+          <span className="border-primary/20 flex h-9 min-w-6 grow items-center justify-center border-x">
             {localQuantity}
           </span>
           <Button
@@ -189,9 +196,11 @@ const CartItem: React.FC<{
             +
           </Button>
         </div>
-      </td>
-      <td className="min-w-24 p-4 text-center">${localQuantity * product.price}</td>
-      <td className="min-w-20 py-4">
+      </TableCell>
+      <TableCell className="min-w-24 text-center">
+        ${localQuantity * product.price}
+      </TableCell>
+      <TableCell className="min-w-20">
         <Button
           className="w-full"
           variant="destructive"
@@ -203,7 +212,7 @@ const CartItem: React.FC<{
         >
           {deleteItem.isPending ? 'Deleting...' : 'Delete'}
         </Button>
-      </td>
-    </tr>
+      </TableCell>
+    </TableRow>
   )
 }
