@@ -3,6 +3,8 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
+import { Badge } from '@yuki/ui/badge'
+
 import { api } from '@/lib/trpc/react'
 
 export const OrderHistories: React.FC = () => {
@@ -41,7 +43,8 @@ export const OrderHistories: React.FC = () => {
 
           <div className="flex items-center justify-between gap-4 capitalize">
             <p>
-              Status: <span className="lowercase">{o.status}</span>
+              <span className="mr-2">Status</span>
+              <Badge variant={o.status}>{o.status}</Badge>
             </p>
             <p>Total: ${o.price}</p>
           </div>

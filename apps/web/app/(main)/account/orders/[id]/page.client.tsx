@@ -3,18 +3,12 @@
 import Image from 'next/image'
 
 import type { Product } from '@yuki/db'
+import { Badge } from '@yuki/ui/badge'
 
 import { api } from '@/lib/trpc/react'
 
 export const OrderDetails: React.FC<{ id: string }> = ({ id }) => {
   const [order] = api.order.getDetails.useSuspenseQuery({ id })
-
-  const mapColor = {
-    NEW: '',
-    PENDING: 'text-yellow-600 dark:text-yellow-500',
-    DELIVERED: 'text-green-600 dark:text-green-500',
-    CANCELED: 'text-red-600 dark:text-red-500',
-  }
 
   return (
     <div className="space-y-4 overflow-x-auto">
@@ -44,8 +38,10 @@ export const OrderDetails: React.FC<{ id: string }> = ({ id }) => {
             <td className="py-4 text-center">${order.total}</td>
           </tr>
           <tr>
-            <td className="py-4">Stauts</td>
-            <td className={'py-4 lowercase ' + mapColor[order.status]}>{order.status}</td>
+            <td className="py-4">Status</td>
+            <td className="py-4">
+              <Badge variant={order.status}>{order.status}</Badge>
+            </td>
           </tr>
         </tfoot>
       </table>

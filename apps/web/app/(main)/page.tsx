@@ -1,9 +1,13 @@
 import { Suspense } from 'react'
 
-import { CategoryCardSkeleton } from '@/app/_components/category-card'
-import { ProductCardSkeleton } from '@/app/_components/product-card'
 import { api, HydrateClient } from '@/lib/trpc/server'
-import { CategoryList, ProductList, Slider } from './page.client'
+import {
+  CategoryList,
+  CategoryListSkeleton,
+  ProductList,
+  ProductListSkeleton,
+  Slider,
+} from './page.client'
 
 export const dynamic = 'force-dynamic'
 
@@ -39,14 +43,14 @@ export default async function HomePage() {
           ]}
         />
 
-        <section>
+        <section className="space-y-6">
           <h1 className="sr-only">Featured Products and Categories</h1>
 
-          <Suspense fallback={<ProductCardSkeleton />}>
+          <Suspense fallback={<ProductListSkeleton />}>
             <ProductList />
           </Suspense>
 
-          <Suspense fallback={<CategoryCardSkeleton />}>
+          <Suspense fallback={<CategoryListSkeleton />}>
             <CategoryList />
           </Suspense>
         </section>

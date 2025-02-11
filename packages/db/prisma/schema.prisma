@@ -9,8 +9,9 @@ datasource db {
 }
 
 enum Role {
-  USER
   ADMIN
+  SELLER
+  USER
 }
 
 model User {
@@ -110,8 +111,13 @@ model Review {
 enum Status {
   NEW
   PENDING
+  CONFIRMED
+  PROCESSING
+  SHIPPING
   DELIVERED
   CANCELED
+  FAILED
+  RETURNED
 }
 
 model Cart {

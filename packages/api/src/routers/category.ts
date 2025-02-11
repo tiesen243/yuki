@@ -1,7 +1,6 @@
 import type { TRPCRouterRecord } from '@trpc/server'
-import { TRPCError } from '@trpc/server'
 
-import { protectedProcedure, publicProcedure } from '../trpc'
+import { publicProcedure, restrictedProcedure } from '../trpc'
 import * as schemas from '../validators/category'
 
 export const categoryRouter = {
@@ -31,34 +30,23 @@ export const categoryRouter = {
   }),
 
   // [POST] /api/trpc/category.create
-  create: protectedProcedure
+  create: restrictedProcedure
     .input(schemas.createSchema)
     .mutation(async ({ ctx, input }) => {
-      checkAdmin(ctx.session.user.role)
       return ctx.db.category.create({ data: input })
     }),
 
   // [POST] /api/trpc/category.update
-  update: protectedProcedure
+  update: restrictedProcedure
     .input(schemas.updateSchema)
     .mutation(async ({ ctx, input: { id, ...data } }) => {
-      checkAdmin(ctx.session.user.role)
       return ctx.db.category.update({ where: { id }, data })
     }),
 
   // [POST] /api/trpc/category.delete
-  delete: protectedProcedure
+  delete: restrictedProcedure
     .input(schemas.getOneSchema)
     .mutation(async ({ ctx, input }) => {
-      checkAdmin(ctx.session.user.role)
       return ctx.db.category.delete({ where: { id: input.id } })
     }),
 } satisfies TRPCRouterRecord
-
-const checkAdmin = (role: 'USER' | 'ADMIN') => {
-  if (role !== 'ADMIN')
-    throw new TRPCError({
-      code: 'UNAUTHORIZED',
-      message: 'You are not authorized to access this resource',
-    })
-}

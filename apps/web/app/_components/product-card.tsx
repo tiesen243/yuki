@@ -15,10 +15,6 @@ export const ProductCard: React.FC<{ product: Product }> = ({ product }) => (
         width={300}
         height={300}
         className="aspect-square w-full rounded-t-xl"
-        onError={(e) => {
-          e.currentTarget.src = '/assets/logo.svg'
-          e.currentTarget.className = 'aspect-square w-full rounded-t-xl dark:invert'
-        }}
       />
       <CardHeader>
         <CardTitle className="truncate">{product.name}</CardTitle>

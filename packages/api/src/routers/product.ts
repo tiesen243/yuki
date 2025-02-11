@@ -1,7 +1,7 @@
 import type { TRPCRouterRecord } from '@trpc/server'
 import { TRPCError } from '@trpc/server'
 
-import { protectedProcedure, publicProcedure } from '../trpc'
+import { publicProcedure, restrictedProcedure } from '../trpc'
 import * as schemas from '../validators/product'
 
 export const productRouter = {
@@ -103,10 +103,9 @@ export const productRouter = {
     }),
 
   // [POST] /api/trpc/product.create
-  create: protectedProcedure
+  create: restrictedProcedure
     .input(schemas.createSchema)
     .mutation(async ({ ctx, input }) => {
-      checkAdmin(ctx.session.user.role)
       return ctx.db.product.create({
         data: {
           ...input,
@@ -116,26 +115,34 @@ export const productRouter = {
     }),
 
   // [POST] /api/trpc/product.update
-  update: protectedProcedure
+  update: restrictedProcedure
     .input(schemas.updateSchema)
     .mutation(async ({ ctx, input: { id, ...data } }) => {
-      checkAdmin(ctx.session.user.role)
+      const product = await ctx.db.product.findUnique({
+        where: { id, userId: ctx.session.user.id },
+      })
+      if (!product)
+        throw new TRPCError({
+          code: 'FORBIDDEN',
+          message: 'Not authorized to update this product',
+        })
+
       return ctx.db.product.update({ where: { id }, data })
     }),
 
   // [POST] /api/trpc/product.delete
-  delete: protectedProcedure
+  delete: restrictedProcedure
     .input(schemas.getOneSchema)
-    .mutation(async ({ ctx, input }) => {
-      checkAdmin(ctx.session.user.role)
-      return ctx.db.product.delete({ where: { id: input.id } })
+    .mutation(async ({ ctx, input: { id } }) => {
+      const product = await ctx.db.product.findUnique({
+        where: { id, userId: ctx.session.user.id },
+      })
+      if (!product)
+        throw new TRPCError({
+          code: 'FORBIDDEN',
+          message: 'Not authorized to update this product',
+        })
+
+      return ctx.db.product.delete({ where: { id } })
     }),
 } satisfies TRPCRouterRecord
-
-const checkAdmin = (role: 'USER' | 'ADMIN') => {
-  if (role !== 'ADMIN')
-    throw new TRPCError({
-      code: 'UNAUTHORIZED',
-      message: 'You are not authorized to access this resource',
-    })
-}

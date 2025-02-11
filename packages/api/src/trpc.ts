@@ -141,3 +141,21 @@ export const protectedProcedure = t.procedure
       },
     })
   })
+
+/**
+ * Restricted (ADMIM or SELLER) procedure
+ *
+ * If you want a query or mutation to ONLY be accessible to ADMIN or SELLER users, use this. It verifies
+ * the session is valid and checks if the user has either ADMIN or SELLER role.
+ *
+ * @see https://trpc.io/docs/procedures
+ */
+export const restrictedProcedure = protectedProcedure.use(({ ctx, next }) => {
+  if (!['ADMIN', 'SELLER'].includes(ctx.session.user.role))
+    throw new TRPCError({
+      code: 'FORBIDDEN',
+      message: 'Access denied. This action requires ADMIN or SELLER privileges.',
+    })
+
+  return next({ ctx })
+})
