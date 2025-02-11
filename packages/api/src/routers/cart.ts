@@ -19,6 +19,7 @@ export const cartRouter = {
         },
       },
     })
+
     if (!cart)
       cart = await ctx.db.cart.create({
         data: { userId },
@@ -30,12 +31,7 @@ export const cartRouter = {
         },
       })
 
-    const total = cart.items.reduce(
-      (acc, item) => acc + item.quantity * item.product.price,
-      0,
-    )
-
-    return { ...cart, total }
+    return cart
   }),
 
   // [POST] /api/trpc/cart.updateCart
@@ -44,30 +40,35 @@ export const cartRouter = {
     .mutation(async ({ ctx, input: { productId, quantity, isUpdate } }) => {
       const userId = ctx.session.user.id
 
-      const product = await ctx.db.product.findUnique({ where: { id: productId } })
-      if (!product)
-        throw new TRPCError({ code: 'NOT_FOUND', message: 'Product not found' })
+      const cart =
+        (await ctx.db.cart.findFirst({ where: { userId, status: 'NEW' } })) ??
+        (await ctx.db.cart.create({ data: { userId } }))
 
-      if (product.stock < quantity)
-        throw new TRPCError({
-          code: 'UNPROCESSABLE_CONTENT',
-          message: 'Insufficient stock',
-        })
+      const cartItem = await ctx.db.cartItem.upsert({
+        where: { cartId_productId: { cartId: cart.id, productId } },
+        create: { cartId: cart.id, productId, quantity },
+        update: {
+          quantity: isUpdate ? quantity : { increment: quantity },
+        },
+        include: { product: true },
+      })
 
-      let cart = await ctx.db.cart.findFirst({ where: { userId, status: 'NEW' } })
-      if (!cart) cart = await ctx.db.cart.create({ data: { userId } })
+      const cartItems = await ctx.db.cartItem.findMany({
+        where: { cartId: cart.id },
+        select: { quantity: true, product: { select: { price: true } } },
+      })
 
-      if (isUpdate)
-        return await ctx.db.cartItem.update({
-          where: { cartId_productId: { cartId: cart.id, productId } },
-          data: { quantity },
-        })
-      else
-        return await ctx.db.cartItem.upsert({
-          where: { cartId_productId: { cartId: cart.id, productId } },
-          create: { cartId: cart.id, productId, quantity },
-          update: { quantity: { increment: quantity } },
-        })
+      const total = cartItems.reduce(
+        (sum, item) => sum + item.quantity * item.product.price,
+        0,
+      )
+
+      await ctx.db.cart.update({
+        where: { id: cart.id },
+        data: { total },
+      })
+
+      return cartItem
     }),
 
   // [POST] /api/trpc/cart.deleteItemFromCart
@@ -78,8 +79,14 @@ export const cartRouter = {
       if (!cart) throw new TRPCError({ code: 'NOT_FOUND', message: 'Cart not found' })
 
       try {
-        await ctx.db.cartItem.delete({
+        const deletedItem = await ctx.db.cartItem.delete({
           where: { cartId_productId: { cartId: cart.id, productId: input.productId } },
+          include: { product: { select: { price: true } } },
+        })
+
+        await ctx.db.cart.update({
+          where: { id: cart.id },
+          data: { total: cart.total - deletedItem.quantity * deletedItem.product.price },
         })
       } catch {
         throw new TRPCError({

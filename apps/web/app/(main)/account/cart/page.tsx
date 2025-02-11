@@ -21,8 +21,14 @@ export default function CartPage() {
 
         <hr className="border-primary/20" />
 
-        <section className="container mt-4">
-          <Suspense fallback="loading..">
+        <section className="container h-full">
+          <Suspense
+            fallback={
+              <div className="z-10 flex h-4/5 w-full items-center justify-center">
+                <div className="border-primary size-12 animate-spin rounded-full border-t-2 border-b-2" />
+              </div>
+            }
+          >
             <CartDetails />
           </Suspense>
         </section>

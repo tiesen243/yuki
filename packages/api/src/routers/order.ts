@@ -20,17 +20,7 @@ export const orderRouter = {
       orderBy: { updatedAt: 'desc' },
     })
 
-    return orders.map((o) => {
-      const price = o.items.reduce(
-        (acc, cur) => acc + cur.quantity * cur.product.price,
-        0,
-      )
-
-      return {
-        ...o,
-        price,
-      }
-    })
+    return orders
   }),
 
   // [GET] /api/trpc/order.getDetails
@@ -39,18 +29,9 @@ export const orderRouter = {
       where: { id: input.id },
       include: { items: { include: { product: true } } },
     })
-
     if (!order) throw new TRPCError({ code: 'NOT_FOUND', message: 'Order not found' })
 
-    const total = order.items.reduce(
-      (acc, cur) => acc + cur.quantity * cur.product.price,
-      0,
-    )
-
-    return {
-      ...order,
-      total,
-    }
+    return order
   }),
 
   // [POST] /api/trpc/order.updateOrder

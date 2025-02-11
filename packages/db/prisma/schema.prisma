@@ -123,12 +123,13 @@ enum Status {
 model Cart {
   id     String     @id @default(cuid())
   items  CartItem[]
+  total  Int        @default(0)
   status Status     @default(NEW)
 
   address   Address? @relation(fields: [addressId], references: [id])
   addressId String?
 
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id])
   userId String
 
   createdAt DateTime @default(now())

@@ -46,7 +46,7 @@ export const OrderHistories: React.FC = () => {
               <span className="mr-2">Status</span>
               <Badge variant={o.status}>{o.status}</Badge>
             </p>
-            <p>Total: ${o.price}</p>
+            <p>Total: ${o.total}</p>
           </div>
         </Link>
       ))}

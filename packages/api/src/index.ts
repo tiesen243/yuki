@@ -3,6 +3,7 @@ import type { inferRouterInputs, inferRouterOutputs } from '@trpc/server'
 import { authRouter } from './routers/auth'
 import { cartRouter } from './routers/cart'
 import { categoryRouter } from './routers/category'
+import { dashboardRouter } from './routers/dashboard'
 import { orderRouter } from './routers/order'
 import { productRouter } from './routers/product'
 import { userRouter } from './routers/user'
@@ -12,6 +13,7 @@ const appRouter = createTRPCRouter({
   auth: authRouter,
   cart: cartRouter,
   category: categoryRouter,
+  dashboard: dashboardRouter,
   order: orderRouter,
   product: productRouter,
   user: userRouter,

@@ -109,7 +109,7 @@ export const CartDetails: React.FC = () => {
             })
           }}
         >
-          Confirm
+          {confirmOrder.isPending ? 'Confirming...' : 'Confirm'}
         </Button>
       </div>
     </div>
