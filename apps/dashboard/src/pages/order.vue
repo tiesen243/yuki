@@ -77,7 +77,7 @@
         <TableRow>
           <!-- eslint-disable-next-line vue/attribute-hyphenation -->
           <TableCell colSpan="4" class="font-semibold">Total</TableCell>
-          <TableCell>{{ data?.total }}</TableCell>
+          <TableCell>${{ data?.total }}</TableCell>
         </TableRow>
       </TableFooter>
     </Table>

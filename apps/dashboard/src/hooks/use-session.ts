@@ -1,3 +1,4 @@
+import { useRouter } from 'vue-router'
 import { useMutation, useQuery } from '@tanstack/vue-query'
 import { useCookies } from '@vueuse/integrations/useCookies'
 
@@ -10,6 +11,7 @@ export const useSession = () => {
   const cookies = useCookies(['auth_token'])
 
   const token: string | undefined = cookies.get('auth_token')
+  const router = useRouter()
 
   const session = useQuery({
     queryKey: ['auth'],
@@ -39,7 +41,10 @@ export const useSession = () => {
         sameSite: 'lax',
       })
     },
-    onSuccess: () => session.refetch(),
+    onSuccess: async () => {
+      await session.refetch()
+      await router.push('/')
+    },
     onError: (e) => toast.error(e.message),
   })
 

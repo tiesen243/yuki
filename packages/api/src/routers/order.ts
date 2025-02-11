@@ -47,7 +47,7 @@ export const orderRouter = {
     })
     if (!order) throw new TRPCError({ code: 'NOT_FOUND', message: 'Order not found' })
 
-    if (order.userId !== ctx.session.user.id || ctx.session.user.role !== 'ADMIN')
+    if (order.userId !== ctx.session.user.id && ctx.session.user.role !== 'ADMIN')
       throw new TRPCError({
         code: 'FORBIDDEN',
         message:

@@ -5,6 +5,7 @@ export const routes = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     { path: '/', component: () => import('./pages/index.vue') },
+    { path: '/sign-in', component: () => import('./pages/sign-in.vue') },
     { path: '/categories', component: () => import('./pages/index.vue') },
     { path: '/products', component: () => import('./pages/index.vue') },
     { path: '/orders', component: () => import('./pages/orders.vue') },
