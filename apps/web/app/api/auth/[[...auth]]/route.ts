@@ -25,7 +25,9 @@ const cookieAttributes = (expires: Date) => ({
 })
 
 const headers = {
-  'Access-Control-Allow-Origin': env.NEXT_PUBLIC_DASHBOARD_URL ?? 'http://localhost:3001',
+  'Access-Control-Allow-Origin': String(
+    env.NEXT_PUBLIC_DASHBOARD_URL ?? 'http://localhost:3001',
+  ),
   'Access-Control-Request-Method': '*',
   'Access-Control-Allow-Methods': 'GET,POST',
   'Access-Control-Allow-Headers': 'authorization,accept,content-type',

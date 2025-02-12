@@ -12,7 +12,7 @@ import { env } from '@/env'
 const setCorsHeaders = (res: Response) => {
   res.headers.set(
     'Access-Control-Allow-Origin',
-    env.NEXT_PUBLIC_DASHBOARD_URL ?? 'http://localhost:3001',
+    String(env.NEXT_PUBLIC_DASHBOARD_URL ?? 'http://localhost:3001'),
   )
   res.headers.set('Access-Control-Request-Method', '*')
   res.headers.set('Access-Control-Allow-Methods', 'OPTIONS,GET,POST')
