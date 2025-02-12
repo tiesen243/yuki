@@ -54,7 +54,7 @@ export const useSession = () => {
   })
 
   const signOut = useMutation({
-    mutationKey: ['auth', 'signOut'],
+    mutationKey: ['auth', 'sign-out'],
     mutationFn: async () => {
       const res = await fetch(`${baseUrl}/sign-out?dashboard=true`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -64,6 +64,7 @@ export const useSession = () => {
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['auth'] })
+      cookies.remove('auth_token')
     },
     onError: (e) => toast.error(e.message),
   })

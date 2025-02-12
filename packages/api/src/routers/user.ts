@@ -1,24 +1,17 @@
 import type { TRPCRouterRecord } from '@trpc/server'
-import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 
-import { protectedProcedure, publicProcedure } from '../trpc'
+import { protectedProcedure, publicProcedure, restrictedProcedure } from '../trpc'
 import * as schemas from '../validators/user'
 
 export const userRouter = {
   // [GET] /api/trpc/user.getAll
-  getAll: protectedProcedure.input(schemas.query).query(async ({ ctx, input }) => {
-    if (ctx.session.user.role !== 'ADMIN')
-      throw new TRPCError({
-        code: 'UNAUTHORIZED',
-        message: 'You are not authorized to access this resource',
-      })
+  getAll: restrictedProcedure.input(schemas.query).query(async ({ ctx, input }) => {
     const users = await ctx.db.user.findMany({
       where: {
         OR: [
           { name: { contains: input.query, mode: 'insensitive' } },
           { email: { contains: input.query, mode: 'insensitive' } },
-          {},
         ],
       },
       include: { _count: { select: { carts: true } } },
@@ -27,13 +20,19 @@ export const userRouter = {
       orderBy: { createdAt: 'desc' },
     })
 
-    return users.map((user) => ({
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-      numberOfOrders: user._count.carts,
-    }))
+    const totalPage = Math.ceil((await ctx.db.user.count()) / input.limit)
+
+    return {
+      users: users.map((user) => ({
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        createdAt: user.createdAt,
+        numberOfOrders: user._count.carts,
+      })),
+      totalPage,
+    }
   }),
 
   // [GET] /api/trpc/user.getLinkedAccounts
