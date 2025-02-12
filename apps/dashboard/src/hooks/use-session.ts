@@ -36,7 +36,6 @@ export const useSession = () => {
       if (!res.ok) throw new Error(message)
 
       cookies.set('auth_token', session.token, {
-        httpOnly: env.NODE_ENV === 'production',
         path: '/',
         secure: env.NODE_ENV === 'production',
         expires: new Date(session.expiresAt),
