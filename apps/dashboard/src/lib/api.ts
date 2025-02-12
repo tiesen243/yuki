@@ -1,10 +1,10 @@
 import { createTRPCClient, loggerLink, unstable_httpBatchStreamLink } from '@trpc/client'
+import { useCookies } from '@vueuse/integrations/useCookies'
 import SuperJSON from 'superjson'
 
 import type { AppRouter } from '@yuki/api'
 
 import { env } from '@/env'
-import { useSession } from '@/hooks/use-session'
 
 export const api = createTRPCClient<AppRouter>({
   links: [
@@ -17,7 +17,7 @@ export const api = createTRPCClient<AppRouter>({
       transformer: SuperJSON,
       url: `${env.VUE_PUBLIC_WEB_URL}/api/trpc`,
       headers: () => {
-        const { token } = useSession()
+        const token: string | undefined = useCookies(['auth_token']).get('auth_token')
 
         return {
           Authorization: `Bearer ${token}`,
