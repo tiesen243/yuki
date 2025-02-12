@@ -11,6 +11,6 @@
   </main>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { Typography } from '@yuki/ui/vue/typography'
 </script>

@@ -1,12 +1,13 @@
 <template>
   <header class="bg-background border-b shadow-sm">
-    <div class="container flex h-16 justify-between">
-      <div class="flex items-center">
+    <div class="container flex h-16 items-center justify-between">
+      <div class="flex items-center justify-between gap-6">
         <RouterLink to="/">
-          <h1 class="text-xl font-bold">Yuki Dashboard</h1>
+          <img :src="logo" alt="logo" class="size-9 dark:invert" />
+          <h1 class="sr-only text-xl font-bold md:block">Yuki Dashboard</h1>
         </RouterLink>
 
-        <nav class="sm:ml-6 sm:flex sm:space-x-8">
+        <nav class="flex items-center gap-4">
           <RouterLink
             v-for="item in navItems"
             :key="item.name"
@@ -14,7 +15,7 @@
             class="text-muted-foreground hover:text-foreground textxs aria-[current=page]:text-foreground flex items-center gap-2 text-sm transition-colors"
           >
             <component :is="item.icon" class="size-4" />
-            <span class="hidden sm:block">
+            <span class="md::block hidden">
               {{ item.name }}
             </span>
           </RouterLink>
@@ -59,7 +60,10 @@ import {
 } from '@yuki/ui/vue/icons'
 import { Toaster } from '@yuki/ui/vue/toast'
 
-import { useSession } from './hooks/use-session'
+import { env } from '@/env'
+import { useSession } from '@/hooks/use-session'
+
+const logo = `${env.VUE_PUBLIC_WEB_URL}/assets/logo.svg`
 
 const isDark = useDark()
 const toggleTheme = useToggle(isDark)
