@@ -573,7 +573,7 @@
 
     "@trpc/react-query": ["@trpc/react-query@11.0.0-rc.761", "", { "peerDependencies": { "@tanstack/react-query": "^5.62.8", "@trpc/client": "11.0.0-rc.761+b7174a4f2", "@trpc/server": "11.0.0-rc.761+b7174a4f2", "react": ">=18.2.0", "react-dom": ">=18.2.0", "typescript": ">=5.7.2" } }, "sha512-ORquqFCJcqfg6TPGccXf/0bWX/wgQQ4SEP7iyzlVTafbH7HGWG40A9fXRE9jB0761v9G1zbh59Qot9F8w0Py7Q=="],
 
-    "@trpc/server": ["@trpc/server@11.0.0-rc.761", "", { "peerDependencies": { "typescript": ">=5.7.2" } }, "sha512-VY2BV0ygS5QZUMELQagIs+HrUBRtE5BcwMWvvbBhLOUj2PqfFHUAOrlsrW24+Ic8pMxC+vf5mScy6XP3+GZvjA=="],
+    "@trpc/server": ["@trpc/server@11.0.0-rc.764", "", { "peerDependencies": { "typescript": ">=5.7.2" } }, "sha512-fwU5Oowk0d7qD4nB29Fv54FGDp2JlxJcRLJUSBmXIYCK66BlwHUcaB6lzrwy6Weqlc9nt+U5j/WsooWcFDam7A=="],
 
     "@tsconfig/node10": ["@tsconfig/node10@1.0.11", "", {}, "sha512-DcRjDCujK/kCk/cUe8Xz8ZSpm8mS3mNNpta+jGCA6USEDfktlNvm1+IuZ9eTcDbNk41BHwpHHeW+N1lKCz4zOw=="],
 
@@ -1748,6 +1748,10 @@
     "@ianvs/prettier-plugin-sort-imports/semver": ["semver@7.7.1", "", { "bin": { "semver": "bin/semver.js" } }, "sha512-hlq8tAfn0m/61p4BVRcPzIGr6LKiMwo4VM6dGi6pt4qcRkmNzTcWq6eCEjEh+qXjkMDvPlOFFSGwQjoEa6gyMA=="],
 
     "@oslojs/jwt/@oslojs/encoding": ["@oslojs/encoding@0.4.1", "", {}, "sha512-hkjo6MuIK/kQR5CrGNdAPZhS01ZCXuWDRJ187zh6qqF2+yMHZpD9fAYpX8q2bOO6Ryhl3XpCT6kUX76N8hhm4Q=="],
+
+    "@trpc/client/@trpc/server": ["@trpc/server@11.0.0-rc.761", "", { "peerDependencies": { "typescript": ">=5.7.2" } }, "sha512-VY2BV0ygS5QZUMELQagIs+HrUBRtE5BcwMWvvbBhLOUj2PqfFHUAOrlsrW24+Ic8pMxC+vf5mScy6XP3+GZvjA=="],
+
+    "@trpc/react-query/@trpc/server": ["@trpc/server@11.0.0-rc.761", "", { "peerDependencies": { "typescript": ">=5.7.2" } }, "sha512-VY2BV0ygS5QZUMELQagIs+HrUBRtE5BcwMWvvbBhLOUj2PqfFHUAOrlsrW24+Ic8pMxC+vf5mScy6XP3+GZvjA=="],
 
     "@turbo/workspaces/semver": ["semver@7.6.2", "", { "bin": { "semver": "bin/semver.js" } }, "sha512-FNAIBWCx9qcRhoHcgcJ0gvU7SN1lYU2ZXuSfl04bSC5OpvDHFyJCjdNHomPXxjQlCBU67YW64PzY7/VIEH7F2w=="],
 

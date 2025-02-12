@@ -77,8 +77,11 @@ const { data, isLoading } = useQuery({
   queryFn: async () => {
     try {
       return await api.order.getAllOrders.query({ page: page.value })
-    } catch {
-      await router.push('/403')
+    } catch (e) {
+      if (e instanceof Error) {
+        if (e.message === 'UNAUTHORIZED') await router.push('/sign-in')
+        if (e.message === 'FORBIDDEN') await router.push('/403')
+      }
     }
   },
   placeholderData: keepPreviousData,

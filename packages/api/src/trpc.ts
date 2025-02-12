@@ -152,10 +152,7 @@ export const protectedProcedure = t.procedure
  */
 export const restrictedProcedure = protectedProcedure.use(({ ctx, next }) => {
   if (!['ADMIN', 'SELLER'].includes(ctx.session.user.role))
-    throw new TRPCError({
-      code: 'FORBIDDEN',
-      message: 'Access denied. This action requires ADMIN or SELLER privileges.',
-    })
+    throw new TRPCError({ code: 'FORBIDDEN' })
 
   return next({ ctx })
 })

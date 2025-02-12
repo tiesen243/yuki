@@ -1,5 +1,5 @@
 import { useRouter } from 'vue-router'
-import { useMutation, useQuery } from '@tanstack/vue-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
 import { useCookies } from '@vueuse/integrations/useCookies'
 
 import type { Session } from '@yuki/auth'
@@ -15,11 +15,13 @@ export const useSession = () => {
   const token: string | undefined = cookies.get('auth_token')
   const router = useRouter()
 
+  const queryClient = useQueryClient()
+
   const session = useQuery({
     queryKey: ['auth'],
     queryFn: async () => {
       const res = await fetch(baseUrl, {
-        headers: { Authorization: `Bearer  ${token}` },
+        headers: { Authorization: `Bearer ${token}` },
       })
       return (await res.json()) as Session
     },
@@ -45,7 +47,7 @@ export const useSession = () => {
       })
     },
     onSuccess: async () => {
-      await session.refetch()
+      await queryClient.invalidateQueries({ queryKey: ['auth'] })
       await router.push('/')
     },
     onError: (e) => toast.error(e.message),
@@ -60,7 +62,7 @@ export const useSession = () => {
       const json = (await res.json()) as { message: string }
       if (!res.ok) throw new Error(json.message)
     },
-    onSuccess: () => session.refetch(),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['auth'] }),
     onError: (e) => toast.error(e.message),
   })
 
