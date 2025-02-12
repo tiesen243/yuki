@@ -5,8 +5,10 @@ import { useCookies } from '@vueuse/integrations/useCookies'
 import type { Session } from '@yuki/auth'
 import { toast } from '@yuki/ui/vue/toast'
 
+import { env } from '@/env'
+
 export const useSession = () => {
-  const baseUrl = `${import.meta.env.VITE_WEB_URL}/api/auth`
+  const baseUrl = `${env.VUE_PUBLIC_WEB_URL}/api/auth`
 
   const cookies = useCookies(['auth_token'])
 

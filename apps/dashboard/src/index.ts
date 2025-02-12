@@ -1,8 +1,16 @@
-import type { VueQueryPluginOptions } from '@tanstack/vue-query'
-import { defaultShouldDehydrateQuery } from '@tanstack/vue-query'
+import '@/globals.css'
+import '@/env'
+
+import { createApp } from 'vue'
+import { defaultShouldDehydrateQuery, VueQueryPlugin } from '@tanstack/vue-query'
 import SuperJSON from 'superjson'
 
-export const queryClientConfigs = {
+import App from '@/App.vue'
+import { routes } from '@/routes'
+
+const app = createApp(App)
+
+app.use(VueQueryPlugin, {
   queryClientConfig: {
     defaultOptions: {
       queries: {
@@ -15,9 +23,11 @@ export const queryClientConfigs = {
         shouldDehydrateQuery: (query) =>
           defaultShouldDehydrateQuery(query) || query.state.status === 'pending',
       },
-      hydrate: {
-        deserializeData: SuperJSON.deserialize,
-      },
+      hydrate: { deserializeData: SuperJSON.deserialize },
     },
   },
-} satisfies VueQueryPluginOptions
+})
+
+app.use(routes)
+
+app.mount('#root')

@@ -1,10 +1,12 @@
 <template>
   <header class="bg-background border-b shadow-sm">
-    <nav class="container flex h-16 justify-between">
+    <div class="container flex h-16 justify-between">
       <div class="flex items-center">
-        <h1 class="text-xl font-bold">Yuki Dashboard</h1>
+        <RouterLink to="/">
+          <h1 class="text-xl font-bold">Yuki Dashboard</h1>
+        </RouterLink>
 
-        <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+        <nav class="hidden sm:ml-6 sm:flex sm:space-x-8">
           <RouterLink
             v-for="item in navItems"
             :key="item.name"
@@ -13,15 +15,24 @@
           >
             <component :is="item.icon" class="size-4" /> {{ item.name }}
           </RouterLink>
-        </div>
+        </nav>
       </div>
 
-      <div class="flex items-center">
+      <div class="flex items-center gap-4">
+        <div v-if="isLoading" class="size-9 animate-pulse rounded-full bg-current" />
+        <Button v-else-if="!session?.user" :as="RouterLink" to="/sign-in" size="sm">
+          Sign in
+        </Button>
+        <Avatar v-else class="size-9">
+          <AvatarImage :src="session?.user?.image ?? ''" />
+          <AvatarFallback>{{ session?.user?.name.at(0) }}</AvatarFallback>
+        </Avatar>
+
         <Button variant="outline" size="icon" @click="toggleTheme()">
           <component :is="isDark ? SunIcon : MoonIcon" class="size-4" />
         </Button>
       </div>
-    </nav>
+    </div>
   </header>
 
   <RouterView />
@@ -30,9 +41,10 @@
 </template>
 
 <script setup lang="ts">
-import { RouterLink } from 'vue-router'
+import { RouterLink, RouterView } from 'vue-router'
 import { useDark, useToggle } from '@vueuse/core'
 
+import { Avatar, AvatarFallback, AvatarImage } from '@yuki/ui/vue/avatar'
 import { Button } from '@yuki/ui/vue/button'
 import {
   ClipboardListIcon,
@@ -44,6 +56,8 @@ import {
 } from '@yuki/ui/vue/icons'
 import { Toaster } from '@yuki/ui/vue/toast'
 
+import { useSession } from './hooks/use-session'
+
 const isDark = useDark()
 const toggleTheme = useToggle(isDark)
 
@@ -53,4 +67,6 @@ const navItems = [
   { name: 'Customers', href: '/customers', icon: UsersIcon },
   { name: 'Orders', href: '/orders', icon: ClipboardListIcon },
 ]
+
+const { session, isLoading } = useSession()
 </script>

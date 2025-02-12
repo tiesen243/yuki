@@ -1,5 +1,4 @@
 import type { NextRequest } from 'next/server'
-import { cookies } from 'next/headers'
 import { fetchRequestHandler } from '@trpc/server/adapters/fetch'
 
 import { appRouter, createTRPCContext } from '@yuki/api'
@@ -13,7 +12,7 @@ import { env } from '@/env'
 const setCorsHeaders = (res: Response) => {
   res.headers.set(
     'Access-Control-Allow-Origin',
-    env.DASHBOARD_URL ? `https://${env.DASHBOARD_URL}` : 'http://localhost:3001',
+    env.NEXT_PUBLIC_DASHBOARD_URL ?? 'http://localhost:3001',
   )
   res.headers.set('Access-Control-Request-Method', '*')
   res.headers.set('Access-Control-Allow-Methods', 'OPTIONS,GET,POST')
@@ -31,7 +30,7 @@ export const OPTIONS = () => {
 
 const handler = async (req: NextRequest) => {
   const heads = new Headers(req.headers)
-  const token = (await cookies()).get('auth_token')?.value ?? ''
+  const token = req.cookies.get('auth_token')?.value ?? ''
   if (!heads.get('Authorization')) heads.set('Authorization', `Bearer ${token}`)
 
   const response = await fetchRequestHandler({

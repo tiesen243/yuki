@@ -4,39 +4,41 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "vue-tsc -b && vite build",
-    "clean": "git clean -xdf .cache .turbo dist node_modules",
-    "dev": "vite",
+    "build": "rsbuild build --env-dir ../..",
+    "clean": "git clean -xdf .cache .next .turbo node_modules",
+    "dev": "rsbuild dev --port 3001 --env-dir ../..",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
-    "start": "vite preview",
-    "typecheck": "vue-tsc --noEmit"
+    "start": "rsbuild preview --port 3001 --env-dir ../..",
+    "typecheck": "tsc --noEmit"
   },
   "prettier": "@yuki/prettier-config",
   "dependencies": {
+    "@t3-oss/env-core": "^0.12.0",
     "@tanstack/vue-query": "^5.66.0",
-    "@trpc/client": "^11.0.0-rc.730",
+    "@trpc/client": "^11.0.0-rc.761",
     "@vueuse/core": "^12.5.0",
     "@vueuse/integrations": "^12.5.0",
     "@yuki/api": "workspace:*",
     "@yuki/auth": "workspace:*",
+    "@yuki/db": "workspace:*",
     "@yuki/ui": "workspace:*",
     "superjson": "^2.2.2",
     "universal-cookie": "^7.2.2",
     "vue": "^3.5.13",
-    "vue-router": "^4.5.0"
+    "vue-router": "^4.5.0",
+    "zod": "^3.24.2"
   },
   "devDependencies": {
-    "@tailwindcss/vite": "^4.0.6",
-    "@vitejs/plugin-vue": "^5.2.1",
+    "@rsbuild/core": "^1.2.7",
+    "@rsbuild/plugin-vue": "^1.0.5",
+    "@tailwindcss/postcss": "^4.0.6",
     "@yuki/eslint-config": "workspace:*",
     "@yuki/prettier-config": "workspace:*",
     "@yuki/tsconfig": "workspace:*",
-    "eslint": "^9.20.0",
+    "eslint": "^9.20.1",
     "prettier": "^3.5.0",
     "tailwindcss": "^4.0.6",
-    "typescript": "^5.7.3",
-    "vite": "^6.1.0",
-    "vue-tsc": "^2.2.0"
+    "typescript": "^5.7.3"
   }
 }

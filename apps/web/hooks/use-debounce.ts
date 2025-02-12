@@ -7,7 +7,6 @@ export const useDebounce = <T extends (...args: never[]) => void>(
   const timeoutRef = React.useRef<NodeJS.Timeout>(null)
   const latestCallbackRef = React.useRef<T>(callback)
 
-  // Keep callback ref up to date
   React.useEffect(() => {
     latestCallbackRef.current = callback
   }, [callback])

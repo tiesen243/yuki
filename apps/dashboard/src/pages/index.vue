@@ -216,6 +216,8 @@ import {
   Users,
 } from '@yuki/ui/vue/icons'
 
+import { env } from '@/env'
+
 const metrics = ref([
   {
     name: 'Total Revenue',
@@ -282,7 +284,7 @@ const recentOrders = ref([
   },
 ])
 
-const img = `${import.meta.env.VITE_WEB_URL}/assets/logo.svg`
+const img = `${env.VUE_PUBLIC_WEB_URL}/assets/logo.svg`
 const productHeaders = ['Product', 'Category', 'Price', 'Sold', 'Revenue']
 const topProducts = ref([
   {

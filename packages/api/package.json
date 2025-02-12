@@ -24,11 +24,11 @@
   },
   "prettier": "@yuki/prettier-config",
   "dependencies": {
-    "@trpc/server": "^11.0.0-rc.730",
+    "@trpc/server": "^11.0.0-rc.761",
     "@yuki/auth": "workspace:*",
     "@yuki/db": "workspace:*",
     "superjson": "^2.2.2",
-    "zod": "^3.24.1"
+    "zod": "^3.24.2"
   },
   "devDependencies": {
     "@yuki/eslint-config": "workspace:*",

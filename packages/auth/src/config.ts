@@ -10,7 +10,7 @@ import { env } from './env'
 import { AUTH_KEY } from './lib/constants'
 import { validateSessionToken } from './lib/session'
 
-const getOAuthConfig = (callbackUrl: string) => ({
+const OAuthConfig = (callbackUrl: string) => ({
   /** add more configs based on the OAuth providers you want to use
    * NOTE: mapFn is used for map user data form OAuth to database account schema
    *
@@ -51,5 +51,5 @@ const auth = async (): Promise<Session> => {
 const generateGravatar = (email: string): string =>
   encodeHexLowerCase(sha256(new TextEncoder().encode(email)))
 
-export { auth, getOAuthConfig, generateGravatar }
+export { auth, OAuthConfig, generateGravatar }
 export type { Session }

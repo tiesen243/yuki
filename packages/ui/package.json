@@ -32,8 +32,7 @@
     "dev": "vue-tsc --watch",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
-    "typecheck": "vue-tsc --noEmit --emitDeclarationOnly false",
-    "ui-add": "bunx --bun shadcn@canary add && prettier src --write --list-different"
+    "typecheck": "vue-tsc --noEmit --emitDeclarationOnly false"
   },
   "prettier": "@yuki/prettier-config",
   "dependencies": {

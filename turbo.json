@@ -56,12 +56,11 @@
     "DISCORD_SECRET",
     "GITHUB_ID",
     "GITHUB_SECRET",
-    "NUXT_PUBLIC_WEB_URL",
-    "DASHBOARD_URL",
+    "NEXT_PUBLIC_DASHBOARD_URL",
+    "VUE_PUBLIC_WEB_URL",
     "PORT"
   ],
   "globalPassThroughEnv": [
-    "DEV",
     "NODE_ENV",
     "CI",
     "VERCEL",
