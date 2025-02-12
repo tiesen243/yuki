@@ -20,7 +20,6 @@ const setCorsHeaders = (res: Response) => {
     'Access-Control-Allow-Headers',
     'authorization,accept,content-type,trpc-accept,x-trpc-source',
   )
-  res.headers.set('Access-Control-Allow-Credentials', 'true')
 }
 
 export const OPTIONS = () => {

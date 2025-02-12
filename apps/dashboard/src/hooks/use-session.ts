@@ -18,7 +18,9 @@ export const useSession = () => {
   const session = useQuery({
     queryKey: ['auth'],
     queryFn: async () => {
-      const res = await fetch(baseUrl, { credentials: 'include' })
+      const res = await fetch(baseUrl, {
+        headers: { Authorization: `Bearer  ${token}` },
+      })
       return (await res.json()) as Session
     },
   })
@@ -53,7 +55,7 @@ export const useSession = () => {
     mutationKey: ['auth', 'signOut'],
     mutationFn: async () => {
       const res = await fetch(`${baseUrl}/signOut?dashboard=true`, {
-        credentials: 'include',
+        headers: { Authorization: `Bearer  ${token}` },
       })
       const json = (await res.json()) as { message: string }
       if (!res.ok) throw new Error(json.message)

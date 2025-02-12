@@ -29,7 +29,6 @@ const headers = {
   'Access-Control-Request-Method': '*',
   'Access-Control-Allow-Methods': 'GET,POST',
   'Access-Control-Allow-Headers': 'authorization,accept,content-type',
-  'Access-Control-Allow-Credentials': 'true',
 }
 
 const AUTH_KEY = 'auth_token'

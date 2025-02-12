@@ -4,6 +4,7 @@ import SuperJSON from 'superjson'
 import type { AppRouter } from '@yuki/api'
 
 import { env } from '@/env'
+import { useSession } from '@/hooks/use-session'
 
 export const api = createTRPCClient<AppRouter>({
   links: [
@@ -15,14 +16,14 @@ export const api = createTRPCClient<AppRouter>({
     unstable_httpBatchStreamLink({
       transformer: SuperJSON,
       url: `${env.VUE_PUBLIC_WEB_URL}/api/trpc`,
-      headers: () => ({
-        'x-trpc-source': 'rspack-vue',
-      }),
-      fetch: (url, options) =>
-        fetch(url, {
-          ...options,
-          credentials: 'include',
-        }),
+      headers: () => {
+        const { token } = useSession()
+
+        return {
+          Authorization: `Bearer ${token}`,
+          'x-trpc-source': 'rspack-vue',
+        }
+      },
     }),
   ],
 })
