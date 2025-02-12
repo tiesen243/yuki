@@ -24,13 +24,26 @@ const cookieAttributes = (expires: Date) => ({
   expires,
 })
 
-const headers = {
-  'Access-Control-Allow-Origin': env.NEXT_PUBLIC_DASHBOARD_URL ?? 'http://localhost:3001',
-  'Access-Control-Allow-Methods': 'GET,POST',
-  'Access-Control-Allow-Headers': 'Authorization,Content-Type',
+const setCorsHeaders = (res: Response) => {
+  res.headers.set(
+    'Access-Control-Allow-Origin',
+    String(env.NEXT_PUBLIC_DASHBOARD_URL ?? 'http://localhost:3001'),
+  )
+  res.headers.set('Access-Control-Request-Method', '*')
+  res.headers.set('Access-Control-Allow-Methods', 'OPTIONS,GET,POST')
+  res.headers.set(
+    'Access-Control-Allow-Headers',
+    'authorization,accept,content-type,trpc-accept,x-trpc-source',
+  )
 }
 
 const AUTH_KEY = 'auth_token'
+
+export const OPTIONS = () => {
+  const response = new Response(null, { status: 204 })
+  setCorsHeaders(response)
+  return response
+}
 
 export const GET = async (
   req: NextRequest,
@@ -47,7 +60,10 @@ export const GET = async (
       ''
 
     const session = await validateSessionToken(token)
-    return NextResponse.json(session, { headers })
+
+    const response = NextResponse.json(session)
+    setCorsHeaders(response)
+    return response
   }
 
   const [provider, isCallback] = auth
@@ -69,7 +85,10 @@ export const GET = async (
 
       const session = await createSession(user.id)
       nextCookies.set(AUTH_KEY, session.token, cookieAttributes(session.expiresAt))
-      return NextResponse.json({ meesage: 'Login success', session }, { headers })
+
+      const response = NextResponse.json({ meesage: 'Login success', session })
+      setCorsHeaders(response)
+      return response
     }
 
     if (provider === 'sign-out') {
@@ -82,9 +101,12 @@ export const GET = async (
         await invalidateSessionToken(token)
         nextCookies.delete(AUTH_KEY)
 
+        let response: NextResponse
         if (nextUrl.searchParams.get('dashboard') === 'true')
-          return NextResponse.json({ message: 'Sign out successfully' }, { headers })
-        return NextResponse.redirect(new URL('/', nextUrl), { headers })
+          response = NextResponse.json({ message: 'Sign out successfully' })
+        else response = NextResponse.redirect(new URL('/', nextUrl))
+        setCorsHeaders(response)
+        return response
       } catch {
         return NextResponse.json({ message: 'Sign out fail' }, { status: 500 })
       }
@@ -102,7 +124,9 @@ export const GET = async (
       else url = ins2.createAuthorizationURL(state, null, scopes)
 
       nextCookies.set('oauth_state', state)
-      return NextResponse.redirect(new URL(url, nextUrl), { headers })
+      const response = NextResponse.redirect(new URL(url, nextUrl))
+      setCorsHeaders(response)
+      return response
     }
 
     const code = nextUrl.searchParams.get('code') ?? ''
@@ -124,7 +148,9 @@ export const GET = async (
     nextCookies.set(AUTH_KEY, session.token, cookieAttributes(session.expiresAt))
     nextCookies.delete('oauth_state')
 
-    return NextResponse.redirect(new URL('/', nextUrl), { headers })
+    const response = NextResponse.redirect(new URL('/', nextUrl))
+    setCorsHeaders(response)
+    return response
   } catch (e) {
     if (e instanceof OAuth2RequestError)
       return NextResponse.json({ error: e.message }, { status: Number(e.code) })
