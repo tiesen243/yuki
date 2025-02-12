@@ -10,7 +10,7 @@ export default function CartPage() {
 
   return (
     <HydrateClient>
-      <main className="bg-secondary flex-1 rounded py-4 shadow-md">
+      <main className="flex-1 rounded-md border py-4 shadow-md">
         <div className="container mb-4">
           <Typography level="h2">Shopping cart</Typography>
           <Typography color="muted">
@@ -19,7 +19,7 @@ export default function CartPage() {
           </Typography>
         </div>
 
-        <hr className="border-primary/20" />
+        <hr />
 
         <section className="container h-full">
           <Suspense

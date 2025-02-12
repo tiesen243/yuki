@@ -10,9 +10,10 @@ import { api } from '@/lib/trpc/react'
 
 export const AddressList: React.FC = () => {
   const [addresses] = api.user.getAddresses.useSuspenseQuery()
+
   return addresses.map((address, i) => (
     <AddressCard
-      key={address.id}
+      key={address.id + `${Math.random()}`}
       address={address}
       isLatest={i === addresses.length - 1}
     />
@@ -31,25 +32,21 @@ export const AddressCard: React.FC<{ address: Address; isLatest?: boolean }> = (
   return (
     <div
       className={cn(
-        'border-primary/20 flex w-full flex-col justify-between gap-4 py-4 md:flex-row',
+        'flex w-full flex-col justify-between gap-4 py-4 md:flex-row',
         !isLatest && 'border-b',
       )}
     >
       <div className="text-muted-foreground leading-7">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           <p className="text-foreground">{address.name}</p>
-          <p className="border-primary/20 border-l px-2">{address.phone}</p>
+          <p className="border-l px-2">{address.phone}</p>
         </div>
         <p>{address.state}</p>
         <p>{address.street}</p>
       </div>
 
       <div className="grid gap-2">
-        <Button
-          variant="outline"
-          className="bg-secondary hover:bg-primary/20 border-primary/20"
-          asChild
-        >
+        <Button variant="outline" asChild>
           <Link href={`/account/address/${address.id}`}>Edit</Link>
         </Button>
         <Button
@@ -71,14 +68,14 @@ export const AddressCardSkeleton: React.FC<{ isLatest?: boolean }> = ({
 }) => (
   <div
     className={cn(
-      'border-primary/20 flex w-full flex-col justify-between gap-4 py-4 md:flex-row',
+      'flex w-full flex-col justify-between gap-4 py-4 md:flex-row',
       !isLatest && 'border-b',
     )}
   >
     <div className="text-muted-foreground leading-7">
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-3">
         <p className="w-16 animate-pulse rounded bg-current">&nbsp;</p>
-        <p className="border-primary/20 border-l">&nbsp;</p>
+        <p className="border-l px-2">&nbsp;</p>
         <span className="w-40 animate-pulse rounded bg-current">&nbsp;</span>
       </div>
       <p className="w-full animate-pulse rounded bg-current md:w-[200%]">&nbsp;</p>

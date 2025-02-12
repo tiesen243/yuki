@@ -15,7 +15,7 @@ export default async function ProfilePage() {
 
   return (
     <HydrateClient>
-      <main className="bg-secondary flex-1 rounded py-6 pt-4 shadow-md">
+      <main className="flex-1 rounded-md border py-6 pt-4 shadow-md">
         <div className="container mb-4">
           <Typography level="h2">Profile</Typography>
           <Typography color="muted">
@@ -23,7 +23,7 @@ export default async function ProfilePage() {
           </Typography>
         </div>
 
-        <hr className="border-primary/20" />
+        <hr />
 
         <section className="container mt-4 grid gap-4 md:grid-cols-2">
           <div className="w-full">

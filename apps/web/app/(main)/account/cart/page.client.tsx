@@ -48,11 +48,11 @@ export const CartDetails: React.FC = () => {
   })
 
   return (
-    <div className="mt-6 space-y-4 overflow-x-auto">
-      <Table className="**:border-primary/20">
+    <div className="space-y-4 overflow-x-auto">
+      <Table>
         <TableHeader>
           <TableRow>
-            <TableHead colSpan={2} />
+            <TableHead colSpan={2}>Product Information</TableHead>
             {['Price', 'Quantity', 'Total', 'Action'].map((h, i) => (
               <TableHead key={i} className="text-center">
                 {h}
@@ -80,23 +80,23 @@ export const CartDetails: React.FC = () => {
           )}
         </TableBody>
 
-        <TableFooter className="bg-background/50 border-primary/20">
-          <TableRow className="hover:bg-background/50">
+        <TableFooter>
+          <TableRow>
             <TableCell colSpan={5}>Total</TableCell>
-            <TableCell className="text-end">${cart.total}</TableCell>
+            <TableCell align="center">${cart.total}</TableCell>
           </TableRow>
         </TableFooter>
       </Table>
 
       <div className="flex items-center justify-between">
         <Select value={address} onValueChange={setAddress}>
-          <SelectTrigger className="border-primary/20 basis-1/3 text-start focus:ring-transparent">
+          <SelectTrigger className="basis-1/3 text-start focus:ring-0">
             <SelectValue placeholder="Address" />
           </SelectTrigger>
 
-          <SelectContent className="bg-secondary border-primary/20">
+          <SelectContent>
             {data?.map((a) => (
-              <SelectItem key={a.id} value={a.id} className="focus:bg-background/40">
+              <SelectItem key={a.id} value={a.id}>
                 <div>
                   {a.name} | {a.phone}
                 </div>
@@ -162,19 +162,19 @@ const CartItem: React.FC<{
   }
 
   return (
-    <TableRow className="hover:bg-background/50">
+    <TableRow>
       <TableCell className="min-w-[50px]">
         <Image src={product.image} alt={product.name} width={50} height={50} />
       </TableCell>
 
-      <TableCell>{product.name}</TableCell>
-      <TableCell className="min-w-24 text-center">${product.price}</TableCell>
-      <TableCell className="text-center">
-        <div className="border-primary/20 flex w-full items-center rounded-md border">
+      <TableCell className="min-w-xs">{product.name}</TableCell>
+      <TableCell align="center">${product.price}</TableCell>
+      <TableCell align="center">
+        <div className="flex items-center rounded-md border">
           <Button
             variant="outline"
             size="icon"
-            className="bg-secondary hover:bg-background/20 border-none"
+            className="border-none"
             onClick={() => {
               handleQuantityChange(-1)
             }}
@@ -182,13 +182,13 @@ const CartItem: React.FC<{
           >
             -
           </Button>
-          <span className="border-primary/20 flex h-9 min-w-6 grow items-center justify-center border-x">
+          <span className="flex h-9 min-w-14 grow items-center justify-center border-x">
             {localQuantity}
           </span>
           <Button
             variant="outline"
             size="icon"
-            className="bg-secondary hover:bg-background/20 border-none"
+            className="border-none"
             onClick={() => {
               handleQuantityChange(1)
             }}
@@ -198,12 +198,10 @@ const CartItem: React.FC<{
           </Button>
         </div>
       </TableCell>
-      <TableCell className="min-w-24 text-center">
-        ${localQuantity * product.price}
-      </TableCell>
-      <TableCell className="min-w-20">
+      <TableCell align="center">${localQuantity * product.price}</TableCell>
+      <TableCell align="center">
         <Button
-          className="w-full"
+          className="w-20"
           variant="destructive"
           size="sm"
           onClick={() => {

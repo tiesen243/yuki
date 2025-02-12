@@ -36,7 +36,7 @@ export const NewAddressForm: React.FC = () => {
           <Label htmlFor={field.name} className="capitalize">
             {field.name}
           </Label>
-          <Input {...field} className="bg-background" />
+          <Input {...field} />
           <span className="text-destructive text-xs">
             {error?.data?.zodError?.[field.name]?.at(0)}
           </span>

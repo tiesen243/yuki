@@ -4,7 +4,7 @@ import { ChangePasswordForm } from './page.client'
 
 export default function ChangePasswordPage() {
   return (
-    <main className="bg-secondary flex-1 rounded py-4 shadow-md">
+    <main className="flex-1 rounded-md border py-4 shadow-md">
       <div className="container mb-4">
         <Typography level="h2">Change Password</Typography>
         <Typography color="muted">
@@ -12,7 +12,7 @@ export default function ChangePasswordPage() {
         </Typography>
       </div>
 
-      <hr className="border-primary/20" />
+      <hr />
 
       <ChangePasswordForm />
     </main>

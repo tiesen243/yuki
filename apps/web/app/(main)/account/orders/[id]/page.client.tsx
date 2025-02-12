@@ -20,13 +20,11 @@ export const OrderDetails: React.FC<{ id: string }> = ({ id }) => {
   const [order] = api.order.getDetails.useSuspenseQuery({ id })
 
   return (
-    <div className="my-6 space-y-4 overflow-x-auto">
-      <Table className="**:border-primary/20">
+    <div className="space-y-4 overflow-x-auto">
+      <Table>
         <TableHeader>
           <TableRow>
-            <TableHead colSpan={2}>
-              Status: <Badge variant={order.status}>{order.status}</Badge>
-            </TableHead>
+            <TableHead colSpan={2}>Order ID: {order.id}</TableHead>
             {['Price', 'Quantity', 'Total'].map((h, i) => (
               <TableHead key={i} className="text-center">
                 {h}
@@ -41,10 +39,14 @@ export const OrderDetails: React.FC<{ id: string }> = ({ id }) => {
           ))}
         </TableBody>
 
-        <TableFooter className="bg-background/50 border-primary/20">
-          <TableRow className="hover:bg-background/50">
-            <TableCell colSpan={4}>Total</TableCell>
-            <TableCell className="text-center">${order.total}</TableCell>
+        <TableFooter>
+          <TableRow>
+            <TableCell>Status</TableCell>
+            <TableCell colSpan={2}>
+              <Badge variant={order.status}>{order.status}</Badge>
+            </TableCell>
+            <TableCell align="right">Total</TableCell>
+            <TableCell align="right">${order.total}</TableCell>
           </TableRow>
         </TableFooter>
       </Table>
@@ -56,13 +58,13 @@ const OrderItem: React.FC<{ product: Product; quantity: number }> = ({
   product,
   quantity,
 }) => (
-  <TableRow className="hover:bg-background/50">
+  <TableRow>
     <TableCell className="min-w-[50px]">
       <Image src={product.image} alt={product.name} width={50} height={50} />
     </TableCell>
     <TableCell className="min-w-md break-words">{product.name}</TableCell>
-    <TableCell className="text-center">${product.price}</TableCell>
-    <TableCell className="text-center">{quantity}</TableCell>
-    <TableCell className="text-center">${quantity * product.price}</TableCell>
+    <TableCell align="right">${product.price}</TableCell>
+    <TableCell align="right">{quantity}</TableCell>
+    <TableCell align="right">${quantity * product.price}</TableCell>
   </TableRow>
 )

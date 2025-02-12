@@ -36,12 +36,7 @@ export const LinkedAccountSkeleton: React.FC = () =>
     <li key={provider} className="flex items-center gap-2">
       {ProviderIcon[provider]}
       <div className="w-32 animate-pulse rounded bg-current">&nbsp;</div>
-      <Button
-        size="sm"
-        variant="outline"
-        className="bg-secondary hover:bg-primary/20 border-primary/20 w-20"
-        disabled
-      >
+      <Button size="sm" variant="outline" className="w-20" disabled>
         Link
       </Button>
     </li>
@@ -65,7 +60,7 @@ const UnlinkButton: React.FC<{ provider: string }> = ({ provider }) => {
     <Button
       size="sm"
       variant="outline"
-      className="bg-secondary hover:bg-primary/20 border-primary/20 w-20"
+      className="w-20"
       onClick={() => {
         unlink.mutate({ provider })
       }}
@@ -78,11 +73,7 @@ const UnlinkButton: React.FC<{ provider: string }> = ({ provider }) => {
 
 const LinkButton: React.FC<{ provider: string }> = ({ provider }) => (
   <form action={`/api/auth/${provider}`}>
-    <Button
-      size="sm"
-      variant="outline"
-      className="bg-secondary hover:bg-primary/20 border-primary/20 w-20"
-    >
+    <Button size="sm" variant="outline" className="w-20">
       Link
     </Button>
   </form>

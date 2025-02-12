@@ -28,7 +28,7 @@ export const UpdateAddressForm: React.FC<{ id: string }> = ({ id }) => {
             <Label htmlFor={field.name} className="capitalize">
               {field.name}
             </Label>
-            <Input {...field} className="bg-background" />
+            <Input {...field} />
           </fieldset>
         ))}
         <Button className="w-full" disabled={true}>
@@ -55,7 +55,7 @@ export const UpdateAddressForm: React.FC<{ id: string }> = ({ id }) => {
           <Label htmlFor={field.name} className="capitalize">
             {field.name}
           </Label>
-          <Input {...field} className="bg-background" defaultValue={data?.[field.name]} />
+          <Input {...field} defaultValue={data?.[field.name]} />
           <span className="text-destructive text-xs">
             {error?.data?.zodError?.[field.name]?.at(0)}
           </span>

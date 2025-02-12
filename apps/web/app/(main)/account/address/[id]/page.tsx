@@ -10,7 +10,7 @@ export default async function UpdateAddressPage({
   const id = (await params).id
 
   return (
-    <main className="bg-secondary flex-1 rounded py-4 shadow-md">
+    <main className="flex-1 rounded-md border py-4 shadow-md">
       <div className="container mb-4">
         <Typography level="h2">Update Address</Typography>
         <Typography color="muted">
@@ -18,7 +18,7 @@ export default async function UpdateAddressPage({
         </Typography>
       </div>
 
-      <hr className="border-primary/20" />
+      <hr />
 
       <UpdateAddressForm id={id} />
     </main>

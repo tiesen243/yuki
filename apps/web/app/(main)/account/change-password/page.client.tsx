@@ -33,12 +33,7 @@ export const ChangePasswordForm = () => {
     >
       <fieldset>
         <Label htmlFor="password">Current Password</Label>
-        <Input
-          type="password"
-          name="password"
-          className="bg-background"
-          placeholder="Current Password"
-        />
+        <Input type="password" name="password" placeholder="Current Password" />
         {error?.data?.zodError?.currentPassword?.at(0) ? (
           <span className="text-destructive text-xs">
             {error.data.zodError.currentPassword.at(0)}
@@ -52,12 +47,7 @@ export const ChangePasswordForm = () => {
 
       <fieldset>
         <Label htmlFor="newPassword">New Password</Label>
-        <Input
-          type="password"
-          name="newPassword"
-          className="bg-background"
-          placeholder="New Password"
-        />
+        <Input type="password" name="newPassword" placeholder="New Password" />
         {error?.data?.zodError?.newPassword?.at(0) && (
           <span className="text-destructive text-xs">
             {error.data.zodError.newPassword.at(0)}
@@ -70,7 +60,6 @@ export const ChangePasswordForm = () => {
         <Input
           type="password"
           name="confirmNewPassword"
-          className="bg-background"
           placeholder="Confirm New Password"
         />
         {error?.data?.zodError?.confirmNewPassword?.at(0) && (
