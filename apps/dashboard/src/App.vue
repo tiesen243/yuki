@@ -23,7 +23,7 @@
         <Button v-else-if="!session?.user" :as="RouterLink" to="/sign-in" size="sm">
           Sign in
         </Button>
-        <Avatar v-else class="size-9">
+        <Avatar v-else class="ring-ring size-9 hover:ring-2" @click="handleLogout">
           <AvatarImage :src="session?.user?.image ?? ''" />
           <AvatarFallback>{{ session?.user?.name.at(0) }}</AvatarFallback>
         </Avatar>
@@ -68,5 +68,9 @@ const navItems = [
   { name: 'Orders', href: '/orders', icon: ClipboardListIcon },
 ]
 
-const { session, isLoading } = useSession()
+const { session, isLoading, signOut } = useSession()
+
+const handleLogout = () => {
+  if (window.confirm('Are you sure you want to log out?')) signOut()
+}
 </script>

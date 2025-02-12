@@ -47,8 +47,8 @@ export const useSession = () => {
       })
     },
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ['auth'] })
       await router.push('/')
+      await queryClient.invalidateQueries({ queryKey: ['auth'] })
     },
     onError: (e) => toast.error(e.message),
   })
@@ -56,13 +56,15 @@ export const useSession = () => {
   const signOut = useMutation({
     mutationKey: ['auth', 'signOut'],
     mutationFn: async () => {
-      const res = await fetch(`${baseUrl}/signOut?dashboard=true`, {
-        headers: { Authorization: `Bearer  ${token}` },
+      const res = await fetch(`${baseUrl}/sign-out?dashboard=true`, {
+        headers: { Authorization: `Bearer ${token}` },
       })
       const json = (await res.json()) as { message: string }
       if (!res.ok) throw new Error(json.message)
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['auth'] }),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['auth'] })
+    },
     onError: (e) => toast.error(e.message),
   })
 
