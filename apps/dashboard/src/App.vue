@@ -6,14 +6,17 @@
           <h1 class="text-xl font-bold">Yuki Dashboard</h1>
         </RouterLink>
 
-        <nav class="hidden sm:ml-6 sm:flex sm:space-x-8">
+        <nav class="sm:ml-6 sm:flex sm:space-x-8">
           <RouterLink
             v-for="item in navItems"
             :key="item.name"
             :to="item.href"
-            class="text-muted-foreground hover:text-foreground aria-[current=page]:text-foreground flex items-center gap-2 text-sm transition-colors"
+            class="text-muted-foreground hover:text-foreground textxs aria-[current=page]:text-foreground flex items-center gap-2 text-sm transition-colors"
           >
-            <component :is="item.icon" class="size-4" /> {{ item.name }}
+            <component :is="item.icon" class="size-4" />
+            <span class="hidden sm:block">
+              {{ item.name }}
+            </span>
           </RouterLink>
         </nav>
       </div>

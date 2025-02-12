@@ -49,38 +49,40 @@
       </div>
     </div>
 
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead v-for="head in headers" :key="head">{{ head }}</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        <template v-if="isLoading">
-          <TableRow v-for="i in 5" :key="i">
-            <TableCell v-for="j in headers.length" :key="j">
-              <div class="h-4 w-full animate-pulse rounded bg-gray-200" />
-            </TableCell>
+    <div class="overflow-x-auto">
+      <Table class="**:whitespace-nowrap">
+        <TableHeader>
+          <TableRow>
+            <TableHead v-for="head in headers" :key="head">{{ head }}</TableHead>
           </TableRow>
-        </template>
-        <template v-else>
-          <TableRow v-for="row in data?.items" :key="row.productId">
-            <TableCell>{{ row.product.id }}</TableCell>
-            <TableCell>{{ row.product.name }}</TableCell>
-            <TableCell>${{ row.product.price }}</TableCell>
-            <TableCell>{{ row.quantity }}</TableCell>
-            <TableCell>${{ row.quantity * row.product.price }}</TableCell>
+        </TableHeader>
+        <TableBody>
+          <template v-if="isLoading">
+            <TableRow v-for="i in 5" :key="i">
+              <TableCell v-for="j in headers.length" :key="j">
+                <div class="h-4 w-full animate-pulse rounded bg-gray-200" />
+              </TableCell>
+            </TableRow>
+          </template>
+          <template v-else>
+            <TableRow v-for="row in data?.items" :key="row.productId">
+              <TableCell>{{ row.product.id }}</TableCell>
+              <TableCell>{{ row.product.name }}</TableCell>
+              <TableCell>${{ row.product.price }}</TableCell>
+              <TableCell>{{ row.quantity }}</TableCell>
+              <TableCell>${{ row.quantity * row.product.price }}</TableCell>
+            </TableRow>
+          </template>
+        </TableBody>
+        <TableFooter>
+          <TableRow>
+            <!-- eslint-disable-next-line vue/attribute-hyphenation -->
+            <TableCell colSpan="4" class="font-semibold">Total</TableCell>
+            <TableCell>${{ data?.total }}</TableCell>
           </TableRow>
-        </template>
-      </TableBody>
-      <TableFooter>
-        <TableRow>
-          <!-- eslint-disable-next-line vue/attribute-hyphenation -->
-          <TableCell colSpan="4" class="font-semibold">Total</TableCell>
-          <TableCell>${{ data?.total }}</TableCell>
-        </TableRow>
-      </TableFooter>
-    </Table>
+        </TableFooter>
+      </Table>
+    </div>
   </main>
 </template>
 

@@ -1,30 +1,32 @@
 <template>
   <main class="container py-4">
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead v-for="head in headers" :key="head">{{ head }}</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        <template v-if="isLoading">
-          <TableRow v-for="i in 5" :key="i">
-            <TableCell v-for="j in headers.length" :key="j">
-              <div class="h-4 w-full animate-pulse rounded bg-gray-200" />
-            </TableCell>
+    <div class="overflow-x-auto">
+      <Table class="**:whitespace-nowrap">
+        <TableHeader>
+          <TableRow>
+            <TableHead v-for="head in headers" :key="head">{{ head }}</TableHead>
           </TableRow>
-        </template>
-        <template v-else>
-          <TableRow v-for="row in data?.users" :key="row.id">
-            <TableCell>{{ row.id }}</TableCell>
-            <TableCell>{{ row.name }}</TableCell>
-            <TableCell>{{ row.role }}</TableCell>
-            <TableCell>{{ row.numberOfOrders }}</TableCell>
-            <TableCell>{{ new Date(row.createdAt).toDateString() }}</TableCell>
-          </TableRow>
-        </template>
-      </TableBody>
-    </Table>
+        </TableHeader>
+        <TableBody>
+          <template v-if="isLoading">
+            <TableRow v-for="i in 5" :key="i">
+              <TableCell v-for="j in headers.length" :key="j">
+                <div class="h-4 w-full animate-pulse rounded bg-gray-200" />
+              </TableCell>
+            </TableRow>
+          </template>
+          <template v-else>
+            <TableRow v-for="row in data?.users" :key="row.id">
+              <TableCell>{{ row.id }}</TableCell>
+              <TableCell>{{ row.name }}</TableCell>
+              <TableCell>{{ row.role }}</TableCell>
+              <TableCell>{{ row.numberOfOrders }}</TableCell>
+              <TableCell>{{ new Date(row.createdAt).toDateString() }}</TableCell>
+            </TableRow>
+          </template>
+        </TableBody>
+      </Table>
+    </div>
 
     <div class="flex items-center justify-end space-x-2 py-4">
       <Button variant="outline" :disabled="page === 1" @click="Math.max(1, page--)">

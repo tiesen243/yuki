@@ -1,37 +1,41 @@
 <template>
   <main class="container py-4">
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead v-for="head in headers" :key="head">{{ head }}</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        <template v-if="isLoading">
-          <TableRow v-for="i in 5" :key="i">
-            <TableCell v-for="j in headers.length" :key="j">
-              <div class="h-4 w-full animate-pulse rounded bg-gray-200" />
-            </TableCell>
+    <div class="overflow-x-auto">
+      <Table class="**:whitespace-nowrap">
+        <TableHeader>
+          <TableRow>
+            <TableHead v-for="head in headers" :key="head">{{ head }}</TableHead>
           </TableRow>
-        </template>
-        <template v-else>
-          <TableRow v-for="row in data?.orders" :key="row.id">
-            <TableCell>{{ row.id }}</TableCell>
-            <TableCell>{{ row.user.name }}</TableCell>
-            <TableCell>{{ new Date(row.updatedAt).toDateString() }}</TableCell>
-            <TableCell>{{ row.total }}</TableCell>
-            <TableCell>
-              <Badge :variant="row.status">
-                {{ row.status }}
-              </Badge>
-            </TableCell>
-            <TableCell>
-              <Button :as="RouterLink" :to="`/orders/${row.id}`" size="sm"> View </Button>
-            </TableCell>
-          </TableRow>
-        </template>
-      </TableBody>
-    </Table>
+        </TableHeader>
+        <TableBody>
+          <template v-if="isLoading">
+            <TableRow v-for="i in 5" :key="i">
+              <TableCell v-for="j in headers.length" :key="j">
+                <div class="h-4 w-full animate-pulse rounded bg-gray-200" />
+              </TableCell>
+            </TableRow>
+          </template>
+          <template v-else>
+            <TableRow v-for="row in data?.orders" :key="row.id">
+              <TableCell>{{ row.id }}</TableCell>
+              <TableCell>{{ row.user.name }}</TableCell>
+              <TableCell>{{ new Date(row.updatedAt).toDateString() }}</TableCell>
+              <TableCell>{{ row.total }}</TableCell>
+              <TableCell>
+                <Badge :variant="row.status">
+                  {{ row.status }}
+                </Badge>
+              </TableCell>
+              <TableCell>
+                <Button :as="RouterLink" :to="`/orders/${row.id}`" size="sm">
+                  View
+                </Button>
+              </TableCell>
+            </TableRow>
+          </template>
+        </TableBody>
+      </Table>
+    </div>
 
     <div class="flex items-center justify-end space-x-2 py-4">
       <Button variant="outline" :disabled="page === 1" @click="Math.max(1, page--)">
