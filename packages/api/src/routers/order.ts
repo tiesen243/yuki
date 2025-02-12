@@ -63,15 +63,11 @@ export const orderRouter = {
     .mutation(async ({ ctx, input: { id, ...data } }) => {
       const cart = await ctx.db.cart.findUnique({
         where: { id },
-        include: { _count: { select: { items: true } } },
       })
       if (!cart) throw new TRPCError({ code: 'NOT_FOUND', message: 'Cart not found' })
 
       if (data.status !== 'PENDING' && ctx.session.user.role === 'USER')
-        throw new TRPCError({
-          code: 'UNAUTHORIZED',
-          message: 'You are not authorized to access this resource',
-        })
+        throw new TRPCError({ code: 'FORBIDDEN' })
 
       if (data.status === 'PENDING') {
         if (!data.addressId)
@@ -80,27 +76,33 @@ export const orderRouter = {
             message: 'You have not selected an address yet.',
           })
 
-        if (cart._count.items === 0)
-          throw new TRPCError({
-            code: 'BAD_REQUEST',
-            message: 'Cart is empty',
-          })
-      }
-
-      if (data.status === 'DELIVERED') {
         const cartItems = await ctx.db.cartItem.findMany({
           where: { cartId: id },
           include: { product: true },
         })
 
         if (cartItems.length === 0)
-          throw new TRPCError({ code: 'BAD_REQUEST', message: 'Cart is empty' })
-
-        for (const item of cartItems)
-          await ctx.db.product.update({
-            where: { id: item.productId },
-            data: { stock: { decrement: item.quantity } },
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Cart is empty',
           })
+
+        await ctx.db.$transaction((tx) =>
+          Promise.all(
+            cartItems.map((item) => {
+              if (item.quantity > item.product.stock)
+                throw new TRPCError({
+                  code: 'BAD_REQUEST',
+                  message: `Not enough stock for product "${item.product.name}". Available: ${item.product.stock}`,
+                })
+
+              return tx.product.update({
+                where: { id: item.productId },
+                data: { stock: { decrement: item.quantity } },
+              })
+            }),
+          ),
+        )
       }
 
       await ctx.db.cart.update({

@@ -39,6 +39,7 @@ export const CartDetails: React.FC = () => {
   const confirmOrder = api.order.updateOrder.useMutation({
     onError: (e) => toast.error(e.message),
     onSuccess: async (d) => {
+      await utils.cart.getCart.invalidate()
       await utils.order.getDetails.invalidate({ id: cart.id })
       await utils.order.getHistories.invalidate()
       router.push(`/account/orders/${cart.id}`)
