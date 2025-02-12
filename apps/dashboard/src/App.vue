@@ -4,7 +4,7 @@
       <div class="flex items-center justify-between gap-6">
         <RouterLink to="/">
           <img :src="logo" alt="logo" class="size-9 dark:invert" />
-          <h1 class="sr-only text-xl font-bold md:block">Yuki Dashboard</h1>
+          <h1 class="sr-only text-xl font-bold md:not-sr-only">Yuki Dashboard</h1>
         </RouterLink>
 
         <nav class="flex items-center gap-4">
@@ -15,7 +15,7 @@
             class="text-muted-foreground hover:text-foreground textxs aria-[current=page]:text-foreground flex items-center gap-2 text-sm transition-colors"
           >
             <component :is="item.icon" class="size-4" />
-            <span class="md::block hidden">
+            <span class="sr-only md:not-sr-only">
               {{ item.name }}
             </span>
           </RouterLink>
