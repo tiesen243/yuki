@@ -5,4 +5,11 @@ export default defineConfig({
   plugins: [pluginVue()],
   resolve: { alias: { '@': './src' } },
   source: { define: { 'process.env': JSON.stringify(process.env) } },
+  html: {
+    title: 'Dashboard | Yuki',
+    appIcon: {
+      name: 'Yuki',
+      icons: [],
+    },
+  },
 })
