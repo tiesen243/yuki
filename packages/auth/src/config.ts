@@ -3,7 +3,7 @@
 import { cookies } from 'next/headers'
 import { sha256 } from '@oslojs/crypto/sha2'
 import { encodeHexLowerCase } from '@oslojs/encoding'
-import { Discord, GitHub } from 'arctic'
+import { Discord, GitHub, Google } from 'arctic'
 
 import type { Session } from './lib/session'
 import { env } from './env'
@@ -33,11 +33,23 @@ const OAuthConfig = (callbackUrl: string) => ({
     ins2: null,
     scopes: ['user:email'],
     fetchUserUrl: 'https://api.github.com/user', // @see https://docs.github.com/en/rest/users/users?apiVersion=2022-11-28#get-the-authenticated-user
-    mapFn: (data: { id: string; email: string; login: string; avatar_url: string }) => ({
+    mapFn: (data: { id: number; email: string; login: string; avatar_url: string }) => ({
       providerId: String(data.id),
       email: data.email,
       name: data.login,
       image: data.avatar_url,
+    }),
+  },
+  google: {
+    ins1: null,
+    ins2: new Google(env.GOOGLE_ID, env.GOOGLE_SECRET, callbackUrl),
+    scopes: ['openid', 'profile', 'email'],
+    fetchUserUrl: 'https://openidconnect.googleapis.com/v1/userinfo',
+    mapFn: (data: { sub: string; email: string; name: string; picture: string }) => ({
+      providerId: data.sub,
+      email: data.email,
+      name: data.name,
+      image: data.picture,
     }),
   },
 })

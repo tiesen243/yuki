@@ -25,8 +25,8 @@ export default async function ProfilePage() {
 
         <hr className="border-primary/20" />
 
-        <section className="container mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
-          <div>
+        <section className="container mt-4 grid gap-4 md:grid-cols-2">
+          <div className="w-full">
             <Typography>
               <span className="text-muted-foreground">Name:</span>{' '}
               {session.user.name}{' '}

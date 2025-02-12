@@ -3,24 +3,27 @@
 import { useRouter } from 'next/navigation'
 
 import { Button } from '@yuki/ui/button'
-import { DiscordIcon, GithubIcon } from '@yuki/ui/icons'
+import { DiscordIcon, GithubIcon, GoogleIcon } from '@yuki/ui/icons'
 
 import { api } from '@/lib/trpc/react'
 
 export const LinkedAccountList: React.FC = () => {
   const [linkedAccounts] = api.user.getLinkedAccounts.useSuspenseQuery()
 
-  return ['discord', 'github'].map((provider) => (
-    <li key={provider} className="flex w-1/2 items-center gap-2">
-      {Icons[provider as 'discord' | 'github']}
+  return (['discord', 'github', 'google'] as const).map((provider) => (
+    <li key={provider} className="flex items-center gap-2">
+      {ProviderIcon[provider]}
+
       {linkedAccounts.some((acc) => acc.provider === provider) ? (
         <>
-          <p>{linkedAccounts.find((acc) => acc.provider === provider)?.name}</p>
+          <p className="w-32">
+            {linkedAccounts.find((acc) => acc.provider === provider)?.name}
+          </p>
           <UnlinkButton provider={provider} />
         </>
       ) : (
         <>
-          <p color="muted">Not linked</p>
+          <p className="text-muted-foreground w-32">Not linked</p>
           <LinkButton provider={provider} />
         </>
       )}
@@ -28,38 +31,26 @@ export const LinkedAccountList: React.FC = () => {
   ))
 }
 
-export const LinkedAccountSkeleton: React.FC = () => (
-  <>
-    <li className="flex w-1/2 items-center gap-2">
-      {Icons.discord}
-      <div className="w-20 animate-pulse rounded bg-current">&nbsp;</div>
+export const LinkedAccountSkeleton: React.FC = () =>
+  (['discord', 'github', 'google'] as const).map((provider) => (
+    <li key={provider} className="flex items-center gap-2">
+      {ProviderIcon[provider]}
+      <div className="w-32 animate-pulse rounded bg-current">&nbsp;</div>
       <Button
         size="sm"
         variant="outline"
-        className="bg-secondary hover:bg-primary/20 border-primary/20"
+        className="bg-secondary hover:bg-primary/20 border-primary/20 w-20"
         disabled
       >
         Link
       </Button>
     </li>
-    <li className="flex w-1/2 items-center gap-2">
-      {Icons.github}
-      <div className="w-20 animate-pulse rounded bg-current">&nbsp;</div>
-      <Button
-        size="sm"
-        variant="outline"
-        className="bg-secondary hover:bg-primary/20 border-primary/20"
-        disabled
-      >
-        Link
-      </Button>
-    </li>
-  </>
-)
+  ))
 
-const Icons = {
+const ProviderIcon = {
   discord: <DiscordIcon />,
   github: <GithubIcon />,
+  google: <GoogleIcon />,
 }
 
 const UnlinkButton: React.FC<{ provider: string }> = ({ provider }) => {
@@ -74,7 +65,7 @@ const UnlinkButton: React.FC<{ provider: string }> = ({ provider }) => {
     <Button
       size="sm"
       variant="outline"
-      className="bg-secondary hover:bg-primary/20 border-primary/20"
+      className="bg-secondary hover:bg-primary/20 border-primary/20 w-20"
       onClick={() => {
         unlink.mutate({ provider })
       }}
@@ -90,7 +81,7 @@ const LinkButton: React.FC<{ provider: string }> = ({ provider }) => (
     <Button
       size="sm"
       variant="outline"
-      className="bg-secondary hover:bg-primary/20 border-primary/20"
+      className="bg-secondary hover:bg-primary/20 border-primary/20 w-20"
     >
       Link
     </Button>

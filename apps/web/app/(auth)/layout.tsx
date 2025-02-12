@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation'
 import { auth } from '@yuki/auth'
 import { Button } from '@yuki/ui/button'
 import { Card, CardFooter } from '@yuki/ui/card'
-import { DiscordIcon, GithubIcon } from '@yuki/ui/icons'
+import { DiscordIcon, GithubIcon, GoogleIcon } from '@yuki/ui/icons'
 
 export default async function AuthLayout({
   children,
@@ -16,22 +16,33 @@ export default async function AuthLayout({
       <Card className="w-full max-w-xl">
         {children}
 
-        <form>
-          <CardFooter className="flex-col gap-2">
+        <CardFooter className="flex-col gap-2" asChild>
+          <form>
             <span className="text-muted-foreground relative w-full text-center">
               <div className="bg-muted-foreground absolute top-1/2 left-0 h-px w-[48%]" />
               or
               <div className="bg-muted-foreground absolute top-1/2 right-0 h-px w-[48%]" />
             </span>
-            <Button variant="outline" className="w-full" formAction="/api/auth/github">
-              <GithubIcon /> Continue with Github
-            </Button>
-            <Button variant="outline" className="w-full" formAction="/api/auth/discord">
-              <DiscordIcon /> Continue with Discord
-            </Button>
-          </CardFooter>
-        </form>
+
+            {providers.map((p) => (
+              <Button
+                key={p.name}
+                variant="outline"
+                className="w-full"
+                formAction={`/api/auth/${p.name}`}
+              >
+                <p.Icon /> <span className="w-32">Continue with {p.name}</span>
+              </Button>
+            ))}
+          </form>
+        </CardFooter>
       </Card>
     </main>
   )
 }
+
+const providers = [
+  { name: 'Discord', Icon: DiscordIcon },
+  { name: 'Github', Icon: GithubIcon },
+  { name: 'Google', Icon: GoogleIcon },
+]

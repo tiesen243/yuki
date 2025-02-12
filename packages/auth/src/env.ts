@@ -8,6 +8,8 @@ export const env = createEnv({
     DISCORD_SECRET: z.string().min(1),
     GITHUB_ID: z.string().min(1),
     GITHUB_SECRET: z.string().min(1),
+    GOOGLE_ID: z.string().min(1),
+    GOOGLE_SECRET: z.string().min(1),
   },
   client: {},
   experimental__runtimeEnv: {},

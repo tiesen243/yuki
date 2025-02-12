@@ -1,7 +1,7 @@
 import type { NextRequest } from 'next/server'
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
-import { generateState, OAuth2RequestError } from 'arctic'
+import { generateCodeVerifier, generateState, OAuth2RequestError } from 'arctic'
 
 import {
   createSession,
@@ -14,15 +14,7 @@ import { db } from '@yuki/db'
 
 import { env } from '@/env'
 
-type Provider = 'credentials' | 'sign-out' | 'discord' | 'github'
-
-const cookieAttributes = (expires: Date) => ({
-  httpOnly: true,
-  path: '/',
-  secure: env.NODE_ENV === 'production',
-  sameSite: 'lax' as const,
-  expires,
-})
+type Provider = 'credentials' | 'sign-out' | 'discord' | 'github' | 'google'
 
 const setCorsHeaders = (res: Response) => {
   res.headers.set(
@@ -47,7 +39,7 @@ export const OPTIONS = () => {
 
 export const GET = async (
   req: NextRequest,
-  { params }: { params: Promise<{ auth?: [Provider, string] }> },
+  { params }: { params: Promise<{ auth?: [string, string] }> },
 ) => {
   const nextUrl = new URL(req.url)
   const nextCookies = await cookies()
@@ -66,7 +58,10 @@ export const GET = async (
     return response
   }
 
-  const [provider, isCallback] = auth
+  const [provider, isCallback] = auth.map((segment) => segment.toLowerCase()) as [
+    Provider,
+    string,
+  ]
 
   try {
     if (provider === 'credentials') {
@@ -118,12 +113,14 @@ export const GET = async (
 
     if (!isCallback) {
       const state = generateState()
+      const codeVerifier = generateCodeVerifier()
 
       let url: URL
       if (ins1) url = ins1.createAuthorizationURL(state, scopes)
-      else url = ins2.createAuthorizationURL(state, null, scopes)
+      else url = ins2.createAuthorizationURL(state, codeVerifier, scopes)
 
       nextCookies.set('oauth_state', state)
+      nextCookies.set('oauth_code_verifier', codeVerifier)
       const response = NextResponse.redirect(new URL(url, nextUrl))
       setCorsHeaders(response)
       return response
@@ -131,12 +128,15 @@ export const GET = async (
 
     const code = nextUrl.searchParams.get('code') ?? ''
     const state = nextUrl.searchParams.get('state') ?? ''
-    const storedState = req.cookies.get('oauth_state')?.value
+
+    const storedState = req.cookies.get('oauth_state')?.value ?? ''
+    const storedCodeVerifier = req.cookies.get('oauth_code_verifier')?.value ?? ''
+
     if (!code || !state || state !== storedState) throw new Error('Invalid state')
 
     let c = undefined
     if (ins1) c = await ins1.validateAuthorizationCode(code)
-    else c = await ins2.validateAuthorizationCode(code, null)
+    else c = await ins2.validateAuthorizationCode(code, storedCodeVerifier)
     const token = c.accessToken()
 
     const r = await fetch(fetchUserUrl, { headers: { Authorization: `Bearer ${token}` } })
@@ -147,6 +147,7 @@ export const GET = async (
 
     nextCookies.set(AUTH_KEY, session.token, cookieAttributes(session.expiresAt))
     nextCookies.delete('oauth_state')
+    nextCookies.delete('oauth_code_verifier')
 
     const response = NextResponse.redirect(new URL('/', nextUrl))
     setCorsHeaders(response)
@@ -195,3 +196,11 @@ const createUser = async (p: {
     },
   })
 }
+
+const cookieAttributes = (expires: Date) => ({
+  httpOnly: true,
+  path: '/',
+  secure: env.NODE_ENV === 'production',
+  sameSite: 'lax' as const,
+  expires,
+})
