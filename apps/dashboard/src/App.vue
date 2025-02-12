@@ -2,9 +2,9 @@
   <header class="bg-background border-b shadow-sm">
     <div class="container flex h-16 items-center justify-between">
       <div class="flex items-center justify-between gap-6">
-        <RouterLink to="/">
+        <RouterLink to="/" class="flex items-center gap-2 text-xl font-bold">
           <img :src="logo" alt="logo" class="size-9 dark:invert" />
-          <h1 class="sr-only text-xl font-bold md:not-sr-only">Yuki Dashboard</h1>
+          <h1 class="sr-only md:not-sr-only">Yuki Dashboard</h1>
         </RouterLink>
 
         <nav class="flex items-center gap-4">
