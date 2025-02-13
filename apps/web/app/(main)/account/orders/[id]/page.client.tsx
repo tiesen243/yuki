@@ -41,10 +41,11 @@ export const OrderDetails: React.FC<{ id: string }> = ({ id }) => {
 
         <TableFooter>
           <TableRow>
-            <TableCell>Status</TableCell>
-            <TableCell colSpan={2}>
-              <Badge variant={order.status}>{order.status}</Badge>
+            <TableCell colSpan={3} className="space-x-2">
+              <Badge variant={order.status}>{order.status.toLowerCase()}</Badge>
+              <Badge variant={order.payment}>{order.payment.toLowerCase()}</Badge>
             </TableCell>
+
             <TableCell align="right">Total</TableCell>
             <TableCell align="right">${order.total}</TableCell>
           </TableRow>

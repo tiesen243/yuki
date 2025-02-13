@@ -42,10 +42,11 @@ export const OrderHistories: React.FC = () => {
           )}
 
           <div className="flex items-center justify-between gap-4">
-            <p>
-              <span className="mr-2">Status</span>
-              <Badge variant={o.status}>{o.status}</Badge>
-            </p>
+            <div className="space-x-2">
+              <Badge variant={o.status}>{o.status.toLowerCase()}</Badge>
+              <Badge variant={o.payment}>{o.payment.toLowerCase()}</Badge>
+            </div>
+
             <p>Total: ${o.total}</p>
           </div>
         </Link>
@@ -73,10 +74,10 @@ export const OrderHistoriesSkeleton: React.FC = () => (
         ))}
 
         <div className="flex items-center justify-between gap-4">
-          <p className="flex w-32 gap-2">
-            Status:
+          <div className="space-x-2">
             <Badge>Loading...</Badge>
-          </p>
+            <Badge>Loading...</Badge>
+          </div>
           <p>Total: $0</p>
         </div>
       </div>

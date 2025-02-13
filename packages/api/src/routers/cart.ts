@@ -8,9 +8,9 @@ export const cartRouter = {
   // [GET] /api/trpc/cart.getCart
   getCart: protectedProcedure.query(async ({ ctx }) => {
     const userId = ctx.session.user.id
-
     const select = { id: true, name: true, image: true, price: true }
-    let cart = await ctx.db.cart.findFirst({
+
+    const existingCart = await ctx.db.cart.findFirst({
       where: { userId, status: 'NEW' },
       include: {
         items: {
@@ -19,19 +19,21 @@ export const cartRouter = {
         },
       },
     })
+    if (existingCart) return existingCart
 
-    if (!cart)
-      cart = await ctx.db.cart.create({
-        data: { userId },
-        include: {
-          items: {
-            include: { product: { select } },
-            orderBy: { product: { name: 'desc' } },
-          },
+    const lastOrder = await ctx.db.cart.findFirst({ orderBy: { id: 'desc' } })
+    const orderNumber = lastOrder ? parseInt(lastOrder.id.substring(3)) + 1 : 1
+    const orderId = `ORD${orderNumber.toString().padStart(6, '0')}`
+
+    return await ctx.db.cart.create({
+      data: { id: orderId, userId },
+      include: {
+        items: {
+          include: { product: { select } },
+          orderBy: { product: { name: 'desc' } },
         },
-      })
-
-    return cart
+      },
+    })
   }),
 
   // [POST] /api/trpc/cart.updateCart
@@ -66,7 +68,13 @@ export const cartRouter = {
       }
 
       const result = await ctx.db.$transaction(async (tx) => {
-        const cart = existingCartWithItems ?? (await tx.cart.create({ data: { userId } }))
+        const lastOrder = await tx.cart.findFirst({ orderBy: { id: 'desc' } })
+        const orderNumber = lastOrder ? parseInt(lastOrder.id.substring(3)) + 1 : 1
+        const orderId = `ORD${orderNumber.toString().padStart(6, '0')}`
+
+        const cart =
+          existingCartWithItems ??
+          (await tx.cart.create({ data: { id: orderId, userId } }))
 
         const cartItem = await tx.cartItem.upsert({
           where: { cartId_productId: { cartId: cart.id, productId } },

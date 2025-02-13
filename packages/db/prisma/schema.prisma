@@ -113,18 +113,22 @@ enum Status {
   PENDING
   CONFIRMED
   PROCESSING
-  SHIPPING
   DELIVERED
-  CANCELED
-  FAILED
-  RETURNED
+  CANCELLED
+}
+
+enum Payment {
+  UNPAID
+  PAID
+  REFUND
 }
 
 model Cart {
-  id     String     @id @default(cuid())
-  items  CartItem[]
-  total  Int        @default(0)
-  status Status     @default(NEW)
+  id      String     @id
+  items   CartItem[]
+  total   Int        @default(0)
+  status  Status     @default(NEW)
+  payment Payment    @default(UNPAID)
 
   address   Address? @relation(fields: [addressId], references: [id])
   addressId String?
