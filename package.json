@@ -30,11 +30,11 @@
   },
   "prettier": "@yuki/prettier-config",
   "devDependencies": {
-    "@turbo/gen": "^2.4.1",
+    "@turbo/gen": "2.4.0",
     "@yuki/prettier-config": "workspace:*",
     "@yuki/tsconfig": "workspace:*",
     "prettier": "^3.5.0",
-    "turbo": "^2.4.1",
+    "turbo": "2.4.0",
     "typescript": "^5.7.3"
   },
   "packageManager": "bun@1.2.2",
