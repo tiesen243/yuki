@@ -24,6 +24,7 @@ export const SignInForm: React.FC<{
       await setToken(data.token, data.expiresAt)
       await queryClient.invalidateQueries({ queryKey: ['auth'] })
       router.push('/')
+      router.refresh()
       toast.success('Logged in successfully')
     },
   })

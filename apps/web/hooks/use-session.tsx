@@ -1,7 +1,8 @@
 'use client'
 
 import * as React from 'react'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useRouter } from 'next/navigation'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 import type { Session } from '@yuki/auth'
 
@@ -17,6 +18,9 @@ const sessionContext = React.createContext<
 export const SessionProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  const router = useRouter()
+  const queryClient = useQueryClient()
+
   const session = useQuery({
     queryKey: ['auth'],
     queryFn: async () => {
@@ -28,7 +32,10 @@ export const SessionProvider: React.FC<{ children: React.ReactNode }> = ({
   const signOut = useMutation({
     mutationKey: ['auth', 'sign-out'],
     mutationFn: async () => fetch('/api/auth/sign-out', { method: 'POST' }),
-    onSuccess: () => session.refetch(),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['auth'] })
+      router.refresh()
+    },
   })
 
   return (
