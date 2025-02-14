@@ -16,7 +16,7 @@ import {
 
 import { api } from '@/lib/trpc/react'
 
-export const OrderDetails: React.FC<{ id: string }> = ({ id }) => {
+export const OrderDetails: React.FC<{ id: number }> = ({ id }) => {
   const [order] = api.order.getDetails.useSuspenseQuery({ id })
 
   return (

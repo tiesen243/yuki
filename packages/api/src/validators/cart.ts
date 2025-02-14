@@ -1,8 +1,8 @@
-import { string, z } from 'zod'
+import { z } from 'zod'
 
 export const cartSchema = z.object({
-  cartId: string().optional(),
-  productId: string(),
+  cartId: z.number().optional(),
+  productId: z.string(),
   quantity: z.number().default(1),
   isUpdate: z.boolean().default(false),
 })

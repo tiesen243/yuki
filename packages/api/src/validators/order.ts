@@ -9,7 +9,7 @@ export const getAllSchema = z.object({
 export type GetAllSchema = z.infer<typeof getOneSchema>
 
 export const getOneSchema = z.object({
-  id: z.string(),
+  id: z.number(),
 })
 export type GetOneSchema = z.infer<typeof getOneSchema>
 

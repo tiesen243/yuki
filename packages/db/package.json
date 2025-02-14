@@ -23,6 +23,9 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "prettier": "@yuki/prettier-config",
+  "prisma": {
+    "seed": "bun with-env bun prisma/seed.ts"
+  },
   "dependencies": {
     "@neondatabase/serverless": "^0.10.4",
     "@prisma/adapter-neon": "^6.3.1",

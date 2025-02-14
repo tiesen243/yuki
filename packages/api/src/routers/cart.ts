@@ -21,12 +21,8 @@ export const cartRouter = {
     })
     if (existingCart) return existingCart
 
-    const lastOrder = await ctx.db.cart.findFirst({ orderBy: { id: 'desc' } })
-    const orderNumber = lastOrder ? parseInt(lastOrder.id.substring(3)) + 1 : 1
-    const orderId = `ORD${orderNumber.toString().padStart(6, '0')}`
-
     return await ctx.db.cart.create({
-      data: { id: orderId, userId },
+      data: { userId },
       include: {
         items: {
           include: { product: { select } },
@@ -68,13 +64,7 @@ export const cartRouter = {
       }
 
       const result = await ctx.db.$transaction(async (tx) => {
-        const lastOrder = await tx.cart.findFirst({ orderBy: { id: 'desc' } })
-        const orderNumber = lastOrder ? parseInt(lastOrder.id.substring(3)) + 1 : 1
-        const orderId = `ORD${orderNumber.toString().padStart(6, '0')}`
-
-        const cart =
-          existingCartWithItems ??
-          (await tx.cart.create({ data: { id: orderId, userId } }))
+        const cart = existingCartWithItems ?? (await tx.cart.create({ data: { userId } }))
 
         const cartItem = await tx.cartItem.upsert({
           where: { cartId_productId: { cartId: cart.id, productId } },

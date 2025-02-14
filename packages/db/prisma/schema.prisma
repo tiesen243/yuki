@@ -124,9 +124,9 @@ enum Payment {
 }
 
 model Cart {
-  id      String     @id
+  id      Int        @id @default(autoincrement())
   items   CartItem[]
-  total   Int        @default(0)
+  total   Float      @default(0.00)
   status  Status     @default(NEW)
   payment Payment    @default(UNPAID)
 
@@ -145,8 +145,8 @@ model CartItem {
   productId String
   quantity  Int
 
-  cart   Cart   @relation(fields: [cartId], references: [id], onDelete: Cascade)
-  cartId String
+  cart   Cart @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  cartId Int
 
   @@id([cartId, productId])
 }

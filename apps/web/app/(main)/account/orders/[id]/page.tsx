@@ -8,7 +8,7 @@ import { api, HydrateClient } from '@/lib/trpc/server'
 import { OrderDetails } from './page.client'
 
 interface Props {
-  params: Promise<{ id: string }>
+  params: Promise<{ id: number }>
 }
 export default async function OrderDetailsPage({ params }: Props) {
   const { id } = await params

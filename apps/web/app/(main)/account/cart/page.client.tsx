@@ -125,7 +125,7 @@ export const CartDetails: React.FC = () => {
 }
 
 const CartItem: React.FC<{
-  cartId: string
+  cartId: number
   product: RouterOutputs['cart']['getCart']['items'][number]['product']
   quantity: number
 }> = ({ cartId, product, quantity }) => {
