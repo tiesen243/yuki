@@ -14,7 +14,7 @@ const avatarVariants = cva('relative flex h-10 w-10 shrink-0 overflow-hidden', {
 })
 type AvatarVariants = VariantProps<typeof avatarVariants>
 
-const avatarImageVariants = cva('aspect-square h-full w-full')
+const avatarImageVariants = cva('aspect-square h-full w-full object-cover')
 type AvatarImageVariants = VariantProps<typeof avatarImageVariants>
 
 const avatarFallbackVariants = cva(

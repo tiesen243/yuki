@@ -1,0 +1,44 @@
+{
+  "name": "@yuki/uploader",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./src/index.ts"
+    },
+    "./react": {
+      "types": "./dist/react.d.ts",
+      "default": "./src/react.ts"
+    },
+    "./vue": {
+      "types": "./dist/vue.d.ts",
+      "default": "./src/vue.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "clean": "git clean -xdf .cache .turbo dist node_modules",
+    "dev": "tsc --watch",
+    "format": "prettier --check . --ignore-path ../../.gitignore",
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit --emitDeclarationOnly false"
+  },
+  "prettier": "@yuki/prettier-config",
+  "dependencies": {
+    "@uploadthing/react": "^7.2.0",
+    "@uploadthing/vue": "^7.2.0",
+    "@yuki/auth": "workspace:*",
+    "uploadthing": "^7.5.0"
+  },
+  "devDependencies": {
+    "@yuki/eslint-config": "workspace:*",
+    "@yuki/prettier-config": "workspace:*",
+    "@yuki/tsconfig": "workspace:*",
+    "eslint": "latest",
+    "prettier": "latest",
+    "typescript": "latest"
+  }
+}

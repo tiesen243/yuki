@@ -5,6 +5,7 @@ import { ThemeProvider } from 'next-themes'
 
 import { Toaster } from '@yuki/ui/toast'
 import { cn } from '@yuki/ui/utils'
+import { extractRouterConfig, NextSSRPlugin, ourFileRouter } from '@yuki/uploader'
 
 import { SessionProvider } from '@/hooks/use-session'
 import { createMetadata } from '@/lib/metadata'
@@ -35,6 +36,16 @@ export default function RootLayout({
               <Footer />
             </SessionProvider>
           </TRPCReactProvider>
+
+          <NextSSRPlugin
+            /**
+             * The `extractRouterConfig` will extract **only** the route configs
+             * from the router to prevent additional information from being
+             * leaked to the client. The data passed to the client is the same
+             * as if you were to fetch `/api/uploadthing` directly.
+             */
+            routerConfig={extractRouterConfig(ourFileRouter)}
+          />
           <Toaster richColors />
         </ThemeProvider>
       </body>

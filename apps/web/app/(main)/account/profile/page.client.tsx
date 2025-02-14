@@ -17,6 +17,8 @@ import {
 import { DiscordIcon, GithubIcon, GoogleIcon } from '@yuki/ui/icons'
 import { Input } from '@yuki/ui/input'
 import { Label } from '@yuki/ui/label'
+import { toast } from '@yuki/ui/toast'
+import { UploadButton } from '@yuki/uploader/react'
 
 import { api } from '@/lib/trpc/react'
 
@@ -140,9 +142,19 @@ export const EditProfileForm: React.FC<{ name: string; image: string }> = (props
           </div>
           <div className="grid place-items-center gap-4">
             <Image src={formData.image} alt={props.name} width={100} height={100} />
-            <Button type="button" variant="outline" disabled={isPending}>
-              Choose avatar
-            </Button>
+            <UploadButton
+              endpoint="userImageUploader"
+              onClientUploadComplete={(res) => {
+                setFormData((prev) => ({
+                  ...prev,
+                  image: res.at(0)?.ufsUrl ?? props.image,
+                }))
+              }}
+              onUploadError={(error: Error) => {
+                toast.error(error.message)
+              }}
+              disabled={isPending}
+            />
           </div>
           <DialogFooter>
             <Button disabled={isPending}>Save changes</Button>

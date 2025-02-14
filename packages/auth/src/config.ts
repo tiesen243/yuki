@@ -1,5 +1,6 @@
 'use server'
 
+import type { NextRequest } from 'next/server'
 import { cookies } from 'next/headers'
 import { sha256 } from '@oslojs/crypto/sha2'
 import { encodeHexLowerCase } from '@oslojs/encoding'
@@ -54,8 +55,10 @@ const OAuthConfig = (callbackUrl: string) => ({
   },
 })
 
-const auth = async (): Promise<Session> => {
-  const token = (await cookies()).get(AUTH_KEY)?.value ?? ''
+const auth = async (req?: NextRequest): Promise<Session> => {
+  const token =
+    req?.cookies.get(AUTH_KEY)?.value ?? (await cookies()).get(AUTH_KEY)?.value ?? ''
+
   if (!token) return { expires: new Date(Date.now()) }
   return validateSessionToken(token)
 }

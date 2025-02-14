@@ -40,14 +40,11 @@
     "gnr": {
       "cache": false,
       "interactive": false
-    },
-    "ui-add": {
-      "cache": false,
-      "interactive": true
     }
   },
   "globalEnv": [
     "DATABASE_URL",
+    "UPLOADTHING_TOKEN",
     "DISCORD_ID",
     "DISCORD_SECRET",
     "GITHUB_ID",
