@@ -18,7 +18,10 @@ export const orderRouter = {
       (await ctx.db.cart.count({ where: { status: { not: 'NEW' } } })) / input.limit,
     )
 
-    return { orders, totalPage }
+    return {
+      orders: orders.map((o) => ({ ...o, id: o.id.toString().padStart(6, '0') })),
+      totalPage,
+    }
   }),
 
   // [GET] /api/trpc/order.getHistories
@@ -54,7 +57,10 @@ export const orderRouter = {
           'You do not have permission to access this order. Only order owners and administrators can view order details.',
       })
 
-    return order
+    return {
+      ...order,
+      id: `ORD${order.id.toString().padStart(6, '0')}`,
+    }
   }),
 
   // [POST] /api/trpc/order.updateOrder

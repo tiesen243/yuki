@@ -11,7 +11,7 @@ interface Props {
   params: Promise<{ id: number }>
 }
 export default async function OrderDetailsPage({ params }: Props) {
-  const { id } = await params
+  const id = +(await params).id
 
   void api.order.getDetails.prefetch({ id })
 
@@ -46,7 +46,7 @@ export default async function OrderDetailsPage({ params }: Props) {
 }
 
 export const generateMetadata = async ({ params }: Props) => {
-  const { id } = await params
+  const id = +(await params).id
   try {
     const order = await api.order.getDetails({ id })
 
