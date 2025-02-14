@@ -5,7 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 import { Button } from '@yuki/ui/button'
-import { MenuIcon } from '@yuki/ui/icons'
+import { MenuIcon, StoreIcon } from '@yuki/ui/icons'
 import { cn } from '@yuki/ui/utils'
 
 import { legalNavLinks, navLinks } from './configs'
@@ -61,6 +61,14 @@ export const MobileMenu: React.FC = () => {
 
         <nav className="mx-2 my-4 flex flex-col gap-1">
           <span className="text-muted-foreground px-2 text-xs">Menu</span>
+          <Link
+            href="/shop"
+            className="text-foreground hover:bg-background flex items-center gap-2 rounded-lg px-2 py-1 text-sm transition-colors"
+          >
+            <StoreIcon className="size-4" />
+            <span>Products & Collections</span>
+          </Link>
+
           {navLinks.map(({ Icon, title, href }) => (
             <Link
               key={title}

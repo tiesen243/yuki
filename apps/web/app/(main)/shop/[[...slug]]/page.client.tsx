@@ -108,7 +108,6 @@ const FilterContent: React.FC<Query & { slug?: string[]; className?: string }> =
         </Select>
       </div>
 
-      <input name="page" defaultValue={query.page} hidden />
       <input name="limit" defaultValue={query.limit} hidden />
 
       <SubmitButton className="w-full">Apply Filters</SubmitButton>
