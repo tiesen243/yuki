@@ -4,23 +4,23 @@ import type { TypographyVariants } from '@yuki/ui/components/typography/variants
 import { typographyVariants } from '@yuki/ui/components/typography/variants'
 import { cn } from '@yuki/ui/utils'
 
-export interface TypographyProps
-  extends Omit<React.HTMLAttributes<HTMLParagraphElement>, 'color'>,
+interface TypographyProps
+  extends Omit<React.ComponentProps<'p'>, 'color'>,
     TypographyVariants {}
 
-const Typography = React.forwardRef<HTMLButtonElement, TypographyProps>(
-  ({ className, level = 'p', color, ...props }, ref) => {
-    const Comp = level as React.ElementType
+const Typography: React.FC<TypographyProps> = ({
+  className,
+  level = 'p',
+  color,
+  ...props
+}) => {
+  const Comp = level as React.ElementType
 
-    return (
-      <Comp
-        className={cn(typographyVariants({ level, color, className }))}
-        ref={ref}
-        {...props}
-      />
-    )
-  },
-)
+  return (
+    <Comp className={cn(typographyVariants({ level, color, className }))} {...props} />
+  )
+}
+
 Typography.displayName = 'Typography'
 
 export { Typography, typographyVariants }

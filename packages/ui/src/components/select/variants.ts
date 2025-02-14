@@ -40,21 +40,31 @@ const selectViewportVariants = cva('p-1', {
 })
 type SelectViewportVariants = VariantProps<typeof selectViewportVariants>
 
-const selectLabelVariants = 'px-2 py-1.5 text-sm font-semibold'
+const selectLabelVariants = cva('px-2 py-1.5 text-sm font-semibold')
+type SelectLabelVariants = VariantProps<typeof selectLabelVariants>
 
-const selectItemVariants =
-  'focus:bg-accent focus:text-accent-foreground relative flex w-full cursor-default items-center rounded-sm py-1.5 pr-8 pl-2 text-sm outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50'
+const selectItemVariants = cva(
+  'focus:bg-accent focus:text-accent-foreground relative flex w-full cursor-default items-center rounded-sm py-1.5 pr-8 pl-2 text-sm outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50',
+)
+type SelectItemVariants = VariantProps<typeof selectItemVariants>
 
-const selectItemIndicatorWrapper =
-  'absolute right-2 flex h-3.5 w-3.5 items-center justify-center'
+const selectItemIndicatorWrapper = cva(
+  'absolute right-2 flex h-3.5 w-3.5 items-center justify-center',
+)
+type SelectItemIndicatorWrapper = VariantProps<typeof selectItemIndicatorWrapper>
 
-const selectSeparatorVariants = 'bg-muted -mx-1 my-1 h-px'
+const selectSeparatorVariants = cva('bg-muted -mx-1 my-1 h-px')
+type SelectSeparatorVariants = VariantProps<typeof selectSeparatorVariants>
 
 export type {
   SelectTriggerVariants,
   ScrollButtonVariants,
   SelectContentVariants,
   SelectViewportVariants,
+  SelectLabelVariants,
+  SelectItemVariants,
+  SelectItemIndicatorWrapper,
+  SelectSeparatorVariants,
 }
 export {
   selectTriggerVariants,

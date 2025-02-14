@@ -10,40 +10,31 @@ import type {
 } from './variants'
 import { avatarFallbackVariants, avatarImageVariants, avatarVariants } from './variants'
 
-const Avatar = React.forwardRef<
-  React.ComponentRef<typeof AvatarPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Root> & AvatarVariants
->(({ shape, className, ...props }, ref) => (
-  <AvatarPrimitive.Root
-    ref={ref}
-    className={cn(avatarVariants({ shape, className }))}
-    {...props}
-  />
-))
+const Avatar: React.FC<AvatarPrimitive.AvatarProps & AvatarVariants> = ({
+  shape,
+  className,
+  ...props
+}) => (
+  <AvatarPrimitive.Root className={cn(avatarVariants({ shape, className }))} {...props} />
+)
 Avatar.displayName = AvatarPrimitive.Root.displayName
 
-const AvatarImage = React.forwardRef<
-  React.ComponentRef<typeof AvatarPrimitive.Image>,
-  React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Image> & AvatarImageVariants
->(({ className, ...props }, ref) => (
-  <AvatarPrimitive.Image
-    ref={ref}
-    className={cn(avatarImageVariants({ className }))}
-    {...props}
-  />
-))
+const AvatarImage: React.FC<AvatarPrimitive.AvatarImageProps & AvatarImageVariants> = ({
+  className,
+  ...props
+}) => (
+  <AvatarPrimitive.Image className={cn(avatarImageVariants({ className }))} {...props} />
+)
 AvatarImage.displayName = AvatarPrimitive.Image.displayName
 
-const AvatarFallback = React.forwardRef<
-  React.ComponentRef<typeof AvatarPrimitive.Fallback>,
-  React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Fallback> & AvatarFallbackVariants
->(({ shape, className, ...props }, ref) => (
+const AvatarFallback: React.FC<
+  AvatarPrimitive.AvatarFallbackProps & AvatarFallbackVariants
+> = ({ shape, className, ...props }) => (
   <AvatarPrimitive.Fallback
-    ref={ref}
     className={cn(avatarFallbackVariants({ shape, className }))}
     {...props}
   />
-))
+)
 AvatarFallback.displayName = AvatarPrimitive.Fallback.displayName
 
 export { Avatar, AvatarImage, AvatarFallback }

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { PrimitiveProps } from 'radix-vue'
+import type { AsTag, PrimitiveProps } from 'radix-vue'
 import type { HTMLAttributes } from 'vue'
 import { Primitive } from 'radix-vue'
 
@@ -23,7 +23,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 <template>
   <Primitive
-    :as="level as any"
+    :as="level as AsTag"
     :as-child="asChild"
     :class="cn(typographyVariants({ level, color }), props.class)"
   >

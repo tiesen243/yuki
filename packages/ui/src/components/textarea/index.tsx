@@ -5,12 +5,10 @@ import { cn } from '@yuki/ui/utils'
 import type { TextareaVariants } from './variants'
 import { textareaVariants } from './variants'
 
-const Textarea = React.forwardRef<
-  HTMLTextAreaElement,
-  React.ComponentProps<'textarea'> & TextareaVariants
->(({ className, ...props }, ref) => {
-  return <textarea className={cn(textareaVariants({ className }))} ref={ref} {...props} />
-})
+const Textarea: React.FC<React.ComponentProps<'textarea'> & TextareaVariants> = ({
+  className,
+  ...props
+}) => <textarea className={cn(textareaVariants({ className }))} {...props} />
 Textarea.displayName = 'Textarea'
 
 export { Textarea }
