@@ -4,7 +4,6 @@ import Link from 'next/link'
 
 import { MobileMenu } from './mobile-menu'
 import { Search } from './search'
-import { ThemeBtn } from './theme-toggle'
 import { User } from './user'
 
 export const Header: React.FC = () => (
@@ -33,10 +32,7 @@ export const Header: React.FC = () => (
         <Search className="hidden grow md:flex" />
       </Suspense>
 
-      <div className="flex items-center gap-4">
-        <User />
-        <ThemeBtn />
-      </div>
+      <User />
     </div>
   </header>
 )

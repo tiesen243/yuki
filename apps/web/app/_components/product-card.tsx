@@ -1,14 +1,14 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
-import type { RouterOutputs } from '@yuki/api'
+import type { Product } from '@yuki/db'
 import { Badge } from '@yuki/ui/badge'
 import { Card, CardDescription, CardFooter, CardTitle } from '@yuki/ui/card'
 
 import { slugify } from '@/lib/utils'
 
 export const ProductCard: React.FC<{
-  product: RouterOutputs['product']['getAll']['products'][number]
+  product: Product & { category: { name: string } }
 }> = ({ product }) => (
   <Card variant="pressable" className="relative space-y-4" asChild>
     <Link href={`/${slugify(product.name)}-${product.id}`}>

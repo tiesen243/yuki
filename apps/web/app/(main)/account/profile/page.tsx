@@ -3,7 +3,6 @@ import { redirect } from 'next/navigation'
 
 import { auth } from '@yuki/auth'
 import { Avatar, AvatarFallback, AvatarImage } from '@yuki/ui/avatar'
-import { Button } from '@yuki/ui/button'
 import { Typography } from '@yuki/ui/typography'
 
 import { api, HydrateClient } from '@/lib/trpc/server'
@@ -53,9 +52,6 @@ export default async function ProfilePage() {
             </Avatar>
 
             <EditProfileForm name={session.user.name} image={session.user.image} />
-            <form action="/api/auth/sign-out">
-              <Button variant="destructive">Sign Out</Button>
-            </form>
           </div>
         </section>
       </main>

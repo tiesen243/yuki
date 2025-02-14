@@ -4,23 +4,28 @@ import { Suspense, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
+import { Button } from '@yuki/ui/button'
 import { MenuIcon } from '@yuki/ui/icons'
 import { cn } from '@yuki/ui/utils'
 
+import { legalNavLinks, navLinks } from './configs'
 import { Search } from './search'
-import { SidebarThemeToggle } from './theme-toggle'
 
 export const MobileMenu: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
 
   return (
     <>
-      <MenuIcon
-        className="cursor-pointer md:hidden"
+      <Button
+        variant="outline"
+        size="icon"
+        className="bg-transparent md:hidden"
         onClick={() => {
           setIsOpen((prev) => !prev)
         }}
-      />
+      >
+        <MenuIcon />
+      </Button>
 
       <div
         className={cn(
@@ -56,51 +61,32 @@ export const MobileMenu: React.FC = () => {
 
         <nav className="mx-2 my-4 flex flex-col gap-1">
           <span className="text-muted-foreground px-2 text-xs">Menu</span>
-          {navLinks.map(({ title, href }) => (
+          {navLinks.map(({ Icon, title, href }) => (
             <Link
               key={title}
               href={href}
-              className="text-foreground hover:bg-background rounded-lg px-2 py-1 transition-colors"
+              className="text-foreground hover:bg-background flex items-center gap-2 rounded-lg px-2 py-1 text-sm transition-colors"
             >
-              {title}
+              <Icon className="size-4" />
+              <span>{title}</span>
             </Link>
           ))}
         </nav>
 
         <nav className="mx-2 my-4 flex flex-col gap-1">
           <span className="text-muted-foreground px-2 text-xs">Legal</span>
-          {legalNavLinks.map(({ title, href }) => (
+          {legalNavLinks.map(({ Icon, title, href }) => (
             <Link
               key={title}
               href={href}
-              className="text-foreground hover:bg-background rounded-lg px-2 py-1 transition-colors"
+              className="text-foreground hover:bg-background flex items-center gap-2 rounded-lg px-2 py-1 text-sm transition-colors"
             >
-              {title}
+              <Icon className="size-4" />
+              <span>{title}</span>
             </Link>
           ))}
-        </nav>
-
-        <nav className="mx-2 my-4 flex flex-col gap-1">
-          <span className="text-muted-foreground text-xs">Settings</span>
-          <SidebarThemeToggle />
         </nav>
       </aside>
     </>
   )
 }
-
-const navLinks = [
-  { title: 'Products & Collections', href: '/shop' },
-  { title: 'Shopping Cart', href: '/account/cart' },
-  { title: 'Purchase History', href: '/account/orders' },
-]
-
-const legalNavLinks = [
-  { title: 'About', href: '/about' },
-  { title: 'Privacy Policy', href: '/privacy' },
-  { title: 'Terms & Conditions', href: '/terms' },
-  { title: 'Cookie Policy', href: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' },
-  { title: 'Accessibility', href: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' },
-  { title: 'Legal Notice', href: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' },
-  { title: 'Contact Us', href: '/contact' },
-]

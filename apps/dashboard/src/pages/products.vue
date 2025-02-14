@@ -21,7 +21,6 @@
               <TableCell>{{ row.name }}</TableCell>
               <TableCell>${{ row.price }}</TableCell>
               <TableCell>{{ row.stock }}</TableCell>
-              <TableCell>{{ row.sold }}</TableCell>
               <TableCell>{{ new Date(row.updatedAt).toDateString() }}</TableCell>
               <TableCell class="space-x-4">
                 <Button size="sm"> Edit </Button>

@@ -16,10 +16,7 @@ export const productRouter = {
       take: input.limit,
       skip: (input.page - 1) * input.limit,
       orderBy: { [input.sortBy]: input.orderBy },
-      include: {
-        category: { select: { id: true, name: true } },
-        carts: { select: { quantity: true } },
-      },
+      include: { category: { select: { name: true } } },
     })
 
     const totalPage = Math.ceil(
@@ -32,13 +29,7 @@ export const productRouter = {
       })) / input.limit,
     )
 
-    return {
-      products: products.map((p) => ({
-        ...p,
-        sold: p.carts.reduce((acc, cur) => acc + cur.quantity, 0),
-      })),
-      totalPage,
-    }
+    return { products, totalPage }
   }),
 
   // [GET] /api/trpc/product.getOne
@@ -102,7 +93,9 @@ export const productRouter = {
     .query(async ({ ctx, input }) => {
       const c = await ctx.db.category.findFirst({
         where: { products: { some: { id: input.id } } },
-        include: { products: { take: 12, include: { category: true } } },
+        include: {
+          products: { take: 12, include: { category: { select: { name: true } } } },
+        },
       })
 
       return c?.products ?? []
