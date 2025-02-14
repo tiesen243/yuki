@@ -21,7 +21,7 @@ import { useSession } from '@/hooks/use-session'
 import { navLinks } from './configs'
 
 export const User: React.FC = () => {
-  const { session, isLoading } = useSession()
+  const { session, isLoading, signOut } = useSession()
   const { theme, setTheme } = useTheme()
 
   if (isLoading) return <div className="size-9 animate-pulse rounded-full bg-current" />
@@ -80,12 +80,14 @@ export const User: React.FC = () => {
 
         <DropdownMenuSeparator />
 
-        <DropdownMenuItem asChild>
-          <Link href="/api/auth/sign-out">
-            <LogOutIcon className="mr-2 h-4 w-4" />
-            <span>Log out</span>
-            <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
-          </Link>
+        <DropdownMenuItem
+          onClick={() => {
+            signOut()
+          }}
+        >
+          <LogOutIcon className="mr-2 h-4 w-4" />
+          <span>Log out</span>
+          <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

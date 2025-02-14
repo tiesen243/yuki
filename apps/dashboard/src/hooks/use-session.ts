@@ -60,6 +60,7 @@ export const useSession = () => {
       const token: string | undefined = cookies.get('auth_token')
 
       const res = await fetch(`${baseUrl}/sign-out?dashboard=true`, {
+        method: 'POST',
         headers: { Authorization: `Bearer ${token}` },
       })
       const json = (await res.json()) as { message: string }

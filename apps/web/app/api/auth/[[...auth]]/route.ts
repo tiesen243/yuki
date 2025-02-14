@@ -14,7 +14,7 @@ import { db } from '@yuki/db'
 
 import { env } from '@/env'
 
-type Provider = 'credentials' | 'sign-out' | 'discord' | 'github' | 'google'
+type Provider = 'credentials' | 'discord' | 'github' | 'google'
 
 const setCorsHeaders = (res: Response) => {
   res.headers.set(
@@ -86,27 +86,6 @@ export const GET = async (
       return response
     }
 
-    if (provider === 'sign-out') {
-      const token =
-        nextCookies.get(AUTH_KEY)?.value ??
-        req.headers.get('Authorization')?.replace('Bearer ', '') ??
-        ''
-
-      try {
-        await invalidateSessionToken(token)
-        nextCookies.delete(AUTH_KEY)
-
-        let response: NextResponse
-        if (nextUrl.searchParams.get('dashboard') === 'true')
-          response = NextResponse.json({ message: 'Sign out successfully' })
-        else response = NextResponse.redirect(new URL('/', nextUrl))
-        setCorsHeaders(response)
-        return response
-      } catch {
-        return NextResponse.json({ message: 'Sign out fail' }, { status: 500 })
-      }
-    }
-
     const providers = OAuthConfig(`${nextUrl.origin}/api/auth/${provider}/callback`)
     const { ins1, ins2, scopes, fetchUserUrl, mapFn } = providers[provider]
     if (!fetchUserUrl) throw new Error(`Provider "${provider}" is not supported`)
@@ -158,6 +137,39 @@ export const GET = async (
     else if (e instanceof Error)
       return NextResponse.json({ error: e.message }, { status: 500 })
     else return NextResponse.json({ error: 'An unknown error occurred' }, { status: 500 })
+  }
+}
+
+export const POST = async (
+  req: NextRequest,
+  { params }: { params: Promise<{ auth?: [string, string] }> },
+) => {
+  const nextUrl = new URL(req.url)
+  const nextCookies = await cookies()
+
+  const { auth } = await params
+  if (!auth)
+    return NextResponse.json({ message: 'No auth parameters provided' }, { status: 404 })
+
+  if (auth.at(0) === 'sign-out') {
+    const token =
+      nextCookies.get(AUTH_KEY)?.value ??
+      req.headers.get('Authorization')?.replace('Bearer ', '') ??
+      ''
+
+    try {
+      await invalidateSessionToken(token)
+      nextCookies.delete(AUTH_KEY)
+
+      let response: NextResponse
+      if (nextUrl.searchParams.get('dashboard') === 'true')
+        response = NextResponse.json({ message: 'Sign out successfully' })
+      else response = NextResponse.redirect(new URL('/', nextUrl))
+      setCorsHeaders(response)
+      return response
+    } catch {
+      return NextResponse.json({ message: 'Sign out fail' }, { status: 500 })
+    }
   }
 }
 
