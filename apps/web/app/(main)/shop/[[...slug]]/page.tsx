@@ -1,27 +1,16 @@
 import { Suspense } from 'react'
-import Form from 'next/form'
-import Link from 'next/link'
 
 import type { Query } from '@yuki/api/validators/product'
-import { Input } from '@yuki/ui/input'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@yuki/ui/select'
-import { cn } from '@yuki/ui/utils'
 
 import { createMetadata } from '@/lib/metadata'
 import { api, HydrateClient } from '@/lib/trpc/server'
-import { getIdFromSlug, slugify } from '@/lib/utils'
+import { getIdFromSlug } from '@/lib/utils'
 import {
+  FilterSidebar,
   ProductList,
   ProductListSkeleton,
   ProductPagination,
   ProductPaginationSkeleton,
-  SubmitButton,
 } from './page.client'
 
 interface Props {
@@ -33,123 +22,49 @@ export default async function ShopPage({ params, searchParams }: Props) {
   const { slug } = await params
   const {
     page = 1,
-    limit = 6 * 4,
-    orderBy = 'updatedAt',
-    sortBy = 'desc',
-    query,
+    limit = 3 * 5,
+    orderBy = 'desc',
+    sortBy = 'createdAt',
+    q,
   } = await searchParams
 
   const categoryId = getIdFromSlug(slug?.at(0))
 
-  const [categories] = await Promise.all([
-    api.category.getAll({ limit: 999 }),
-    api.product.getAll.prefetch({
-      page: +page,
-      limit: +limit,
-      query,
-      orderBy,
-      sortBy,
-      category: categoryId,
-    }),
-  ])
+  void api.product.getAll.prefetch({
+    page: +page,
+    limit: +limit,
+    q,
+    orderBy: 'asc',
+    sortBy: 'createdAt',
+    category: categoryId,
+  })
 
-  const q = {
+  const query = {
     category: categoryId,
     limit: +limit,
     orderBy,
     page: +page,
-    query: query,
+    q,
     sortBy,
   }
 
   return (
     <HydrateClient>
-      <main className="container grow py-4">
+      <main className="container flex grow flex-col gap-8 py-4 md:flex-row">
         <h1 className="sr-only">All Product of Shop</h1>
 
-        <Form
-          action={slug ? `/shop/${slug}` : '/shop'}
-          className="mb-4 flex flex-col items-center gap-4 md:flex-row"
-        >
-          <h2 className="sr-only">Product Filter Section</h2>
+        <FilterSidebar slug={slug} {...query} />
 
-          <Input
-            name="query"
-            type="search"
-            placeholder="Search..."
-            defaultValue={query}
-          />
+        <section className="grow">
+          <h3 className="sr-only">Product List Section</h3>
+          <Suspense fallback={<ProductListSkeleton limit={+limit} />}>
+            <ProductList {...query} />
+          </Suspense>
 
-          <Select name="orderBy" defaultValue={orderBy}>
-            <SelectTrigger>
-              <SelectValue placeholder="Order By" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="updatedAt">Recently Updated</SelectItem>
-              <SelectItem value="createdAt">Newest First</SelectItem>
-              <SelectItem value="price">Price</SelectItem>
-              <SelectItem value="name">Product Name</SelectItem>
-            </SelectContent>
-          </Select>
-
-          <Select name="sortBy" defaultValue={sortBy}>
-            <SelectTrigger>
-              <SelectValue placeholder="Sort By" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="asc">Ascending</SelectItem>
-              <SelectItem value="desc">Descending</SelectItem>
-            </SelectContent>
-          </Select>
-
-          <input name="limit" defaultValue={limit} hidden readOnly />
-          <input name="page" defaultValue={page} hidden readOnly />
-
-          <SubmitButton />
-        </Form>
-
-        <div className="grid gap-4 md:grid-cols-12">
-          <section className="col-span-2 hidden max-h-[50dvh] flex-col gap-2 overflow-y-auto md:flex">
-            <h3 className="sr-only">Category List Section</h3>
-            <Link
-              href={{ pathname: '/shop', query: { ...q, page: 1 } }}
-              className={cn(
-                'hover:bg-accent hover:text-accent-foreground rounded-md px-2 py-1',
-                !categoryId && 'bg-accent text-accent-foreground',
-              )}
-            >
-              All
-            </Link>
-
-            {categories.map((c) => (
-              <Link
-                key={c.id}
-                href={{
-                  pathname: `/shop/${slugify(c.name)}-${c.id}`,
-                  query: { ...q, page: 1 },
-                }}
-                className={cn(
-                  'hover:bg-accent hover:text-accent-foreground rounded-md px-2 py-1',
-                  categoryId === c.id && 'bg-accent text-accent-foreground',
-                )}
-              >
-                {c.name}
-              </Link>
-            ))}
-          </section>
-
-          <section className="md:col-span-10">
-            <h3 className="sr-only">Product List Section</h3>
-
-            <Suspense fallback={<ProductListSkeleton limit={+limit} />}>
-              <ProductList {...q} />
-            </Suspense>
-
-            <Suspense fallback={<ProductPaginationSkeleton />}>
-              <ProductPagination {...q} />
-            </Suspense>
-          </section>
-        </div>
+          <Suspense fallback={<ProductPaginationSkeleton />}>
+            <ProductPagination {...query} />
+          </Suspense>
+        </section>
       </main>
     </HydrateClient>
   )

@@ -3,7 +3,6 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 import { MobileMenu } from './mobile-menu'
-import { Nav } from './nav'
 import { Search } from './search'
 import { ThemeBtn } from './theme-toggle'
 import { User } from './user'
@@ -26,9 +25,8 @@ export const Header: React.FC = () => (
 
       <nav className="hidden gap-2 md:flex">
         <Link href="/shop" className="text-muted-foreground hover:text-foreground">
-          Shop
+          Products & Collections
         </Link>
-        <Nav />
       </nav>
 
       <Suspense>

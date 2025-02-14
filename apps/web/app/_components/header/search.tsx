@@ -23,9 +23,9 @@ export const Search: React.FC<{ className?: string }> = ({ className }) => {
     >
       <Input
         type="search"
-        name="query"
+        name="q"
         placeholder="Search..."
-        className="w-full pr-12"
+        className="bg-background w-full pr-12 md:bg-transparent"
         defaultValue={query}
       />
       <button className="ite hover:text-muted-foreground absolute top-0 right-0 z-1 inline-flex h-full min-h-full min-w-10 cursor-pointer items-center justify-center px-4 transition-colors">

@@ -34,11 +34,8 @@ export const ProductCard: React.FC<{
 )
 
 export const ProductCardSkeleton: React.FC = () => (
-  <Card variant="pressable" className="relative space-y-4">
-    <figure>
-      <Badge className="bg-card/50 absolute top-2 right-2 animate-pulse">&nbsp;</Badge>
-      <div className="aspect-square w-full animate-pulse rounded-t-lg bg-current" />
-    </figure>
+  <Card variant="pressable" className="space-y-4">
+    <div className="aspect-square w-full animate-pulse rounded-t-lg bg-current" />
 
     <CardFooter className="flex-col items-start gap-0.5">
       <CardTitle className="w-1/2 animate-pulse rounded-md bg-current">&nbsp;</CardTitle>

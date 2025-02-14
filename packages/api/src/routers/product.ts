@@ -9,13 +9,13 @@ export const productRouter = {
   getAll: publicProcedure.input(schemas.query).query(async ({ ctx, input }) => {
     const products = await ctx.db.product.findMany({
       where: {
-        name: { contains: input.query, mode: 'insensitive' },
-        ...(input.category && { categoryId: input.category }),
+        name: { contains: input.q, mode: 'insensitive' },
+        categoryId: { contains: input.category, mode: 'insensitive' },
         stock: { gt: 0 },
       },
       take: input.limit,
       skip: (input.page - 1) * input.limit,
-      orderBy: { [input.orderBy]: input.sortBy },
+      orderBy: { [input.sortBy]: input.orderBy },
       include: {
         category: { select: { id: true, name: true } },
         carts: { select: { quantity: true } },
@@ -25,8 +25,8 @@ export const productRouter = {
     const totalPage = Math.ceil(
       (await ctx.db.product.count({
         where: {
-          name: { contains: input.query, mode: 'insensitive' },
-          ...(input.category && { categoryId: input.category }),
+          name: { contains: input.q, mode: 'insensitive' },
+          categoryId: { contains: input.category, mode: 'insensitive' },
           stock: { gt: 0 },
         },
       })) / input.limit,

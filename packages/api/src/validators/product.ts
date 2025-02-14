@@ -1,10 +1,10 @@
 import { z } from 'zod'
 
 export const query = z.object({
-  query: z.string().optional(),
+  q: z.string().optional(),
   category: z.string().optional(),
-  orderBy: z.enum(['updatedAt', 'createdAt', 'name', 'price']).default('updatedAt'),
-  sortBy: z.enum(['asc', 'desc']).default('desc'),
+  sortBy: z.enum(['createdAt', 'name', 'price']).default('createdAt'),
+  orderBy: z.enum(['asc', 'desc']).default('desc'),
   page: z.number().default(1),
   limit: z.number().default(12),
 })

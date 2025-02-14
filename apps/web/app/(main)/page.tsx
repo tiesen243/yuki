@@ -12,10 +12,7 @@ import {
 export const dynamic = 'force-dynamic'
 
 export default async function HomePage() {
-  await Promise.all([
-    api.product.getAll.prefetch({ orderBy: 'createdAt' }),
-    api.category.getAll.prefetch({}),
-  ])
+  await Promise.all([api.product.getAll.prefetch({}), api.category.getAll.prefetch({})])
 
   return (
     <HydrateClient>

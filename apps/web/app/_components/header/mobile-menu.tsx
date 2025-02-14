@@ -7,7 +7,6 @@ import Link from 'next/link'
 import { MenuIcon } from '@yuki/ui/icons'
 import { cn } from '@yuki/ui/utils'
 
-import { Nav } from './nav'
 import { Search } from './search'
 import { SidebarThemeToggle } from './theme-toggle'
 
@@ -69,8 +68,16 @@ export const MobileMenu: React.FC = () => {
         </nav>
 
         <nav className="mx-2 my-4 flex flex-col gap-1">
-          <span className="text-muted-foreground text-xs">Categories</span>
-          <Nav limit={10} isSidebar />
+          <span className="text-muted-foreground px-2 text-xs">Legal</span>
+          {legalNavLinks.map(({ title, href }) => (
+            <Link
+              key={title}
+              href={href}
+              className="text-foreground hover:bg-background rounded-lg px-2 py-1 transition-colors"
+            >
+              {title}
+            </Link>
+          ))}
         </nav>
 
         <nav className="mx-2 my-4 flex flex-col gap-1">
@@ -83,7 +90,17 @@ export const MobileMenu: React.FC = () => {
 }
 
 const navLinks = [
-  { title: 'Shop', href: '/shop' },
+  { title: 'Products & Collections', href: '/shop' },
+  { title: 'Shopping Cart', href: '/account/cart' },
+  { title: 'Purchase History', href: '/account/orders' },
+]
+
+const legalNavLinks = [
   { title: 'About', href: '/about' },
-  { title: 'Contact', href: '/contact' },
+  { title: 'Privacy Policy', href: '/privacy' },
+  { title: 'Terms & Conditions', href: '/terms' },
+  { title: 'Cookie Policy', href: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' },
+  { title: 'Accessibility', href: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' },
+  { title: 'Legal Notice', href: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' },
+  { title: 'Contact Us', href: '/contact' },
 ]
