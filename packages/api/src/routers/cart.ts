@@ -2,7 +2,7 @@ import type { TRPCRouterRecord } from '@trpc/server'
 import { TRPCError } from '@trpc/server'
 
 import { protectedProcedure } from '../trpc'
-import { cartSchema } from '../validators/cart'
+import * as schemas from '../validators/cart'
 
 export const cartRouter = {
   // [GET] /api/trpc/cart.getCart
@@ -34,7 +34,7 @@ export const cartRouter = {
 
   // [POST] /api/trpc/cart.updateCart
   updateCart: protectedProcedure
-    .input(cartSchema)
+    .input(schemas.cartSchema)
     .mutation(async ({ ctx, input: { productId, quantity, isUpdate } }) => {
       const userId = ctx.session.user.id
 
@@ -96,7 +96,7 @@ export const cartRouter = {
 
   // [POST] /api/trpc/cart.deleteItemFromCart
   deleteItemFromCart: protectedProcedure
-    .input(cartSchema)
+    .input(schemas.cartSchema)
     .mutation(async ({ ctx, input }) => {
       const cart = await ctx.db.cart.findUnique({ where: { id: input.cartId } })
       if (!cart) throw new TRPCError({ code: 'NOT_FOUND', message: 'Cart not found' })

@@ -16,52 +16,27 @@
             </TableRow>
           </template>
           <template v-else>
-            <TableRow v-for="row in data?.orders" :key="row.id">
+            <TableRow v-for="row in data" :key="row.id">
               <TableCell>{{ row.id }}</TableCell>
-              <TableCell>{{ row.user.name }}</TableCell>
-              <TableCell>{{ new Date(row.updatedAt).toDateString() }}</TableCell>
-              <TableCell>{{ row.total }}</TableCell>
-              <TableCell class="space-x-2">
-                <Badge :variant="row.status">
-                  {{ row.status.toLowerCase() }}
-                </Badge>
-                <Badge :variant="row.payment">
-                  {{ row.payment.toLowerCase() }}
-                </Badge>
-              </TableCell>
-              <TableCell>
-                <Button :as="RouterLink" :to="`/orders/${row.id}`" size="sm">
-                  View
-                </Button>
+              <TableCell>{{ row.name }}</TableCell>
+              <TableCell>{{ row.numberOfProducts }}</TableCell>
+              <TableCell class="space-x-4">
+                <Button size="sm"> Edit </Button>
+                <Button variant="destructive" size="sm"> Delete </Button>
               </TableCell>
             </TableRow>
           </template>
         </TableBody>
       </Table>
     </div>
-
-    <div class="flex items-center justify-end space-x-2 py-4">
-      <Button variant="outline" :disabled="page === 1" @click="Math.max(1, page--)">
-        Previous
-      </Button>
-      <div class="text-sm">Page {{ page }} of {{ data?.totalPage ?? 0 }}</div>
-      <Button
-        variant="outline"
-        :disabled="page === data?.totalPage"
-        @click="Math.min(data?.totalPage ?? 0, page++)"
-      >
-        Next
-      </Button>
-    </div>
   </main>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { RouterLink, useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { keepPreviousData, useQuery } from '@tanstack/vue-query'
 
-import { Badge } from '@yuki/ui/vue/badge'
 import { Button } from '@yuki/ui/vue/button'
 import {
   Table,
@@ -76,14 +51,14 @@ import { api } from '@/lib/api'
 
 const router = useRouter()
 
-const headers = ['Order ID', 'Customer', 'Date', 'Total', 'Status', 'Actions']
+const headers = ['Category ID', 'Name', 'Number of Products', 'Actions']
 
 const page = ref(1)
 const { data, isLoading } = useQuery({
-  queryKey: ['order', 'getAllOrders', page],
+  queryKey: ['category', 'getAll', page],
   queryFn: async () => {
     try {
-      return await api.order.getAllOrders.query({ page: page.value })
+      return await api.category.getAll.query({ page: page.value })
     } catch (e) {
       if (e instanceof Error) {
         if (e.message === 'UNAUTHORIZED') await router.push('/sign-in')

@@ -16,23 +16,16 @@
             </TableRow>
           </template>
           <template v-else>
-            <TableRow v-for="row in data?.orders" :key="row.id">
+            <TableRow v-for="row in data?.products" :key="row.id">
               <TableCell>{{ row.id }}</TableCell>
-              <TableCell>{{ row.user.name }}</TableCell>
+              <TableCell>{{ row.name }}</TableCell>
+              <TableCell>${{ row.price }}</TableCell>
+              <TableCell>{{ row.stock }}</TableCell>
+              <TableCell>{{ row.sold }}</TableCell>
               <TableCell>{{ new Date(row.updatedAt).toDateString() }}</TableCell>
-              <TableCell>{{ row.total }}</TableCell>
-              <TableCell class="space-x-2">
-                <Badge :variant="row.status">
-                  {{ row.status.toLowerCase() }}
-                </Badge>
-                <Badge :variant="row.payment">
-                  {{ row.payment.toLowerCase() }}
-                </Badge>
-              </TableCell>
-              <TableCell>
-                <Button :as="RouterLink" :to="`/orders/${row.id}`" size="sm">
-                  View
-                </Button>
+              <TableCell class="space-x-4">
+                <Button size="sm"> Edit </Button>
+                <Button variant="destructive" size="sm"> Delete </Button>
               </TableCell>
             </TableRow>
           </template>
@@ -58,10 +51,9 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { RouterLink, useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { keepPreviousData, useQuery } from '@tanstack/vue-query'
 
-import { Badge } from '@yuki/ui/vue/badge'
 import { Button } from '@yuki/ui/vue/button'
 import {
   Table,
@@ -76,14 +68,14 @@ import { api } from '@/lib/api'
 
 const router = useRouter()
 
-const headers = ['Order ID', 'Customer', 'Date', 'Total', 'Status', 'Actions']
+const headers = ['Product ID', 'Name', 'Price', 'Stock', 'Sold', 'Updated At', 'Actions']
 
 const page = ref(1)
 const { data, isLoading } = useQuery({
-  queryKey: ['order', 'getAllOrders', page],
+  queryKey: ['product', 'getAll', page],
   queryFn: async () => {
     try {
-      return await api.order.getAllOrders.query({ page: page.value })
+      return await api.product.getAll.query({ page: page.value })
     } catch (e) {
       if (e instanceof Error) {
         if (e.message === 'UNAUTHORIZED') await router.push('/sign-in')

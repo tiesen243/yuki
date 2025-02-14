@@ -2,27 +2,29 @@ import type { TRPCRouterRecord } from '@trpc/server'
 import { TRPCError } from '@trpc/server'
 
 import { protectedProcedure, restrictedProcedure } from '../trpc'
-import { getAllSchema, getOneSchema, updateOrderSchema } from '../validators/order'
+import * as schemas from '../validators/order'
 
 export const orderRouter = {
   // [GET] /api/trpc/order.getAllOrders
-  getAllOrders: restrictedProcedure.input(getAllSchema).query(async ({ ctx, input }) => {
-    const orders = await ctx.db.cart.findMany({
-      where: { status: { not: 'NEW' } },
-      take: input.limit,
-      skip: (input.page - 1) * input.limit,
-      include: { user: true },
-    })
+  getAllOrders: restrictedProcedure
+    .input(schemas.getAllSchema)
+    .query(async ({ ctx, input }) => {
+      const orders = await ctx.db.cart.findMany({
+        where: { status: { not: 'NEW' } },
+        take: input.limit,
+        skip: (input.page - 1) * input.limit,
+        include: { user: true },
+      })
 
-    const totalPage = Math.ceil(
-      (await ctx.db.cart.count({ where: { status: { not: 'NEW' } } })) / input.limit,
-    )
+      const totalPage = Math.ceil(
+        (await ctx.db.cart.count({ where: { status: { not: 'NEW' } } })) / input.limit,
+      )
 
-    return {
-      orders: orders.map((o) => ({ ...o, id: o.id.toString().padStart(6, '0') })),
-      totalPage,
-    }
-  }),
+      return {
+        orders: orders.map((o) => ({ ...o, id: o.id.toString().padStart(6, '0') })),
+        totalPage,
+      }
+    }),
 
   // [GET] /api/trpc/order.getHistories
   getHistories: protectedProcedure.query(async ({ ctx }) => {
@@ -43,29 +45,31 @@ export const orderRouter = {
   }),
 
   // [GET] /api/trpc/order.getDetails
-  getDetails: protectedProcedure.input(getOneSchema).query(async ({ ctx, input }) => {
-    const order = await ctx.db.cart.findUnique({
-      where: { id: input.id },
-      include: { items: { include: { product: true } }, address: true },
-    })
-    if (!order) throw new TRPCError({ code: 'NOT_FOUND', message: 'Order not found' })
-
-    if (order.userId !== ctx.session.user.id && ctx.session.user.role !== 'ADMIN')
-      throw new TRPCError({
-        code: 'FORBIDDEN',
-        message:
-          'You do not have permission to access this order. Only order owners and administrators can view order details.',
+  getDetails: protectedProcedure
+    .input(schemas.getOneSchema)
+    .query(async ({ ctx, input }) => {
+      const order = await ctx.db.cart.findUnique({
+        where: { id: input.id },
+        include: { items: { include: { product: true } }, address: true },
       })
+      if (!order) throw new TRPCError({ code: 'NOT_FOUND', message: 'Order not found' })
 
-    return {
-      ...order,
-      id: `ORD${order.id.toString().padStart(6, '0')}`,
-    }
-  }),
+      if (order.userId !== ctx.session.user.id && ctx.session.user.role !== 'ADMIN')
+        throw new TRPCError({
+          code: 'FORBIDDEN',
+          message:
+            'You do not have permission to access this order. Only order owners and administrators can view order details.',
+        })
+
+      return {
+        ...order,
+        id: `ORD${order.id.toString().padStart(6, '0')}`,
+      }
+    }),
 
   // [POST] /api/trpc/order.updateOrder
   updateOrder: protectedProcedure
-    .input(updateOrderSchema)
+    .input(schemas.updateOrderSchema)
     .mutation(async ({ ctx, input: { id, ...data } }) => {
       const cart = await ctx.db.cart.findUnique({
         where: { id },

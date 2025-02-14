@@ -16,7 +16,10 @@ export const productRouter = {
       take: input.limit,
       skip: (input.page - 1) * input.limit,
       orderBy: { [input.orderBy]: input.sortBy },
-      include: { category: { select: { id: true, name: true } } },
+      include: {
+        category: { select: { id: true, name: true } },
+        carts: { select: { quantity: true } },
+      },
     })
 
     const totalPage = Math.ceil(
@@ -30,7 +33,10 @@ export const productRouter = {
     )
 
     return {
-      products,
+      products: products.map((p) => ({
+        ...p,
+        sold: p.carts.reduce((acc, cur) => acc + cur.quantity, 0),
+      })),
       totalPage,
     }
   }),
