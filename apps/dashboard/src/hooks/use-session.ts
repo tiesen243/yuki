@@ -11,15 +11,14 @@ export const useSession = () => {
   const baseUrl = `${env.VUE_PUBLIC_WEB_URL}/api/auth`
 
   const cookies = useCookies(['auth_token'])
-
-  const token: string | undefined = cookies.get('auth_token')
-  const router = useRouter()
-
   const queryClient = useQueryClient()
+  const router = useRouter()
 
   const session = useQuery({
     queryKey: ['auth'],
     queryFn: async () => {
+      const token: string | undefined = cookies.get('auth_token')
+
       const res = await fetch(baseUrl, {
         headers: { Authorization: `Bearer ${token}` },
       })
@@ -39,16 +38,18 @@ export const useSession = () => {
       }
       if (!res.ok) throw new Error(message)
 
+      return { session }
+    },
+    onSuccess: async ({ session }) => {
       cookies.set('auth_token', session.token, {
         path: '/',
         secure: env.NODE_ENV === 'production',
         expires: new Date(session.expiresAt),
         sameSite: 'lax',
       })
-    },
-    onSuccess: async () => {
-      await router.push('/')
+
       await queryClient.invalidateQueries({ queryKey: ['auth'] })
+      await router.push('/')
     },
     onError: (e) => toast.error(e.message),
   })
@@ -56,6 +57,8 @@ export const useSession = () => {
   const signOut = useMutation({
     mutationKey: ['auth', 'sign-out'],
     mutationFn: async () => {
+      const token: string | undefined = cookies.get('auth_token')
+
       const res = await fetch(`${baseUrl}/sign-out?dashboard=true`, {
         headers: { Authorization: `Bearer ${token}` },
       })
@@ -63,14 +66,14 @@ export const useSession = () => {
       if (!res.ok) throw new Error(json.message)
     },
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ['auth'] })
       cookies.remove('auth_token')
+      await queryClient.invalidateQueries({ queryKey: ['auth'] })
+      await router.push('/sign-in')
     },
     onError: (e) => toast.error(e.message),
   })
 
   return {
-    token,
     session: session.data,
     isLoading: session.isLoading,
     signIn: signIn.mutate,

@@ -40,8 +40,12 @@
         </template>
         <template v-else>
           <Badge :variant="data?.status">
-            {{ data?.status }}
+            {{ data?.status.toLowerCase() }}
           </Badge>
+          <Badge :variant="data?.payment">
+            {{ data?.payment.toLowerCase() }}
+          </Badge>
+
           <p class="text-muted-foreground">
             Order #{{ data?.id }} • {{ new Date(String(data?.updatedAt)).toDateString() }}
           </p>
@@ -108,7 +112,7 @@ const headers = ['Product ID', 'Product Name', 'Price', 'Quantity', 'Total']
 const route = useRoute()
 const router = useRouter()
 
-const id = String(route.params.id ?? '')
+const id = +(route.params.id ?? '')
 
 const { data, isLoading } = useQuery({
   queryKey: ['order', 'getDetails', id],
