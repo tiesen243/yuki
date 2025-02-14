@@ -6,6 +6,7 @@ const badgeVariants = cva(
   {
     variants: {
       variant: {
+        Default: 'bg-card text-card-foregound',
         NEW: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
         PENDING: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
         CONFIRMED: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
@@ -21,7 +22,7 @@ const badgeVariants = cva(
       },
     },
     defaultVariants: {
-      variant: 'NEW',
+      variant: 'Default',
     },
   },
 )

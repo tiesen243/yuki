@@ -58,6 +58,7 @@ export const SignInForm: React.FC<{
           Don&apos;t have an account?{' '}
           <Button
             variant="link"
+            size="sm"
             type="button"
             onClick={() => {
               router.push('/sign-up')

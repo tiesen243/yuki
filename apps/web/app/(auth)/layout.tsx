@@ -12,17 +12,17 @@ export default async function AuthLayout({
   if (session.user) redirect('/')
 
   return (
-    <main className="container grid min-h-[90dvh] place-items-center">
+    <main className="container grid min-h-[95dvh] place-items-center">
       <Card className="w-full max-w-xl">
         {children}
 
-        <CardFooter className="flex-col gap-2" asChild>
+        <CardFooter className="flex-col gap-4" asChild>
           <form>
-            <span className="text-muted-foreground relative w-full text-center">
-              <div className="bg-muted-foreground absolute top-1/2 left-0 h-px w-[48%]" />
-              or
-              <div className="bg-muted-foreground absolute top-1/2 right-0 h-px w-[48%]" />
-            </span>
+            <div className="text-muted-foreground flex w-full items-center gap-1 text-center">
+              <div className="bg-muted-foreground h-px w-full" />
+              <span className="whitespace-nowrap">OR CONTINUE WITH</span>
+              <div className="bg-muted-foreground h-px w-full" />
+            </div>
 
             {providers.map((p) => (
               <Button

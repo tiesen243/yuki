@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { buttonVariants } from '@yuki/ui/button'
 import { Typography } from '@yuki/ui/typography'
 
-import Yuki from '@/public/assets/imgs/illust_124659833_20241128_090102.png'
+import Yuki from '@/public/assets/imgs/yuki.png'
 
 export default function NotFoundPage() {
   return (

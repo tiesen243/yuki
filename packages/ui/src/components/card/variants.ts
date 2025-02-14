@@ -17,7 +17,7 @@ type CardVariants = VariantProps<typeof cardVariants>
 const cardHeaderVariants = cva('flex flex-col space-y-1.5 p-6')
 type CardHeaderVariants = VariantProps<typeof cardHeaderVariants>
 
-const cardTitleVariants = cva('leading-none font-semibold tracking-tight')
+const cardTitleVariants = cva('text-lg leading-none font-semibold tracking-tight')
 type CardTitleVariants = VariantProps<typeof cardTitleVariants>
 
 const cardDescriptionVariants = cva('text-muted-foreground text-sm')

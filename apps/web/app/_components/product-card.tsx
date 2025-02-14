@@ -1,41 +1,50 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
-import type { Product } from '@yuki/db'
-import { Card, CardDescription, CardHeader, CardTitle } from '@yuki/ui/card'
+import type { RouterOutputs } from '@yuki/api'
+import { Badge } from '@yuki/ui/badge'
+import { Card, CardDescription, CardFooter, CardTitle } from '@yuki/ui/card'
 
 import { slugify } from '@/lib/utils'
 
-export const ProductCard: React.FC<{ product: Product }> = ({ product }) => (
-  <Card variant="pressable" asChild>
+export const ProductCard: React.FC<{
+  product: RouterOutputs['product']['getAll']['products'][number]
+}> = ({ product }) => (
+  <Card variant="pressable" className="relative space-y-4" asChild>
     <Link href={`/${slugify(product.name)}-${product.id}`}>
-      <Image
-        src={product.image}
-        alt={product.name}
-        width={300}
-        height={300}
-        className="aspect-square w-full rounded-t-xl"
-      />
-      <CardHeader>
-        <CardTitle className="truncate">{product.name}</CardTitle>
-        <CardDescription className="flex flex-wrap items-center justify-between gap-0.5">
-          <span>${product.price}</span>
-          <span>Stock: {product.stock}</span>
-        </CardDescription>
-      </CardHeader>
+      <figure>
+        <Badge className="bg-card/50 absolute top-2 right-2">
+          {product.category.name}
+        </Badge>
+        <Image
+          src={product.image}
+          alt={product.name}
+          width={300}
+          height={500}
+          className="aspect-square w-full"
+        />
+      </figure>
+
+      <CardFooter className="flex-col items-start gap-0.5">
+        <CardTitle className="w-full truncate">{product.name}</CardTitle>
+        <CardDescription>${product.price}</CardDescription>
+      </CardFooter>
     </Link>
   </Card>
 )
 
 export const ProductCardSkeleton: React.FC = () => (
-  <Card>
-    <div className="aspect-square w-full animate-pulse rounded-t-xl bg-current" />
-    <CardHeader>
-      <CardTitle className="w-1/2 animate-pulse rounded bg-current"> &nbsp;</CardTitle>
-      <CardDescription className="flex items-center justify-between">
-        <span className="w-1/4 animate-pulse rounded bg-current"> &nbsp;</span>
-        <span className="w-1/4 animate-pulse rounded bg-current"> &nbsp;</span>
+  <Card variant="pressable" className="relative space-y-4">
+    <figure>
+      <Badge className="bg-card/50 absolute top-2 right-2 animate-pulse">&nbsp;</Badge>
+      <div className="aspect-square w-full animate-pulse rounded-t-lg bg-current" />
+    </figure>
+
+    <CardFooter className="flex-col items-start gap-0.5">
+      <CardTitle className="w-1/2 animate-pulse rounded-md bg-current">&nbsp;</CardTitle>
+      <CardDescription className="w-1/4 animate-pulse rounded-md bg-current">
+        &nbsp;
       </CardDescription>
-    </CardHeader>
+    </CardFooter>
   </Card>
 )

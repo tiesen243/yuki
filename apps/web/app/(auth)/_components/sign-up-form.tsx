@@ -49,6 +49,7 @@ export const SignUpForm = () => {
           Already have an account?{' '}
           <Button
             variant="link"
+            size="sm"
             type="button"
             onClick={() => {
               router.push('/sign-in')
