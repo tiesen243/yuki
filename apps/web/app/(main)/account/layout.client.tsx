@@ -11,7 +11,7 @@ export const NavLink: React.FC<LinkProps & React.ComponentProps<'a'>> = ({
   ...props
 }) => {
   const pathName = usePathname()
-  const isActive = pathName === props.href
+  const isActive = pathName.startsWith(props.href)
 
   return (
     <Link
