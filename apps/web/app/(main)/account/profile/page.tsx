@@ -7,7 +7,7 @@ import { Button } from '@yuki/ui/button'
 import { Typography } from '@yuki/ui/typography'
 
 import { api, HydrateClient } from '@/lib/trpc/server'
-import { LinkedAccountList, LinkedAccountSkeleton } from './page.client'
+import { EditProfileForm, LinkedAccountList, LinkedAccountSkeleton } from './page.client'
 
 export default async function ProfilePage() {
   const [session] = await Promise.all([auth(), api.user.getLinkedAccounts.prefetch()])
@@ -51,7 +51,8 @@ export default async function ProfilePage() {
               <AvatarImage src={session.user.image} alt={session.user.name} />
               <AvatarFallback>{session.user.name[0]}</AvatarFallback>
             </Avatar>
-            <Button>Edit profile</Button>
+
+            <EditProfileForm name={session.user.name} image={session.user.image} />
             <form action="/api/auth/sign-out">
               <Button variant="destructive">Sign Out</Button>
             </form>
@@ -65,6 +66,7 @@ export default async function ProfilePage() {
 const hideEmail = (email: string) => {
   const [username, domain] = email.split('@')
   if (!username) return 'invalid email'
-  const hiddenUsername = username.slice(0, 2) + '*'.repeat(username.length - 2)
+  const hiddenUsername =
+    username.slice(0, 2) + '*'.repeat(username.length - 4) + username.slice(-2)
   return `${hiddenUsername}@${domain}`
 }

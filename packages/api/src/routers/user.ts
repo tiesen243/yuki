@@ -35,6 +35,16 @@ export const userRouter = {
     }
   }),
 
+  // [POST] /api/trpc/user.updateProfile
+  updateProfile: protectedProcedure
+    .input(schemas.updateProfile)
+    .mutation(({ ctx, input }) =>
+      ctx.db.user.update({
+        where: { id: ctx.session.user.id },
+        data: input,
+      }),
+    ),
+
   // [GET] /api/trpc/user.getLinkedAccounts
   getLinkedAccounts: publicProcedure.query(async ({ ctx }) => {
     if (!ctx.session.user) return []
