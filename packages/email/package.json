@@ -1,5 +1,5 @@
 {
-  "name": "@yuki/auth",
+  "name": "@yuki/email",
   "version": "2.0.0",
   "private": true,
   "license": "MIT",
@@ -7,7 +7,6 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "react-server": "./src/index.rsc.ts",
       "default": "./src/index.ts"
     },
     "./env": {
@@ -19,19 +18,18 @@
     "build": "tsc",
     "clean": "git clean -xdf .cache .turbo dist node_modules",
     "dev": "tsc --watch",
+    "dev:email": "email dev --dir src/emails",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
     "typecheck": "tsc --noEmit --emitDeclarationOnly false"
   },
   "prettier": "@yuki/prettier-config",
   "dependencies": {
-    "@node-rs/argon2": "^2.0.2",
-    "@oslojs/crypto": "^1.0.1",
-    "@oslojs/encoding": "^1.1.0",
+    "@react-email/components": "^0.0.33",
     "@t3-oss/env-nextjs": "^0.12.0",
-    "@yuki/db": "workspace:*",
-    "@yuki/email": "workspace:*",
-    "arctic": "^3.3.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "resend": "^4.1.2",
     "zod": "^3.24.2"
   },
   "devDependencies": {
@@ -40,6 +38,7 @@
     "@yuki/tsconfig": "workspace:*",
     "eslint": "latest",
     "prettier": "latest",
+    "react-email": "^3.0.7",
     "typescript": "latest"
   }
 }

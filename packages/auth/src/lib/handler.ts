@@ -4,13 +4,13 @@ import { NextResponse } from 'next/server'
 import { generateCodeVerifier, generateState } from 'arctic'
 
 import { db } from '@yuki/db'
+import { sendEmail } from '@yuki/email'
 
 import { OAuthConfig } from '../config'
 import { env } from '../env'
-import { verifyHashedPassword } from './password'
 import { createSession, invalidateSessionToken, validateSessionToken } from './session'
 
-type Provider = 'credentials' | keyof ReturnType<typeof OAuthConfig>
+type Provider = keyof ReturnType<typeof OAuthConfig>
 
 const setCorsHeaders = (res: Response) => {
   res.headers.set('Access-Control-Allow-Origin', '*')
@@ -57,28 +57,6 @@ export const GET = async (
   ]
 
   try {
-    if (provider === 'credentials') {
-      const [email, password] = [
-        nextUrl.searchParams.get('email') ?? '',
-        nextUrl.searchParams.get('password') ?? '',
-      ]
-
-      const user = await db.user.findUnique({ where: { email } })
-      if (!user) return NextResponse.json({ message: 'User not found' }, { status: 404 })
-      if (!user.password)
-        return NextResponse.json({ message: 'User have no password' }, { status: 401 })
-      const isValid = await verifyHashedPassword(user.password, password)
-      if (!isValid)
-        return NextResponse.json({ message: 'Password is invalid!' }, { status: 401 })
-
-      const session = await createSession(user.id)
-      nextCookies.set(AUTH_KEY, session.token, cookieAttributes(session.expiresAt))
-
-      const response = NextResponse.json({ meesage: 'Login success', session })
-      setCorsHeaders(response)
-      return response
-    }
-
     const providers = OAuthConfig(`${nextUrl.origin}/api/auth/${provider}/callback`)
     const { ins, scopes, fetchUserUrl, mapFn } = providers[provider]
     if (!fetchUserUrl) throw new Error(`Provider "${provider}" is not supported`)
@@ -120,7 +98,13 @@ export const GET = async (
 
     const session = await createSession(user.id)
 
-    nextCookies.set(AUTH_KEY, session.token, cookieAttributes(session.expiresAt))
+    nextCookies.set(AUTH_KEY, session.token, {
+      httpOnly: true,
+      path: '/',
+      secure: env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      expires: session.expiresAt,
+    })
     nextCookies.delete('oauth_state')
     nextCookies.delete('oauth_code_verifier')
 
@@ -183,12 +167,10 @@ const createUser = async (p: {
     return user
   }
 
-  const accountData = {
-    provider,
-    providerId,
-    name,
-  }
-  return await db.user.upsert({
+  const existingUser = await db.user.findUnique({ where: { email } })
+
+  const accountData = { provider, providerId, name }
+  const user = await db.user.upsert({
     where: { email },
     update: { accounts: { create: accountData } },
     create: {
@@ -198,12 +180,8 @@ const createUser = async (p: {
       accounts: { create: accountData },
     },
   })
-}
 
-const cookieAttributes = (expires: Date) => ({
-  httpOnly: true,
-  path: '/',
-  secure: env.NODE_ENV === 'production',
-  sameSite: 'lax' as const,
-  expires,
-})
+  if (!existingUser) await sendEmail({ type: 'Welcome', params: user })
+
+  return user
+}

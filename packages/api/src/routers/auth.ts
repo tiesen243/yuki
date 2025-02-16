@@ -7,6 +7,7 @@ import {
   hashPassword,
   verifyHashedPassword,
 } from '@yuki/auth'
+import { sendEmail } from '@yuki/email'
 
 import { protectedProcedure, publicProcedure } from '../trpc'
 import * as schemas from '../validators/auth'
@@ -18,6 +19,7 @@ export const authRouter = {
     if (user) throw new TRPCError({ code: 'CONFLICT', message: 'User already exists' })
 
     const password = await hashPassword(input.password)
+    await sendEmail({ type: 'Welcome', params: input })
     return await ctx.db.user.create({
       data: {
         name: input.name,

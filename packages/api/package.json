@@ -27,6 +27,7 @@
     "@trpc/server": "^11.0.0-rc.764",
     "@yuki/auth": "workspace:*",
     "@yuki/db": "workspace:*",
+    "@yuki/email": "workspace:*",
     "superjson": "^2.2.2",
     "zod": "^3.24.2"
   },
