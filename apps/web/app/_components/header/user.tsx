@@ -1,7 +1,6 @@
 'use client'
 
 import Link from 'next/link'
-import { useTheme } from 'next-themes'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@yuki/ui/avatar'
 import { buttonVariants } from '@yuki/ui/button'
@@ -16,6 +15,7 @@ import {
   DropdownMenuTrigger,
 } from '@yuki/ui/dropdown-menu'
 import { LogOutIcon, MoonIcon, SunIcon } from '@yuki/ui/icons'
+import { useTheme } from '@yuki/ui/utils'
 
 import { useSession } from '@/hooks/use-session'
 import { navLinks } from './configs'

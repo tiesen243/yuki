@@ -1,13 +1,11 @@
-import type { FileRouter } from 'uploadthing/next'
+import type { FileRouter } from 'uploadthing/server'
 import { NextSSRPlugin } from '@uploadthing/react/next-ssr-plugin'
 import { createRouteHandler, createUploadthing } from 'uploadthing/next'
 import { extractRouterConfig, UploadThingError, UTApi } from 'uploadthing/server'
 
 import { auth } from '@yuki/auth'
 
-const f = createUploadthing()
-
-const configs = f({
+const configs = createUploadthing()({
   image: {
     /**
      * For full list of options and defaults, see the File Route API reference
@@ -29,6 +27,7 @@ const configs = f({
     // Whatever is returned here is accessible in onUploadComplete as `metadata`
     return { userId: user.id }
   })
+
   .onUploadComplete(({ metadata, file }) => {
     // This code RUNS ON YOUR SERVER after upload
     console.log('Upload complete for userId:', metadata.userId)
@@ -39,7 +38,6 @@ const configs = f({
     return { uploadedBy: metadata.userId }
   })
 
-// FileRouter for your app, can contain multiple FileRoutes
 const ourFileRouter = {
   // Define as many FileRoutes as you like, each with a unique routeSlug
   userImageUploader: configs,
@@ -51,7 +49,9 @@ const handler = createRouteHandler({
   router: ourFileRouter,
 })
 
-const utapi = new UTApi({})
+const routerConfig = extractRouterConfig(ourFileRouter)
 
-export { extractRouterConfig, handler, NextSSRPlugin, ourFileRouter, utapi }
+export { handler, NextSSRPlugin, routerConfig }
 export type OurFileRouter = typeof ourFileRouter
+
+export const utapi = new UTApi()

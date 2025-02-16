@@ -1,8 +1,7 @@
-export { OAuth2RequestError } from 'arctic'
+export { generateState, generateCodeVerifier, OAuth2RequestError } from 'arctic'
 
 export type { Session } from './config'
-export { auth, generateGravatar } from './config'
-export { GET, POST, OPTIONS } from './lib/handler'
+export { auth, OAuthConfig, generateGravatar } from './config'
 export { hashPassword, verifyHashedPassword } from './lib/password'
 export {
   createSession,

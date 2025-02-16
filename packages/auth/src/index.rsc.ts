@@ -1,6 +1,6 @@
 import { cache } from 'react'
 
-import { generateGravatar, auth as uncachedAuth } from './config'
+import { generateGravatar, OAuthConfig, auth as uncachedAuth } from './config'
 
 /**
  * This is the main way to get session data for your RSCs.
@@ -8,11 +8,10 @@ import { generateGravatar, auth as uncachedAuth } from './config'
  */
 const auth = cache(uncachedAuth)
 
-export { OAuth2RequestError } from 'arctic'
+export { OAuth2RequestError, generateCodeVerifier, generateState } from 'arctic'
 
 export type { Session } from './config'
-export { auth, generateGravatar }
-export { GET, POST, OPTIONS } from './lib/handler'
+export { auth, OAuthConfig, generateGravatar }
 export { hashPassword, verifyHashedPassword } from './lib/password'
 export {
   createSession,

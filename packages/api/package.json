@@ -24,7 +24,7 @@
   },
   "prettier": "@yuki/prettier-config",
   "dependencies": {
-    "@trpc/server": "^11.0.0-rc.764",
+    "@trpc/server": "^11.0.0-rc.768",
     "@yuki/auth": "workspace:*",
     "@yuki/db": "workspace:*",
     "@yuki/email": "workspace:*",

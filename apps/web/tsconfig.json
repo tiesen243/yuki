@@ -1,6 +1,9 @@
 {
-  "extends": "@yuki/tsconfig/nextjs.json",
+  "extends": "@yuki/tsconfig/react-library.json",
   "compilerOptions": {
+    "module": "esnext",
+    "plugins": [{ "name": "next" }],
+
     "baseUrl": ".",
     "paths": { "@/*": ["./*"], "@yuki/ui/*": ["../../packages/ui/src/*"] }
   },

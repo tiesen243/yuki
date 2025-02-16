@@ -34,7 +34,7 @@ apps/expo/ios
 apps/expo/android
 
 # React Router
-/.react-router/
+.react-router/
 /build/
 
 # production

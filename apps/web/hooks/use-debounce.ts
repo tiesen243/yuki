@@ -25,7 +25,7 @@ export const useDebounce = <T extends (...args: never[]) => void>(
 
       timeoutRef.current = setTimeout(() => {
         latestCallbackRef.current(...args)
-      }, delay)
+      }, delay) as unknown as NodeJS.Timeout
     },
     [delay],
   ) as T

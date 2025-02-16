@@ -1,11 +1,10 @@
 import '@/app/globals.css'
 
 import { Geist } from 'next/font/google'
-import { ThemeProvider } from 'next-themes'
 
 import { Toaster } from '@yuki/ui/sonner'
-import { cn } from '@yuki/ui/utils'
-import { extractRouterConfig, NextSSRPlugin, ourFileRouter } from '@yuki/uploader'
+import { cn, ThemeProvider } from '@yuki/ui/utils'
+import { NextSSRPlugin, routerConfig } from '@yuki/uploader'
 
 import { SessionProvider } from '@/hooks/use-session'
 import { createMetadata } from '@/lib/metadata'
@@ -42,7 +41,7 @@ export default function RootLayout({
              * leaked to the client. The data passed to the client is the same
              * as if you were to fetch `/api/uploadthing` directly.
              */
-            routerConfig={extractRouterConfig(ourFileRouter)}
+            routerConfig={routerConfig}
           />
           <Toaster richColors />
         </ThemeProvider>
