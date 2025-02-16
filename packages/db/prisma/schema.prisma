@@ -120,7 +120,7 @@ enum Status {
 enum Payment {
   UNPAID
   PAID
-  REFUND
+  REFUNDED
 }
 
 model Cart {

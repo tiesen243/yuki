@@ -40,6 +40,10 @@
     "gnr": {
       "cache": false,
       "interactive": false
+    },
+    "ui-add": {
+      "cache": false,
+      "interactive": true
     }
   },
   "globalEnv": [
@@ -51,8 +55,6 @@
     "GITHUB_SECRET",
     "GOOGLE_ID",
     "GOOGLE_SECRET",
-    "NEXT_PUBLIC_DASHBOARD_URL",
-    "VUE_PUBLIC_WEB_URL",
     "PORT"
   ],
   "globalPassThroughEnv": [

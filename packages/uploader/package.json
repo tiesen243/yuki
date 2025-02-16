@@ -12,10 +12,6 @@
     "./react": {
       "types": "./dist/react.d.ts",
       "default": "./src/react.ts"
-    },
-    "./vue": {
-      "types": "./dist/vue.d.ts",
-      "default": "./src/vue.ts"
     }
   },
   "scripts": {
@@ -28,10 +24,9 @@
   },
   "prettier": "@yuki/prettier-config",
   "dependencies": {
-    "@uploadthing/react": "^7.2.0",
-    "@uploadthing/vue": "^7.2.0",
+    "@uploadthing/react": "^7.2.1",
     "@yuki/auth": "workspace:*",
-    "uploadthing": "^7.5.0"
+    "uploadthing": "^7.5.1"
   },
   "devDependencies": {
     "@yuki/eslint-config": "workspace:*",

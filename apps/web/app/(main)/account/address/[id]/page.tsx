@@ -12,7 +12,7 @@ export default async function UpdateAddressPage({
   return (
     <main className="flex-1 rounded-md border py-4 shadow-md">
       <div className="container mb-4">
-        <Typography level="h2">Update Address</Typography>
+        <Typography variant="h2">Update Address</Typography>
         <Typography color="muted">
           Add your address information to receive your orders from us.
         </Typography>

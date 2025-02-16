@@ -1,14 +1,12 @@
 'use client'
 
-import Form from 'next/form'
 import { useRouter } from 'next/navigation'
 
 import { Button } from '@yuki/ui/button'
 import { CardContent } from '@yuki/ui/card'
-import { Input } from '@yuki/ui/input'
-import { Label } from '@yuki/ui/label'
-import { toast } from '@yuki/ui/toast'
+import { toast } from '@yuki/ui/sonner'
 
+import { FormField } from '@/app/_components/form-field'
 import { api } from '@/lib/trpc/react'
 
 export const SignUpForm = () => {
@@ -22,7 +20,7 @@ export const SignUpForm = () => {
   })
 
   return (
-    <Form
+    <form
       action={(formData) => {
         mutate({
           name: formData.get('name') as string,
@@ -32,48 +30,38 @@ export const SignUpForm = () => {
         })
       }}
     >
-      <CardContent className="space-y-2">
+      <CardContent className="space-y-4">
         {fields.map((field) => (
-          <fieldset key={field.name}>
-            <Label htmlFor={field.name} className="capitalize">
-              {field.label ?? field.name}
-            </Label>
-            <Input {...field} />
-            <span className="text-destructive text-xs">
-              {error?.data?.zodError?.[field.name]?.at(0)}
-            </span>
-          </fieldset>
+          <FormField
+            {...field}
+            key={field.name}
+            error={error?.data?.zodError?.[field.name]?.at(0)}
+          />
         ))}
 
-        <p className="text-xs">
+        <Button type="submit" className="w-full" disabled={isPending}>
+          Register
+        </Button>
+
+        <div className="text-center text-sm">
           Already have an account?{' '}
-          <Button
-            variant="link"
-            size="sm"
-            type="button"
+          <a
+            className="cursor-pointer underline-offset-4 hover:underline"
             onClick={() => {
               router.push('/sign-in')
             }}
           >
             Sign In
-          </Button>
-        </p>
-        <Button type="submit" className="w-full" disabled={isPending}>
-          Register
-        </Button>
+          </a>
+        </div>
       </CardContent>
-    </Form>
+    </form>
   )
 }
 
 const fields = [
-  { name: 'name', placeholder: 'Yuki', type: 'text' },
-  { name: 'email', placeholder: 'yuki@kaze.com', type: 'email' },
-  { name: 'password', placeholder: 'Password', type: 'password' },
-  {
-    name: 'confirmPassword',
-    label: 'Confirm Password',
-    placeholder: 'Confirm Password',
-    type: 'password',
-  },
+  { name: 'name', label: 'Name', placeholder: 'Yuki', type: 'text' },
+  { name: 'email', label: 'Email', placeholder: 'yuki@example.com', type: 'email' },
+  { name: 'password', label: 'password', type: 'password' },
+  { name: 'confirmPassword', label: 'Confirm Password', type: 'password' },
 ]

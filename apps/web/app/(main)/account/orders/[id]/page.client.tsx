@@ -15,6 +15,7 @@ import {
 } from '@yuki/ui/table'
 
 import { api } from '@/lib/trpc/react'
+import { mapStatusBadge } from '@/lib/utils'
 
 export const OrderDetails: React.FC<{ id: number }> = ({ id }) => {
   const [order] = api.order.getDetails.useSuspenseQuery({ id })
@@ -42,8 +43,12 @@ export const OrderDetails: React.FC<{ id: number }> = ({ id }) => {
         <TableFooter>
           <TableRow>
             <TableCell colSpan={3} className="space-x-2">
-              <Badge variant={order.status}>{order.status.toLowerCase()}</Badge>
-              <Badge variant={order.payment}>{order.payment.toLowerCase()}</Badge>
+              <Badge variant={mapStatusBadge[order.status]}>
+                {order.status.toLowerCase()}
+              </Badge>
+              <Badge variant={mapStatusBadge[order.payment]}>
+                {order.payment.toLowerCase()}
+              </Badge>
             </TableCell>
 
             <TableCell align="right">Total</TableCell>

@@ -35,7 +35,8 @@ apps
   |   ├─ Tailwind CSS
   |   └─ E2E Typesafe API Server & Client
   └─ dashboard
-      ├─ Vue 3
+      ├─ React Router 7
+      ├─ React 19
       ├─ Tailwind CSS
       └─ E2E Typesafe Client
 packages
@@ -48,7 +49,6 @@ packages
   |       └─ Seed data using Python and Faker
   └─ ui
       └─ Start of a UI package for the webapp using shadcn-ui
-          └─ Migration to Vue components
 tooling
   ├─ eslint
   |   └─ shared, fine-grained, eslint presets

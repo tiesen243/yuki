@@ -1,7 +1,7 @@
 import type { FileRouter } from 'uploadthing/next'
 import { NextSSRPlugin } from '@uploadthing/react/next-ssr-plugin'
 import { createRouteHandler, createUploadthing } from 'uploadthing/next'
-import { extractRouterConfig, UploadThingError } from 'uploadthing/server'
+import { extractRouterConfig, UploadThingError, UTApi } from 'uploadthing/server'
 
 import { auth } from '@yuki/auth'
 
@@ -51,5 +51,7 @@ const handler = createRouteHandler({
   router: ourFileRouter,
 })
 
-export { extractRouterConfig, handler, NextSSRPlugin, ourFileRouter }
+const utapi = new UTApi({})
+
+export { extractRouterConfig, handler, NextSSRPlugin, ourFileRouter, utapi }
 export type OurFileRouter = typeof ourFileRouter

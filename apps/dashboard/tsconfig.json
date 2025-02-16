@@ -1,8 +1,0 @@
-{
-  "extends": "@yuki/tsconfig/internal-package.json",
-  "compilerOptions": {
-    "lib": ["DOM", "ES2020"],
-    "paths": { "@/*": ["./src/*"] }
-  },
-  "include": ["rsbuild.config.ts", "src"]
-}

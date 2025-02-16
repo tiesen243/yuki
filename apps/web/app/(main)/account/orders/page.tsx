@@ -12,7 +12,7 @@ export default function OrdersPage() {
     <HydrateClient>
       <main className="flex-1 rounded-md border py-4 shadow-md">
         <div className="container mb-4">
-          <Typography level="h2">Your orders</Typography>
+          <Typography variant="h2">Your orders</Typography>
           <Typography color="muted">
             Manage your order history and track recent purchases. View order details,
             invoices and delivery status.

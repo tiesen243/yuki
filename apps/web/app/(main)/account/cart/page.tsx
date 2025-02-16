@@ -12,7 +12,7 @@ export default function CartPage() {
     <HydrateClient>
       <main className="flex-1 rounded-md border py-4 shadow-md">
         <div className="container mb-4">
-          <Typography level="h2">Shopping cart</Typography>
+          <Typography variant="h2">Shopping cart</Typography>
           <Typography color="muted">
             Review and manage items you&apos;ve selected for purchase. We securely save
             your cart items so you can continue shopping later.

@@ -1,11 +1,10 @@
 import { Button } from '@yuki/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@yuki/ui/card'
 import { Mail, MapPin, Phone } from '@yuki/ui/icons'
-import { Input } from '@yuki/ui/input'
-import { Label } from '@yuki/ui/label'
 import { Textarea } from '@yuki/ui/textarea'
 import { Typography } from '@yuki/ui/typography'
 
+import { FormField } from '@/app/_components/form-field'
 import { createMetadata } from '@/lib/metadata'
 
 export default function ContactPage() {
@@ -13,7 +12,7 @@ export default function ContactPage() {
     <main className="container grid gap-8 py-16 lg:grid-cols-2">
       <section className="space-y-8">
         <div>
-          <Typography level="h1">Get in Touch</Typography>
+          <Typography variant="h1">Get in Touch</Typography>
           <p className="text-muted-foreground mt-2 text-lg">
             We&apos;d love to hear from you. Please fill out this form or contact us
             directly.
@@ -60,7 +59,7 @@ export default function ContactPage() {
 
       <Card>
         <CardHeader>
-          <Typography level="h2">Send us a message</Typography>
+          <Typography variant="h2">Send us a message</Typography>
           <CardDescription>
             Fill out the form below and we&apos;ll get back to you as soon as possible.
           </CardDescription>
@@ -68,34 +67,33 @@ export default function ContactPage() {
         <CardContent>
           <form className="space-y-6">
             <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="firstName">First name</Label>
-                <Input id="firstName" placeholder="Enter your first name" />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="lastName">Last name</Label>
-                <Input id="lastName" placeholder="Enter your last name" />
-              </div>
+              <FormField
+                name="firstName"
+                label="First name"
+                placeholder="Enter your first name"
+              />
+              <FormField
+                name="lastName"
+                label="Last Name"
+                placeholder="Enter your last name"
+              />
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" placeholder="Enter your email" />
-            </div>
+            <FormField name="Email" label="Email" placeholder="Enter your email" />
 
-            <div className="space-y-2">
-              <Label htmlFor="subject">Subject</Label>
-              <Input id="subject" placeholder="How can we help you?" />
-            </div>
+            <FormField
+              name="subject"
+              label="Subject"
+              placeholder="How can we help you?"
+            />
 
-            <div className="space-y-2">
-              <Label htmlFor="message">Message</Label>
+            <FormField name="message" asChild>
               <Textarea
                 id="message"
                 placeholder="Tell us more about your inquiry..."
                 className="min-h-[150px] resize-none"
               />
-            </div>
+            </FormField>
 
             <Button type="submit" className="w-full">
               Send Message

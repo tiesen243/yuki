@@ -12,37 +12,36 @@ export default async function AuthLayout({
   if (session.user) redirect('/')
 
   return (
-    <main className="container grid min-h-[95dvh] place-items-center">
-      <Card className="w-full max-w-xl">
+    <main className="container flex min-h-[calc(100dvh-5rem)] flex-col items-center justify-center gap-8">
+      <Card className="w-full max-w-md">
         {children}
 
-        <CardFooter className="flex-col gap-4" asChild>
-          <form>
-            <div className="text-muted-foreground flex w-full items-center gap-1 text-center">
-              <div className="bg-muted-foreground h-px w-full" />
-              <span className="whitespace-nowrap">OR CONTINUE WITH</span>
-              <div className="bg-muted-foreground h-px w-full" />
-            </div>
-
-            {providers.map((p) => (
-              <Button
-                key={p.name}
-                variant="outline"
-                className="w-full"
-                formAction={`/api/auth/${p.name}`}
-              >
-                <p.Icon /> <span className="w-32">Continue with {p.name}</span>
+        <CardFooter className="w-full flex-col gap-4">
+          <div className="after:border-border relative w-full text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
+            <span className="bg-background text-muted-foreground relative z-10 px-2">
+              Or continue with
+            </span>
+          </div>
+          <div className="grid w-full grid-cols-3 gap-4">
+            {authProviders.map((provider) => (
+              <Button key={provider.name} variant="outline" className="w-full">
+                <provider.icon />
+                <span className="sr-only">Login with {provider.name}</span>
               </Button>
             ))}
-          </form>
+          </div>
         </CardFooter>
       </Card>
+      <div className="text-muted-foreground hover:[&_a]:text-primary text-center text-xs text-balance [&_a]:underline [&_a]:underline-offset-4">
+        By clicking continue, you agree to our <a href="#">Terms of Service</a> and{' '}
+        <a href="#">Privacy Policy</a>.
+      </div>
     </main>
   )
 }
 
-const providers = [
-  { name: 'Discord', Icon: DiscordIcon },
-  { name: 'Github', Icon: GithubIcon },
-  { name: 'Google', Icon: GoogleIcon },
+const authProviders = [
+  { icon: DiscordIcon, name: 'Discord' },
+  { icon: GithubIcon, name: 'Github' },
+  { icon: GoogleIcon, name: 'Google' },
 ]

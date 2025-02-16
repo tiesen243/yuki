@@ -12,16 +12,21 @@ import { AUTH_KEY } from './lib/constants'
 import { validateSessionToken } from './lib/session'
 
 const OAuthConfig = (callbackUrl: string) => ({
-  /** add more configs based on the OAuth providers you want to use
-   * NOTE: mapFn is used for map user data form OAuth to database account schema
+  /**
+   * OAuth Provider Configuration
+   *
+   * @remarks
+   * - ins: create a new instance for OAuth provider
+   * - scopes: authentication permissions for user identification and email
+   * - fetchUserUrl: OAuth API endpoint to get user data
+   * - mapFn: Maps OAuth user data to database account schema
    *
    * @see https://arcticjs.dev
    */
   discord: {
-    ins1: null,
-    ins2: new Discord(env.DISCORD_ID, env.DISCORD_SECRET, callbackUrl),
+    ins: new Discord(env.DISCORD_ID, env.DISCORD_SECRET, callbackUrl),
     scopes: ['identify', 'email'],
-    fetchUserUrl: 'https://discord.com/api/users/@me', // @see https://discord.com/developers/docs/resources/user#get-current-user
+    fetchUserUrl: 'https://discord.com/api/users/@me',
     mapFn: (data: { id: string; email: string; username: string; avatar: string }) => ({
       providerId: data.id,
       email: data.email,
@@ -30,10 +35,9 @@ const OAuthConfig = (callbackUrl: string) => ({
     }),
   },
   github: {
-    ins1: new GitHub(env.GITHUB_ID, env.GITHUB_SECRET, callbackUrl),
-    ins2: null,
+    ins: new GitHub(env.GITHUB_ID, env.GITHUB_SECRET, callbackUrl),
     scopes: ['user:email'],
-    fetchUserUrl: 'https://api.github.com/user', // @see https://docs.github.com/en/rest/users/users?apiVersion=2022-11-28#get-the-authenticated-user
+    fetchUserUrl: 'https://api.github.com/user',
     mapFn: (data: { id: number; email: string; login: string; avatar_url: string }) => ({
       providerId: String(data.id),
       email: data.email,
@@ -42,8 +46,7 @@ const OAuthConfig = (callbackUrl: string) => ({
     }),
   },
   google: {
-    ins1: null,
-    ins2: new Google(env.GOOGLE_ID, env.GOOGLE_SECRET, callbackUrl),
+    ins: new Google(env.GOOGLE_ID, env.GOOGLE_SECRET, callbackUrl),
     scopes: ['openid', 'profile', 'email'],
     fetchUserUrl: 'https://openidconnect.googleapis.com/v1/userinfo',
     mapFn: (data: { sub: string; email: string; name: string; picture: string }) => ({

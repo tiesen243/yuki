@@ -12,7 +12,7 @@ export default function AboutPage() {
     <main className="container space-y-12 py-16">
       {/* Hero Section */}
       <div className="space-y-4 text-center">
-        <Typography level="h1">About Yuki</Typography>
+        <Typography variant="h1">About Yuki</Typography>
         <p className="text-muted-foreground text-xl">
           Bringing quality products to your doorstep since {new Date().getFullYear()}.
         </p>
@@ -59,7 +59,7 @@ export default function AboutPage() {
       </div>
 
       <div className="space-y-8">
-        <Typography level="h2">Our Team</Typography>
+        <Typography variant="h2">Our Team</Typography>
         <div className="grid gap-6 md:grid-cols-4">
           {[
             {

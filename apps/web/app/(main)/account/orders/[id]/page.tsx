@@ -19,7 +19,7 @@ export default async function OrderDetailsPage({ params }: Props) {
     <HydrateClient>
       <main className="flex-1 rounded-md border py-4 shadow-md">
         <div className="container mb-4">
-          <Typography level="h2">Orders Sumary</Typography>
+          <Typography variant="h2">Orders Sumary</Typography>
           <Typography color="muted">
             Track your order status, view order details and access delivery information.
             You can find your order history, payment receipts and manage any returns or

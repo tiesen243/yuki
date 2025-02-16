@@ -13,6 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@yuki/ui/select'
+import { toast } from '@yuki/ui/sonner'
 import {
   Table,
   TableBody,
@@ -22,7 +23,6 @@ import {
   TableHeader,
   TableRow,
 } from '@yuki/ui/table'
-import { toast } from '@yuki/ui/toast'
 
 import { useDebounce } from '@/hooks/use-debounce'
 import { api } from '@/lib/trpc/react'

@@ -93,7 +93,7 @@ export const ProductList: React.FC = () => {
 
   return (
     <section className="container grid grid-cols-3 gap-4 md:grid-cols-4 lg:grid-cols-6">
-      <Typography level="h2" className="col-span-3 md:col-span-4 lg:col-span-6">
+      <Typography variant="h2" className="col-span-3 md:col-span-4 lg:col-span-6">
         New Arrivals
       </Typography>
 
@@ -106,7 +106,7 @@ export const ProductList: React.FC = () => {
 
 export const ProductListSkeleton: React.FC = () => (
   <section className="container grid gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
-    <Typography level="h2" className="col-span-3 md:col-span-4 lg:col-span-6">
+    <Typography variant="h2" className="col-span-3 md:col-span-4 lg:col-span-6">
       New Arrivals
     </Typography>
 
@@ -120,7 +120,7 @@ export const CategoryList: React.FC = () => {
   const [categories] = api.category.getAll.useSuspenseQuery({})
   return (
     <section className="container grid grid-cols-2 gap-4 md:grid-cols-4">
-      <Typography level="h2" className="col-span-2 md:col-span-4">
+      <Typography variant="h2" className="col-span-2 md:col-span-4">
         Categories
       </Typography>
 
@@ -133,7 +133,7 @@ export const CategoryList: React.FC = () => {
 
 export const CategoryListSkeleton: React.FC = () => (
   <section className="container grid grid-cols-2 gap-4 md:grid-cols-4">
-    <Typography level="h2" className="col-span-2 md:col-span-4">
+    <Typography variant="h2" className="col-span-2 md:col-span-4">
       Categories
     </Typography>
 

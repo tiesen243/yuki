@@ -17,39 +17,42 @@ import {
 import { DiscordIcon, GithubIcon, GoogleIcon } from '@yuki/ui/icons'
 import { Input } from '@yuki/ui/input'
 import { Label } from '@yuki/ui/label'
-import { toast } from '@yuki/ui/toast'
-import { UploadButton } from '@yuki/uploader/react'
+import { toast } from '@yuki/ui/sonner'
+import { UploadButton } from '@yuki/ui/upload-button'
 
 import { api } from '@/lib/trpc/react'
 
 export const LinkedAccountList: React.FC = () => {
   const [linkedAccounts] = api.user.getLinkedAccounts.useSuspenseQuery()
 
-  return (['discord', 'github', 'google'] as const).map((provider) => (
-    <li key={provider} className="flex items-center gap-2">
-      {ProviderIcon[provider]}
+  const accountMap = new Map(linkedAccounts.map((acc) => [acc.provider, acc]))
+  return providers.map((provider) => {
+    const linkedAccount = accountMap.get(provider.name)
 
-      {linkedAccounts.some((acc) => acc.provider === provider) ? (
-        <>
-          <p className="w-32">
-            {linkedAccounts.find((acc) => acc.provider === provider)?.name}
-          </p>
-          <UnlinkButton provider={provider} />
-        </>
-      ) : (
-        <>
-          <p className="text-muted-foreground w-32">Not linked</p>
-          <LinkButton provider={provider} />
-        </>
-      )}
-    </li>
-  ))
+    return (
+      <li key={provider.name} className="flex items-center gap-2">
+        <provider.Icon className="size-4" />
+
+        {linkedAccount ? (
+          <>
+            <p className="w-32">{linkedAccount.name}</p>
+            <UnlinkButton provider={provider.name} />
+          </>
+        ) : (
+          <>
+            <p className="text-muted-foreground w-32">Not linked</p>
+            <LinkButton provider={provider.name} />
+          </>
+        )}
+      </li>
+    )
+  })
 }
 
 export const LinkedAccountSkeleton: React.FC = () =>
-  (['discord', 'github', 'google'] as const).map((provider) => (
-    <li key={provider} className="flex items-center gap-2">
-      {ProviderIcon[provider]}
+  providers.map((provider) => (
+    <li key={provider.name} className="flex items-center gap-2">
+      <provider.Icon className="size-4" />
       <div className="w-32 animate-pulse rounded bg-current">&nbsp;</div>
       <Button size="sm" variant="outline" className="w-20" disabled>
         Link
@@ -57,11 +60,11 @@ export const LinkedAccountSkeleton: React.FC = () =>
     </li>
   ))
 
-const ProviderIcon = {
-  discord: <DiscordIcon />,
-  github: <GithubIcon />,
-  google: <GoogleIcon />,
-}
+const providers = [
+  { name: 'discord', Icon: DiscordIcon },
+  { name: 'github', Icon: GithubIcon },
+  { name: 'google', Icon: GoogleIcon },
+]
 
 const UnlinkButton: React.FC<{ provider: string }> = ({ provider }) => {
   const router = useRouter()

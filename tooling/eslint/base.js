@@ -13,7 +13,7 @@ import tseslint from 'typescript-eslint'
 export const restrictEnvAccess = tseslint.config(
   { ignores: ['**/env.ts'] },
   {
-    files: ['**/*.js', '**/*.ts', '**/*.tsx', '**/*.vue'],
+    files: ['**/*.js', '**/*.ts', '**/*.tsx'],
     rules: {
       'no-restricted-properties': [
         'error',
@@ -40,7 +40,7 @@ export default tseslint.config(
   includeIgnoreFile(path.join(import.meta.dirname, '../../.gitignore')),
   { ignores: ['*.config.js'] },
   {
-    files: ['**/*.js', '**/*.ts', '**/*.tsx', '**/*.vue'],
+    files: ['**/*.js', '**/*.ts', '**/*.tsx'],
     plugins: { import: importPlugin },
     extends: [
       jseslint.configs.recommended,

@@ -1,5 +1,3 @@
-import './styles.css'
-
 import { generateUploadButton, generateUploadDropzone } from '@uploadthing/react'
 
 import type { OurFileRouter } from '.'

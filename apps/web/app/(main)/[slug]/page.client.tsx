@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation'
 import { Avatar, AvatarFallback, AvatarImage } from '@yuki/ui/avatar'
 import { Button } from '@yuki/ui/button'
 import { ShoppingCartIcon, Star } from '@yuki/ui/icons'
-import { toast } from '@yuki/ui/toast'
+import { toast } from '@yuki/ui/sonner'
 import { Typography } from '@yuki/ui/typography'
 
 import { ProductCard } from '@/app/_components/product-card'
@@ -66,7 +66,7 @@ export const ProductDetails: React.FC<{ id: string }> = ({ id }) => {
 
       <section className="flex max-h-full flex-col md:col-span-7">
         <h2 className="sr-only">Product Information Section</h2>
-        <Typography level="h3">{product.name}</Typography>
+        <Typography variant="h3">{product.name}</Typography>
         <div className="my-4 flex items-center gap-4">
           <StarRating rating={product.rating} />
           <hr className="bg-border h-6 w-0.5" />
@@ -181,7 +181,7 @@ export const ProductDetailsSkeleton: React.FC = () => (
 
     <section className="flex max-h-full flex-col md:col-span-7">
       <h2 className="sr-only">Product Information Section</h2>
-      <Typography level="h3" className="animate-pulse rounded-md bg-current">
+      <Typography variant="h3" className="animate-pulse rounded-md bg-current">
         &nbsp;
       </Typography>
       <div className="my-4 flex items-center gap-4">

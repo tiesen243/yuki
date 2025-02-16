@@ -5,12 +5,12 @@ import { createMetadata } from '@/lib/metadata'
 export default function TermsOfServicePage() {
   return (
     <main className="container max-w-4xl py-12">
-      <Typography level="h1" className="mb-6">
+      <Typography variant="h1" className="mb-6">
         Terms of Service
       </Typography>
 
       <article>
-        <Typography level="h2" className="border-b">
+        <Typography variant="h2" className="border-b">
           1. Acceptance of Terms
         </Typography>
         <Typography className="mb-4">
@@ -18,7 +18,7 @@ export default function TermsOfServicePage() {
           terms and provision of this agreement.
         </Typography>
 
-        <Typography level="h2" className="border-b">
+        <Typography variant="h2" className="border-b">
           2. Use License
         </Typography>
         <Typography className="mb-4">
@@ -27,7 +27,7 @@ export default function TermsOfServicePage() {
           transitory viewing only.
         </Typography>
 
-        <Typography level="h2" className="border-b">
+        <Typography variant="h2" className="border-b">
           3. Disclaimer
         </Typography>
         <Typography className="mb-4">
@@ -38,7 +38,7 @@ export default function TermsOfServicePage() {
           intellectual property or other violation of rights.
         </Typography>
 
-        <Typography level="h2" className="border-b">
+        <Typography variant="h2" className="border-b">
           4. Limitations
         </Typography>
         <Typography>

@@ -10,10 +10,13 @@ import { slugify } from '@/lib/utils'
 export const ProductCard: React.FC<{
   product: Product & { category: { name: string } }
 }> = ({ product }) => (
-  <Card variant="pressable" className="relative space-y-4" asChild>
+  <Card variant="pressable" className="group relative space-y-4" asChild>
     <Link href={`/${slugify(product.name)}-${product.id}`}>
       <figure>
-        <Badge className="bg-card/50 absolute top-2 right-2">
+        <Badge
+          variant="outline"
+          className="bg-card/70 group-hover:bg-secondary/70 absolute top-2 right-2 z-10 backdrop-blur-xl"
+        >
           {product.category.name}
         </Badge>
         <Image
@@ -21,7 +24,7 @@ export const ProductCard: React.FC<{
           alt={product.name}
           width={300}
           height={500}
-          className="aspect-square w-full"
+          className="aspect-square w-full group-hover:opacity-90"
         />
       </figure>
 

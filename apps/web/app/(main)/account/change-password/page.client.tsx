@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import { Button } from '@yuki/ui/button'
 import { Input } from '@yuki/ui/input'
 import { Label } from '@yuki/ui/label'
-import { toast } from '@yuki/ui/toast'
+import { toast } from '@yuki/ui/sonner'
 
 import { api } from '@/lib/trpc/react'
 

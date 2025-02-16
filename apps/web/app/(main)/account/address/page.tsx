@@ -15,7 +15,7 @@ export default function AddressPage() {
       <main className="flex-1 rounded-md border py-4 shadow-md">
         <div className="container mb-4 flex flex-col justify-between md:flex-row md:items-center">
           <div>
-            <Typography level="h2">Your Address</Typography>
+            <Typography variant="h2">Your Address</Typography>
             <Typography color="muted">
               Manage your address information to receive your orders.
             </Typography>

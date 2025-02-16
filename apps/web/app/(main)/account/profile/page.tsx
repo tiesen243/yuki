@@ -16,7 +16,7 @@ export default async function ProfilePage() {
     <HydrateClient>
       <main className="flex-1 rounded-md border py-6 pt-4 shadow-md">
         <div className="container mb-4">
-          <Typography level="h2">Profile</Typography>
+          <Typography variant="h2">Profile</Typography>
           <Typography color="muted">
             Manage your account information to secure your account.
           </Typography>

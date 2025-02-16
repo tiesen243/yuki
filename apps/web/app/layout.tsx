@@ -1,9 +1,9 @@
 import '@/app/globals.css'
 
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Geist } from 'next/font/google'
 import { ThemeProvider } from 'next-themes'
 
-import { Toaster } from '@yuki/ui/toast'
+import { Toaster } from '@yuki/ui/sonner'
 import { cn } from '@yuki/ui/utils'
 import { extractRouterConfig, NextSSRPlugin, ourFileRouter } from '@yuki/uploader'
 
@@ -13,8 +13,7 @@ import { TRPCReactProvider } from '@/lib/trpc/react'
 import { Footer } from './_components/footer'
 import { Header } from './_components/header'
 
-const geistSans = Geist({ variable: '--font-sans', subsets: ['latin'] })
-const geistMono = Geist_Mono({ variable: '--font-mono', subsets: ['latin'] })
+const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] })
 
 export default function RootLayout({
   children,
@@ -25,7 +24,6 @@ export default function RootLayout({
         className={cn(
           'flex min-h-dvh flex-col font-sans antialiased',
           geistSans.variable,
-          geistMono.variable,
         )}
       >
         <ThemeProvider attribute="class" defaultTheme="dark" disableTransitionOnChange>
