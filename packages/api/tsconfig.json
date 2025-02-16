@@ -1,5 +1,5 @@
 {
-  "extends": "@yuki/tsconfig/internal-package.json",
+  "extends": "@yuki/tsconfig/react-library.json",
   "compilerOptions": {},
   "include": ["src"],
   "exclude": ["node_modules"]
