@@ -48,13 +48,14 @@
   },
   "globalEnv": [
     "DATABASE_URL",
-    "UPLOADTHING_TOKEN",
     "DISCORD_ID",
     "DISCORD_SECRET",
     "GITHUB_ID",
     "GITHUB_SECRET",
     "GOOGLE_ID",
     "GOOGLE_SECRET",
+    "RESEND_KEY",
+    "UPLOADTHING_TOKEN",
     "PORT"
   ],
   "globalPassThroughEnv": [
