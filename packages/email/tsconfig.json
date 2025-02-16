@@ -1,6 +1,8 @@
 {
   "extends": "@yuki/tsconfig/react-library.json",
-  "compilerOptions": {},
+  "compilerOptions": {
+    "jsx": "preserve"
+  },
   "include": ["src"],
   "exclude": ["node_modules"]
 }
