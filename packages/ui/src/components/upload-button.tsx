@@ -5,7 +5,6 @@ import { cn } from '@yuki/ui/utils'
 import { UploadButton as Base } from '@yuki/uploader/react'
 
 export function UploadButton({
-  appearance,
   disabled = false,
   ...props
 }: React.ComponentProps<typeof Base>) {
