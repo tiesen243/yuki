@@ -25,9 +25,10 @@ model User {
   accounts  Account[]
   sessions  Session[]
 
-  products Product[]
-  carts    Cart[]
-  reviews  Review[]
+  verifiers Verifier[]
+  products  Product[]
+  carts     Cart[]
+  reviews   Review[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -44,6 +45,22 @@ model Account {
   @@id([provider, providerId])
 }
 
+model Session {
+  sessionToken String   @unique
+  expiresAt    DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       String
+
+  createdAt DateTime @default(now())
+}
+
+model Verifier {
+  token     String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  expiresAt DateTime
+}
+
 model Address {
   id     String @id @default(cuid())
   name   String
@@ -55,15 +72,6 @@ model Address {
   userId String
 
   orders Cart[]
-}
-
-model Session {
-  sessionToken String   @unique
-  expiresAt    DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId       String
-
-  createdAt DateTime @default(now())
 }
 
 model Category {

@@ -56,7 +56,7 @@ export const SignInForm: React.FC<{
           <div className="flex items-center justify-between">
             <Label htmlFor="password">Password</Label>
             <a
-              className="text-sm underline-offset-2 hover:underline"
+              className="cursor-pointer text-sm underline-offset-2 hover:underline"
               onClick={() => {
                 router.push('/forgot-password')
               }}

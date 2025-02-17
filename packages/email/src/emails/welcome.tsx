@@ -7,7 +7,7 @@ export const Welcome = {
   Component,
 }
 
-function Component({ name }: { name: string }) {
+function Component({ name = 'Yuki' }: { name: string }) {
   return (
     <EmailLayout
       title={

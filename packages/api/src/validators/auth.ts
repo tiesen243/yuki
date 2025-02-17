@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { string, z } from 'zod'
 
 const passwordSchema = z
   .string()
@@ -44,3 +44,15 @@ export const forgotPasswordSchema = z.object({
   email: z.string().email(),
 })
 export type ForgotPasswordSchema = z.infer<typeof forgotPasswordSchema>
+
+export const resetPasswordSchema = z
+  .object({
+    token: string().min(1),
+    password: passwordSchema,
+    confirmPassword: passwordSchema,
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: 'Passwords do not match',
+    path: ['confirmPassword'],
+  })
+export type ResetPasswordSchema = z.infer<typeof resetPasswordSchema>

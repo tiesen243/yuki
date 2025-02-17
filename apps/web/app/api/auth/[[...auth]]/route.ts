@@ -186,7 +186,7 @@ const createUser = async (p: {
     },
   })
 
-  if (!existingUser) await sendEmail({ type: 'Welcome', params: user })
+  if (!existingUser) await sendEmail({ type: 'Welcome', data: user })
 
   return user
 }

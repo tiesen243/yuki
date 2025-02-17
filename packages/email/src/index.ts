@@ -7,10 +7,10 @@ const resend = new Resend(env.RESEND_KEY)
 
 export const sendEmail = async ({
   type,
-  params,
+  data,
 }: {
   type: keyof typeof templates
-  params: {
+  data: {
     email: string
     name: string
     [key: string]: string | Date | null
@@ -19,15 +19,16 @@ export const sendEmail = async ({
   try {
     const { subject, Component } = templates[type]
 
-    const { data, error } = await resend.emails.send({
+    const { data: aa, error } = await resend.emails.send({
       from: 'Yuki <no-reply@tiesen.id.vn>',
-      to: [params.email],
+      to: [data.email],
       subject,
-      react: Component(params),
+      // @ts-expect-error - data is dynamic
+      react: Component(data),
     })
 
     if (error) return { error: error.message }
-    return { message: data?.id }
+    return { message: aa?.id }
   } catch (e) {
     if (e instanceof Error) return { error: e.message }
     return { error: 'Unknown error' }
