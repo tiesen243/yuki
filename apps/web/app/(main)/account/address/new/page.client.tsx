@@ -4,9 +4,8 @@ import Form from 'next/form'
 import { useRouter } from 'next/navigation'
 
 import { Button } from '@yuki/ui/button'
-import { Input } from '@yuki/ui/input'
-import { Label } from '@yuki/ui/label'
 
+import { FormField } from '@/app/_components/form-field'
 import { api } from '@/lib/trpc/react'
 
 export const NewAddressForm: React.FC = () => {
@@ -32,15 +31,12 @@ export const NewAddressForm: React.FC = () => {
       }}
     >
       {fields.map((field) => (
-        <fieldset key={field.name} disabled={isPending}>
-          <Label htmlFor={field.name} className="capitalize">
-            {field.name}
-          </Label>
-          <Input {...field} />
-          <span className="text-destructive text-xs">
-            {error?.data?.zodError?.[field.name]?.at(0)}
-          </span>
-        </fieldset>
+        <FormField
+          key={field.name}
+          {...field}
+          disabled={isPending}
+          error={error?.data?.zodError?.[field.name]?.at(0)}
+        />
       ))}
 
       <Button type="submit" className="w-full" disabled={isPending}>
@@ -51,24 +47,8 @@ export const NewAddressForm: React.FC = () => {
 }
 
 const fields = [
-  {
-    name: 'name',
-    placeholder: 'Yuki',
-    type: 'text',
-  },
-  {
-    name: 'phone',
-    placeholder: '(+84) 123 456 789',
-    type: 'tel',
-  },
-  {
-    name: 'state',
-    placeholder: 'California',
-    type: 'text',
-  },
-  {
-    name: 'street',
-    placeholder: '1234 Yuki St',
-    type: 'text',
-  },
-]
+  { name: 'name', label: 'Name', placeholder: 'Yuki', type: 'text' },
+  { name: 'phone', label: 'Phone', placeholder: '(+84) 123 456 789', type: 'tel' },
+  { name: 'state', label: 'State', placeholder: 'California', type: 'text' },
+  { name: 'street', label: 'Street', placeholder: '1234 Yuki St', type: 'text' },
+] as const

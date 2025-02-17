@@ -4,9 +4,8 @@ import Form from 'next/form'
 import { useRouter } from 'next/navigation'
 
 import { Button } from '@yuki/ui/button'
-import { Input } from '@yuki/ui/input'
-import { Label } from '@yuki/ui/label'
 
+import { FormField } from '@/app/_components/form-field'
 import { api } from '@/lib/trpc/react'
 
 export const UpdateAddressForm: React.FC<{ id: string }> = ({ id }) => {
@@ -20,16 +19,11 @@ export const UpdateAddressForm: React.FC<{ id: string }> = ({ id }) => {
     },
   })
 
-  if (isLoading)
+  if (isLoading || !data)
     return (
       <div className="container mt-4 space-y-4">
         {fields.map((field) => (
-          <fieldset key={field.name} disabled={true}>
-            <Label htmlFor={field.name} className="capitalize">
-              {field.name}
-            </Label>
-            <Input {...field} />
-          </fieldset>
+          <FormField key={field.name} {...field} />
         ))}
         <Button className="w-full" disabled={true}>
           Loading...
@@ -51,15 +45,13 @@ export const UpdateAddressForm: React.FC<{ id: string }> = ({ id }) => {
       }}
     >
       {fields.map((field) => (
-        <fieldset key={field.name} disabled={isPending}>
-          <Label htmlFor={field.name} className="capitalize">
-            {field.name}
-          </Label>
-          <Input {...field} defaultValue={data?.[field.name]} />
-          <span className="text-destructive text-xs">
-            {error?.data?.zodError?.[field.name]?.at(0)}
-          </span>
-        </fieldset>
+        <FormField
+          key={field.name}
+          {...field}
+          defaultValue={data[field.name]}
+          disabled={isPending}
+          error={error?.data?.zodError?.[field.name]?.at(0)}
+        />
       ))}
 
       <Button type="submit" className="w-full" disabled={isPending}>
@@ -70,24 +62,8 @@ export const UpdateAddressForm: React.FC<{ id: string }> = ({ id }) => {
 }
 
 const fields = [
-  {
-    name: 'name' as const,
-    placeholder: 'Yuki',
-    type: 'text',
-  },
-  {
-    name: 'phone' as const,
-    placeholder: '(+84) 123 456 789',
-    type: 'tel',
-  },
-  {
-    name: 'state' as const,
-    placeholder: 'California',
-    type: 'text',
-  },
-  {
-    name: 'street' as const,
-    placeholder: '1234 Yuki St',
-    type: 'text',
-  },
-]
+  { name: 'name', label: 'Name', type: 'text' },
+  { name: 'phone', label: 'Phone', type: 'tel' },
+  { name: 'state', label: 'State', type: 'text' },
+  { name: 'street', label: 'Street', type: 'text' },
+] as const

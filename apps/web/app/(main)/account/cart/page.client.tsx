@@ -100,9 +100,8 @@ export const CartDetails: React.FC = () => {
                 <div className="flex flex-col gap-1">
                   <p>{a.name}</p>
                   <p>{a.phone}</p>
-                  <p>
-                    {a.street}, {a.state}
-                  </p>
+                  <p>{a.state}</p>
+                  <p>{a.street}</p>
                 </div>
               </SelectItem>
             ))}

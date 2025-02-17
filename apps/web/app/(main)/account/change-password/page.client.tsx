@@ -4,10 +4,9 @@ import Form from 'next/form'
 import { useRouter } from 'next/navigation'
 
 import { Button } from '@yuki/ui/button'
-import { Input } from '@yuki/ui/input'
-import { Label } from '@yuki/ui/label'
 import { toast } from '@yuki/ui/sonner'
 
+import { FormField } from '@/app/_components/form-field'
 import { api } from '@/lib/trpc/react'
 
 export const ChangePasswordForm = () => {
@@ -31,43 +30,30 @@ export const ChangePasswordForm = () => {
         })
       }}
     >
-      <fieldset>
-        <Label htmlFor="password">Current Password</Label>
-        <Input type="password" name="password" placeholder="Current Password" />
-        {error?.data?.zodError?.currentPassword?.at(0) ? (
-          <span className="text-destructive text-xs">
-            {error.data.zodError.currentPassword.at(0)}
-          </span>
-        ) : (
-          <span className="text-xs">
-            Keep it empty if you don&apos;t have a password yet.
-          </span>
-        )}
-      </fieldset>
+      <FormField
+        name="currentPassword"
+        label="Current Password"
+        type="password"
+        disabled={isPending}
+        error={error?.data?.zodError?.currentPassword?.at(0)}
+        message="Keep it empty if you don't have a password yet."
+      />
 
-      <fieldset>
-        <Label htmlFor="newPassword">New Password</Label>
-        <Input type="password" name="newPassword" placeholder="New Password" />
-        {error?.data?.zodError?.newPassword?.at(0) && (
-          <span className="text-destructive text-xs">
-            {error.data.zodError.newPassword.at(0)}
-          </span>
-        )}
-      </fieldset>
+      <FormField
+        name="newPassword"
+        label="New Password"
+        type="password"
+        disabled={isPending}
+        error={error?.data?.zodError?.newPassword?.at(0)}
+      />
 
-      <fieldset>
-        <Label htmlFor="confirmNewPassword">Confirm New Password</Label>
-        <Input
-          type="password"
-          name="confirmNewPassword"
-          placeholder="Confirm New Password"
-        />
-        {error?.data?.zodError?.confirmNewPassword?.at(0) && (
-          <span className="text-destructive text-xs">
-            {error.data.zodError.confirmNewPassword.at(0)}
-          </span>
-        )}
-      </fieldset>
+      <FormField
+        name="confirmNewPassword"
+        label="Confirm Password"
+        type="password"
+        disabled={isPending}
+        error={error?.data?.zodError?.confirmNewPassword?.at(0)}
+      />
 
       <Button className="w-full" disabled={isPending}>
         Change Password
