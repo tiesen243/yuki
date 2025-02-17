@@ -22,14 +22,19 @@ export default async function AuthLayout({
               Or continue with
             </span>
           </div>
-          <div className="grid w-full grid-cols-3 gap-4">
+
+          <form className="grid w-full grid-cols-3 gap-4 *:w-full">
             {authProviders.map((provider) => (
-              <Button key={provider.name} variant="outline" className="w-full">
+              <Button
+                key={provider.name}
+                variant="outline"
+                formAction={`/api/auth/${provider.name}`}
+              >
                 <provider.icon />
                 <span className="sr-only">Login with {provider.name}</span>
               </Button>
             ))}
-          </div>
+          </form>
         </CardFooter>
       </Card>
       <div className="text-muted-foreground hover:[&_a]:text-primary text-center text-xs text-balance [&_a]:underline [&_a]:underline-offset-4">

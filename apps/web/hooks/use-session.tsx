@@ -34,6 +34,7 @@ export const SessionProvider: React.FC<{ children: React.ReactNode }> = ({
     mutationFn: async () => fetch('/api/auth/sign-out', { method: 'POST' }),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['auth'] })
+      router.push('/')
       router.refresh()
     },
   })

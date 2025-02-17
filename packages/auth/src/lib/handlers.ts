@@ -91,9 +91,11 @@ const GET = async (
         : await ins.validateAuthorizationCode(code, '')
     const token = verifiedCode.accessToken()
 
-    const r = await fetch(fetchUserUrl, { headers: { Authorization: `Bearer ${token}` } })
-    if (!r.ok) throw new Error(`Failed to fetch user data from ${provider}`)
-    const user = await createUser({ ...mapFn((await r.json()) as never), provider })
+    const res = await fetch(fetchUserUrl, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    if (!res.ok) throw new Error(`Failed to fetch user data from ${provider}`)
+    const user = await createUser({ ...mapFn((await res.json()) as never), provider })
 
     const session = await createSession(user.id)
 
