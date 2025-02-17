@@ -1,6 +1,8 @@
 import type { TRPCRouterRecord } from '@trpc/server'
 import { TRPCError } from '@trpc/server'
 
+import { sendEmail } from '@yuki/email'
+
 import { protectedProcedure, restrictedProcedure } from '../trpc'
 import * as schemas from '../validators/order'
 
@@ -115,10 +117,45 @@ export const orderRouter = {
         )
       }
 
-      await ctx.db.cart.update({
+      const cartResult = await ctx.db.cart.update({
         where: { id },
         data,
+        include: {
+          user: { select: { name: true, email: true } },
+          items: {
+            include: { product: { select: { name: true, image: true, price: true } } },
+          },
+          address: true,
+        },
       })
+
+      if (data.status === 'PENDING')
+        await sendEmail({
+          type: 'Order',
+          data: {
+            ...cartResult.user,
+            items: cartResult.items.map((item) => ({
+              ...item.product,
+              quantity: item.quantity,
+            })),
+          },
+        })
+      else if (data.status === 'DELIVERED')
+        await sendEmail({
+          type: 'Delivered',
+          data: {
+            ...cartResult.user,
+            order: {
+              id: `ORD${cartResult.id.toString().padStart(6, '0')}`,
+              address: cartResult.address,
+              items: cartResult.items.map((item) => ({
+                ...item.product,
+                quantity: item.quantity,
+              })),
+              total: cartResult.total,
+            },
+          },
+        })
 
       const msg = {
         PENDING: 'Order confirmed successfully',

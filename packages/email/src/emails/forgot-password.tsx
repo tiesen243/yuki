@@ -11,8 +11,8 @@ function Component({
   name = 'Yuki',
   resetUrl = 'http://localhost:3000/forgot-password/reset?token=yukikaze',
 }: {
-  name: string
-  resetUrl: string
+  name?: string
+  resetUrl?: string
 }) {
   return (
     <EmailLayout

@@ -7,7 +7,7 @@ export const ChangePassword = {
   Component,
 }
 
-function Component({ name = 'Yuki' }: { name: string }) {
+function Component({ name = 'Yuki' }: { name?: string }) {
   return (
     <EmailLayout
       title="Password Changed Successfully"

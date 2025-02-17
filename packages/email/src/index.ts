@@ -5,30 +5,30 @@ import { env } from './env'
 
 const resend = new Resend(env.RESEND_KEY)
 
-export const sendEmail = async ({
+type Templates = typeof templates
+type EmailData = {
+  [K in keyof Templates]: React.ComponentProps<Templates[K]['Component']>
+}
+
+export const sendEmail = async <T extends keyof Templates>({
   type,
   data,
 }: {
-  type: keyof typeof templates
-  data: {
-    email: string
-    name: string
-    [key: string]: string | Date | null
-  }
+  type: T
+  data: EmailData[T] & { email: string }
 }) => {
   try {
     const { subject, Component } = templates[type]
 
-    const { data: aa, error } = await resend.emails.send({
+    const { data: res, error } = await resend.emails.send({
       from: 'Yuki <no-reply@tiesen.id.vn>',
       to: [data.email],
       subject,
-      // @ts-expect-error - data is dynamic
       react: Component(data),
     })
 
     if (error) return { error: error.message }
-    return { message: aa?.id }
+    return { message: res?.id }
   } catch (e) {
     if (e instanceof Error) return { error: e.message }
     return { error: 'Unknown error' }
