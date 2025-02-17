@@ -51,7 +51,7 @@ const FilterContent: React.FC<Query & { slug?: string[]; className?: string }> =
   className,
   ...query
 }) => {
-  const { data: categories = [] } = api.category.getAll.useQuery({})
+  const { data: categories = [] } = api.category.getAll.useQuery({ limit: 999 })
   const [category, setCategory] = useState(getIdFromSlug(slug?.at(0)))
 
   return (
