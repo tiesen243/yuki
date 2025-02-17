@@ -7,6 +7,7 @@ import { db } from '@yuki/db'
 
 import { OAuthConfig } from '../config'
 import { env } from '../env'
+import { AUTH_KEY } from './constants'
 import { createSession, invalidateSessionToken, validateSessionToken } from './session'
 
 type Provider = keyof ReturnType<typeof OAuthConfig>
@@ -20,8 +21,6 @@ const setCorsHeaders = (res: Response) => {
     'authorization,accept,content-type,trpc-accept,x-trpc-source',
   )
 }
-
-const AUTH_KEY = 'auth_token'
 
 const OPTIONS = () => {
   const response = new Response(null, { status: 204 })

@@ -45,7 +45,7 @@ export const OrderHistories: React.FC = () => {
           <div className="flex items-center justify-between gap-4">
             <div className="space-x-2">
               <Badge variant={mapStatusBadge[o.status]}>{o.status.toLowerCase()}</Badge>
-              <Badge variant={mapStatusBadge[o.status]}>{o.payment.toLowerCase()}</Badge>
+              <Badge variant={mapStatusBadge[o.payment]}>{o.payment.toLowerCase()}</Badge>
             </div>
 
             <p>Total: ${o.total}</p>

@@ -51,7 +51,6 @@ const handlers = createRouteHandler({
 
 const routerConfig = extractRouterConfig(ourFileRouter)
 
-export { handlers, NextSSRPlugin, routerConfig }
 export type OurFileRouter = typeof ourFileRouter
-
+export { handlers, NextSSRPlugin, routerConfig }
 export const utapi = new UTApi()
