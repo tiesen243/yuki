@@ -8,11 +8,13 @@ import { Button } from '@yuki/ui/button'
 import { MenuIcon, StoreIcon } from '@yuki/ui/icons'
 import { cn } from '@yuki/ui/utils'
 
+import { useSession } from '@/hooks/use-session'
 import { legalNavLinks, navLinks } from './configs'
 import { Search } from './search'
 
 export const MobileMenu: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
+  const { session } = useSession()
 
   return (
     <>
@@ -29,8 +31,8 @@ export const MobileMenu: React.FC = () => {
 
       <div
         className={cn(
-          'bg-background/50 fixed inset-0 z-10 h-dvh w-full transform backdrop-blur-sm',
-          isOpen ? 'block' : 'hidden',
+          'bg-background/50 fixed inset-0 z-10 h-dvh w-full backdrop-blur-sm transition-transform',
+          isOpen ? 'animate-in block' : 'animate-out hidden',
         )}
         onClick={() => {
           setIsOpen(false)
@@ -39,8 +41,8 @@ export const MobileMenu: React.FC = () => {
 
       <aside
         className={cn(
-          'bg-secondary fixed inset-0 z-20 h-dvh w-1/2 max-w-screen transform border-r transition-transform duration-300',
-          isOpen ? 'translate-x-0' : '-translate-x-full',
+          'bg-secondary fixed inset-0 z-20 h-dvh w-2/3 max-w-screen transform border-r transition-transform duration-300',
+          isOpen ? 'animate-in translate-x-0' : 'animate-out -translate-x-full',
         )}
       >
         <Link href="/" className="mx-2 my-4 flex items-center gap-2 text-xl font-bold">
@@ -69,16 +71,18 @@ export const MobileMenu: React.FC = () => {
             <span>Products & Collections</span>
           </Link>
 
-          {navLinks.map(({ Icon, title, href }) => (
-            <Link
-              key={title}
-              href={href}
-              className="text-foreground hover:bg-background flex items-center gap-2 rounded-lg px-2 py-1 text-sm transition-colors"
-            >
-              <Icon className="size-4" />
-              <span>{title}</span>
-            </Link>
-          ))}
+          {navLinks
+            .slice(0, session?.user ? undefined : 0)
+            .map(({ Icon, title, href }) => (
+              <Link
+                key={title}
+                href={href}
+                className="text-foreground hover:bg-background flex items-center gap-2 rounded-lg px-2 py-1 text-sm transition-colors"
+              >
+                <Icon size={16} />
+                <span>{title}</span>
+              </Link>
+            ))}
         </nav>
 
         <nav className="mx-2 my-4 flex flex-col gap-1">

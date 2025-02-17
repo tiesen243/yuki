@@ -43,7 +43,7 @@ export default function RootLayout({
              */
             routerConfig={routerConfig}
           />
-          <Toaster richColors />
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>
