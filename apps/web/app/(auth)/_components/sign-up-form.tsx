@@ -4,9 +4,16 @@ import { useRouter } from 'next/navigation'
 
 import { Button } from '@yuki/ui/button'
 import { CardContent } from '@yuki/ui/card'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@yuki/ui/form'
 import { toast } from '@yuki/ui/sonner'
 
-import { FormField } from '@/app/_components/form-field'
 import { api } from '@/lib/trpc/react'
 
 export const SignUpForm = () => {
@@ -20,22 +27,20 @@ export const SignUpForm = () => {
   })
 
   return (
-    <form
-      action={(formData) => {
-        mutate({
-          name: formData.get('name') as string,
-          email: formData.get('email') as string,
-          password: formData.get('password') as string,
-          confirmPassword: formData.get('confirmPassword') as string,
-        })
-      }}
-    >
-      <CardContent className="space-y-4">
+    <CardContent className="space-y-4">
+      <Form<typeof mutate> onSubmit={mutate} isPending={isPending}>
         {fields.map((field) => (
           <FormField
             {...field}
             key={field.name}
             error={error?.data?.zodError?.[field.name]?.at(0)}
+            render={() => (
+              <FormItem>
+                <FormLabel>{field.label}</FormLabel>
+                <FormControl {...field} />
+                <FormMessage />
+              </FormItem>
+            )}
           />
         ))}
 
@@ -54,8 +59,8 @@ export const SignUpForm = () => {
             Sign In
           </a>
         </div>
-      </CardContent>
-    </form>
+      </Form>
+    </CardContent>
   )
 }
 

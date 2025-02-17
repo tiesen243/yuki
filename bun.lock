@@ -24,6 +24,7 @@
         "@yuki/api": "workspace:*",
         "@yuki/auth": "workspace:*",
         "@yuki/db": "workspace:*",
+        "@yuki/email": "workspace:*",
         "@yuki/ui": "workspace:*",
         "@yuki/uploader": "workspace:*",
         "next": "15.1.7",

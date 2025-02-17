@@ -1,3 +1,5 @@
+'use server'
+
 import { Resend } from 'resend'
 
 import { templates } from './emails'
@@ -15,14 +17,14 @@ export const sendEmail = async <T extends keyof Templates>({
   data,
 }: {
   type: T
-  data: EmailData[T] & { email: string }
+  data: EmailData[T] & { email?: string }
 }) => {
   try {
     const { subject, Component } = templates[type]
 
     const { data: res, error } = await resend.emails.send({
       from: 'Yuki <no-reply@tiesen.id.vn>',
-      to: [data.email],
+      to: [data.email ?? 'ttien56906@gmail.com'],
       subject,
       react: Component(data),
     })

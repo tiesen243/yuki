@@ -5,8 +5,14 @@ import { useQueryClient } from '@tanstack/react-query'
 
 import { Button } from '@yuki/ui/button'
 import { CardContent } from '@yuki/ui/card'
-import { Input } from '@yuki/ui/input'
-import { Label } from '@yuki/ui/label'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@yuki/ui/form'
 import { toast } from '@yuki/ui/sonner'
 
 import { api } from '@/lib/trpc/react'
@@ -29,51 +35,41 @@ export const SignInForm: React.FC<{
   })
 
   return (
-    <form
-      action={(formData) => {
-        mutate({
-          email: formData.get('email') as string,
-          password: formData.get('password') as string,
-        })
-      }}
-    >
-      <CardContent className="space-y-4">
-        <fieldset className="grid gap-2">
-          <Label htmlFor="email">Email</Label>
-          <Input
-            id="email"
-            name="email"
-            type="email"
-            placeholder="yuki@example.com"
-            aria-invalid={error?.data?.zodError?.email?.at(0) ? 'true' : 'false'}
-          />
-          <span className="text-destructive text-xs">
-            {error?.data?.zodError?.email?.at(0)}
-          </span>
-        </fieldset>
+    <CardContent className="space-y-4">
+      <Form<typeof mutate> isPending={isPending} onSubmit={mutate}>
+        <FormField
+          name="email"
+          error={error?.data?.zodError?.email?.at(0)}
+          render={() => (
+            <FormItem>
+              <FormLabel>Email</FormLabel>
+              <FormControl type="email" placeholder="yuki@example.com" />
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-        <div className="flex flex-col gap-2">
-          <div className="flex items-center justify-between">
-            <Label htmlFor="password">Password</Label>
-            <a
-              className="cursor-pointer text-sm underline-offset-2 hover:underline"
-              onClick={() => {
-                router.push('/forgot-password')
-              }}
-            >
-              Forgot your password?
-            </a>
-          </div>
-          <Input
-            id="password"
-            name="password"
-            type="password"
-            aria-invalid={error?.data?.zodError?.password?.at(0) ? 'true' : 'false'}
-          />
-          <span className="text-destructive text-xs">
-            {error?.data?.zodError?.password?.at(0)}
-          </span>
-        </div>
+        <FormField
+          name="password"
+          error={error?.data?.zodError?.password?.at(0)}
+          render={() => (
+            <FormItem>
+              <div className="flex items-center justify-between">
+                <FormLabel>Password</FormLabel>
+                <a
+                  className="cursor-pointer text-sm underline-offset-2 hover:underline"
+                  onClick={() => {
+                    router.push('/forgot-password')
+                  }}
+                >
+                  Forgot your password?
+                </a>
+              </div>
+              <FormControl type="password" />
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
         <Button type="submit" className="w-full" disabled={isPending}>
           Login
@@ -90,7 +86,7 @@ export const SignInForm: React.FC<{
             Sign up
           </a>
         </div>
-      </CardContent>
-    </form>
+      </Form>
+    </CardContent>
   )
 }

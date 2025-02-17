@@ -1,11 +1,17 @@
 'use client'
 
-import Form from 'next/form'
 import { useRouter } from 'next/navigation'
 
 import { Button } from '@yuki/ui/button'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@yuki/ui/form'
 
-import { FormField } from '@/app/_components/form-field'
 import { api } from '@/lib/trpc/react'
 
 export const NewAddressForm: React.FC = () => {
@@ -19,23 +25,23 @@ export const NewAddressForm: React.FC = () => {
   })
 
   return (
-    <Form
-      className="container mt-4 space-y-4"
-      action={(formData) => {
-        mutate({
-          name: formData.get('name') as string,
-          phone: formData.get('phone') as string,
-          state: formData.get('state') as string,
-          street: formData.get('street') as string,
-        })
-      }}
+    <Form<typeof mutate>
+      className="container mt-4"
+      onSubmit={mutate}
+      isPending={isPending}
     >
       {fields.map((field) => (
         <FormField
           key={field.name}
           {...field}
-          disabled={isPending}
           error={error?.data?.zodError?.[field.name]?.at(0)}
+          render={() => (
+            <FormItem>
+              <FormLabel>{field.label}</FormLabel>
+              <FormControl {...field} />
+              <FormMessage />
+            </FormItem>
+          )}
         />
       ))}
 

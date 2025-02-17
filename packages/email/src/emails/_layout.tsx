@@ -22,7 +22,7 @@ export function EmailLayout({
 }: Readonly<{
   preview: string
   title: string
-  name: string
+  name?: string
   children: React.ReactNode
 }>) {
   const greeting = getHello()
@@ -73,9 +73,11 @@ export function EmailLayout({
             </Section>
             <Heading className="mx-0 my-6 p-0 text-center text-2xl">{title}</Heading>
 
-            <Text>
-              {greeting} {name},
-            </Text>
+            {name && (
+              <Text>
+                {greeting} {name},
+              </Text>
+            )}
 
             {children}
 

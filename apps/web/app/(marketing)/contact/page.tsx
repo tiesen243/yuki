@@ -1,11 +1,9 @@
-import { Button } from '@yuki/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@yuki/ui/card'
 import { Mail, MapPin, Phone } from '@yuki/ui/icons'
-import { Textarea } from '@yuki/ui/textarea'
 import { Typography } from '@yuki/ui/typography'
 
-import { FormField } from '@/app/_components/form-field'
 import { createMetadata } from '@/lib/metadata'
+import { ContactForm } from './page.client'
 
 export default function ContactPage() {
   return (
@@ -65,40 +63,7 @@ export default function ContactPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form className="space-y-6">
-            <div className="grid grid-cols-2 gap-4">
-              <FormField
-                name="firstName"
-                label="First name"
-                placeholder="Enter your first name"
-              />
-              <FormField
-                name="lastName"
-                label="Last Name"
-                placeholder="Enter your last name"
-              />
-            </div>
-
-            <FormField name="Email" label="Email" placeholder="Enter your email" />
-
-            <FormField
-              name="subject"
-              label="Subject"
-              placeholder="How can we help you?"
-            />
-
-            <FormField name="message" asChild>
-              <Textarea
-                id="message"
-                placeholder="Tell us more about your inquiry..."
-                className="min-h-[150px] resize-none"
-              />
-            </FormField>
-
-            <Button type="submit" className="w-full">
-              Send Message
-            </Button>
-          </form>
+          <ContactForm />
         </CardContent>
       </Card>
     </main>

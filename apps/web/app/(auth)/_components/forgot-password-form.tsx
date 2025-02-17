@@ -2,9 +2,9 @@
 
 import { Button } from '@yuki/ui/button'
 import { CardContent } from '@yuki/ui/card'
+import { Form, FormControl, FormField, FormItem, FormLabel } from '@yuki/ui/form'
 import { toast } from '@yuki/ui/sonner'
 
-import { FormField } from '@/app/_components/form-field'
 import { api } from '@/lib/trpc/react'
 
 export const ForgotPasswordForm = () => {
@@ -14,23 +14,23 @@ export const ForgotPasswordForm = () => {
   })
 
   return (
-    <form
-      action={(formData) => {
-        mutate({ email: formData.get('email') as string })
-      }}
-    >
-      <CardContent className="space-y-4">
+    <CardContent className="space-y-4">
+      <Form<typeof mutate> onSubmit={mutate} isPending={isPending}>
         <FormField
           name="email"
-          type="email"
-          placeholder="yuki@example.com"
           error={error?.data?.zodError?.email?.at(0)}
+          render={() => (
+            <FormItem>
+              <FormLabel>Email</FormLabel>
+              <FormControl type="email" placeholder="yuki@example.com" />
+            </FormItem>
+          )}
         />
 
         <Button className="w-full" disabled={isPending}>
           Send reset link
         </Button>
-      </CardContent>
-    </form>
+      </Form>
+    </CardContent>
   )
 }

@@ -91,7 +91,7 @@ export const authRouter = {
         type: 'ForgotPassword',
         data: {
           ...user,
-          resetUrl: `${env.VERCEL_PROJECT_PRODUCTION_URL}/forgot-password/reset?token=${code.token}`,
+          resetUrl: `${env.VERCEL_PROJECT_PRODUCTION_URL ?? 'http://localhost:3000'}/forgot-password/reset?token=${code.token}`,
         },
       })
 
