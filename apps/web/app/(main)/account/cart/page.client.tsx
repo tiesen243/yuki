@@ -90,18 +90,20 @@ export const CartDetails: React.FC = () => {
 
       <div className="flex items-center justify-between">
         <Select value={address} onValueChange={setAddress}>
-          <SelectTrigger className="basis-1/3 text-start focus:ring-0">
+          <SelectTrigger className="line-clamp-1 basis-1/3 truncate overflow-hidden text-start focus:ring-0">
             <SelectValue placeholder="Address" />
           </SelectTrigger>
 
           <SelectContent>
             {data?.map((a) => (
               <SelectItem key={a.id} value={a.id}>
-                <div>
-                  {a.name} | {a.phone}
+                <div className="flex flex-col gap-1">
+                  <p>{a.name}</p>
+                  <p>{a.phone}</p>
+                  <p>
+                    {a.street}, {a.state}
+                  </p>
                 </div>
-                <div>{a.state}</div>
-                <div>{a.street}</div>
               </SelectItem>
             ))}
           </SelectContent>
@@ -198,7 +200,7 @@ const CartItem: React.FC<{
           </Button>
         </div>
       </TableCell>
-      <TableCell align="center">${localQuantity * product.price}</TableCell>
+      <TableCell align="center">${(localQuantity * product.price).toFixed(2)}</TableCell>
       <TableCell align="center">
         <Button
           className="w-20"

@@ -129,21 +129,12 @@ export const orderRouter = {
         },
       })
 
-      if (data.status === 'PENDING')
+      const exitedTemplate = ['PENDING', 'DELIVERED'] as const
+      if (exitedTemplate.includes(data.status as (typeof exitedTemplate)[number]))
         await sendEmail({
           type: 'Order',
           data: {
-            ...cartResult.user,
-            items: cartResult.items.map((item) => ({
-              ...item.product,
-              quantity: item.quantity,
-            })),
-          },
-        })
-      else if (data.status === 'DELIVERED')
-        await sendEmail({
-          type: 'Delivered',
-          data: {
+            status: data.status as (typeof exitedTemplate)[number],
             ...cartResult.user,
             order: {
               id: `ORD${cartResult.id.toString().padStart(6, '0')}`,
