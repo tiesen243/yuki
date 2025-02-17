@@ -8,9 +8,7 @@ import { useFormStatus } from 'react-dom'
 import { type Query } from '@yuki/api/validators/product'
 import { Button } from '@yuki/ui/button'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@yuki/ui/collapsible'
-import { ChevronDownIcon, ChevronUpIcon } from '@yuki/ui/icons'
-import { Input } from '@yuki/ui/input'
-import { Label } from '@yuki/ui/label'
+import { ChevronDownIcon } from '@yuki/ui/icons'
 import {
   Select,
   SelectContent,
@@ -20,6 +18,7 @@ import {
 } from '@yuki/ui/select'
 import { cn } from '@yuki/ui/utils'
 
+import { FormField } from '@/app/_components/form-field'
 import { ProductCard, ProductCardSkeleton } from '@/app/_components/product-card'
 import { api } from '@/lib/trpc/react'
 import { getIdFromSlug } from '@/lib/utils'
@@ -33,18 +32,16 @@ export const FilterSidebar: React.FC<Query & { slug?: string[] }> = (props) => {
         <CollapsibleTrigger asChild>
           <Button variant="outline" className="flex w-full justify-between">
             Filters
-            {isOpen ? (
-              <ChevronUpIcon className="h-4 w-4" />
-            ) : (
-              <ChevronDownIcon className="h-4 w-4" />
-            )}
+            <ChevronDownIcon
+              className={cn('size-4 transition-transform', isOpen && 'rotate-180')}
+            />
           </Button>
         </CollapsibleTrigger>
         <CollapsibleContent className="mt-4">
           <FilterContent {...props} />
         </CollapsibleContent>
       </Collapsible>
-      <FilterContent className="hidden md:block" {...props} />
+      <FilterContent className="hidden w-48 md:block" {...props} />
     </>
   )
 }
@@ -58,14 +55,18 @@ const FilterContent: React.FC<Query & { slug?: string[]; className?: string }> =
   const [category, setCategory] = useState(getIdFromSlug(slug?.at(0)))
 
   return (
-    <Form action={`/shop/${category}`} className={cn('min-w-48 space-y-4', className)}>
-      <div>
-        <Label htmlFor="q">Search</Label>
-        <Input name="q" placeholder="Search products..." defaultValue={query.q} />
-      </div>
+    <Form
+      action={`/shop/${category}`}
+      className={cn('min-w-48 space-y-2 md:space-y-4', className)}
+    >
+      <FormField
+        name="q"
+        label="Search"
+        placeholder="Search products..."
+        defaultValue={query.q}
+      />
 
-      <div>
-        <Label htmlFor="category">Category</Label>
+      <FormField name="category" label="Category" asChild>
         <Select value={category} onValueChange={setCategory}>
           <SelectTrigger id="category">
             <SelectValue placeholder="Select..." />
@@ -79,12 +80,11 @@ const FilterContent: React.FC<Query & { slug?: string[]; className?: string }> =
             ))}
           </SelectContent>
         </Select>
-      </div>
+      </FormField>
 
-      <div>
-        <Label htmlFor="sortBy">Sort by</Label>
-        <Select name="sortBy" defaultValue={query.sortBy}>
-          <SelectTrigger name="sortBy">
+      <FormField name="sortBy" label="Sort by" defaultValue={query.sortBy} asChild>
+        <Select>
+          <SelectTrigger id="sortBy">
             <SelectValue placeholder="Select..." />
           </SelectTrigger>
           <SelectContent>
@@ -93,12 +93,11 @@ const FilterContent: React.FC<Query & { slug?: string[]; className?: string }> =
             <SelectItem value="createdAt">Date</SelectItem>
           </SelectContent>
         </Select>
-      </div>
+      </FormField>
 
-      <div>
-        <Label htmlFor="orderBy">Order</Label>
-        <Select name="orderBy" defaultValue={query.orderBy}>
-          <SelectTrigger>
+      <FormField name="orderBy" label="Order" defaultValue={query.orderBy} asChild>
+        <Select>
+          <SelectTrigger id="orderBy">
             <SelectValue placeholder="Select..." />
           </SelectTrigger>
           <SelectContent>
@@ -106,7 +105,7 @@ const FilterContent: React.FC<Query & { slug?: string[]; className?: string }> =
             <SelectItem value="desc">Descending</SelectItem>
           </SelectContent>
         </Select>
-      </div>
+      </FormField>
 
       <input name="limit" defaultValue={query.limit} hidden />
 

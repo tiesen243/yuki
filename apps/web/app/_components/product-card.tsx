@@ -37,7 +37,7 @@ export const ProductCard: React.FC<{
 )
 
 export const ProductCardSkeleton: React.FC = () => (
-  <Card variant="pressable" className="space-y-4">
+  <Card variant="pressable" className="relative space-y-4">
     <div className="aspect-square w-full animate-pulse rounded-t-lg bg-current" />
 
     <CardFooter className="flex-col items-start gap-0.5">
