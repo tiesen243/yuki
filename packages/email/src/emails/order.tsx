@@ -50,19 +50,6 @@ function Component({
     >
       {messageMap[status]}
 
-      {order.address && (
-        <Section className="mb-6">
-          <Text className="mb-2 font-medium text-gray-900">Shipping Address:</Text>
-          <Text className="text-gray-800">
-            {order.address.name}
-            <br />
-            {order.address.street}
-            <br />
-            {order.address.state}
-          </Text>
-        </Section>
-      )}
-
       <Row>
         {order.items.map((item, index) => (
           <Column key={index} className="mb-4 flex flex-row">
@@ -91,6 +78,19 @@ function Component({
           Total: ${order.total.toFixed(2)}
         </Text>
       </Section>
+
+      {order.address && (
+        <Section className="mb-6">
+          <Text className="mb-2 font-medium text-gray-900">Shipping Address:</Text>
+          <Text className="text-gray-800">
+            {order.address.name}
+            <br />
+            {order.address.street}
+            <br />
+            {order.address.state}
+          </Text>
+        </Section>
+      )}
     </EmailLayout>
   )
 }
