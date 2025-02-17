@@ -21,7 +21,7 @@ export function EmailLayout({
   children,
 }: Readonly<{
   preview: string
-  title: React.ReactNode
+  title: string
   name: string
   children: React.ReactNode
 }>) {
@@ -47,15 +47,23 @@ export function EmailLayout({
             url: 'https://fonts.gstatic.com/s/geist/v1/gyByhwUxId8gMEwcGFU.woff2',
             format: 'woff2',
           }}
+          fontWeight={500}
+          fontStyle="medium"
+        />
+        <Font
+          fontFamily="Geist"
+          fallbackFontFamily="sans-serif"
+          webFont={{
+            url: 'https://fonts.gstatic.com/s/geist/v1/gyByhwUxId8gMEwcGFU.woff2',
+            format: 'woff2',
+          }}
           fontWeight={700}
           fontStyle="bold"
         />
       </Head>
       <Tailwind>
         <Body className="bg-[#ffffff] text-[#0a0a0a]">
-          <Preview>
-            {greeting}! {preview}
-          </Preview>
+          <Preview>{preview}</Preview>
           <Container className="my-3 max-w-[465px] rounded-md border border-solid border-[#e5e5e5] p-5">
             <Section className="mt-8">
               <Img
@@ -63,9 +71,7 @@ export function EmailLayout({
                 className="mx-auto h-16 w-auto"
               />
             </Section>
-            <Heading className="mx-0 my-6 p-0 text-center text-2xl font-normal">
-              {title}
-            </Heading>
+            <Heading className="mx-0 my-6 p-0 text-center text-2xl">{title}</Heading>
 
             <Text>
               {greeting} {name},

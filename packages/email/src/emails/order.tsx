@@ -9,7 +9,7 @@ export const Order = {
 
 function Component({
   name = 'Yuki',
-  status = 'PENDING',
+  status = 'DELIVERED',
   order = mockOrderData,
 }: {
   name?: string
@@ -24,18 +24,19 @@ function Component({
   const messageMap = {
     PENDING: (
       <>
-        <Text className="mb-6 text-gray-800">
+        <Text className="mb-6">
           Thank you for your purchase! Here&apos;s a summary of your order:
         </Text>
-        <Text className="mb-2 text-gray-800">
+        <Text className="mb-2">
           Order ID: <span className="font-medium">{order.id}</span>
         </Text>
       </>
     ),
     DELIVERED: (
       <>
-        <Text className="mt-4 text-base">
-          Great news! Your order #{order.id} has been delivered successfully.
+        <Text className="mt-4">
+          Great news! Your order <span className="font-medium">#{order.id}</span> has been
+          delivered successfully.
         </Text>
         <Text className="mt-6 text-base font-bold">Order Details:</Text>
       </>
@@ -61,11 +62,11 @@ function Component({
               className="mr-4 rounded-lg"
             />
             <Section className="flex-1">
-              <Text className="m-0 font-medium text-gray-900">{item.name}</Text>
-              <Text className="m-0 text-sm text-gray-600">
+              <Text className="m-0 font-medium">{item.name}</Text>
+              <Text className="m-0 text-sm">
                 Quantity: {item.quantity} × ${item.price.toFixed(2)}
               </Text>
-              <Text className="m-0 text-sm text-gray-700">
+              <Text className="m-0 text-sm">
                 Subtotal: ${(item.quantity * item.price).toFixed(2)}
               </Text>
             </Section>
@@ -73,16 +74,14 @@ function Component({
         ))}
       </Row>
 
-      <Section className="mt-2 pt-4">
-        <Text className="m-0 text-end text-lg font-semibold">
-          Total: ${order.total.toFixed(2)}
-        </Text>
-      </Section>
+      <Text className="m-0 mt-2 text-end text-lg font-medium">
+        Total: ${order.total.toFixed(2)}
+      </Text>
 
       {order.address && (
         <Section className="mb-6">
-          <Text className="mb-2 font-medium text-gray-900">Shipping Address:</Text>
-          <Text className="text-gray-800">
+          <Text className="mb-2 font-medium">Shipping Address:</Text>
+          <Text>
             {order.address.name}
             <br />
             {order.address.street}

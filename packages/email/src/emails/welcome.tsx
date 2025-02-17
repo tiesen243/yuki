@@ -10,11 +10,7 @@ export const Welcome = {
 function Component({ name = 'Yuki' }: { name?: string }) {
   return (
     <EmailLayout
-      title={
-        <>
-          Welcome to <strong>Yuki</strong>
-        </>
-      }
+      title="Welcome to Yuki"
       preview="Welcome to our shop. Exclusive deals, free shipping on your first order, and more await you."
       name={name}
     >
