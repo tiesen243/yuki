@@ -1,7 +1,6 @@
 import { Suspense } from 'react'
 import { notFound } from 'next/navigation'
 
-import { ProductCardSkeleton } from '@/app/_components/product-card'
 import { createMetadata } from '@/lib/metadata'
 import { api, HydrateClient } from '@/lib/trpc/server'
 import { getIdFromSlug } from '@/lib/utils'
@@ -11,6 +10,7 @@ import {
   ProductReviews,
   ProductReviewsSkeleton,
   RelativeProducts,
+  RelativeProductsSkeleton,
 } from './page.client'
 
 interface Props {
@@ -46,15 +46,7 @@ export default async function ProductPage({ params }: Props) {
           <h2 className="sr-only">Relative Products Section</h2>
           <p className="my-4 text-lg uppercase">You may also like</p>
 
-          <Suspense
-            fallback={
-              <div className="grid grid-cols-3 gap-4 md:grid-cols-4 xl:grid-cols-6">
-                {Array.from({ length: 12 }).map((_, i) => (
-                  <ProductCardSkeleton key={i} />
-                ))}
-              </div>
-            }
-          >
+          <Suspense fallback={<RelativeProductsSkeleton />}>
             <RelativeProducts id={id} />
           </Suspense>
         </section>

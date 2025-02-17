@@ -118,7 +118,7 @@ export const ProductList: React.FC<Query> = (query) => {
   const [{ products }] = api.product.getAll.useSuspenseQuery(query)
 
   return (
-    <div className="grid grid-cols-3 gap-4 xl:grid-cols-5">
+    <div className="grid grid-cols-2 gap-4 lg:grid-cols-4 xl:grid-cols-5">
       {products.map((p) => (
         <ProductCard key={p.id} product={p} />
       ))}
@@ -127,7 +127,7 @@ export const ProductList: React.FC<Query> = (query) => {
 }
 
 export const ProductListSkeleton: React.FC<{ limit: number }> = ({ limit }) => (
-  <div className="grid grid-cols-3 gap-4 xl:grid-cols-5">
+  <div className="grid grid-cols-2 gap-4 lg:grid-cols-4 xl:grid-cols-5">
     {Array.from({ length: limit }).map((_, i) => (
       <ProductCardSkeleton key={i} />
     ))}

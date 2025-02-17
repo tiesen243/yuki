@@ -11,7 +11,7 @@ import { ShoppingCartIcon, Star } from '@yuki/ui/icons'
 import { toast } from '@yuki/ui/sonner'
 import { Typography } from '@yuki/ui/typography'
 
-import { ProductCard } from '@/app/_components/product-card'
+import { ProductCard, ProductCardSkeleton } from '@/app/_components/product-card'
 import { api } from '@/lib/trpc/react'
 import { slugify } from '@/lib/utils'
 
@@ -323,13 +323,21 @@ export const RelativeProducts: React.FC<{ id: string }> = ({ id }) => {
   const [relativeProducts] = api.product.getRelativeProducts.useSuspenseQuery({ id })
 
   return (
-    <div className="grid grid-cols-3 gap-4 md:grid-cols-4 xl:grid-cols-6">
+    <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
       {relativeProducts.map((p) => (
         <ProductCard key={p.id} product={p} />
       ))}
     </div>
   )
 }
+
+export const RelativeProductsSkeleton: React.FC = () => (
+  <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
+    {Array.from({ length: 12 }).map((_, i) => (
+      <ProductCardSkeleton key={i} />
+    ))}
+  </div>
+)
 
 const StarRating: React.FC<{ rating: number }> = ({ rating }) => {
   const stars = []

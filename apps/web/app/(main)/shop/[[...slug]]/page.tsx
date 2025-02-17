@@ -22,7 +22,7 @@ export default async function ShopPage({ params, searchParams }: Props) {
   const { slug } = await params
   const {
     page = 1,
-    limit = 3 * 5,
+    limit = 20,
     orderBy = 'desc',
     sortBy = 'createdAt',
     q,
