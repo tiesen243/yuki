@@ -8,10 +8,9 @@ import { generateGravatar, OAuthConfig, auth as uncachedAuth } from './config'
  */
 const auth = cache(uncachedAuth)
 
-export { OAuth2RequestError, generateCodeVerifier, generateState } from 'arctic'
-
 export type { Session } from './config'
 export { auth, OAuthConfig, generateGravatar }
+export { handlers } from './lib/handlers'
 export { hashPassword, verifyHashedPassword } from './lib/password'
 export {
   createSession,

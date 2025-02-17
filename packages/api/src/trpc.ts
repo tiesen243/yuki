@@ -14,15 +14,28 @@ import { ZodError } from 'zod'
 import { validateSessionToken } from '@yuki/auth'
 import { db } from '@yuki/db'
 
+const parsedCookie = (headers: Headers) => {
+  const cookieHeader = headers.get('cookie')
+
+  if (!cookieHeader) return {}
+
+  return cookieHeader.split(';').reduce((cookies, cookie) => {
+    const [name, value] = cookie.trim().split('=') as [string, string]
+    return { ...cookies, [name]: decodeURIComponent(value) }
+  }, {}) as Record<string, string>
+}
+
 /**
  * Isomorphic Session getter for API requests
  * - Expo requests will have a session token in the Authorization header
  * - Next.js requests will have a session token in cookies
  */
 const isomorphicGetSession = async (headers: Headers) => {
+  const cookies = parsedCookie(headers)
+
   const authToken = headers.get('Authorization') ?? null
   if (authToken) return validateSessionToken(authToken.replace('Bearer ', ''))
-  return { expires: new Date(Date.now()) }
+  return validateSessionToken(cookies.auth_token ?? '')
 }
 
 /**
@@ -38,7 +51,8 @@ const isomorphicGetSession = async (headers: Headers) => {
  * @see https://trpc.io/docs/server/context
  */
 export const createTRPCContext = async (opts: { headers: Headers }) => {
-  const authToken = opts.headers.get('Authorization') ?? null
+  const cookies = parsedCookie(opts.headers)
+  const authToken = cookies.auth_token ?? opts.headers.get('Authorization') ?? null
   const session = await isomorphicGetSession(opts.headers)
 
   const source = opts.headers.get('x-trpc-source') ?? 'unknown'

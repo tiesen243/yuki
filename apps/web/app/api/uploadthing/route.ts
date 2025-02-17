@@ -1,5 +1,3 @@
-import { handler } from '@yuki/uploader'
+import { handlers } from '@yuki/uploader'
 
-const { GET, POST } = handler
-
-export { GET, POST }
+export const { GET, POST } = handlers

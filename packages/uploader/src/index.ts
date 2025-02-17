@@ -45,13 +45,13 @@ const ourFileRouter = {
   productImageUploader: configs,
 } satisfies FileRouter
 
-const handler = createRouteHandler({
+const handlers = createRouteHandler({
   router: ourFileRouter,
 })
 
 const routerConfig = extractRouterConfig(ourFileRouter)
 
-export { handler, NextSSRPlugin, routerConfig }
+export { handlers, NextSSRPlugin, routerConfig }
 export type OurFileRouter = typeof ourFileRouter
 
 export const utapi = new UTApi()

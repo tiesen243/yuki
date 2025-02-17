@@ -24,15 +24,11 @@ export const OPTIONS = () => {
 }
 
 const handler = async (req: NextRequest) => {
-  const heads = new Headers(req.headers)
-  const token = req.cookies.get('auth_token')?.value ?? ''
-  if (!heads.get('Authorization')) heads.set('Authorization', `Bearer ${token}`)
-
   const response = await fetchRequestHandler({
     endpoint: '/api/trpc',
     router: appRouter,
     req,
-    createContext: () => createTRPCContext({ headers: heads }),
+    createContext: () => createTRPCContext({ headers: req.headers }),
     onError({ error, path }) {
       console.error(`>>> tRPC Error on '${path}'`, error)
     },
