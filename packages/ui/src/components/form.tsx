@@ -19,12 +19,14 @@ interface FormProps<T extends (...args: never[]) => void>
   extends Omit<React.ComponentProps<'form'>, 'onSubmit'> {
   onSubmit?: (data: Parameters<T>[0]) => void | Promise<void>
   isPending?: boolean
+  asChild?: boolean
 }
 
 function Form<T extends (...args: never[]) => void>({
   className,
   onSubmit,
   isPending = false,
+  asChild = false,
   ...props
 }: FormProps<T>) {
   const handleSubmit = React.useCallback(
@@ -40,9 +42,11 @@ function Form<T extends (...args: never[]) => void>({
     [onSubmit],
   )
 
+  const Comp = asChild ? Slot : 'form'
+
   return (
     <FormContext.Provider value={{ isPending }}>
-      <form
+      <Comp
         {...props}
         data-slot="form"
         className={cn('space-y-4', className)}
