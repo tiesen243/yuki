@@ -44,7 +44,7 @@ export const Slider: React.FC<{
             )}
             style={{ transform: `translateX(-${current * 100}vw)` }}
           >
-            <div className="flex h-1/3 flex-col items-center justify-center gap-8 text-center text-balance md:h-1/2 xl:h-full xl:w-1/2 xl:gap-12">
+            <div className="flex h-1/3 flex-col items-center justify-center gap-8 text-center text-balance xl:h-full xl:w-1/2 xl:gap-12">
               <h2 className="text-xl lg:text-3xl 2xl:text-5xl">{s.description}</h2>
               <h1 className="text-5xl font-semibold lg:text-6xl 2xl:text-8xl">
                 {s.title}
@@ -59,7 +59,7 @@ export const Slider: React.FC<{
               alt={s.title}
               width={800}
               height={1200}
-              className="h-2/3 w-full object-cover md:h-1/2 xl:h-full xl:w-1/2"
+              className="h-2/3 w-full object-cover xl:h-full xl:w-1/2"
             />
           </div>
         ))}
