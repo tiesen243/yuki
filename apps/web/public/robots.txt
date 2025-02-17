@@ -1,6 +1,4 @@
 User-Agent: *
 Allow: /
 
-Host: https://shop.tiesen.id.vn
-
 Sitemap: https://shop.tiesen.id.vn/sitemap.xml
