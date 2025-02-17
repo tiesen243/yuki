@@ -60,7 +60,6 @@ export const Slider: React.FC<{
               width={800}
               height={1200}
               className="h-2/3 w-full object-cover md:h-1/2 xl:h-full xl:w-1/2"
-              priority
             />
           </div>
         ))}
