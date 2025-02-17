@@ -27,6 +27,7 @@ export const MobileMenu: React.FC = () => {
         }}
       >
         <MenuIcon />
+        <span className="sr-only">Toggle menu</span>
       </Button>
 
       <div

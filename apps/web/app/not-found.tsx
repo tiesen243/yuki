@@ -8,7 +8,7 @@ export default function NotFoundPage() {
   return (
     <main className="container flex grow flex-col items-center justify-center py-8">
       <Image
-        src="/assets/imgs/yuki.png"
+        src="/assets/yuki.png"
         alt="Yuki"
         width={300}
         height={300}
