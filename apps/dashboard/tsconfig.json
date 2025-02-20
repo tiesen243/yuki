@@ -3,9 +3,7 @@
   "compilerOptions": {
     "rootDirs": [".", "./.react-router/types"],
     "baseUrl": ".",
-    "paths": {
-      "@/*": ["./app/*"]
-    }
+    "paths": { "@/*": ["./app/*"], "@yuki/ui/*": ["../../packages/ui/src/*"] }
   },
   "include": [".", ".react-router/types/**/*"]
 }
