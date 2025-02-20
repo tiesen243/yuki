@@ -111,7 +111,7 @@ export const CartDetails: React.FC = () => {
 
       <div className="flex items-center justify-between">
         <Select value={address} onValueChange={setAddress}>
-          <SelectTrigger className="line-clamp-1 basis-1/3 truncate overflow-hidden text-start focus:ring-0">
+          <SelectTrigger className="h-fit basis-1/3 text-start focus-visible:ring-0 focus-visible:outline-none">
             <SelectValue placeholder="Address" />
           </SelectTrigger>
 

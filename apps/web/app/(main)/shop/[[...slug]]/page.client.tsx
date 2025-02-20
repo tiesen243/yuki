@@ -1,8 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { Suspense, useState } from 'react'
 import NextForm from 'next/form'
 import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 import { useQuery, useSuspenseQuery } from '@tanstack/react-query'
 import { useFormStatus } from 'react-dom'
 
@@ -52,10 +53,15 @@ export const FilterSidebar: React.FC<Query & { slug?: string[] }> = (props) => {
           </Button>
         </CollapsibleTrigger>
         <CollapsibleContent className="mt-4">
-          <FilterContent {...props} />
+          <Suspense>
+            <FilterContent {...props} />
+          </Suspense>
         </CollapsibleContent>
       </Collapsible>
-      <FilterContent className="hidden w-48 md:block" {...props} />
+
+      <Suspense>
+        <FilterContent className="hidden w-48 md:block" {...props} />
+      </Suspense>
     </>
   )
 }
@@ -63,11 +69,15 @@ export const FilterSidebar: React.FC<Query & { slug?: string[] }> = (props) => {
 const FilterContent: React.FC<
   Query & { slug?: string[]; className?: string }
 > = ({ slug, className, ...query }) => {
+  const searchParams = useSearchParams()
   const trpc = useTRPC()
+
   const { data: categories = [] } = useQuery(
     trpc.category.getAll.queryOptions({ limit: 999 }),
   )
   const [category, setCategory] = useState(getIdFromSlug(slug?.at(0)))
+
+  const q = searchParams.get('q') ?? ''
 
   return (
     <Form className={cn('min-w-48 space-y-2 md:space-y-4', className)} asChild>
@@ -77,10 +87,7 @@ const FilterContent: React.FC<
           render={() => (
             <FormItem>
               <FormLabel>Search</FormLabel>
-              <FormControl
-                placeholder="Search products..."
-                defaultValue={query.q}
-              />
+              <FormControl placeholder="Search products..." defaultValue={q} />
             </FormItem>
           )}
         />
@@ -114,7 +121,7 @@ const FilterContent: React.FC<
           render={() => (
             <FormItem>
               <FormLabel>Sort by</FormLabel>
-              <Select defaultValue={query.sortBy}>
+              <Select name="sortBy" defaultValue={query.sortBy}>
                 <FormControl asChild>
                   <SelectTrigger>
                     <SelectValue placeholder="Select..." />
@@ -135,7 +142,7 @@ const FilterContent: React.FC<
           render={() => (
             <FormItem>
               <FormLabel>Order</FormLabel>
-              <Select defaultValue={query.orderBy}>
+              <Select name="orderBy" defaultValue={query.orderBy}>
                 <FormControl asChild>
                   <SelectTrigger>
                     <SelectValue placeholder="Select..." />

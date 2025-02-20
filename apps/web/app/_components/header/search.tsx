@@ -3,6 +3,7 @@
 import React from 'react'
 import Form from 'next/form'
 import { usePathname, useSearchParams } from 'next/navigation'
+import { useFormStatus } from 'react-dom'
 
 import { SearchIcon } from '@yuki/ui/icons'
 import { Input } from '@yuki/ui/input'
@@ -15,12 +16,14 @@ export const Search: React.FC<{ className?: string }> = ({ className }) => {
     ? pathName.split('/shop').pop()
     : ''
 
-  const query = searchParams.get('query') ?? ''
+  const query = searchParams.get('q') ?? ''
   const rest = new URLSearchParams(searchParams)
+  rest.delete('page')
+  rest.delete('q')
 
   return (
     <Form
-      action={category ? `/shop${category}` : '/shop' + `?${rest.toString()}`}
+      action={category ? `/shop${category}` : '/shop'}
       className={`relative ${className}`}
     >
       <Input
@@ -30,10 +33,26 @@ export const Search: React.FC<{ className?: string }> = ({ className }) => {
         className="bg-background w-full pr-12 md:bg-transparent"
         defaultValue={query}
       />
-      <button className="ite hover:text-muted-foreground absolute top-0 right-0 z-1 inline-flex h-full min-h-full min-w-10 cursor-pointer items-center justify-center px-4 transition-colors">
-        <SearchIcon size={16} />
-        <span className="sr-only">search</span>
-      </button>
+
+      {Array.from(rest).map(([key, value]) => (
+        <input key={key} type="hidden" name={key} value={value} />
+      ))}
+
+      <SubmitButton />
     </Form>
+  )
+}
+
+const SubmitButton: React.FC = () => {
+  const { pending } = useFormStatus()
+
+  return (
+    <button
+      className="ite hover:text-muted-foreground absolute top-0 right-0 z-1 inline-flex h-full min-h-full min-w-10 cursor-pointer items-center justify-center px-4 transition-colors"
+      disabled={pending}
+    >
+      <SearchIcon size={16} />
+      <span className="sr-only">search</span>
+    </button>
   )
 }
