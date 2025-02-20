@@ -56,6 +56,8 @@
     "GOOGLE_SECRET",
     "RESEND_KEY",
     "UPLOADTHING_TOKEN",
+    "WEB_URL",
+    "DASHBOARD_URL",
     "PORT"
   ],
   "globalPassThroughEnv": [

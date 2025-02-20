@@ -1,0 +1,6 @@
+@import '@yuki/ui/tailwind.css';
+@source '../../../packages/ui/src/**/*.{ts,tsx}';
+
+@theme {
+  --font-sans: 'Geist', ui-sans-serif, system-ui, sans-serif;
+}
