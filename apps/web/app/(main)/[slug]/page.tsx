@@ -2,7 +2,7 @@ import { Suspense } from 'react'
 import { notFound } from 'next/navigation'
 
 import { createMetadata } from '@/lib/metadata'
-import { api, HydrateClient } from '@/lib/trpc/server'
+import { getQueryClient, HydrateClient, trpc } from '@/lib/trpc/server'
 import { getIdFromSlug } from '@/lib/utils'
 import {
   ProductDetails,
@@ -21,10 +21,14 @@ export default async function ProductPage({ params }: Props) {
   const { slug } = await params
   const id = getIdFromSlug(slug)
 
+  const queryClient = getQueryClient()
+
   void Promise.all([
-    api.product.getOne.prefetch({ id }),
-    api.product.getProductReviews.prefetch({ productId: id }),
-    api.product.getRelativeProducts.prefetch({ id }),
+    queryClient.prefetchQuery(trpc.product.getOne.queryOptions({ id })),
+    queryClient.prefetchQuery(
+      trpc.product.getProductReviews.queryOptions({ productId: id }),
+    ),
+    queryClient.prefetchQuery(trpc.product.getRelativeProducts.queryOptions({ id })),
   ])
 
   return (
@@ -38,7 +42,7 @@ export default async function ProductPage({ params }: Props) {
           <h2 className="sr-only">PRODUCT REVIEWS Section</h2>
           <p className="my-4 text-lg uppercase">PRODUCT REVIEWS</p>
           <Suspense fallback={<ProductReviewsSkeleton />}>
-            <ProductReviews id={id} />
+            <ProductReviews id={id} />{' '}
           </Suspense>
         </section>
 
@@ -60,7 +64,9 @@ export const generateMetadata = async ({ params }: Props) => {
   const id = getIdFromSlug(slug)
 
   try {
-    const product = await api.product.getOne({ id })
+    const product = await getQueryClient().fetchQuery(
+      trpc.product.getOne.queryOptions({ id }),
+    )
 
     return createMetadata({
       title: product.name,

@@ -4,6 +4,7 @@ import * as React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { useMutation, useQueryClient, useSuspenseQuery } from '@tanstack/react-query'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@yuki/ui/avatar'
 import { Button } from '@yuki/ui/button'
@@ -12,7 +13,7 @@ import { toast } from '@yuki/ui/sonner'
 import { Typography } from '@yuki/ui/typography'
 
 import { ProductCard, ProductCardSkeleton } from '@/app/_components/product-card'
-import { api } from '@/lib/trpc/react'
+import { useTRPC } from '@/lib/trpc/react'
 import { slugify } from '@/lib/utils'
 
 type CounterAction =
@@ -22,7 +23,10 @@ type CounterAction =
 
 export const ProductDetails: React.FC<{ id: string }> = ({ id }) => {
   const router = useRouter()
-  const [product] = api.product.getOne.useSuspenseQuery({ id })
+  const trpc = useTRPC()
+
+  const { data: product } = useSuspenseQuery(trpc.product.getOne.queryOptions({ id }))
+
   const [quantity, dispatch] = React.useReducer(
     (quantity: number, action: CounterAction) => {
       switch (action.type) {
@@ -39,16 +43,23 @@ export const ProductDetails: React.FC<{ id: string }> = ({ id }) => {
     0,
   )
 
-  const utils = api.useUtils()
-  const addToCart = api.cart.updateCart.useMutation({
-    onSuccess: async () => {
-      await utils.cart.getCart.invalidate()
-      await utils.product.getOne.invalidate({ id })
-      dispatch({ type: 'SET', payload: 0 })
-      toast.success('Item added to cart!')
-    },
-    onError: (e) => toast.error(e.message),
-  })
+  const queryClient = useQueryClient()
+
+  const addToCart = useMutation(
+    trpc.cart.updateCart.mutationOptions({
+      onSuccess: async () => {
+        await queryClient.invalidateQueries({
+          queryKey: [
+            ...trpc.cart.getCart.queryKey(),
+            ...trpc.product.getOne.queryKey({ id }),
+          ],
+        })
+        dispatch({ type: 'SET', payload: 0 })
+        toast.success('Item added to cart!')
+      },
+      onError: (e) => toast.error(e.message),
+    }),
+  )
 
   return (
     <section className="grid gap-4 md:grid-cols-12">
@@ -253,9 +264,13 @@ export const ProductDetailsSkeleton: React.FC = () => (
 )
 
 export const ProductReviews: React.FC<{ id: string }> = ({ id }) => {
+  const trpc = useTRPC()
   const [page, setPage] = React.useState<number>(1)
-  const [{ reviews, rating, totalPage }] = api.product.getProductReviews.useSuspenseQuery(
-    { productId: id, page },
+
+  const {
+    data: { reviews, rating, totalPage },
+  } = useSuspenseQuery(
+    trpc.product.getProductReviews.queryOptions({ productId: id, page }),
   )
 
   return (
@@ -320,7 +335,11 @@ export const ProductReviewsSkeleton: React.FC = () => (
 )
 
 export const RelativeProducts: React.FC<{ id: string }> = ({ id }) => {
-  const [relativeProducts] = api.product.getRelativeProducts.useSuspenseQuery({ id })
+  const trpc = useTRPC()
+
+  const { data: relativeProducts } = useSuspenseQuery(
+    trpc.product.getRelativeProducts.queryOptions({ id }),
+  )
 
   return (
     <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
