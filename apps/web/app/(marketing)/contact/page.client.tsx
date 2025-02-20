@@ -25,7 +25,7 @@ const schema = z.object({
 })
 
 export const ContactForm: React.FC = () => {
-  const [error, setError] = useState<{
+  const [errors, setErrors] = useState<{
     [K in keyof z.infer<typeof schema>]?: string[] | undefined
   }>({})
   const [isPending, transition] = useTransition()
@@ -35,7 +35,7 @@ export const ContactForm: React.FC = () => {
       const parsed = schema.safeParse(data)
 
       if (!parsed.success) {
-        setError(parsed.error.flatten().fieldErrors)
+        setErrors(parsed.error.flatten().fieldErrors)
         return
       }
 
@@ -47,16 +47,19 @@ export const ContactForm: React.FC = () => {
       }
 
       toast.success('Email sent!')
-      setError({})
+      setErrors({})
     })
   }
 
   return (
-    <Form<typeof handleSubmit> onSubmit={handleSubmit} isPending={isPending}>
+    <Form<typeof handleSubmit>
+      onSubmit={handleSubmit}
+      isPending={isPending}
+      errors={errors}
+    >
       <div className="grid grid-cols-2 gap-4">
         <FormField
           name="firstName"
-          error={error.firstName?.at(0)}
           render={() => (
             <FormItem>
               <FormLabel>First name</FormLabel>
@@ -67,7 +70,6 @@ export const ContactForm: React.FC = () => {
         />
         <FormField
           name="lastName"
-          error={error.lastName?.at(0)}
           render={() => (
             <FormItem>
               <FormLabel>Last name</FormLabel>
@@ -80,7 +82,6 @@ export const ContactForm: React.FC = () => {
 
       <FormField
         name="senderEmail"
-        error={error.senderEmail?.at(0)}
         render={() => (
           <FormItem>
             <FormLabel>Email</FormLabel>
@@ -92,7 +93,6 @@ export const ContactForm: React.FC = () => {
 
       <FormField
         name="subject"
-        error={error.subject?.at(0)}
         render={() => (
           <FormItem>
             <FormLabel>Subject</FormLabel>
@@ -104,7 +104,6 @@ export const ContactForm: React.FC = () => {
 
       <FormField
         name="message"
-        error={error.message?.at(0)}
         render={() => (
           <FormItem>
             <FormLabel>Message</FormLabel>

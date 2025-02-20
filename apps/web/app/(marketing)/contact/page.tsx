@@ -45,9 +45,9 @@ export default function ContactPage() {
               <div>
                 <CardTitle className="text-base">Address</CardTitle>
                 <CardDescription>
-                  123 Commerce Street
+                  69 Skibidi
                   <br />
-                  City, State 12345
+                  Sigma, Gyatt
                 </CardDescription>
               </div>
             </CardContent>

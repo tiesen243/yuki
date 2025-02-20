@@ -6,9 +6,7 @@ import { FacebookIcon, GithubIcon, XformerlyTwitterIcon } from '@yuki/ui/icons'
 export const Footer: React.FC = () => (
   <footer className="bg-background border-t">
     <div className="container mx-auto px-4 py-8">
-      {/* Main Footer Content */}
       <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
-        {/* Customer Service */}
         <div>
           <h3 className="mb-4 text-lg font-semibold">Customer Service</h3>
           <ul className="text-muted-foreground space-y-2 text-sm">
@@ -25,7 +23,6 @@ export const Footer: React.FC = () => (
           </ul>
         </div>
 
-        {/* Company Info */}
         <div>
           <h3 className="mb-4 text-lg font-semibold">Company</h3>
           <ul className="text-muted-foreground space-y-2 text-sm">
@@ -41,7 +38,6 @@ export const Footer: React.FC = () => (
           </ul>
         </div>
 
-        {/* Connect */}
         <div>
           <h3 className="mb-4 text-lg font-semibold">Connect</h3>
           <div className="flex space-x-2">
@@ -60,7 +56,6 @@ export const Footer: React.FC = () => (
           </div>
         </div>
 
-        {/* Newsletter */}
         <div>
           <h3 className="mb-4 text-lg font-semibold">Newsletter</h3>
           <p className="text-muted-foreground mb-4 text-sm">
@@ -79,10 +74,9 @@ export const Footer: React.FC = () => (
 
       <hr className="my-8" />
 
-      {/* Bottom Section */}
       <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
         <p className="text-muted-foreground text-sm">
-          © {new Date().getFullYear()} Yuki. All rights reserved.
+          © {new Date().getFullYear()} Yuki Inc. All rights reserved.
         </p>
       </div>
     </div>
