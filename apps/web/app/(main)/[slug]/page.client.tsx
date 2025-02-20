@@ -48,10 +48,7 @@ export const ProductDetails: React.FC<{ id: string }> = ({ id }) => {
     trpc.cart.updateCart.mutationOptions({
       onSuccess: async () => {
         await queryClient.invalidateQueries({
-          queryKey: [
-            ...trpc.cart.getCart.queryKey(),
-            ...trpc.product.getOne.queryKey({ id }),
-          ],
+          queryKey: [trpc.cart.getCart.queryKey(), trpc.product.getOne.queryKey({ id })],
         })
         dispatch({ type: 'SET', payload: 0 })
         toast.success('Item added to cart!')

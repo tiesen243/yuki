@@ -1,15 +1,17 @@
 'use client'
 
 import Link from 'next/link'
+import { useMutation, useQueryClient, useSuspenseQuery } from '@tanstack/react-query'
 
 import type { Address } from '@yuki/db'
 import { Button } from '@yuki/ui/button'
 import { cn } from '@yuki/ui/utils'
 
-import { api } from '@/lib/trpc/react'
+import { useTRPC } from '@/lib/trpc/react'
 
 export const AddressList: React.FC = () => {
-  const [addresses] = api.user.getAddresses.useSuspenseQuery()
+  const trpc = useTRPC()
+  const { data: addresses } = useSuspenseQuery(trpc.user.getAddresses.queryOptions())
 
   return addresses.map((address, i) => (
     <AddressCard
@@ -24,10 +26,14 @@ export const AddressCard: React.FC<{ address: Address; isLatest?: boolean }> = (
   address,
   isLatest = false,
 }) => {
-  const utils = api.useUtils()
-  const { mutate, isPending } = api.user.deleteAddress.useMutation({
-    onSuccess: () => utils.user.getAddresses.invalidate(),
-  })
+  const queryClient = useQueryClient()
+  const trpc = useTRPC()
+  const { mutate, isPending } = useMutation(
+    trpc.user.deleteAddress.mutationOptions({
+      onSuccess: () =>
+        queryClient.invalidateQueries({ queryKey: [trpc.user.getAddresses.queryKey()] }),
+    }),
+  )
 
   return (
     <div

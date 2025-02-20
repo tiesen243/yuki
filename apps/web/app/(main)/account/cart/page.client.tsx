@@ -3,6 +3,12 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+  useSuspenseQuery,
+} from '@tanstack/react-query'
 
 import type { RouterOutputs } from '@yuki/api'
 import { Button } from '@yuki/ui/button'
@@ -25,27 +31,34 @@ import {
 } from '@yuki/ui/table'
 
 import { useDebounce } from '@/hooks/use-debounce'
-import { api } from '@/lib/trpc/react'
+import { useTRPC } from '@/lib/trpc/react'
 
 export const CartDetails: React.FC = () => {
-  const router = useRouter()
-  const utils = api.useUtils()
-
-  const [cart] = api.cart.getCart.useSuspenseQuery()
-
-  const { data } = api.user.getAddresses.useQuery()
   const [address, setAddress] = useState<string>('')
+  const queryClient = useQueryClient()
+  const router = useRouter()
+  const trpc = useTRPC()
 
-  const confirmOrder = api.order.updateOrder.useMutation({
-    onError: (e) => toast.error(e.message),
-    onSuccess: async (d) => {
-      await utils.cart.getCart.invalidate()
-      await utils.order.getDetails.invalidate({ id: cart.id })
-      await utils.order.getHistories.invalidate()
-      router.push(`/account/orders/${cart.id}`)
-      toast.success(d.message)
-    },
-  })
+  const { data: cart } = useSuspenseQuery(trpc.cart.getCart.queryOptions())
+
+  const { data } = useQuery(trpc.user.getAddresses.queryOptions())
+
+  const confirmOrder = useMutation(
+    trpc.order.updateOrder.mutationOptions({
+      onError: (e) => toast.error(e.message),
+      onSuccess: async (d) => {
+        await queryClient.invalidateQueries({
+          queryKey: [
+            trpc.cart.getCart.queryKey(),
+            trpc.order.getDetails.queryKey({ id: cart.id }),
+            trpc.order.getHistories.queryKey(),
+          ],
+        })
+        router.push(`/account/orders/${cart.id}`)
+        toast.success(d.message)
+      },
+    }),
+  )
 
   return (
     <div className="space-y-4 overflow-x-auto">
@@ -131,27 +144,31 @@ const CartItem: React.FC<{
   quantity: number
 }> = ({ cartId, product, quantity }) => {
   const [localQuantity, setLocalQuantity] = useState(quantity)
+  const queryClient = useQueryClient()
+  const trpc = useTRPC()
 
-  const utils = api.useUtils()
+  const deleteItem = useMutation(
+    trpc.cart.deleteItemFromCart.mutationOptions({
+      onSuccess: async () => {
+        await queryClient.invalidateQueries({ queryKey: [trpc.cart.getCart.queryKey()] })
+        toast.success('Item deleted!')
+      },
+      onError: (e) => toast.error(e.message),
+    }),
+  )
 
-  const deleteItem = api.cart.deleteItemFromCart.useMutation({
-    onSuccess: async () => {
-      await utils.cart.getCart.invalidate()
-      toast.success('Item deleted!')
-    },
-    onError: (e) => toast.error(e.message),
-  })
-
-  const updateItem = api.cart.updateCart.useMutation({
-    onSuccess: async () => {
-      await utils.cart.getCart.invalidate()
-      toast.success('Item updated!')
-    },
-    onError: (e) => {
-      toast.error(e.message)
-      setLocalQuantity(quantity)
-    },
-  })
+  const updateItem = useMutation(
+    trpc.cart.updateCart.mutationOptions({
+      onSuccess: async () => {
+        await queryClient.invalidateQueries({ queryKey: [trpc.cart.getCart.queryKey()] })
+        toast.success('Item updated!')
+      },
+      onError: (e) => {
+        toast.error(e.message)
+        setLocalQuantity(quantity)
+      },
+    }),
+  )
 
   const debouncedUpdate = useDebounce((delta: number) => {
     updateItem.mutate({ cartId, productId: product.id, quantity: delta, isUpdate: true })

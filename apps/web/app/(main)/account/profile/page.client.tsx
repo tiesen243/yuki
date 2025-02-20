@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
+import { useMutation, useQuery } from '@tanstack/react-query'
 
 import { Button } from '@yuki/ui/button'
 import {
@@ -20,10 +21,24 @@ import { Label } from '@yuki/ui/label'
 import { toast } from '@yuki/ui/sonner'
 import { UploadButton } from '@yuki/ui/upload-button'
 
-import { api } from '@/lib/trpc/react'
+import { useTRPC } from '@/lib/trpc/react'
 
 export const LinkedAccountList: React.FC = () => {
-  const [linkedAccounts] = api.user.getLinkedAccounts.useSuspenseQuery()
+  const trpc = useTRPC()
+  const { data: linkedAccounts, isLoading } = useQuery(
+    trpc.user.getLinkedAccounts.queryOptions(),
+  )
+
+  if (isLoading || !linkedAccounts)
+    return providers.map((provider) => (
+      <li key={provider.name} className="flex items-center gap-2">
+        <provider.Icon className="size-4" />
+        <div className="w-32 animate-pulse rounded bg-current">&nbsp;</div>
+        <Button size="sm" variant="outline" className="w-20" disabled>
+          Link
+        </Button>
+      </li>
+    ))
 
   const accountMap = new Map(linkedAccounts.map((acc) => [acc.provider, acc]))
   return providers.map((provider) => {
@@ -49,17 +64,6 @@ export const LinkedAccountList: React.FC = () => {
   })
 }
 
-export const LinkedAccountSkeleton: React.FC = () =>
-  providers.map((provider) => (
-    <li key={provider.name} className="flex items-center gap-2">
-      <provider.Icon className="size-4" />
-      <div className="w-32 animate-pulse rounded bg-current">&nbsp;</div>
-      <Button size="sm" variant="outline" className="w-20" disabled>
-        Link
-      </Button>
-    </li>
-  ))
-
 const providers = [
   { name: 'discord', Icon: DiscordIcon },
   { name: 'github', Icon: GithubIcon },
@@ -68,11 +72,15 @@ const providers = [
 
 const UnlinkButton: React.FC<{ provider: string }> = ({ provider }) => {
   const router = useRouter()
-  const unlink = api.user.unlinkAccount.useMutation({
-    onSuccess: () => {
-      router.refresh()
-    },
-  })
+  const trpc = useTRPC()
+
+  const { mutate, isPending } = useMutation(
+    trpc.user.unlinkAccount.mutationOptions({
+      onSuccess: () => {
+        router.refresh()
+      },
+    }),
+  )
 
   return (
     <Button
@@ -80,11 +88,11 @@ const UnlinkButton: React.FC<{ provider: string }> = ({ provider }) => {
       variant="outline"
       className="w-20"
       onClick={() => {
-        unlink.mutate({ provider })
+        mutate({ provider })
       }}
-      disabled={unlink.isPending}
+      disabled={isPending}
     >
-      {unlink.isPending ? 'Unlinking...' : 'Unlink'}
+      {isPending ? 'Unlinking...' : 'Unlink'}
     </Button>
   )
 }
@@ -98,16 +106,19 @@ const LinkButton: React.FC<{ provider: string }> = ({ provider }) => (
 )
 
 export const EditProfileForm: React.FC<{ name: string; image: string }> = (props) => {
-  const [open, setOpen] = useState(false)
   const [formData, setFormData] = useState(props)
+  const [open, setOpen] = useState(false)
   const router = useRouter()
+  const trpc = useTRPC()
 
-  const { mutate, isPending } = api.user.updateProfile.useMutation({
-    onSuccess: () => {
-      router.refresh()
-      setOpen(false)
-    },
-  })
+  const { mutate, isPending } = useMutation(
+    trpc.user.updateProfile.mutationOptions({
+      onSuccess: () => {
+        router.refresh()
+        setOpen(false)
+      },
+    }),
+  )
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

@@ -4,11 +4,11 @@ import Link from 'next/link'
 import { buttonVariants } from '@yuki/ui/button'
 import { Typography } from '@yuki/ui/typography'
 
-import { api, HydrateClient } from '@/lib/trpc/server'
+import { getQueryClient, HydrateClient, trpc } from '@/lib/trpc/server'
 import { AddressCardSkeleton, AddressList } from './page.client'
 
 export default function AddressPage() {
-  void api.user.getAddresses.prefetch()
+  void getQueryClient().prefetchQuery(trpc.user.getAddresses.queryOptions())
 
   return (
     <HydrateClient>

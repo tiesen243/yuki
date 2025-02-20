@@ -1,6 +1,7 @@
 'use client'
 
 import Image from 'next/image'
+import { useSuspenseQuery } from '@tanstack/react-query'
 
 import type { Product } from '@yuki/db'
 import { Badge } from '@yuki/ui/badge'
@@ -14,11 +15,13 @@ import {
   TableRow,
 } from '@yuki/ui/table'
 
-import { api } from '@/lib/trpc/react'
+import { useTRPC } from '@/lib/trpc/react'
 import { mapStatusBadge } from '@/lib/utils'
 
 export const OrderDetails: React.FC<{ id: number }> = ({ id }) => {
-  const [order] = api.order.getDetails.useSuspenseQuery({ id })
+  const trpc = useTRPC()
+
+  const { data: order } = useSuspenseQuery(trpc.order.getDetails.queryOptions({ id }))
 
   return (
     <div className="space-y-4 overflow-x-auto">

@@ -1,6 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 import { Button } from '@yuki/ui/button'
 import {
@@ -12,30 +13,36 @@ import {
   FormMessage,
 } from '@yuki/ui/form'
 
-import { api } from '@/lib/trpc/react'
+import { useTRPC } from '@/lib/trpc/react'
 
 export const UpdateAddressForm: React.FC<{ id: string }> = ({ id }) => {
+  const queryClient = useQueryClient()
   const router = useRouter()
-  const utils = api.useUtils()
-  const { data } = api.user.getOneAddress.useQuery({ id })
-  const { mutate, isPending, error } = api.user.updateAddress.useMutation({
-    onSuccess: async () => {
-      await utils.user.getAddresses.invalidate()
-      router.push('/account/address')
-    },
-  })
+  const trpc = useTRPC()
+  const { mutate, isPending, error } = useMutation(
+    trpc.user.updateAddress.mutationOptions({
+      onSuccess: async () => {
+        await queryClient.invalidateQueries({
+          queryKey: trpc.user.getAddresses.queryKey(),
+        })
+        router.push('/account/address')
+      },
+    }),
+  )
+
+  const { data } = useQuery(trpc.user.getOneAddress.queryOptions({ id }))
 
   return (
     <Form<typeof mutate>
       className="container mt-4"
       onSubmit={mutate}
       isPending={isPending}
+      errors={error?.data?.zodError}
     >
       {fields.map((field) => (
         <FormField
           key={field.name}
           name={field.name}
-          error={error?.data?.zodError?.[field.name]?.at(0)}
           render={() => (
             <FormItem>
               <FormLabel>{field.label}</FormLabel>

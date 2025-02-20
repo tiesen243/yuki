@@ -1,6 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import { Button } from '@yuki/ui/button'
 import {
@@ -12,29 +13,34 @@ import {
   FormMessage,
 } from '@yuki/ui/form'
 
-import { api } from '@/lib/trpc/react'
+import { useTRPC } from '@/lib/trpc/react'
 
 export const NewAddressForm: React.FC = () => {
+  const queryClient = useQueryClient()
   const router = useRouter()
-  const utils = api.useUtils()
-  const { mutate, isPending, error } = api.user.newAddress.useMutation({
-    onSuccess: async () => {
-      await utils.user.getAddresses.invalidate()
-      router.push('/account/address')
-    },
-  })
+  const trpc = useTRPC()
+  const { mutate, isPending, error } = useMutation(
+    trpc.user.newAddress.mutationOptions({
+      onSuccess: async () => {
+        await queryClient.invalidateQueries({
+          queryKey: trpc.user.getAddresses.queryKey(),
+        })
+        router.push('/account/address')
+      },
+    }),
+  )
 
   return (
     <Form<typeof mutate>
       className="container mt-4"
       onSubmit={mutate}
       isPending={isPending}
+      errors={error?.data?.zodError}
     >
       {fields.map((field) => (
         <FormField
           key={field.name}
           {...field}
-          error={error?.data?.zodError?.[field.name]?.at(0)}
           render={() => (
             <FormItem>
               <FormLabel>{field.label}</FormLabel>

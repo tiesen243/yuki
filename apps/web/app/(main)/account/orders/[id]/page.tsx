@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation'
 import { Typography } from '@yuki/ui/typography'
 
 import { createMetadata } from '@/lib/metadata'
-import { api, HydrateClient } from '@/lib/trpc/server'
+import { api, getQueryClient, HydrateClient, trpc } from '@/lib/trpc/server'
 import { OrderDetails } from './page.client'
 
 interface Props {
@@ -13,7 +13,7 @@ interface Props {
 export default async function OrderDetailsPage({ params }: Props) {
   const id = +(await params).id
 
-  void api.order.getDetails.prefetch({ id })
+  void getQueryClient().prefetchQuery(trpc.order.getDetails.queryOptions({ id }))
 
   return (
     <HydrateClient>

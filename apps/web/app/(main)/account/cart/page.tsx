@@ -2,11 +2,11 @@ import { Suspense } from 'react'
 
 import { Typography } from '@yuki/ui/typography'
 
-import { api, HydrateClient } from '@/lib/trpc/server'
+import { getQueryClient, HydrateClient, trpc } from '@/lib/trpc/server'
 import { CartDetails } from './page.client'
 
 export default function CartPage() {
-  void api.cart.getCart.prefetch()
+  void getQueryClient().prefetchQuery(trpc.cart.getCart.queryOptions())
 
   return (
     <HydrateClient>
