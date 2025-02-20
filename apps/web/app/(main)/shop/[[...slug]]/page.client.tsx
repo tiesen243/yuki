@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import NextForm from 'next/form'
 import Link from 'next/link'
+import { useQuery, useSuspenseQuery } from '@tanstack/react-query'
 import { useFormStatus } from 'react-dom'
 
 import { type Query } from '@yuki/api/validators/product'
@@ -19,8 +20,8 @@ import {
 } from '@yuki/ui/select'
 import { cn } from '@yuki/ui/utils'
 
-import { ProductCard, ProductCardSkeleton } from '@/app/_components/product-card'
-import { api } from '@/lib/trpc/react'
+import { ProductCard } from '@/app/_components/product-card'
+import { useTRPC } from '@/lib/trpc/react'
 import { getIdFromSlug } from '@/lib/utils'
 
 export const FilterSidebar: React.FC<Query & { slug?: string[] }> = (props) => {
@@ -51,7 +52,10 @@ const FilterContent: React.FC<Query & { slug?: string[]; className?: string }> =
   className,
   ...query
 }) => {
-  const { data: categories = [] } = api.category.getAll.useQuery({ limit: 999 })
+  const trpc = useTRPC()
+  const { data: categories = [] } = useQuery(
+    trpc.category.getAll.queryOptions({ limit: 999 }),
+  )
   const [category, setCategory] = useState(getIdFromSlug(slug?.at(0)))
 
   return (
@@ -140,8 +144,17 @@ const FilterContent: React.FC<Query & { slug?: string[]; className?: string }> =
   )
 }
 
+export const SubmitButton: React.FC<React.ComponentProps<'button'>> = (props) => {
+  const { pending } = useFormStatus()
+  return <Button {...props} disabled={pending} />
+}
+
 export const ProductList: React.FC<Query> = (query) => {
-  const [{ products }] = api.product.getAll.useSuspenseQuery(query)
+  const trpc = useTRPC()
+
+  const {
+    data: { products },
+  } = useSuspenseQuery(trpc.product.getAll.queryOptions(query))
 
   return (
     <div className="grid grid-cols-2 gap-4 lg:grid-cols-4 xl:grid-cols-5">
@@ -152,16 +165,12 @@ export const ProductList: React.FC<Query> = (query) => {
   )
 }
 
-export const ProductListSkeleton: React.FC<{ limit: number }> = ({ limit }) => (
-  <div className="grid grid-cols-2 gap-4 lg:grid-cols-4 xl:grid-cols-5">
-    {Array.from({ length: limit }).map((_, i) => (
-      <ProductCardSkeleton key={i} />
-    ))}
-  </div>
-)
-
 export const ProductPagination: React.FC<Query> = (query) => {
-  const [{ totalPage }] = api.product.getAll.useSuspenseQuery(query)
+  const trpc = useTRPC()
+
+  const {
+    data: { totalPage },
+  } = useSuspenseQuery(trpc.product.getAll.queryOptions(query))
 
   if (totalPage <= 1) return
 
@@ -211,17 +220,4 @@ export const ProductPagination: React.FC<Query> = (query) => {
       )}
     </div>
   )
-}
-
-export const ProductPaginationSkeleton: React.FC = () => (
-  <div className="mt-4 flex items-center justify-center gap-4">
-    {Array.from({ length: 8 }).map((_, i) => (
-      <Button key={i} variant="outline" size="icon" className="bg-accent animate-pulse" />
-    ))}
-  </div>
-)
-
-export const SubmitButton: React.FC<React.ComponentProps<'button'>> = (props) => {
-  const { pending } = useFormStatus()
-  return <Button {...props} disabled={pending} />
 }

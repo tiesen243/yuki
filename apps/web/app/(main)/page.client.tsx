@@ -9,8 +9,8 @@ import { Button } from '@yuki/ui/button'
 import { Typography } from '@yuki/ui/typography'
 import { cn } from '@yuki/ui/utils'
 
-import { CategoryCard, CategoryCardSkeleton } from '@/app/_components/category-card'
-import { ProductCard, ProductCardSkeleton } from '@/app/_components/product-card'
+import { CategoryCard } from '@/app/_components/category-card'
+import { ProductCard } from '@/app/_components/product-card'
 import { useTRPC } from '@/lib/trpc/react'
 
 export const Slider: React.FC<{
@@ -107,18 +107,6 @@ export const ProductList: React.FC = () => {
   )
 }
 
-export const ProductListSkeleton: React.FC = () => (
-  <section className="container grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
-    <Typography variant="h2" className="col-span-full">
-      New Arrivals
-    </Typography>
-
-    {Array.from({ length: 12 }).map((_, i) => (
-      <ProductCardSkeleton key={i} />
-    ))}
-  </section>
-)
-
 export const CategoryList: React.FC = () => {
   const trpc = useTRPC()
   const { data: categories } = useSuspenseQuery(trpc.category.getAll.queryOptions({}))
@@ -134,15 +122,3 @@ export const CategoryList: React.FC = () => {
     </section>
   )
 }
-
-export const CategoryListSkeleton: React.FC = () => (
-  <section className="container grid grid-cols-2 gap-4 md:grid-cols-4">
-    <Typography variant="h2" className="col-span-2 md:col-span-4">
-      Categories
-    </Typography>
-
-    {Array.from({ length: 6 }).map((_, i) => (
-      <CategoryCardSkeleton key={i} />
-    ))}
-  </section>
-)

@@ -12,7 +12,7 @@ import { ShoppingCartIcon, Star } from '@yuki/ui/icons'
 import { toast } from '@yuki/ui/sonner'
 import { Typography } from '@yuki/ui/typography'
 
-import { ProductCard, ProductCardSkeleton } from '@/app/_components/product-card'
+import { ProductCard } from '@/app/_components/product-card'
 import { useTRPC } from '@/lib/trpc/react'
 import { slugify } from '@/lib/utils'
 
@@ -22,6 +22,7 @@ type CounterAction =
   | { type: 'SET'; payload: number }
 
 export const ProductDetails: React.FC<{ id: string }> = ({ id }) => {
+  const queryClient = useQueryClient()
   const router = useRouter()
   const trpc = useTRPC()
 
@@ -42,8 +43,6 @@ export const ProductDetails: React.FC<{ id: string }> = ({ id }) => {
     },
     0,
   )
-
-  const queryClient = useQueryClient()
 
   const addToCart = useMutation(
     trpc.cart.updateCart.mutationOptions({
@@ -183,86 +182,6 @@ export const ProductDetails: React.FC<{ id: string }> = ({ id }) => {
   )
 }
 
-export const ProductDetailsSkeleton: React.FC = () => (
-  <section className="grid gap-4 md:grid-cols-12">
-    <section className="md:col-span-5">
-      <h2 className="sr-only">Product Image Section</h2>
-      <div className="aspect-square w-full animate-pulse rounded-md bg-current object-cover" />
-    </section>
-
-    <section className="flex max-h-full flex-col md:col-span-7">
-      <h2 className="sr-only">Product Information Section</h2>
-      <Typography variant="h3" className="animate-pulse rounded-md bg-current">
-        &nbsp;
-      </Typography>
-      <div className="my-4 flex items-center gap-4">
-        <StarRating rating={0} />
-        <hr className="bg-border h-6 w-0.5" />
-        <p>0 Reviews</p>
-        <hr className="bg-border h-6 w-0.5" />
-        <p>0 Sold</p>
-      </div>
-
-      <Typography className="w-1/3 animate-pulse rounded-md bg-current">
-        &nbsp;
-      </Typography>
-
-      <Typography className="w-full grow animate-pulse rounded-md bg-current">
-        &nbsp;
-      </Typography>
-
-      <section className="flex items-center text-lg">
-        <h3 className="sr-only">Product Price Section</h3>
-        <Typography className="mb-4 w-1/6 animate-pulse rounded-md bg-current">
-          &nbsp;
-        </Typography>
-      </section>
-
-      <div className="flex items-center gap-4">
-        <span>Quantity:</span>
-
-        <div className="flex items-center rounded-md border">
-          <label htmlFor="quantity" className="sr-only">
-            Quantity
-          </label>
-          <Button
-            variant="outline"
-            size="icon"
-            className="rounded-r-none border-none"
-            disabled
-          >
-            -
-          </Button>
-          <input
-            name="quantity"
-            className="text-muted-foreground flex h-9 w-16 items-center justify-center border-x text-center focus-visible:outline-none"
-            value={0}
-            disabled
-          />
-          <Button
-            variant="outline"
-            size="icon"
-            className="rounded-l-none border-none"
-            disabled
-          >
-            +
-          </Button>
-        </div>
-
-        <span className="text-muted-foreground text-xs">0 items available</span>
-      </div>
-
-      <div className="mt-4 grid grid-cols-2 items-center gap-4 md:flex">
-        <Button variant="outline" disabled>
-          <ShoppingCartIcon />
-          Add to cart
-        </Button>
-        <Button disabled>Buy now</Button>
-      </div>
-    </section>
-  </section>
-)
-
 export const ProductReviews: React.FC<{ id: string }> = ({ id }) => {
   const trpc = useTRPC()
   const [page, setPage] = React.useState<number>(1)
@@ -322,18 +241,6 @@ export const ProductReviews: React.FC<{ id: string }> = ({ id }) => {
   )
 }
 
-export const ProductReviewsSkeleton: React.FC = () => (
-  <>
-    <StarRating rating={0} />
-
-    <div className="my-4">
-      <span className="text-muted-foreground">
-        No reviews yet. Be the first to review this product!
-      </span>
-    </div>
-  </>
-)
-
 export const RelativeProducts: React.FC<{ id: string }> = ({ id }) => {
   const trpc = useTRPC()
 
@@ -350,15 +257,7 @@ export const RelativeProducts: React.FC<{ id: string }> = ({ id }) => {
   )
 }
 
-export const RelativeProductsSkeleton: React.FC = () => (
-  <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
-    {Array.from({ length: 12 }).map((_, i) => (
-      <ProductCardSkeleton key={i} />
-    ))}
-  </div>
-)
-
-const StarRating: React.FC<{ rating: number }> = ({ rating }) => {
+export const StarRating: React.FC<{ rating: number }> = ({ rating }) => {
   const stars = []
   const roundedRating = Math.round(rating * 2) / 2
 

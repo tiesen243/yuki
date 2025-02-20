@@ -1,17 +1,13 @@
 import { Suspense } from 'react'
 
 import type { Query } from '@yuki/api/validators/product'
+import { Button } from '@yuki/ui/button'
 
+import { ProductCardSkeleton } from '@/app/_components/product-card'
 import { createMetadata } from '@/lib/metadata'
-import { api, HydrateClient } from '@/lib/trpc/server'
+import { getQueryClient, HydrateClient, trpc } from '@/lib/trpc/server'
 import { getIdFromSlug } from '@/lib/utils'
-import {
-  FilterSidebar,
-  ProductList,
-  ProductListSkeleton,
-  ProductPagination,
-  ProductPaginationSkeleton,
-} from './page.client'
+import { FilterSidebar, ProductList, ProductPagination } from './page.client'
 
 interface Props {
   params: Promise<{ slug?: string[] }>
@@ -22,22 +18,26 @@ export default async function ShopPage({ params, searchParams }: Props) {
   const { slug } = await params
   const {
     page = 1,
-    limit = 20,
+    limit = 4 * 5,
     orderBy = 'desc',
     sortBy = 'createdAt',
     q,
   } = await searchParams
 
+  const queryClient = getQueryClient()
+
   const categoryId = getIdFromSlug(slug?.at(0))
 
-  void api.product.getAll.prefetch({
-    page: +page,
-    limit: +limit,
-    q,
-    orderBy: 'asc',
-    sortBy: 'createdAt',
-    category: categoryId,
-  })
+  void queryClient.prefetchQuery(
+    trpc.product.getAll.queryOptions({
+      page: +page,
+      limit: +limit,
+      q,
+      orderBy: 'asc',
+      sortBy: 'createdAt',
+      category: categoryId,
+    }),
+  )
 
   const query = {
     category: categoryId,
@@ -57,11 +57,32 @@ export default async function ShopPage({ params, searchParams }: Props) {
 
         <section className="grow">
           <h3 className="sr-only">Product List Section</h3>
-          <Suspense fallback={<ProductListSkeleton limit={+limit} />}>
+          <Suspense
+            fallback={
+              <div className="grid grid-cols-2 gap-4 lg:grid-cols-4 xl:grid-cols-5">
+                {Array.from({ length: +limit }).map((_, i) => (
+                  <ProductCardSkeleton key={i} />
+                ))}
+              </div>
+            }
+          >
             <ProductList {...query} />
           </Suspense>
 
-          <Suspense fallback={<ProductPaginationSkeleton />}>
+          <Suspense
+            fallback={
+              <div className="mt-4 flex items-center justify-center gap-4">
+                {Array.from({ length: 8 }).map((_, i) => (
+                  <Button
+                    key={i}
+                    variant="outline"
+                    size="icon"
+                    className="bg-accent animate-pulse"
+                  />
+                ))}
+              </div>
+            }
+          >
             <ProductPagination {...query} />
           </Suspense>
         </section>
@@ -74,7 +95,9 @@ export const generateMetadata = async ({ params }: Props) => {
   const { slug } = await params
   const id = getIdFromSlug(slug?.at(0))
 
-  const category = await api.category.getOne({ id })
+  const category = await getQueryClient().fetchQuery(
+    trpc.category.getOne.queryOptions({ id }),
+  )
 
   if (!category)
     return createMetadata({
