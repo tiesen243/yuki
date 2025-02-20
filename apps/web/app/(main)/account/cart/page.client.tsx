@@ -47,13 +47,18 @@ export const CartDetails: React.FC = () => {
     trpc.order.updateOrder.mutationOptions({
       onError: (e) => toast.error(e.message),
       onSuccess: async (d) => {
-        await queryClient.invalidateQueries({
-          queryKey: [
-            trpc.cart.getCart.queryKey(),
-            trpc.order.getDetails.queryKey({ id: cart.id }),
-            trpc.order.getHistories.queryKey(),
-          ],
-        })
+        await Promise.all([
+          queryClient.invalidateQueries({
+            queryKey: trpc.cart.getCart.queryKey(),
+          }),
+          queryClient.invalidateQueries({
+            queryKey: trpc.order.getDetails.queryKey({ id: cart.id }),
+          }),
+          queryClient.invalidateQueries({
+            queryKey: trpc.order.getHistories.queryKey(),
+          }),
+        ])
+
         router.push(`/account/orders/${cart.id}`)
         toast.success(d.message)
       },
@@ -154,7 +159,7 @@ const CartItem: React.FC<{
     trpc.cart.deleteItemFromCart.mutationOptions({
       onSuccess: async () => {
         await queryClient.invalidateQueries({
-          queryKey: [trpc.cart.getCart.queryKey()],
+          queryKey: trpc.cart.getCart.queryKey(),
         })
         toast.success('Item deleted!')
       },
@@ -166,7 +171,7 @@ const CartItem: React.FC<{
     trpc.cart.updateCart.mutationOptions({
       onSuccess: async () => {
         await queryClient.invalidateQueries({
-          queryKey: [trpc.cart.getCart.queryKey()],
+          queryKey: trpc.cart.getCart.queryKey(),
         })
         toast.success('Item updated!')
       },

@@ -38,7 +38,7 @@ export const AddressCard: React.FC<{
     trpc.user.deleteAddress.mutationOptions({
       onSuccess: () =>
         queryClient.invalidateQueries({
-          queryKey: [trpc.user.getAddresses.queryKey()],
+          queryKey: trpc.user.getAddresses.queryKey(),
         }),
     }),
   )
