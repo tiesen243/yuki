@@ -16,7 +16,6 @@ import { Typography } from '@yuki/ui/typography'
 import { ThemeProvider } from '@yuki/ui/utils'
 
 import type { Route } from './+types/root'
-import { Header } from '@/components/header/index'
 import { env } from '@/env'
 import { SessionProvider } from '@/hooks/use-session'
 import { createLinks, createMetadata } from '@/lib/metadata'
@@ -44,10 +43,7 @@ export function Layout({ children }: Readonly<{ children: React.ReactNode }>) {
           disableTransitionOnChange
         >
           <TRPCReactProvider>
-            <SessionProvider>
-              <Header />
-              {children}
-            </SessionProvider>
+            <SessionProvider>{children}</SessionProvider>
           </TRPCReactProvider>
 
           <Toaster />
