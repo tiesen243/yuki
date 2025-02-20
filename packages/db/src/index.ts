@@ -23,5 +23,4 @@ const globalForPrisma = globalThis as unknown as {
 export const db = globalForPrisma.prisma ?? createPrismaClient()
 if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = db
 
-export type * from '@prisma/client'
-export { Status, Payment } from '@prisma/client'
+export * from '@prisma/client'

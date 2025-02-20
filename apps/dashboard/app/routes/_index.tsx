@@ -1,23 +1,14 @@
-import { Suspense } from 'react'
+import { useQuery } from '@tanstack/react-query'
 
-import type { Route } from './+types/_index'
-import { Products } from '@/components/products'
-import { getQueryClient, HydrateClient, trpc } from '@/lib/trpc/server'
-
-export const loader = ({ request }: Route.LoaderArgs) => {
-  void getQueryClient().prefetchQuery(
-    trpc(request).product.getAll.queryOptions({}),
-  )
-}
+import { useTRPC } from '@/lib/trpc/react'
 
 export default function HomePage() {
+  const trpc = useTRPC()
+  const { data } = useQuery(trpc.product.getAll.queryOptions({}))
+
   return (
-    <HydrateClient>
-      <main className="container py-4">
-        <Suspense fallback="Loading....">
-          <Products />
-        </Suspense>
-      </main>
-    </HydrateClient>
+    <main className="container py-4">
+      {JSON.stringify(data?.products, null, 2)}
+    </main>
   )
 }
