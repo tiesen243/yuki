@@ -1,7 +1,11 @@
 import type { FileRouter } from 'uploadthing/server'
 import { NextSSRPlugin } from '@uploadthing/react/next-ssr-plugin'
 import { createRouteHandler, createUploadthing } from 'uploadthing/next'
-import { extractRouterConfig, UploadThingError, UTApi } from 'uploadthing/server'
+import {
+  extractRouterConfig,
+  UploadThingError,
+  UTApi,
+} from 'uploadthing/server'
 
 import { auth } from '@yuki/auth'
 

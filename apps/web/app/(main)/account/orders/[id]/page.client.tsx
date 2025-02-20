@@ -21,7 +21,9 @@ import { mapStatusBadge } from '@/lib/utils'
 export const OrderDetails: React.FC<{ id: number }> = ({ id }) => {
   const trpc = useTRPC()
 
-  const { data: order } = useSuspenseQuery(trpc.order.getDetails.queryOptions({ id }))
+  const { data: order } = useSuspenseQuery(
+    trpc.order.getDetails.queryOptions({ id }),
+  )
 
   return (
     <div className="space-y-4 overflow-x-auto">
@@ -39,7 +41,11 @@ export const OrderDetails: React.FC<{ id: number }> = ({ id }) => {
 
         <TableBody>
           {order.items.map((i) => (
-            <OrderItem key={i.productId} product={i.product} quantity={i.quantity} />
+            <OrderItem
+              key={i.productId}
+              product={i.product}
+              quantity={i.quantity}
+            />
           ))}
         </TableBody>
 

@@ -11,7 +11,9 @@ import { mapStatusBadge } from '@/lib/utils'
 
 export const OrderHistories: React.FC = () => {
   const trpc = useTRPC()
-  const { data: orders } = useSuspenseQuery(trpc.order.getHistories.queryOptions())
+  const { data: orders } = useSuspenseQuery(
+    trpc.order.getHistories.queryOptions(),
+  )
 
   return (
     <div className="flex flex-col gap-4 py-4">
@@ -32,7 +34,9 @@ export const OrderHistories: React.FC = () => {
               />
               <p className="flex grow flex-col">
                 <span className="text-lg">{i.product.name}</span>
-                <span className="text-muted-foreground text-sm">x{i.quantity}</span>
+                <span className="text-muted-foreground text-sm">
+                  x{i.quantity}
+                </span>
               </p>
 
               <p>${i.product.price}</p>
@@ -46,8 +50,12 @@ export const OrderHistories: React.FC = () => {
 
           <div className="flex items-center justify-between gap-4">
             <div className="space-x-2">
-              <Badge variant={mapStatusBadge[o.status]}>{o.status.toLowerCase()}</Badge>
-              <Badge variant={mapStatusBadge[o.payment]}>{o.payment.toLowerCase()}</Badge>
+              <Badge variant={mapStatusBadge[o.status]}>
+                {o.status.toLowerCase()}
+              </Badge>
+              <Badge variant={mapStatusBadge[o.payment]}>
+                {o.payment.toLowerCase()}
+              </Badge>
             </div>
 
             <p>Total: ${o.total}</p>

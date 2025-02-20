@@ -25,7 +25,11 @@ export default function RootLayout({
           geistSans.variable,
         )}
       >
-        <ThemeProvider attribute="class" defaultTheme="dark" disableTransitionOnChange>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          disableTransitionOnChange
+        >
           <TRPCReactProvider>
             <SessionProvider>
               <Header />

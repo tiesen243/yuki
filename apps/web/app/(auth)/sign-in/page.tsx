@@ -21,7 +21,9 @@ export default function SignInPage() {
     <>
       <CardHeader>
         <CardTitle>Sign In</CardTitle>
-        <CardDescription>Enter your credentials to access your account</CardDescription>
+        <CardDescription>
+          Enter your credentials to access your account
+        </CardDescription>
       </CardHeader>
 
       <SignInForm setToken={setToken} />

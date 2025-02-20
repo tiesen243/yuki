@@ -1,4 +1,10 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@yuki/ui/card'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@yuki/ui/card'
 import { Mail, MapPin, Phone } from '@yuki/ui/icons'
 import { Typography } from '@yuki/ui/typography'
 
@@ -12,8 +18,8 @@ export default function ContactPage() {
         <div>
           <Typography variant="h1">Get in Touch</Typography>
           <p className="text-muted-foreground mt-2 text-lg">
-            We&apos;d love to hear from you. Please fill out this form or contact us
-            directly.
+            We&apos;d love to hear from you. Please fill out this form or
+            contact us directly.
           </p>
         </div>
 
@@ -59,7 +65,8 @@ export default function ContactPage() {
         <CardHeader>
           <Typography variant="h2">Send us a message</Typography>
           <CardDescription>
-            Fill out the form below and we&apos;ll get back to you as soon as possible.
+            Fill out the form below and we&apos;ll get back to you as soon as
+            possible.
           </CardDescription>
         </CardHeader>
         <CardContent>

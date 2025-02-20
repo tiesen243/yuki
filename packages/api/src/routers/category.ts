@@ -22,12 +22,14 @@ export const categoryRouter = {
   }),
 
   // [GET] /api/trpc/category.getOne
-  getOne: publicProcedure.input(schemas.getOneSchema).query(async ({ ctx, input }) => {
-    return ctx.db.category.findFirst({
-      where: { id: input.id },
-      include: { products: { orderBy: { createdAt: 'desc' } } },
-    })
-  }),
+  getOne: publicProcedure
+    .input(schemas.getOneSchema)
+    .query(async ({ ctx, input }) => {
+      return ctx.db.category.findFirst({
+        where: { id: input.id },
+        include: { products: { orderBy: { createdAt: 'desc' } } },
+      })
+    }),
 
   // [POST] /api/trpc/category.create
   create: restrictedProcedure

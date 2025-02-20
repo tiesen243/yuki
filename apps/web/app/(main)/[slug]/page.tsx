@@ -31,7 +31,9 @@ export default async function ProductPage({ params }: Props) {
     queryClient.prefetchQuery(
       trpc.product.getProductReviews.queryOptions({ productId: id }),
     ),
-    queryClient.prefetchQuery(trpc.product.getRelativeProducts.queryOptions({ id })),
+    queryClient.prefetchQuery(
+      trpc.product.getRelativeProducts.queryOptions({ id }),
+    ),
   ])
 
   return (
@@ -47,7 +49,10 @@ export default async function ProductPage({ params }: Props) {
 
               <section className="flex max-h-full flex-col md:col-span-7">
                 <h2 className="sr-only">Product Information Section</h2>
-                <Typography variant="h3" className="animate-pulse rounded-md bg-current">
+                <Typography
+                  variant="h3"
+                  className="animate-pulse rounded-md bg-current"
+                >
                   &nbsp;
                 </Typography>
                 <div className="my-4 flex items-center gap-4">
@@ -104,7 +109,9 @@ export default async function ProductPage({ params }: Props) {
                     </Button>
                   </div>
 
-                  <span className="text-muted-foreground text-xs">0 items available</span>
+                  <span className="text-muted-foreground text-xs">
+                    0 items available
+                  </span>
                 </div>
 
                 <div className="mt-4 grid grid-cols-2 items-center gap-4 md:flex">

@@ -1,39 +1,45 @@
 import type { TRPCRouterRecord } from '@trpc/server'
 import { z } from 'zod'
 
-import { protectedProcedure, publicProcedure, restrictedProcedure } from '../trpc'
+import {
+  protectedProcedure,
+  publicProcedure,
+  restrictedProcedure,
+} from '../trpc'
 import * as schemas from '../validators/user'
 
 export const userRouter = {
   // [GET] /api/trpc/user.getAll
-  getAll: restrictedProcedure.input(schemas.query).query(async ({ ctx, input }) => {
-    const users = await ctx.db.user.findMany({
-      where: {
-        OR: [
-          { name: { contains: input.query, mode: 'insensitive' } },
-          { email: { contains: input.query, mode: 'insensitive' } },
-        ],
-      },
-      include: { _count: { select: { carts: true } } },
-      take: input.limit,
-      skip: (input.page - 1) * input.limit,
-      orderBy: { createdAt: 'desc' },
-    })
+  getAll: restrictedProcedure
+    .input(schemas.query)
+    .query(async ({ ctx, input }) => {
+      const users = await ctx.db.user.findMany({
+        where: {
+          OR: [
+            { name: { contains: input.query, mode: 'insensitive' } },
+            { email: { contains: input.query, mode: 'insensitive' } },
+          ],
+        },
+        include: { _count: { select: { carts: true } } },
+        take: input.limit,
+        skip: (input.page - 1) * input.limit,
+        orderBy: { createdAt: 'desc' },
+      })
 
-    const totalPage = Math.ceil((await ctx.db.user.count()) / input.limit)
+      const totalPage = Math.ceil((await ctx.db.user.count()) / input.limit)
 
-    return {
-      users: users.map((user) => ({
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-        createdAt: user.createdAt,
-        numberOfOrders: user._count.carts,
-      })),
-      totalPage,
-    }
-  }),
+      return {
+        users: users.map((user) => ({
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+          createdAt: user.createdAt,
+          numberOfOrders: user._count.carts,
+        })),
+        totalPage,
+      }
+    }),
 
   // [POST] /api/trpc/user.updateProfile
   updateProfile: protectedProcedure

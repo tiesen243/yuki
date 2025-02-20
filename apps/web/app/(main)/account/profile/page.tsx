@@ -24,16 +24,20 @@ export default async function ProfilePage() {
       <section className="container mt-4 grid gap-4 md:grid-cols-2">
         <div className="w-full">
           <Typography>
-            <span className="text-muted-foreground">Name:</span> {session.user.name}{' '}
+            <span className="text-muted-foreground">Name:</span>{' '}
+            {session.user.name}{' '}
           </Typography>
           <Typography>
-            <span className="text-muted-foreground">Role:</span> {session.user.role}
+            <span className="text-muted-foreground">Role:</span>{' '}
+            {session.user.role}
           </Typography>
           <Typography>
             <span className="text-muted-foreground">Email: </span>
             {hideEmail(session.user.email)}
           </Typography>
-          <Typography className="text-muted-foreground">Linked accounts:</Typography>
+          <Typography className="text-muted-foreground">
+            Linked accounts:
+          </Typography>
 
           <ul className="space-y-2">
             <LinkedAccountList />
@@ -45,7 +49,10 @@ export default async function ProfilePage() {
             <AvatarFallback>{session.user.name[0]}</AvatarFallback>
           </Avatar>
 
-          <EditProfileForm name={session.user.name} image={session.user.image} />
+          <EditProfileForm
+            name={session.user.name}
+            image={session.user.image}
+          />
         </div>
       </section>
     </main>

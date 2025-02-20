@@ -7,7 +7,11 @@ import { dashboardRouter } from './routers/dashboard'
 import { orderRouter } from './routers/order'
 import { productRouter } from './routers/product'
 import { userRouter } from './routers/user'
-import { createCallerFactory, createTRPCContext, createTRPCRouter } from './trpc'
+import {
+  createCallerFactory,
+  createTRPCContext,
+  createTRPCRouter,
+} from './trpc'
 
 const appRouter = createTRPCRouter({
   auth: authRouter,

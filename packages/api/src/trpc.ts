@@ -52,11 +52,17 @@ const isomorphicGetSession = async (headers: Headers) => {
  */
 export const createTRPCContext = async (opts: { headers: Headers }) => {
   const cookies = parsedCookie(opts.headers)
-  const authToken = cookies.auth_token ?? opts.headers.get('Authorization') ?? null
+  const authToken =
+    cookies.auth_token ?? opts.headers.get('Authorization') ?? null
   const session = await isomorphicGetSession(opts.headers)
 
   const source = opts.headers.get('x-trpc-source') ?? 'unknown'
-  console.log('>>> tRPC Request from', source, 'by', session.user ?? 'anonymous')
+  console.log(
+    '>>> tRPC Request from',
+    source,
+    'by',
+    session.user ?? 'anonymous',
+  )
 
   return {
     db,
@@ -75,11 +81,14 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
   transformer: superjson,
   errorFormatter: ({ shape, error }) => ({
     ...shape,
-    message: error.cause instanceof ZodError ? 'Validation error' : error.message,
+    message:
+      error.cause instanceof ZodError ? 'Validation error' : error.message,
     data: {
       ...shape.data,
       zodError:
-        error.cause instanceof ZodError ? error.cause.flatten().fieldErrors : null,
+        error.cause instanceof ZodError
+          ? error.cause.flatten().fieldErrors
+          : null,
     },
   }),
 })

@@ -14,8 +14,8 @@ export default function CartPage() {
         <div className="container mb-4">
           <Typography variant="h2">Shopping cart</Typography>
           <Typography color="muted">
-            Review and manage items you&apos;ve selected for purchase. We securely save
-            your cart items so you can continue shopping later.
+            Review and manage items you&apos;ve selected for purchase. We
+            securely save your cart items so you can continue shopping later.
           </Typography>
         </div>
 

@@ -77,7 +77,10 @@ export const CartDetails: React.FC = () => {
         <TableBody>
           {cart.items.length <= 0 ? (
             <TableRow>
-              <TableCell colSpan={6} className="text-muted-foreground text-center">
+              <TableCell
+                colSpan={6}
+                className="text-muted-foreground text-center"
+              >
                 No items
               </TableCell>
             </TableRow>
@@ -150,7 +153,9 @@ const CartItem: React.FC<{
   const deleteItem = useMutation(
     trpc.cart.deleteItemFromCart.mutationOptions({
       onSuccess: async () => {
-        await queryClient.invalidateQueries({ queryKey: [trpc.cart.getCart.queryKey()] })
+        await queryClient.invalidateQueries({
+          queryKey: [trpc.cart.getCart.queryKey()],
+        })
         toast.success('Item deleted!')
       },
       onError: (e) => toast.error(e.message),
@@ -160,7 +165,9 @@ const CartItem: React.FC<{
   const updateItem = useMutation(
     trpc.cart.updateCart.mutationOptions({
       onSuccess: async () => {
-        await queryClient.invalidateQueries({ queryKey: [trpc.cart.getCart.queryKey()] })
+        await queryClient.invalidateQueries({
+          queryKey: [trpc.cart.getCart.queryKey()],
+        })
         toast.success('Item updated!')
       },
       onError: (e) => {
@@ -171,7 +178,12 @@ const CartItem: React.FC<{
   )
 
   const debouncedUpdate = useDebounce((delta: number) => {
-    updateItem.mutate({ cartId, productId: product.id, quantity: delta, isUpdate: true })
+    updateItem.mutate({
+      cartId,
+      productId: product.id,
+      quantity: delta,
+      isUpdate: true,
+    })
   }, 727)
   const handleQuantityChange = (delta: number) => {
     const newQuantity = Math.max(1, localQuantity + delta)
@@ -216,7 +228,9 @@ const CartItem: React.FC<{
           </Button>
         </div>
       </TableCell>
-      <TableCell align="center">${(localQuantity * product.price).toFixed(2)}</TableCell>
+      <TableCell align="center">
+        ${(localQuantity * product.price).toFixed(2)}
+      </TableCell>
       <TableCell align="center">
         <Button
           className="w-20"

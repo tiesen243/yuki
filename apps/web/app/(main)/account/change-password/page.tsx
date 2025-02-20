@@ -8,7 +8,8 @@ export default function ChangePasswordPage() {
       <div className="container mb-4">
         <Typography variant="h2">Change Password</Typography>
         <Typography color="muted">
-          Change your password to secure your account. Make sure to use a strong password.
+          Change your password to secure your account. Make sure to use a strong
+          password.
         </Typography>
       </div>
 

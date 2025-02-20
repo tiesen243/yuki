@@ -19,7 +19,8 @@ export default function PrivacyPolicyPage() {
           Information We Collect
         </Typography>
         <Typography className="mb-4">
-          We collect information that you provide directly to us when using our services.
+          We collect information that you provide directly to us when using our
+          services.
         </Typography>
 
         <Typography variant="h2" className="border-b">
@@ -36,22 +37,24 @@ export default function PrivacyPolicyPage() {
           Data Security
         </Typography>
         <Typography className="mb-4">
-          We implement appropriate security measures to protect your personal information.
+          We implement appropriate security measures to protect your personal
+          information.
         </Typography>
 
         <Typography variant="h2" className="border-b">
           Changes to This Privacy Policy
         </Typography>
         <Typography className="mb-4">
-          We may update our Privacy Policy from time to time. We will notify you of any
-          changes by posting the new Privacy Policy on this page.
+          We may update our Privacy Policy from time to time. We will notify you
+          of any changes by posting the new Privacy Policy on this page.
         </Typography>
 
         <Typography variant="h2" className="border-b">
           Contact Us
         </Typography>
         <Typography className="mb-4">
-          If you have any questions about this Privacy Policy, please contact us.
+          If you have any questions about this Privacy Policy, please contact
+          us.
         </Typography>
       </article>
     </main>

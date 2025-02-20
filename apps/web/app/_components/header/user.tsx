@@ -35,7 +35,8 @@ export const User: React.FC = () => {
   const { session, isLoading, signOut } = useSession()
   const { theme, setTheme } = useTheme()
 
-  if (isLoading) return <div className="size-9 animate-pulse rounded-full bg-current" />
+  if (isLoading)
+    return <div className="size-9 animate-pulse rounded-full bg-current" />
 
   if (!session?.user)
     return (
@@ -56,7 +57,9 @@ export const User: React.FC = () => {
       <AlertDialog>
         <DropdownMenuContent className="w-56" align="end" forceMount>
           <DropdownMenuLabel className="flex flex-col space-y-1 font-normal">
-            <p className="text-sm leading-none font-medium">{session.user.name}</p>
+            <p className="text-sm leading-none font-medium">
+              {session.user.name}
+            </p>
             <p className="text-muted-foreground text-xs leading-none">
               {session.user.email}
             </p>
@@ -103,7 +106,9 @@ export const User: React.FC = () => {
 
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Are you sure you want to log out?</AlertDialogTitle>
+            <AlertDialogTitle>
+              Are you sure you want to log out?
+            </AlertDialogTitle>
             <AlertDialogDescription>
               You will need to sign in again to access your account.
             </AlertDialogDescription>

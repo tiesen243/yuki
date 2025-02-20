@@ -20,11 +20,13 @@ function Component({
       preview="Follow the link to reset your password"
       name={name}
     >
-      <Text className="mb-4">We received a request to reset your password.</Text>
+      <Text className="mb-4">
+        We received a request to reset your password.
+      </Text>
 
       <Text className="mb-4">
-        Click the button below to reset your password. If you didn&apos;t request this,
-        you can safely ignore this email.
+        Click the button below to reset your password. If you didn&apos;t
+        request this, you can safely ignore this email.
       </Text>
 
       <Button
@@ -37,7 +39,8 @@ function Component({
       <Text className="mb-4">This link will expire in 24 hours.</Text>
 
       <Text className="mb-2">
-        If the button doesn&apos;t work, copy and paste this link into your browser:
+        If the button doesn&apos;t work, copy and paste this link into your
+        browser:
       </Text>
       <Text className="break-all text-blue-600">{resetUrl}</Text>
     </EmailLayout>

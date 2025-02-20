@@ -19,11 +19,15 @@ export const orderRouter = {
       })
 
       const totalPage = Math.ceil(
-        (await ctx.db.cart.count({ where: { status: { not: 'NEW' } } })) / input.limit,
+        (await ctx.db.cart.count({ where: { status: { not: 'NEW' } } })) /
+          input.limit,
       )
 
       return {
-        orders: orders.map((o) => ({ ...o, id: o.id.toString().padStart(6, '0') })),
+        orders: orders.map((o) => ({
+          ...o,
+          id: o.id.toString().padStart(6, '0'),
+        })),
         totalPage,
       }
     }),
@@ -36,7 +40,9 @@ export const orderRouter = {
         items: {
           select: {
             quantity: true,
-            product: { select: { id: true, name: true, image: true, price: true } },
+            product: {
+              select: { id: true, name: true, image: true, price: true },
+            },
           },
         },
       },
@@ -54,9 +60,13 @@ export const orderRouter = {
         where: { id: input.id },
         include: { items: { include: { product: true } }, address: true },
       })
-      if (!order) throw new TRPCError({ code: 'NOT_FOUND', message: 'Order not found' })
+      if (!order)
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Order not found' })
 
-      if (order.userId !== ctx.session.user.id && ctx.session.user.role !== 'ADMIN')
+      if (
+        order.userId !== ctx.session.user.id &&
+        ctx.session.user.role !== 'ADMIN'
+      )
         throw new TRPCError({
           code: 'FORBIDDEN',
           message:
@@ -76,7 +86,8 @@ export const orderRouter = {
       const cart = await ctx.db.cart.findUnique({
         where: { id },
       })
-      if (!cart) throw new TRPCError({ code: 'NOT_FOUND', message: 'Cart not found' })
+      if (!cart)
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Cart not found' })
 
       if (data.status !== 'PENDING' && ctx.session.user.role === 'USER')
         throw new TRPCError({ code: 'FORBIDDEN' })
@@ -123,14 +134,18 @@ export const orderRouter = {
         include: {
           user: { select: { name: true, email: true } },
           items: {
-            include: { product: { select: { name: true, image: true, price: true } } },
+            include: {
+              product: { select: { name: true, image: true, price: true } },
+            },
           },
           address: true,
         },
       })
 
       const exitedTemplate = ['PENDING', 'DELIVERED'] as const
-      if (exitedTemplate.includes(data.status as (typeof exitedTemplate)[number]))
+      if (
+        exitedTemplate.includes(data.status as (typeof exitedTemplate)[number])
+      )
         await sendEmail({
           type: 'Order',
           data: {

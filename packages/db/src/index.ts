@@ -10,7 +10,10 @@ const adapter = new PrismaNeon(pool)
 const createPrismaClient = () =>
   new PrismaClient({
     adapter,
-    log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
+    log:
+      process.env.NODE_ENV === 'development'
+        ? ['query', 'error', 'warn']
+        : ['error'],
   })
 
 const globalForPrisma = globalThis as unknown as {

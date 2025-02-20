@@ -46,7 +46,10 @@ export const MobileMenu: React.FC = () => {
           isOpen ? 'animate-in translate-x-0' : 'animate-out -translate-x-full',
         )}
       >
-        <Link href="/" className="mx-2 my-4 flex items-center gap-2 text-xl font-bold">
+        <Link
+          href="/"
+          className="mx-2 my-4 flex items-center gap-2 text-xl font-bold"
+        >
           <Image
             src="/assets/logo.svg"
             alt="Logo"

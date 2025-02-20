@@ -8,8 +8,18 @@ import { useFormStatus } from 'react-dom'
 
 import { type Query } from '@yuki/api/validators/product'
 import { Button } from '@yuki/ui/button'
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@yuki/ui/collapsible'
-import { Form, FormControl, FormField, FormItem, FormLabel } from '@yuki/ui/form'
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from '@yuki/ui/collapsible'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from '@yuki/ui/form'
 import { ChevronDownIcon } from '@yuki/ui/icons'
 import {
   Select,
@@ -34,7 +44,10 @@ export const FilterSidebar: React.FC<Query & { slug?: string[] }> = (props) => {
           <Button variant="outline" className="flex w-full justify-between">
             Filters
             <ChevronDownIcon
-              className={cn('size-4 transition-transform', isOpen && 'rotate-180')}
+              className={cn(
+                'size-4 transition-transform',
+                isOpen && 'rotate-180',
+              )}
             />
           </Button>
         </CollapsibleTrigger>
@@ -47,11 +60,9 @@ export const FilterSidebar: React.FC<Query & { slug?: string[] }> = (props) => {
   )
 }
 
-const FilterContent: React.FC<Query & { slug?: string[]; className?: string }> = ({
-  slug,
-  className,
-  ...query
-}) => {
+const FilterContent: React.FC<
+  Query & { slug?: string[]; className?: string }
+> = ({ slug, className, ...query }) => {
   const trpc = useTRPC()
   const { data: categories = [] } = useQuery(
     trpc.category.getAll.queryOptions({ limit: 999 }),
@@ -66,7 +77,10 @@ const FilterContent: React.FC<Query & { slug?: string[]; className?: string }> =
           render={() => (
             <FormItem>
               <FormLabel>Search</FormLabel>
-              <FormControl placeholder="Search products..." defaultValue={query.q} />
+              <FormControl
+                placeholder="Search products..."
+                defaultValue={query.q}
+              />
             </FormItem>
           )}
         />
@@ -144,7 +158,9 @@ const FilterContent: React.FC<Query & { slug?: string[]; className?: string }> =
   )
 }
 
-export const SubmitButton: React.FC<React.ComponentProps<'button'>> = (props) => {
+export const SubmitButton: React.FC<React.ComponentProps<'button'>> = (
+  props,
+) => {
   const { pending } = useFormStatus()
   return <Button {...props} disabled={pending} />
 }

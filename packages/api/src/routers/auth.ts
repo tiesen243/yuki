@@ -15,51 +15,76 @@ import * as schemas from '../validators/auth'
 
 export const authRouter = {
   // [POST] /api/trpc/auth.signUp
-  signUp: publicProcedure.input(schemas.signUpSchema).mutation(async ({ ctx, input }) => {
-    const user = await ctx.db.user.findUnique({ where: { email: input.email } })
-    if (user) throw new TRPCError({ code: 'CONFLICT', message: 'User already exists' })
+  signUp: publicProcedure
+    .input(schemas.signUpSchema)
+    .mutation(async ({ ctx, input }) => {
+      const user = await ctx.db.user.findUnique({
+        where: { email: input.email },
+      })
+      if (user)
+        throw new TRPCError({
+          code: 'CONFLICT',
+          message: 'User already exists',
+        })
 
-    const password = await hashPassword(input.password)
-    await sendEmail({ type: 'Welcome', data: input })
-    return await ctx.db.user.create({
-      data: {
-        name: input.name,
-        email: input.email,
-        image: `https://www.gravatar.com/avatar/${generateGravatar(input.email)}?s=256`,
-        password,
-      },
-    })
-  }),
+      const password = await hashPassword(input.password)
+      await sendEmail({ type: 'Welcome', data: input })
+      return await ctx.db.user.create({
+        data: {
+          name: input.name,
+          email: input.email,
+          image: `https://www.gravatar.com/avatar/${generateGravatar(input.email)}?s=256`,
+          password,
+        },
+      })
+    }),
 
   // [POST] /api/trpc/auth.signIn
-  signIn: publicProcedure.input(schemas.signInSchema).mutation(async ({ ctx, input }) => {
-    const user = await ctx.db.user.findUnique({ where: { email: input.email } })
-    if (!user) throw new TRPCError({ code: 'NOT_FOUND', message: 'User not found' })
-
-    if (!user.password)
-      throw new TRPCError({
-        code: 'UNAUTHORIZED',
-        message: 'You have not set a password',
+  signIn: publicProcedure
+    .input(schemas.signInSchema)
+    .mutation(async ({ ctx, input }) => {
+      const user = await ctx.db.user.findUnique({
+        where: { email: input.email },
       })
+      if (!user)
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'User not found' })
 
-    const isValid = await verifyHashedPassword(user.password, input.password)
-    if (!isValid)
-      throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid password' })
+      if (!user.password)
+        throw new TRPCError({
+          code: 'UNAUTHORIZED',
+          message: 'You have not set a password',
+        })
 
-    return await createSession(user.id)
-  }),
+      const isValid = await verifyHashedPassword(user.password, input.password)
+      if (!isValid)
+        throw new TRPCError({
+          code: 'UNAUTHORIZED',
+          message: 'Invalid password',
+        })
+
+      return await createSession(user.id)
+    }),
 
   // [POST] /api/trpc/auth.changePassword
   changePassword: protectedProcedure
     .input(schemas.changePasswordSchema)
     .mutation(async ({ ctx, input }) => {
-      const user = await ctx.db.user.findUnique({ where: { id: ctx.session.user.id } })
-      if (!user) throw new TRPCError({ code: 'NOT_FOUND', message: 'User not found' })
+      const user = await ctx.db.user.findUnique({
+        where: { id: ctx.session.user.id },
+      })
+      if (!user)
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'User not found' })
 
       if (user.password && input.currentPassword) {
-        const isValid = await verifyHashedPassword(user.password, input.currentPassword)
+        const isValid = await verifyHashedPassword(
+          user.password,
+          input.currentPassword,
+        )
         if (!isValid)
-          throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid password' })
+          throw new TRPCError({
+            code: 'UNAUTHORIZED',
+            message: 'Invalid password',
+          })
       }
 
       await ctx.db.session.deleteMany()
@@ -80,7 +105,8 @@ export const authRouter = {
     .input(schemas.forgotPasswordSchema)
     .mutation(async ({ ctx, input }) => {
       const user = await ctx.db.user.findUnique({ where: input })
-      if (!user) throw new TRPCError({ code: 'NOT_FOUND', message: 'User not found' })
+      if (!user)
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'User not found' })
 
       const expiresAt = new Date(Date.now() + 30 * 60 * 1000) // 30 minutes from now
       const code = await ctx.db.verifier.create({
@@ -102,17 +128,21 @@ export const authRouter = {
   resetPassword: publicProcedure
     .input(schemas.resetPasswordSchema)
     .mutation(async ({ ctx, input }) => {
-      const verifier = await ctx.db.verifier.findUnique({ where: { token: input.token } })
+      const verifier = await ctx.db.verifier.findUnique({
+        where: { token: input.token },
+      })
       if (!verifier)
         throw new TRPCError({
           code: 'NOT_FOUND',
-          message: 'This reset link is invalid or has expired. Please request a new one.',
+          message:
+            'This reset link is invalid or has expired. Please request a new one.',
         })
 
       if (new Date() > verifier.expiresAt)
         throw new TRPCError({
           code: 'BAD_REQUEST',
-          message: 'This reset link has expired. Please request a new password reset.',
+          message:
+            'This reset link has expired. Please request a new password reset.',
         })
 
       const user = await ctx.db.user.update({
@@ -122,7 +152,9 @@ export const authRouter = {
         },
       })
       await ctx.db.verifier.deleteMany({
-        where: { OR: [{ token: verifier.token }, { expiresAt: { lte: new Date() } }] },
+        where: {
+          OR: [{ token: verifier.token }, { expiresAt: { lte: new Date() } }],
+        },
       })
       await ctx.db.session.deleteMany({ where: { userId: user.id } })
 

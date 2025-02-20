@@ -23,7 +23,10 @@ export const Header: React.FC = () => (
       </Link>
 
       <nav className="hidden gap-2 md:flex">
-        <Link href="/shop" className="text-muted-foreground hover:text-foreground">
+        <Link
+          href="/shop"
+          className="text-muted-foreground hover:text-foreground"
+        >
           Products & Collections
         </Link>
       </nav>

@@ -14,7 +14,8 @@ export default function AboutPage() {
       <div className="space-y-4 text-center">
         <Typography variant="h1">About Yuki</Typography>
         <p className="text-muted-foreground text-xl">
-          Bringing quality products to your doorstep since {new Date().getFullYear()}.
+          Bringing quality products to your doorstep since{' '}
+          {new Date().getFullYear()}.
         </p>
       </div>
 
@@ -23,9 +24,10 @@ export default function AboutPage() {
           <CardTitle>Our Mission</CardTitle>
         </CardHeader>
         <CardContent className="text-muted-foreground leading-relaxed">
-          At Yuki, we&apos;re committed to providing exceptional shopping experiences
-          through carefully curated products, outstanding customer service, and seamless
-          delivery. Our goal is to make quality products accessible to everyone.
+          At Yuki, we&apos;re committed to providing exceptional shopping
+          experiences through carefully curated products, outstanding customer
+          service, and seamless delivery. Our goal is to make quality products
+          accessible to everyone.
         </CardContent>
       </Card>
 
@@ -96,7 +98,9 @@ export default function AboutPage() {
                   </Avatar>
                   <div className="space-y-1 text-center">
                     <h3 className="font-medium">{member.title}</h3>
-                    <p className="text-muted-foreground text-sm">{member.position}</p>
+                    <p className="text-muted-foreground text-sm">
+                      {member.position}
+                    </p>
                   </div>
                 </div>
               </CardContent>
@@ -111,8 +115,8 @@ export default function AboutPage() {
         </CardHeader>
         <CardContent className="space-y-6">
           <p className="text-muted-foreground">
-            Have questions? We&apos;d love to hear from you. Send us a message and
-            we&apos;ll respond as soon as possible.
+            Have questions? We&apos;d love to hear from you. Send us a message
+            and we&apos;ll respond as soon as possible.
           </p>
           <Button size="lg" asChild>
             <Link href="/contact">Contact Us</Link>

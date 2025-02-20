@@ -29,7 +29,11 @@ const trpc = createTRPCOptionsProxy({
 function HydrateClient({ children }: Readonly<{ children: React.ReactNode }>) {
   const queryClient = getQueryClient()
 
-  return <HydrationBoundary state={dehydrate(queryClient)}>{children}</HydrationBoundary>
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      {children}
+    </HydrationBoundary>
+  )
 }
 
 export { api, trpc, getQueryClient, HydrateClient }

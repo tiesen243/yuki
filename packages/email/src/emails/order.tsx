@@ -35,8 +35,9 @@ function Component({
     DELIVERED: (
       <>
         <Text className="mt-4">
-          Great news! Your order <span className="font-medium">#{order.id}</span> has been
-          delivered successfully.
+          Great news! Your order{' '}
+          <span className="font-medium">#{order.id}</span> has been delivered
+          successfully.
         </Text>
         <Text className="mt-6 text-base font-bold">Order Details:</Text>
       </>

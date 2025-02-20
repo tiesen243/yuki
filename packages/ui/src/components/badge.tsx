@@ -21,7 +21,8 @@ const badgeVariants = cva(
           'text-warning-foreground [a&]:hover:bg-destructive/90 bg-warning border-transparent shadow-sm',
         destructive:
           'bg-destructive text-destructive-foreground [a&]:hover:bg-destructive/90 border-transparent shadow-sm',
-        outline: 'text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground',
+        outline:
+          'text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground',
       },
       rounded: {
         default: 'rounded-md',

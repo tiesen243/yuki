@@ -105,7 +105,9 @@ const LinkButton: React.FC<{ provider: string }> = ({ provider }) => (
   </form>
 )
 
-export const EditProfileForm: React.FC<{ name: string; image: string }> = (props) => {
+export const EditProfileForm: React.FC<{ name: string; image: string }> = (
+  props,
+) => {
   const [formData, setFormData] = useState(props)
   const [open, setOpen] = useState(false)
   const router = useRouter()
@@ -155,7 +157,12 @@ export const EditProfileForm: React.FC<{ name: string; image: string }> = (props
             />
           </div>
           <div className="grid place-items-center gap-4">
-            <Image src={formData.image} alt={props.name} width={100} height={100} />
+            <Image
+              src={formData.image}
+              alt={props.name}
+              width={100}
+              height={100}
+            />
             <UploadButton
               endpoint="userImageUploader"
               onClientUploadComplete={(res) => {

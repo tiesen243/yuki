@@ -1,5 +1,8 @@
 import { sha256 } from '@oslojs/crypto/sha2'
-import { encodeBase32LowerCaseNoPadding, encodeHexLowerCase } from '@oslojs/encoding'
+import {
+  encodeBase32LowerCaseNoPadding,
+  encodeHexLowerCase,
+} from '@oslojs/encoding'
 
 import type { User } from '@yuki/db'
 import { db } from '@yuki/db'
@@ -33,7 +36,9 @@ const createSession = async (
 }
 
 const validateSessionToken = async (token: string): Promise<Session> => {
-  const sessionToken = encodeHexLowerCase(sha256(new TextEncoder().encode(token)))
+  const sessionToken = encodeHexLowerCase(
+    sha256(new TextEncoder().encode(token)),
+  )
   const result = await db.session.findUnique({
     where: { sessionToken },
     include: { user: true },
@@ -58,7 +63,9 @@ const validateSessionToken = async (token: string): Promise<Session> => {
 }
 
 const invalidateSessionToken = async (token: string): Promise<void> => {
-  const sessionToken = encodeHexLowerCase(sha256(new TextEncoder().encode(token)))
+  const sessionToken = encodeHexLowerCase(
+    sha256(new TextEncoder().encode(token)),
+  )
 
   await db.session.delete({ where: { sessionToken } })
 }

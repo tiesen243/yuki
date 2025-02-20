@@ -15,8 +15,8 @@ function Component({ name = 'Yuki' }: { name?: string }) {
       name={name}
     >
       <Text className="mb-4 text-base">
-        Thank you for joining our online shopping community! We&apos;re thrilled to have
-        you here.
+        Thank you for joining our online shopping community! We&apos;re thrilled
+        to have you here.
       </Text>
       <Text className="mb-4 text-base">
         Here&apos;s what you can enjoy as our member:

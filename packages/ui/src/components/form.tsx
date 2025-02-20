@@ -7,10 +7,15 @@ import { Input } from '@yuki/ui/components/input'
 import { cn } from '@yuki/ui/utils'
 
 type FormContextValue =
-  | { isPending: boolean; errors?: ReturnType<ZodError['flatten']>['fieldErrors'] | null }
+  | {
+      isPending: boolean
+      errors?: ReturnType<ZodError['flatten']>['fieldErrors'] | null
+    }
   | undefined
 
-const FormContext = React.createContext<FormContextValue>({} as FormContextValue)
+const FormContext = React.createContext<FormContextValue>(
+  {} as FormContextValue,
+)
 
 const useForm = () => {
   const context = React.use(FormContext)
@@ -99,7 +104,9 @@ function FormField({ name, render }: FormFieldContextValue) {
     throw new Error('FormField requires a render prop to display field content')
 
   return (
-    <FormFieldContext.Provider value={{ name }}>{render()}</FormFieldContext.Provider>
+    <FormFieldContext.Provider value={{ name }}>
+      {render()}
+    </FormFieldContext.Provider>
   )
 }
 
@@ -126,7 +133,10 @@ function FormItem({ className, ...props }: React.ComponentProps<'fieldset'>) {
   )
 }
 
-function FormLabel({ className, ...props }: React.ComponentProps<typeof Label>) {
+function FormLabel({
+  className,
+  ...props
+}: React.ComponentProps<typeof Label>) {
   const { error, formItemId } = useFormField()
 
   return (
@@ -147,7 +157,8 @@ function FormControl({
   asChild,
   ...props
 }: React.ComponentProps<'input'> & { asChild?: boolean }) {
-  const { name, error, formItemId, formDescriptionId, formMessageId } = useFormField()
+  const { name, error, formItemId, formDescriptionId, formMessageId } =
+    useFormField()
   const Comp = asChild ? Slot : Input
 
   return (
@@ -164,7 +175,10 @@ function FormControl({
   )
 }
 
-function FormDescription({ className, ...props }: React.ComponentProps<'span'>) {
+function FormDescription({
+  className,
+  ...props
+}: React.ComponentProps<'span'>) {
   const { formDescriptionId } = useFormField()
 
   return (
@@ -177,7 +191,11 @@ function FormDescription({ className, ...props }: React.ComponentProps<'span'>) 
   )
 }
 
-function FormMessage({ className, children, ...props }: React.ComponentProps<'p'>) {
+function FormMessage({
+  className,
+  children,
+  ...props
+}: React.ComponentProps<'p'>) {
   const { error, formMessageId } = useFormField()
 
   const body = error ? String(error) : children

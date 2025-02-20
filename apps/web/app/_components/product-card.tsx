@@ -41,7 +41,9 @@ export const ProductCardSkeleton: React.FC = () => (
     <div className="aspect-square w-full animate-pulse rounded-t-lg bg-current" />
 
     <CardFooter className="flex-col items-start gap-0.5">
-      <CardTitle className="w-1/2 animate-pulse rounded-md bg-current">&nbsp;</CardTitle>
+      <CardTitle className="w-1/2 animate-pulse rounded-md bg-current">
+        &nbsp;
+      </CardTitle>
       <CardDescription className="w-1/4 animate-pulse rounded-md bg-current">
         &nbsp;
       </CardDescription>

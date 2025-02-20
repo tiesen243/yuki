@@ -33,31 +33,35 @@ export const productRouter = {
   }),
 
   // [GET] /api/trpc/product.getOne
-  getOne: publicProcedure.input(schemas.getOneSchema).query(async ({ ctx, input }) => {
-    const product = await ctx.db.product.findUnique({
-      where: { id: input.id },
-      include: {
-        _count: { select: { reviews: true } },
-        category: { select: { id: true, name: true } },
-        reviews: { select: { rating: true } },
-        carts: {
-          where: { cart: { status: 'DELIVERED' } },
-          select: { quantity: true },
+  getOne: publicProcedure
+    .input(schemas.getOneSchema)
+    .query(async ({ ctx, input }) => {
+      const product = await ctx.db.product.findUnique({
+        where: { id: input.id },
+        include: {
+          _count: { select: { reviews: true } },
+          category: { select: { id: true, name: true } },
+          reviews: { select: { rating: true } },
+          carts: {
+            where: { cart: { status: 'DELIVERED' } },
+            select: { quantity: true },
+          },
         },
-      },
-    })
-    if (!product) throw new TRPCError({ code: 'NOT_FOUND', message: 'Product not found' })
+      })
+      if (!product)
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Product not found' })
 
-    const averageRating =
-      product.reviews.reduce((acc, cur) => acc + cur.rating, 0) / product._count.reviews
+      const averageRating =
+        product.reviews.reduce((acc, cur) => acc + cur.rating, 0) /
+        product._count.reviews
 
-    return {
-      ...product,
-      rating: product._count.reviews !== 0 ? averageRating : 0,
-      reviews: product._count.reviews,
-      sold: product.carts.reduce((acc, cur) => acc + cur.quantity, 0),
-    }
-  }),
+      return {
+        ...product,
+        rating: product._count.reviews !== 0 ? averageRating : 0,
+        reviews: product._count.reviews,
+        sold: product.carts.reduce((acc, cur) => acc + cur.quantity, 0),
+      }
+    }),
 
   // [GET] /api/trpc/product.getProductReviews
   getProductReviews: publicProcedure
@@ -76,7 +80,8 @@ export const productRouter = {
         select: { rating: true },
       })
       const averageRating =
-        fullReviews.reduce((acc, cur) => acc + cur.rating, 0) / fullReviews.length
+        fullReviews.reduce((acc, cur) => acc + cur.rating, 0) /
+        fullReviews.length
 
       const totalPage = Math.ceil(fullReviews.length / limit)
 
@@ -94,7 +99,10 @@ export const productRouter = {
       const c = await ctx.db.category.findFirst({
         where: { products: { some: { id: input.id } } },
         include: {
-          products: { take: 12, include: { category: { select: { name: true } } } },
+          products: {
+            take: 12,
+            include: { category: { select: { name: true } } },
+          },
         },
       })
 

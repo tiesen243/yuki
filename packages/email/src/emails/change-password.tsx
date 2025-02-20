@@ -17,10 +17,13 @@ function Component({ name = 'Yuki' }: { name?: string }) {
       <Text className="mb-4">Your password has been successfully changed.</Text>
 
       <Text className="mb-4 bg-yellow-50 p-4">
-        If you did not make this change, please contact our support team immediately.
+        If you did not make this change, please contact our support team
+        immediately.
       </Text>
 
-      <Text className="text-sm">Thank you for keeping your account secure!</Text>
+      <Text className="text-sm">
+        Thank you for keeping your account secure!
+      </Text>
     </EmailLayout>
   )
 }

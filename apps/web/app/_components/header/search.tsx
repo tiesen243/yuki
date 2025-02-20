@@ -11,7 +11,9 @@ export const Search: React.FC<{ className?: string }> = ({ className }) => {
   const searchParams = useSearchParams()
   const pathName = usePathname()
 
-  const category = pathName.startsWith('/shop') ? pathName.split('/shop').pop() : ''
+  const category = pathName.startsWith('/shop')
+    ? pathName.split('/shop').pop()
+    : ''
 
   const query = searchParams.get('query') ?? ''
   const rest = new URLSearchParams(searchParams)

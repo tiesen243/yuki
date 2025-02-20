@@ -10,12 +10,15 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: 'bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm',
+        default:
+          'bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm',
         secondary:
           'bg-secondary text-secondary-foreground hover:bg-secondary/80 shadow-xs',
-        success: 'bg-success text-success-foreground hover:bg-success/90 shadow-xs',
+        success:
+          'bg-success text-success-foreground hover:bg-success/90 shadow-xs',
         info: 'bg-info text-info-foreground hover:bg-info/90 shadow-xs',
-        warning: 'bg-warning text-warning-foreground hover:bg-warning/90 shadow-xs',
+        warning:
+          'bg-warning text-warning-foreground hover:bg-warning/90 shadow-xs',
         destructive:
           'bg-destructive text-destructive-foreground hover:bg-destructive/90 shadow-xs',
         outline:

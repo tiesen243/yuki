@@ -8,7 +8,11 @@ import { db } from '@yuki/db'
 import { OAuthConfig } from '../config'
 import { env } from '../env'
 import { AUTH_KEY } from './constants'
-import { createSession, invalidateSessionToken, validateSessionToken } from './session'
+import {
+  createSession,
+  invalidateSessionToken,
+  validateSessionToken,
+} from './session'
 
 type Provider = keyof ReturnType<typeof OAuthConfig>
 
@@ -49,13 +53,14 @@ const GET = async (
     return response
   }
 
-  const [provider, isCallback] = auth.map((segment) => segment.toLowerCase()) as [
-    Provider,
-    string,
-  ]
+  const [provider, isCallback] = auth.map((segment) =>
+    segment.toLowerCase(),
+  ) as [Provider, string]
 
   try {
-    const providers = OAuthConfig(`${nextUrl.origin}/api/auth/${provider}/callback`)
+    const providers = OAuthConfig(
+      `${nextUrl.origin}/api/auth/${provider}/callback`,
+    )
     if (!Object.keys(providers).includes(provider))
       throw new Error(`Provider "${provider}" is not supported`)
     const { ins, scopes, fetchUserUrl, mapFn } = providers[provider]
@@ -81,9 +86,11 @@ const GET = async (
     const state = nextUrl.searchParams.get('state') ?? ''
 
     const storedState = req.cookies.get('oauth_state')?.value ?? ''
-    const storedCodeVerifier = req.cookies.get('oauth_code_verifier')?.value ?? ''
+    const storedCodeVerifier =
+      req.cookies.get('oauth_code_verifier')?.value ?? ''
 
-    if (!code || !state || state !== storedState) throw new Error('Invalid state')
+    if (!code || !state || state !== storedState)
+      throw new Error('Invalid state')
 
     const verifiedCode =
       ins.validateAuthorizationCode.length === 2
@@ -95,7 +102,10 @@ const GET = async (
       headers: { Authorization: `Bearer ${token}` },
     })
     if (!res.ok) throw new Error(`Failed to fetch user data from ${provider}`)
-    const user = await createUser({ ...mapFn((await res.json()) as never), provider })
+    const user = await createUser({
+      ...mapFn((await res.json()) as never),
+      provider,
+    })
 
     const session = await createSession(user.id)
 
@@ -115,7 +125,11 @@ const GET = async (
   } catch (e) {
     if (e instanceof Error)
       return NextResponse.json({ error: e.message }, { status: 401 })
-    else return NextResponse.json({ error: 'An unknown error occurred' }, { status: 500 })
+    else
+      return NextResponse.json(
+        { error: 'An unknown error occurred' },
+        { status: 500 },
+      )
   }
 }
 
@@ -128,7 +142,10 @@ const POST = async (
 
   const { auth } = await params
   if (!auth)
-    return NextResponse.json({ message: 'No auth parameters provided' }, { status: 404 })
+    return NextResponse.json(
+      { message: 'No auth parameters provided' },
+      { status: 404 },
+    )
 
   if (auth.at(0) === 'sign-out') {
     const token =
@@ -163,7 +180,9 @@ const createUser = async (p: {
   })
 
   if (existingAccount) {
-    const user = await db.user.findUnique({ where: { id: existingAccount.userId } })
+    const user = await db.user.findUnique({
+      where: { id: existingAccount.userId },
+    })
     if (!user) throw new Error(`Failed to sign in with ${provider}`)
     return user
   }

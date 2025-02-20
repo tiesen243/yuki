@@ -23,7 +23,12 @@ const OAuthConfig = (callbackUrl: string) => ({
     ins: new Discord(env.DISCORD_ID, env.DISCORD_SECRET, callbackUrl),
     scopes: ['identify', 'email'],
     fetchUserUrl: 'https://discord.com/api/users/@me',
-    mapFn: (data: { id: string; email: string; username: string; avatar: string }) => ({
+    mapFn: (data: {
+      id: string
+      email: string
+      username: string
+      avatar: string
+    }) => ({
       providerId: data.id,
       email: data.email,
       name: data.username,
@@ -34,7 +39,12 @@ const OAuthConfig = (callbackUrl: string) => ({
     ins: new GitHub(env.GITHUB_ID, env.GITHUB_SECRET, callbackUrl),
     scopes: ['user:email'],
     fetchUserUrl: 'https://api.github.com/user',
-    mapFn: (data: { id: number; email: string; login: string; avatar_url: string }) => ({
+    mapFn: (data: {
+      id: number
+      email: string
+      login: string
+      avatar_url: string
+    }) => ({
       providerId: String(data.id),
       email: data.email,
       name: data.login,
@@ -45,7 +55,12 @@ const OAuthConfig = (callbackUrl: string) => ({
     ins: new Google(env.GOOGLE_ID, env.GOOGLE_SECRET, callbackUrl),
     scopes: ['openid', 'profile', 'email'],
     fetchUserUrl: 'https://openidconnect.googleapis.com/v1/userinfo',
-    mapFn: (data: { sub: string; email: string; name: string; picture: string }) => ({
+    mapFn: (data: {
+      sub: string
+      email: string
+      name: string
+      picture: string
+    }) => ({
       providerId: data.sub,
       email: data.email,
       name: data.name,

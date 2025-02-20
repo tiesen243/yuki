@@ -13,9 +13,24 @@ import {
 } from '@yuki/ui/icons'
 
 export const navLinks = [
-  { Icon: UserIcon, title: 'My Profile', href: '/account/profile', shortcut: '⇧⌘P' },
-  { Icon: ShoppingCartIcon, title: 'My Cart', href: '/account/cart', shortcut: '⇧⌘C' },
-  { Icon: PackageIcon, title: 'My Orders', href: '/account/orders', shortcut: '⇧⌘O' },
+  {
+    Icon: UserIcon,
+    title: 'My Profile',
+    href: '/account/profile',
+    shortcut: '⇧⌘P',
+  },
+  {
+    Icon: ShoppingCartIcon,
+    title: 'My Cart',
+    href: '/account/cart',
+    shortcut: '⇧⌘C',
+  },
+  {
+    Icon: PackageIcon,
+    title: 'My Orders',
+    href: '/account/orders',
+    shortcut: '⇧⌘O',
+  },
   { Icon: HeartIcon, title: 'Wishlist', href: '#', shortcut: '⇧⌘W' },
 ]
 

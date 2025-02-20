@@ -1,7 +1,11 @@
 'use client'
 
 import Link from 'next/link'
-import { useMutation, useQueryClient, useSuspenseQuery } from '@tanstack/react-query'
+import {
+  useMutation,
+  useQueryClient,
+  useSuspenseQuery,
+} from '@tanstack/react-query'
 
 import type { Address } from '@yuki/db'
 import { Button } from '@yuki/ui/button'
@@ -11,7 +15,9 @@ import { useTRPC } from '@/lib/trpc/react'
 
 export const AddressList: React.FC = () => {
   const trpc = useTRPC()
-  const { data: addresses } = useSuspenseQuery(trpc.user.getAddresses.queryOptions())
+  const { data: addresses } = useSuspenseQuery(
+    trpc.user.getAddresses.queryOptions(),
+  )
 
   return addresses.map((address, i) => (
     <AddressCard
@@ -22,16 +28,18 @@ export const AddressList: React.FC = () => {
   ))
 }
 
-export const AddressCard: React.FC<{ address: Address; isLatest?: boolean }> = ({
-  address,
-  isLatest = false,
-}) => {
+export const AddressCard: React.FC<{
+  address: Address
+  isLatest?: boolean
+}> = ({ address, isLatest = false }) => {
   const queryClient = useQueryClient()
   const trpc = useTRPC()
   const { mutate, isPending } = useMutation(
     trpc.user.deleteAddress.mutationOptions({
       onSuccess: () =>
-        queryClient.invalidateQueries({ queryKey: [trpc.user.getAddresses.queryKey()] }),
+        queryClient.invalidateQueries({
+          queryKey: [trpc.user.getAddresses.queryKey()],
+        }),
     }),
   )
 
@@ -84,8 +92,12 @@ export const AddressCardSkeleton: React.FC<{ isLatest?: boolean }> = ({
         <p className="border-l px-2">&nbsp;</p>
         <span className="w-40 animate-pulse rounded bg-current">&nbsp;</span>
       </div>
-      <p className="w-full animate-pulse rounded bg-current md:w-[200%]">&nbsp;</p>
-      <p className="w-full animate-pulse rounded bg-current md:w-[200%]">&nbsp;</p>
+      <p className="w-full animate-pulse rounded bg-current md:w-[200%]">
+        &nbsp;
+      </p>
+      <p className="w-full animate-pulse rounded bg-current md:w-[200%]">
+        &nbsp;
+      </p>
     </div>
   </div>
 )

@@ -73,7 +73,12 @@ export const SignUpForm = () => {
 
 const fields = [
   { name: 'name', label: 'Name', placeholder: 'Yuki', type: 'text' },
-  { name: 'email', label: 'Email', placeholder: 'yuki@example.com', type: 'email' },
+  {
+    name: 'email',
+    label: 'Email',
+    placeholder: 'yuki@example.com',
+    type: 'email',
+  },
   { name: 'password', label: 'password', type: 'password' },
   { name: 'confirmPassword', label: 'Confirm Password', type: 'password' },
 ]

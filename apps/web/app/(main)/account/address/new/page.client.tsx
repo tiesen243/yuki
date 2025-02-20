@@ -60,7 +60,17 @@ export const NewAddressForm: React.FC = () => {
 
 const fields = [
   { name: 'name', label: 'Name', placeholder: 'Yuki', type: 'text' },
-  { name: 'phone', label: 'Phone', placeholder: '(+84) 123 456 789', type: 'tel' },
+  {
+    name: 'phone',
+    label: 'Phone',
+    placeholder: '(+84) 123 456 789',
+    type: 'tel',
+  },
   { name: 'state', label: 'State', placeholder: 'California', type: 'text' },
-  { name: 'street', label: 'Street', placeholder: '1234 Yuki St', type: 'text' },
+  {
+    name: 'street',
+    label: 'Street',
+    placeholder: '1234 Yuki St',
+    type: 'text',
+  },
 ] as const

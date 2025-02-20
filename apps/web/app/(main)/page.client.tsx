@@ -46,7 +46,9 @@ export const Slider: React.FC<{
             style={{ transform: `translateX(-${current * 100}vw)` }}
           >
             <div className="flex h-1/3 flex-col items-center justify-center gap-8 text-center text-balance xl:h-full xl:w-1/2 xl:gap-12">
-              <h2 className="text-xl lg:text-3xl 2xl:text-5xl">{s.description}</h2>
+              <h2 className="text-xl lg:text-3xl 2xl:text-5xl">
+                {s.description}
+              </h2>
               <h1 className="text-5xl font-semibold lg:text-6xl 2xl:text-8xl">
                 {s.title}
               </h1>
@@ -109,7 +111,9 @@ export const ProductList: React.FC = () => {
 
 export const CategoryList: React.FC = () => {
   const trpc = useTRPC()
-  const { data: categories } = useSuspenseQuery(trpc.category.getAll.queryOptions({}))
+  const { data: categories } = useSuspenseQuery(
+    trpc.category.getAll.queryOptions({}),
+  )
   return (
     <section className="container grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
       <Typography variant="h2" className="col-span-full">

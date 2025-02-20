@@ -46,7 +46,9 @@ export const cartRouter = {
         }),
         ctx.db.cart.findFirst({
           where: { userId, status: 'NEW' },
-          include: { items: { where: { productId }, select: { quantity: true } } },
+          include: {
+            items: { where: { productId }, select: { quantity: true } },
+          },
         }),
       ])
 
@@ -64,7 +66,8 @@ export const cartRouter = {
       }
 
       const result = await ctx.db.$transaction(async (tx) => {
-        const cart = existingCartWithItems ?? (await tx.cart.create({ data: { userId } }))
+        const cart =
+          existingCartWithItems ?? (await tx.cart.create({ data: { userId } }))
 
         const cartItem = await tx.cartItem.upsert({
           where: { cartId_productId: { cartId: cart.id, productId } },
@@ -99,17 +102,23 @@ export const cartRouter = {
     .input(schemas.cartSchema)
     .mutation(async ({ ctx, input }) => {
       const cart = await ctx.db.cart.findUnique({ where: { id: input.cartId } })
-      if (!cart) throw new TRPCError({ code: 'NOT_FOUND', message: 'Cart not found' })
+      if (!cart)
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Cart not found' })
 
       try {
         const deletedItem = await ctx.db.cartItem.delete({
-          where: { cartId_productId: { cartId: cart.id, productId: input.productId } },
+          where: {
+            cartId_productId: { cartId: cart.id, productId: input.productId },
+          },
           include: { product: { select: { price: true } } },
         })
 
         await ctx.db.cart.update({
           where: { id: cart.id },
-          data: { total: cart.total - deletedItem.quantity * deletedItem.product.price },
+          data: {
+            total:
+              cart.total - deletedItem.quantity * deletedItem.product.price,
+          },
         })
       } catch {
         throw new TRPCError({

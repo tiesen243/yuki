@@ -13,7 +13,9 @@ interface Props {
 export default async function OrderDetailsPage({ params }: Props) {
   const id = +(await params).id
 
-  void getQueryClient().prefetchQuery(trpc.order.getDetails.queryOptions({ id }))
+  void getQueryClient().prefetchQuery(
+    trpc.order.getDetails.queryOptions({ id }),
+  )
 
   return (
     <HydrateClient>
@@ -21,9 +23,9 @@ export default async function OrderDetailsPage({ params }: Props) {
         <div className="container mb-4">
           <Typography variant="h2">Orders Sumary</Typography>
           <Typography color="muted">
-            Track your order status, view order details and access delivery information.
-            You can find your order history, payment receipts and manage any returns or
-            refunds here.
+            Track your order status, view order details and access delivery
+            information. You can find your order history, payment receipts and
+            manage any returns or refunds here.
           </Typography>
         </div>
 

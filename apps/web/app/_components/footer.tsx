@@ -12,11 +12,20 @@ export const Footer: React.FC = () => (
           <ul className="text-muted-foreground space-y-2 text-sm">
             {[
               { title: 'Contact Us', href: '/contact' },
-              { title: 'Shipping Information', href: 'https://youtu.be/4ikryZx-URA' },
-              { title: 'Returns & Exchanges', href: 'https://youtu.be/JsMK2yZc3fE' },
+              {
+                title: 'Shipping Information',
+                href: 'https://youtu.be/4ikryZx-URA',
+              },
+              {
+                title: 'Returns & Exchanges',
+                href: 'https://youtu.be/JsMK2yZc3fE',
+              },
               { title: 'FAQ', href: 'https://youtu.be/ORV5v-8OU6Y' },
             ].map(({ title, href }) => (
-              <li key={href} className="hover:text-foreground transition-colors">
+              <li
+                key={href}
+                className="hover:text-foreground transition-colors"
+              >
                 <Link href={href}>{title}</Link>
               </li>
             ))}
@@ -31,7 +40,10 @@ export const Footer: React.FC = () => (
               { title: 'Privacy Policy', href: '/privacy' },
               { title: 'Terms & Conditions', href: '/terms' },
             ].map(({ title, href }) => (
-              <li key={href} className="hover:text-foreground transition-colors">
+              <li
+                key={href}
+                className="hover:text-foreground transition-colors"
+              >
                 <Link href={href}>{title}</Link>
               </li>
             ))}

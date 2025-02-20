@@ -26,7 +26,13 @@ export const createMetadata = (
     applicationName: siteName,
     alternates: { canonical: url },
     twitter: { card: 'summary_large_image' },
-    openGraph: { url, images, siteName, type: 'website', ...override.openGraph },
+    openGraph: {
+      url,
+      images,
+      siteName,
+      type: 'website',
+      ...override.openGraph,
+    },
     icons: {
       icon: '/favicon.ico',
       shortcut: '/favicon-16x16.png',

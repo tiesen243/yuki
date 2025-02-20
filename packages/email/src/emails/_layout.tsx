@@ -71,7 +71,9 @@ export function EmailLayout({
                 className="mx-auto h-16 w-auto"
               />
             </Section>
-            <Heading className="mx-0 my-6 p-0 text-center text-2xl">{title}</Heading>
+            <Heading className="mx-0 my-6 p-0 text-center text-2xl">
+              {title}
+            </Heading>
 
             {name && (
               <Text>

@@ -4,7 +4,11 @@ import * as React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useMutation, useQueryClient, useSuspenseQuery } from '@tanstack/react-query'
+import {
+  useMutation,
+  useQueryClient,
+  useSuspenseQuery,
+} from '@tanstack/react-query'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@yuki/ui/avatar'
 import { Button } from '@yuki/ui/button'
@@ -26,7 +30,9 @@ export const ProductDetails: React.FC<{ id: string }> = ({ id }) => {
   const router = useRouter()
   const trpc = useTRPC()
 
-  const { data: product } = useSuspenseQuery(trpc.product.getOne.queryOptions({ id }))
+  const { data: product } = useSuspenseQuery(
+    trpc.product.getOne.queryOptions({ id }),
+  )
 
   const [quantity, dispatch] = React.useReducer(
     (quantity: number, action: CounterAction) => {
@@ -48,7 +54,10 @@ export const ProductDetails: React.FC<{ id: string }> = ({ id }) => {
     trpc.cart.updateCart.mutationOptions({
       onSuccess: async () => {
         await queryClient.invalidateQueries({
-          queryKey: [trpc.cart.getCart.queryKey(), trpc.product.getOne.queryKey({ id })],
+          queryKey: [
+            trpc.cart.getCart.queryKey(),
+            trpc.product.getOne.queryKey({ id }),
+          ],
         })
         dispatch({ type: 'SET', payload: 0 })
         toast.success('Item added to cart!')
@@ -156,7 +165,9 @@ export const ProductDetails: React.FC<{ id: string }> = ({ id }) => {
         <div className="mt-4 grid grid-cols-2 items-center gap-4 md:flex">
           <Button
             variant="outline"
-            disabled={quantity <= 0 || quantity > product.stock || addToCart.isPending}
+            disabled={
+              quantity <= 0 || quantity > product.stock || addToCart.isPending
+            }
             onClick={() => {
               addToCart.mutate({ productId: product.id, quantity })
             }}
@@ -165,7 +176,9 @@ export const ProductDetails: React.FC<{ id: string }> = ({ id }) => {
             {addToCart.isPending ? 'Adding...' : 'Add to cart'}
           </Button>
           <Button
-            disabled={quantity <= 0 || quantity > product.stock || addToCart.isPending}
+            disabled={
+              quantity <= 0 || quantity > product.stock || addToCart.isPending
+            }
             onClick={() => {
               addToCart.mutate({ productId: product.id, quantity })
               router.push('/account/cart')
@@ -224,7 +237,9 @@ export const ProductReviews: React.FC<{ id: string }> = ({ id }) => {
               key={i + 1}
               variant="outline"
               size="icon"
-              className={page === i + 1 ? 'bg-accent text-accent-foreground' : ''}
+              className={
+                page === i + 1 ? 'bg-accent text-accent-foreground' : ''
+              }
               onClick={() => {
                 setPage(i + 1)
               }}
@@ -260,7 +275,9 @@ export const StarRating: React.FC<{ rating: number }> = ({ rating }) => {
 
   for (let i = 1; i <= 5; i++) {
     if (i <= roundedRating)
-      stars.push(<Star key={i} className="size-4 fill-yellow-400 stroke-yellow-400" />)
+      stars.push(
+        <Star key={i} className="size-4 fill-yellow-400 stroke-yellow-400" />,
+      )
     else if (i - 0.5 <= roundedRating)
       stars.push(
         <svg
@@ -294,7 +311,9 @@ export const StarRating: React.FC<{ rating: number }> = ({ rating }) => {
   return (
     <div className="flex items-center gap-1">
       {stars}
-      <span className="text-muted-foreground ml-2 text-sm">({rating.toFixed(1)})</span>
+      <span className="text-muted-foreground ml-2 text-sm">
+        ({rating.toFixed(1)})
+      </span>
     </div>
   )
 }

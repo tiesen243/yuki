@@ -15,8 +15,8 @@ export default function OrdersPage() {
         <div className="container mb-4">
           <Typography variant="h2">Your orders</Typography>
           <Typography color="muted">
-            Manage your order history and track recent purchases. View order details,
-            invoices and delivery status.
+            Manage your order history and track recent purchases. View order
+            details, invoices and delivery status.
           </Typography>
         </div>
 
@@ -38,7 +38,9 @@ export default function OrdersPage() {
                           <span className="w-1/6 animate-pulse rounded-md bg-current text-lg">
                             &nbsp;
                           </span>
-                          <span className="text-muted-foreground text-sm">x0</span>
+                          <span className="text-muted-foreground text-sm">
+                            x0
+                          </span>
                         </p>
 
                         <p>$0</p>

@@ -9,11 +9,14 @@ const config = {
   /* General Prettier Config */
   semi: false,
   tabWidth: 2,
-  printWidth: 90,
+  printWidth: 80,
   singleQuote: true,
   trailingComma: 'all',
 
-  plugins: ['@ianvs/prettier-plugin-sort-imports', 'prettier-plugin-tailwindcss'],
+  plugins: [
+    '@ianvs/prettier-plugin-sort-imports',
+    'prettier-plugin-tailwindcss',
+  ],
 
   tailwindConfig: fileURLToPath(
     new URL('../../tooling/tailwind/web.ts', import.meta.url),
