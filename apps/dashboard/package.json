@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "build": "bun with-env react-router build",
-    "clean": "git clean -xdf .cache .next .turbo node_modules",
+    "clean": "git clean -xdf .cache .react-router .vercel .turbo node_modules",
     "dev": "bun with-env react-router dev --port 3001",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "react-router typegen && eslint",

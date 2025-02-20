@@ -23,6 +23,8 @@
         "@trpc/client": "^11.0.0-rc.795",
         "@trpc/server": "^11.0.0-rc.795",
         "@trpc/tanstack-react-query": "^11.0.0-rc.795",
+        "@yuki/api": "workspace:*",
+        "@yuki/auth": "workspace:*",
         "@yuki/ui": "workspace:*",
         "isbot": "^5.1.17",
         "react": "^19.0.0",
