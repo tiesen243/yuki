@@ -17,6 +17,7 @@ import { ThemeProvider } from '@yuki/ui/utils'
 
 import type { Route } from './+types/root'
 import { createLinks, createMetadata } from '@/lib/metadata'
+import { TRPCReactProvider } from '@/lib/trpc/react'
 
 export const meta: Route.MetaFunction = createMetadata({
   title: 'Dashboard',
@@ -39,7 +40,7 @@ export function Layout({ children }: Readonly<{ children: React.ReactNode }>) {
           defaultTheme="dark"
           disableTransitionOnChange
         >
-          {children}
+          <TRPCReactProvider>{children}</TRPCReactProvider>
         </ThemeProvider>
         <ScrollRestoration />
         <Scripts />
