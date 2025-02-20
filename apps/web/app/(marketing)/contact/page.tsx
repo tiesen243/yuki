@@ -1,3 +1,4 @@
+import { sendEmail } from '@yuki/email'
 import {
   Card,
   CardContent,
@@ -8,10 +9,21 @@ import {
 import { Mail, MapPin, Phone } from '@yuki/ui/icons'
 import { Typography } from '@yuki/ui/typography'
 
+import type { Schema } from './config'
 import { createMetadata } from '@/lib/metadata'
+import { schema } from './config'
 import { ContactForm } from './page.client'
 
 export default function ContactPage() {
+  const send = async (data: Schema) => {
+    'use server'
+    const parsed = schema.safeParse(data)
+    if (!parsed.success) return { errors: parsed.error.flatten().fieldErrors }
+
+    const { error } = await sendEmail({ type: 'Contact', data: parsed.data })
+    return { error }
+  }
+
   return (
     <main className="container grid gap-8 py-16 lg:grid-cols-2">
       <section className="space-y-8">
@@ -70,7 +82,7 @@ export default function ContactPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <ContactForm />
+          <ContactForm send={send} />
         </CardContent>
       </Card>
     </main>

@@ -1,9 +1,7 @@
 'use client'
 
 import { useState, useTransition } from 'react'
-import { z } from 'zod'
 
-import { sendEmail } from '@yuki/email'
 import { Button } from '@yuki/ui/components/button'
 import { toast } from '@yuki/ui/components/sonner'
 import { Textarea } from '@yuki/ui/components/textarea'
@@ -16,38 +14,28 @@ import {
   FormMessage,
 } from '@yuki/ui/form'
 
-const schema = z.object({
-  firstName: z.string().min(1, 'First name is required'),
-  lastName: z.string().min(1, 'Last name is required'),
-  senderEmail: z.string().email('Invalid email address'),
-  subject: z.string().min(1, 'Subject is required'),
-  message: z.string().min(10, 'Message must be at least 10 characters'),
-})
+import type { Schema } from './config'
 
-export const ContactForm: React.FC = () => {
+export const ContactForm: React.FC<{
+  send: (formData: Schema) => Promise<{
+    errors?: { [K in keyof Schema]?: string[] }
+    error?: string
+  }>
+}> = ({ send }) => {
   const [errors, setErrors] = useState<{
-    [K in keyof z.infer<typeof schema>]?: string[] | undefined
+    [K in keyof Schema]?: string[] | undefined
   }>({})
   const [isPending, transition] = useTransition()
 
-  const handleSubmit = (data: z.infer<typeof schema>) => {
+  const handleSubmit = (data: Schema) => {
     transition(async () => {
-      const parsed = schema.safeParse(data)
-
-      if (!parsed.success) {
-        setErrors(parsed.error.flatten().fieldErrors)
-        return
+      const { errors, error } = await send(data)
+      if (errors) setErrors(errors)
+      else if (error) toast.error(error)
+      else {
+        setErrors({})
+        toast.success('Email sent!')
       }
-
-      const { error } = await sendEmail({ type: 'Contact', data })
-
-      if (error) {
-        toast.error(error)
-        return
-      }
-
-      toast.success('Email sent!')
-      setErrors({})
     })
   }
 
