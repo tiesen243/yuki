@@ -7,8 +7,8 @@ export default function SignInPage() {
   return (
     <>
       <CardHeader>
-        <CardTitle>Sign In</CardTitle>
-        <CardDescription>Sign in to your account</CardDescription>
+        <CardTitle>Sign Up</CardTitle>
+        <CardDescription>Sign up for a new account</CardDescription>
       </CardHeader>
 
       <SignUpForm />

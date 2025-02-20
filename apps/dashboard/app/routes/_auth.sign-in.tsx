@@ -6,6 +6,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from '@yuki/ui/card'
@@ -15,6 +16,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from '@yuki/ui/form'
 import { toast } from '@yuki/ui/sonner'
 
@@ -40,15 +42,16 @@ export default function SignInPage() {
           .join('; ')
 
         await queryClient.invalidateQueries({ queryKey: ['auth'] })
+        await navigate({ pathname: '/' })
         toast.success('Logged in successfully')
-        navigate({ pathname: '/' })
       },
       onError: (e) => toast.error(e.message),
     }),
   )
+
   return (
     <main className="flex grow items-center justify-center">
-      <Card className="min-w-md">
+      <Card className="w-svh max-w-md">
         <CardHeader>
           <CardTitle>Sign In</CardTitle>
           <CardDescription>
@@ -68,6 +71,7 @@ export default function SignInPage() {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl type="email" placeholder="yuki@example.com" />
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -77,6 +81,7 @@ export default function SignInPage() {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl type="password" />
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -86,6 +91,17 @@ export default function SignInPage() {
             </Button>
           </Form>
         </CardContent>
+
+        <CardFooter>
+          Don&apos;t have an account?
+          <Button
+            variant="link"
+            className="cursor-pointer"
+            onClick={() => navigate({ pathname: '/sign-up' })}
+          >
+            Register here
+          </Button>
+        </CardFooter>
       </Card>
     </main>
   )
