@@ -1,4 +1,3 @@
-/* eslint-disable no-restricted-properties */
 import '@/globals.css'
 
 import {
@@ -17,9 +16,11 @@ import { Typography } from '@yuki/ui/typography'
 import { ThemeProvider } from '@yuki/ui/utils'
 
 import type { Route } from './+types/root'
+import { Header } from '@/components/header/index'
+import { env } from '@/env'
+import { SessionProvider } from '@/hooks/use-session'
 import { createLinks, createMetadata } from '@/lib/metadata'
 import { TRPCReactProvider } from '@/lib/trpc/react'
-import { SessionProvider } from './hooks/use-session'
 
 export const meta: Route.MetaFunction = createMetadata({
   title: 'Dashboard',
@@ -43,7 +44,10 @@ export function Layout({ children }: Readonly<{ children: React.ReactNode }>) {
           disableTransitionOnChange
         >
           <TRPCReactProvider>
-            <SessionProvider>{children}</SessionProvider>
+            <SessionProvider>
+              <Header />
+              {children}
+            </SessionProvider>
           </TRPCReactProvider>
 
           <Toaster />
@@ -71,7 +75,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
         ? 'Looks like this page got lost in cyberspace!'
         : error.statusText || details
   } else if (
-    process.env.NODE_ENV === 'development' &&
+    env.NODE_ENV === 'development' &&
     error &&
     error instanceof Error
   ) {
@@ -82,7 +86,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   return (
     <main className="container flex grow flex-col items-center justify-center py-8">
       <img
-        src={`${process.env.WEB_URL}/assets/yuki.png`}
+        src={`${env.VITE_WEB_URL}/assets/yuki.png`}
         alt="Yuki"
         width={300}
         height={300}

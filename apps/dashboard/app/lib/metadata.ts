@@ -1,4 +1,5 @@
 import type { Route } from '../+types/root'
+import { env } from '@/env'
 
 interface MetadataOverride {
   title?: string
@@ -53,7 +54,6 @@ export const createLinks: Route.LinksFunction = () => [
   {
     rel: 'icon',
     type: 'image/x-icon',
-    // eslint-disable-next-line no-restricted-properties
-    href: `${process.env.WEB_URL}/favicon.ico`,
+    href: `${env.VITE_WEB_URL}/favicon.ico`,
   },
 ]
