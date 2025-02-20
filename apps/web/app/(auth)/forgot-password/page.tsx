@@ -1,7 +1,7 @@
 import { CardDescription, CardHeader, CardTitle } from '@yuki/ui/card'
 
 import { createMetadata } from '@/lib/metadata'
-import { ForgotPasswordForm } from '../_components/forgot-password-form'
+import { ForgotPasswordForm } from './page.client'
 
 export default function ForgotPasswordPage() {
   return (

@@ -1,6 +1,6 @@
 import { Suspense } from 'react'
 
-import { api, HydrateClient } from '@/lib/trpc/server'
+import { getQueryClient, HydrateClient, trpc } from '@/lib/trpc/server'
 import {
   CategoryList,
   CategoryListSkeleton,
@@ -12,7 +12,12 @@ import {
 export const dynamic = 'force-dynamic'
 
 export default async function HomePage() {
-  await Promise.all([api.product.getAll.prefetch({}), api.category.getAll.prefetch({})])
+  const queryClient = getQueryClient()
+
+  await Promise.all([
+    queryClient.prefetchQuery(trpc.product.getAll.queryOptions({})),
+    queryClient.prefetchQuery(trpc.category.getAll.queryOptions({})),
+  ])
 
   return (
     <HydrateClient>

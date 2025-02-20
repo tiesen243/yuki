@@ -1,7 +1,7 @@
 import { CardDescription, CardHeader, CardTitle } from '@yuki/ui/card'
 
 import { createMetadata } from '@/lib/metadata'
-import { ResetPasswordForm } from '../../_components/reset-password-form'
+import { ResetPasswordForm } from './page.client'
 
 export default async function ResetPasswordPage({
   searchParams,

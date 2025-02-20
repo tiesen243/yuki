@@ -1,6 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
+import { useMutation } from '@tanstack/react-query'
 
 import { Button } from '@yuki/ui/button'
 import { CardContent } from '@yuki/ui/card'
@@ -14,26 +15,32 @@ import {
 } from '@yuki/ui/form'
 import { toast } from '@yuki/ui/sonner'
 
-import { api } from '@/lib/trpc/react'
+import { useTRPC } from '@/lib/trpc/react'
 
 export const SignUpForm = () => {
   const router = useRouter()
-  const { mutate, isPending, error } = api.auth.signUp.useMutation({
-    onError: (error) => toast.error(error.message),
-    onSuccess: () => {
-      toast.success('Account created successfully')
-      router.push('/sign-in')
-    },
-  })
+  const trpc = useTRPC()
+  const { mutate, isPending, error } = useMutation(
+    trpc.auth.signUp.mutationOptions({
+      onError: (error) => toast.error(error.message),
+      onSuccess: () => {
+        toast.success('Account created successfully')
+        router.push('/sign-in')
+      },
+    }),
+  )
 
   return (
     <CardContent className="space-y-4">
-      <Form<typeof mutate> onSubmit={mutate} isPending={isPending}>
+      <Form<typeof mutate>
+        onSubmit={mutate}
+        isPending={isPending}
+        errors={error?.data?.zodError}
+      >
         {fields.map((field) => (
           <FormField
             {...field}
             key={field.name}
-            error={error?.data?.zodError?.[field.name]?.at(0)}
             render={() => (
               <FormItem>
                 <FormLabel>{field.label}</FormLabel>

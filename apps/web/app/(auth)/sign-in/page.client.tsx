@@ -1,7 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import { Button } from '@yuki/ui/button'
 import { CardContent } from '@yuki/ui/card'
@@ -15,31 +15,37 @@ import {
 } from '@yuki/ui/form'
 import { toast } from '@yuki/ui/sonner'
 
-import { api } from '@/lib/trpc/react'
+import { useTRPC } from '@/lib/trpc/react'
 
 export const SignInForm: React.FC<{
   setToken: (token: string, expiresAt: Date) => Promise<void>
 }> = ({ setToken }) => {
   const router = useRouter()
   const queryClient = useQueryClient()
+  const trpc = useTRPC()
 
-  const { mutate, isPending, error } = api.auth.signIn.useMutation({
-    onError: (error) => toast.error(error.message),
-    onSuccess: async (data) => {
-      await setToken(data.token, data.expiresAt)
-      await queryClient.invalidateQueries({ queryKey: ['auth'] })
-      router.push('/')
-      router.refresh()
-      toast.success('Logged in successfully')
-    },
-  })
+  const { mutate, isPending, error } = useMutation(
+    trpc.auth.signIn.mutationOptions({
+      onError: (error) => toast.error(error.message),
+      onSuccess: async (data) => {
+        await setToken(data.token, data.expiresAt)
+        await queryClient.invalidateQueries({ queryKey: ['auth'] })
+        router.push('/')
+        router.refresh()
+        toast.success('Logged in successfully')
+      },
+    }),
+  )
 
   return (
     <CardContent className="space-y-4">
-      <Form<typeof mutate> isPending={isPending} onSubmit={mutate}>
+      <Form<typeof mutate>
+        onSubmit={mutate}
+        isPending={isPending}
+        errors={error?.data?.zodError}
+      >
         <FormField
           name="email"
-          error={error?.data?.zodError?.email?.at(0)}
           render={() => (
             <FormItem>
               <FormLabel>Email</FormLabel>
@@ -51,7 +57,6 @@ export const SignInForm: React.FC<{
 
         <FormField
           name="password"
-          error={error?.data?.zodError?.password?.at(0)}
           render={() => (
             <FormItem>
               <div className="flex items-center justify-between">

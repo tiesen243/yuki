@@ -1,7 +1,7 @@
 import { CardDescription, CardHeader, CardTitle } from '@yuki/ui/card'
 
 import { createMetadata } from '@/lib/metadata'
-import { SignUpForm } from '../_components/sign-up-form'
+import { SignUpForm } from './page.client'
 
 export default function SignInPage() {
   return (

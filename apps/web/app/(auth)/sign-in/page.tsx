@@ -4,7 +4,7 @@ import { CardDescription, CardHeader, CardTitle } from '@yuki/ui/card'
 
 import { env } from '@/env'
 import { createMetadata } from '@/lib/metadata'
-import { SignInForm } from '../_components/sign-in-form'
+import { SignInForm } from './page.client'
 
 export default function SignInPage() {
   const setToken = async (token: string, expiresAt: Date) => {

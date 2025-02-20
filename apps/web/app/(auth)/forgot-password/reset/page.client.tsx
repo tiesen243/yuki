@@ -1,6 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
+import { useMutation } from '@tanstack/react-query'
 
 import { Button } from '@yuki/ui/button'
 import { CardContent } from '@yuki/ui/card'
@@ -14,24 +15,31 @@ import {
 } from '@yuki/ui/form'
 import { toast } from '@yuki/ui/sonner'
 
-import { api } from '@/lib/trpc/react'
+import { useTRPC } from '@/lib/trpc/react'
 
 export const ResetPasswordForm: React.FC<{ token: string }> = ({ token }) => {
   const router = useRouter()
-  const { mutate, isPending, error } = api.auth.resetPassword.useMutation({
-    onError: (error) => toast.error(error.message),
-    onSuccess: () => {
-      toast.success('Password has been reset successfully')
-      router.push('/sign-in')
-    },
-  })
+  const trpc = useTRPC()
+
+  const { mutate, isPending, error } = useMutation(
+    trpc.auth.resetPassword.mutationOptions({
+      onError: (error) => toast.error(error.message),
+      onSuccess: () => {
+        toast.success('Password has been reset successfully')
+        router.push('/sign-in')
+      },
+    }),
+  )
 
   return (
     <CardContent className="space-y-4">
-      <Form<typeof mutate> isPending={isPending} onSubmit={mutate}>
+      <Form<typeof mutate>
+        onSubmit={mutate}
+        isPending={isPending}
+        errors={error?.data?.zodError}
+      >
         <FormField
           name="password"
-          error={error?.data?.zodError?.password?.at(0)}
           render={() => (
             <FormItem>
               <FormLabel>Password</FormLabel>
@@ -43,7 +51,6 @@ export const ResetPasswordForm: React.FC<{ token: string }> = ({ token }) => {
 
         <FormField
           name="confirmPassword"
-          error={error?.data?.zodError?.confirmPassword?.at(0)}
           render={() => (
             <FormItem>
               <FormLabel>Confirm Password</FormLabel>

@@ -1,3 +1,4 @@
+import type { ZodError } from 'zod'
 import * as React from 'react'
 import { Label } from '@radix-ui/react-label'
 import { Slot } from '@radix-ui/react-slot'
@@ -5,7 +6,9 @@ import { Slot } from '@radix-ui/react-slot'
 import { Input } from '@yuki/ui/components/input'
 import { cn } from '@yuki/ui/utils'
 
-type FormContextValue = { isPending: boolean } | undefined
+type FormContextValue =
+  | { isPending: boolean; errors?: ReturnType<ZodError['flatten']>['fieldErrors'] | null }
+  | undefined
 
 const FormContext = React.createContext<FormContextValue>({} as FormContextValue)
 
@@ -19,12 +22,14 @@ interface FormProps<T extends (...args: never[]) => void>
   extends Omit<React.ComponentProps<'form'>, 'onSubmit'> {
   onSubmit?: (data: Parameters<T>[0]) => void | Promise<void>
   isPending?: boolean
+  errors?: ReturnType<ZodError['flatten']>['fieldErrors'] | null
   asChild?: boolean
 }
 
 function Form<T extends (...args: never[]) => void>({
   className,
   onSubmit,
+  errors,
   isPending = false,
   asChild = false,
   ...props
@@ -36,7 +41,6 @@ function Form<T extends (...args: never[]) => void>({
       event.preventDefault()
       const formData = new FormData(event.currentTarget)
       const data = Object.fromEntries(formData) as Parameters<T>[0]
-
       await onSubmit(data)
     },
     [onSubmit],
@@ -45,7 +49,7 @@ function Form<T extends (...args: never[]) => void>({
   const Comp = asChild ? Slot : 'form'
 
   return (
-    <FormContext.Provider value={{ isPending }}>
+    <FormContext.Provider value={{ isPending, errors }}>
       <Comp
         {...props}
         data-slot="form"
@@ -59,7 +63,7 @@ function Form<T extends (...args: never[]) => void>({
 interface FormFieldContextValue {
   id?: string
   name: string
-  error?: string
+  error?: string[]
   formItemId?: string
   formDescriptionId?: string
   formMessageId?: string
@@ -71,6 +75,7 @@ const FormFieldContext = React.createContext<FormFieldContextValue>(
 )
 
 const useFormField = () => {
+  const formContext = React.use(FormContext)
   const fieldContext = React.use(FormFieldContext)
   const itemContext = React.use(FormItemContext)
 
@@ -82,21 +87,19 @@ const useFormField = () => {
   return {
     id,
     name: fieldContext.name,
-    error: fieldContext.error,
+    error: formContext?.errors?.[fieldContext.name],
     formItemId: `${id}-form-item`,
     formDescriptionId: `${id}-form-item-description`,
     formMessageId: `${id}-form-item-message`,
   }
 }
 
-function FormField({ name, error, render }: FormFieldContextValue) {
+function FormField({ name, render }: FormFieldContextValue) {
   if (!render)
     throw new Error('FormField requires a render prop to display field content')
 
   return (
-    <FormFieldContext.Provider value={{ name, error }}>
-      {render()}
-    </FormFieldContext.Provider>
+    <FormFieldContext.Provider value={{ name }}>{render()}</FormFieldContext.Provider>
   )
 }
 
@@ -193,7 +196,6 @@ function FormMessage({ className, children, ...props }: React.ComponentProps<'p'
 }
 
 export {
-  useForm,
   useFormField,
   Form,
   FormField,

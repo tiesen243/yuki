@@ -3,6 +3,7 @@
 import * as React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useSuspenseQuery } from '@tanstack/react-query'
 
 import { Button } from '@yuki/ui/button'
 import { Typography } from '@yuki/ui/typography'
@@ -10,7 +11,7 @@ import { cn } from '@yuki/ui/utils'
 
 import { CategoryCard, CategoryCardSkeleton } from '@/app/_components/category-card'
 import { ProductCard, ProductCardSkeleton } from '@/app/_components/product-card'
-import { api } from '@/lib/trpc/react'
+import { useTRPC } from '@/lib/trpc/react'
 
 export const Slider: React.FC<{
   slides: {
@@ -88,7 +89,10 @@ export const Slider: React.FC<{
 }
 
 export const ProductList: React.FC = () => {
-  const [{ products }] = api.product.getAll.useSuspenseQuery({})
+  const trpc = useTRPC()
+  const {
+    data: { products },
+  } = useSuspenseQuery(trpc.product.getAll.queryOptions({}))
 
   return (
     <section className="container grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
@@ -116,7 +120,8 @@ export const ProductListSkeleton: React.FC = () => (
 )
 
 export const CategoryList: React.FC = () => {
-  const [categories] = api.category.getAll.useSuspenseQuery({})
+  const trpc = useTRPC()
+  const { data: categories } = useSuspenseQuery(trpc.category.getAll.queryOptions({}))
   return (
     <section className="container grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
       <Typography variant="h2" className="col-span-full">
