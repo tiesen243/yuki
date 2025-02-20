@@ -26,12 +26,15 @@
   "dependencies": {
     "@neondatabase/serverless": "^0.10.4",
     "@prisma/adapter-neon": "^6.4.0",
-    "@prisma/client": "^6.4.0"
+    "@prisma/client": "^6.4.0",
+    "ws": "^8.18.0"
   },
   "devDependencies": {
+    "@types/ws": "^8.5.14",
     "@yuki/eslint-config": "workspace:*",
     "@yuki/prettier-config": "workspace:*",
     "@yuki/tsconfig": "workspace:*",
+    "bufferutil": "^4.0.9",
     "dotenv-cli": "^8.0.0",
     "eslint": "latest",
     "prettier": "latest",

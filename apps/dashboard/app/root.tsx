@@ -12,12 +12,14 @@ import {
 } from 'react-router'
 
 import { buttonVariants } from '@yuki/ui/button'
+import { Toaster } from '@yuki/ui/sonner'
 import { Typography } from '@yuki/ui/typography'
 import { ThemeProvider } from '@yuki/ui/utils'
 
 import type { Route } from './+types/root'
 import { createLinks, createMetadata } from '@/lib/metadata'
 import { TRPCReactProvider } from '@/lib/trpc/react'
+import { SessionProvider } from './hooks/use-session'
 
 export const meta: Route.MetaFunction = createMetadata({
   title: 'Dashboard',
@@ -40,7 +42,11 @@ export function Layout({ children }: Readonly<{ children: React.ReactNode }>) {
           defaultTheme="dark"
           disableTransitionOnChange
         >
-          <TRPCReactProvider>{children}</TRPCReactProvider>
+          <TRPCReactProvider>
+            <SessionProvider>{children}</SessionProvider>
+          </TRPCReactProvider>
+
+          <Toaster />
         </ThemeProvider>
         <ScrollRestoration />
         <Scripts />
