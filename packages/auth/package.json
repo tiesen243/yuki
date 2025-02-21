@@ -10,6 +10,10 @@
       "react-server": "./src/index.rsc.ts",
       "default": "./src/index.ts"
     },
+    "./password": {
+      "types": "./dist/lib/password.d.ts",
+      "default": "./src/lib/password.ts"
+    },
     "./env": {
       "types": "./dist/env.d.ts",
       "default": "./src/env.ts"

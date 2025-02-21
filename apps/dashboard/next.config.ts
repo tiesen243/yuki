@@ -12,6 +12,7 @@ const nextConfig: NextConfig = {
 
   /** Enables hot reloading for local packages without a build step */
   transpilePackages: ['@yuki/api', '@yuki/auth', '@yuki/db', '@yuki/ui'],
+  serverExternalPackages: ['@node-rs/argon2-wasm32-wasi'],
 
   /** We already do linting and typechecking as separate tasks in CI */
   eslint: { ignoreDuringBuilds: true },

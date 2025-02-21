@@ -1,12 +1,8 @@
 import type { TRPCRouterRecord } from '@trpc/server'
 import { TRPCError } from '@trpc/server'
 
-import {
-  createSession,
-  generateGravatar,
-  hashPassword,
-  verifyHashedPassword,
-} from '@yuki/auth'
+import { createSession, generateGravatar } from '@yuki/auth'
+import { hashPassword, verifyHashedPassword } from '@yuki/auth/password'
 import { sendEmail } from '@yuki/email'
 import { env } from '@yuki/email/env'
 

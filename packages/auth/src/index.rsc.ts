@@ -11,7 +11,6 @@ const auth = cache(uncachedAuth)
 export type { Session } from './config'
 export { auth, OAuthConfig, generateGravatar }
 export { handlers } from './lib/handlers'
-export { hashPassword, verifyHashedPassword } from './lib/password'
 export {
   createSession,
   invalidateSessionToken,
