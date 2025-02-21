@@ -20,6 +20,7 @@ import { env } from '@/env'
 import { SessionProvider } from '@/hooks/use-session'
 import { createLinks, createMetadata } from '@/lib/metadata'
 import { TRPCReactProvider } from '@/lib/trpc/react'
+import { Header } from './components/header'
 
 export const meta: Route.MetaFunction = createMetadata({
   title: 'Dashboard',
@@ -56,7 +57,12 @@ export function Layout({ children }: Readonly<{ children: React.ReactNode }>) {
 }
 
 export default function App() {
-  return <Outlet />
+  return (
+    <>
+      <Header />
+      <Outlet />
+    </>
+  )
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
