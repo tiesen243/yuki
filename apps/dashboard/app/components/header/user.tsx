@@ -5,15 +5,20 @@ import { buttonVariants } from '@yuki/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@yuki/ui/dropdown-menu'
+import { SunIcon } from '@yuki/ui/icons'
+import { useTheme } from '@yuki/ui/utils'
 
 import { useSession } from '@/hooks/use-session'
 
 export const User: React.FC = () => {
   const { session, isLoading } = useSession()
+  const { theme, setTheme } = useTheme()
 
   if (isLoading)
     return <div className="size-9 animate-pulse rounded-full bg-current" />
@@ -46,7 +51,16 @@ export const User: React.FC = () => {
 
         <DropdownMenuSeparator />
 
-        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+          <DropdownMenuItem
+            onClick={() => {
+              setTheme(theme === 'dark' ? 'light' : 'dark')
+            }}
+          >
+            <SunIcon />
+            Toggle Theme
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
   )
