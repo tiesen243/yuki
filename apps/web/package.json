@@ -6,10 +6,10 @@
   "scripts": {
     "build": "bun with-env next build",
     "clean": "git clean -xdf .cache .next .turbo node_modules",
-    "dev": "bun with-env next dev",
+    "dev": "bun with-env next dev --port 3000",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
-    "start": "bun with-env next start",
+    "start": "bun with-env next start --port 3000",
     "typecheck": "tsc --noEmit",
     "with-env": "dotenv -e ../../.env --"
   },

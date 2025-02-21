@@ -2,13 +2,15 @@ import '@/app/globals.css'
 
 import { Geist } from 'next/font/google'
 
-import { cn } from '@yuki/ui/utils'
+import { Toaster } from '@yuki/ui/sonner'
+import { cn, ThemeProvider } from '@yuki/ui/utils'
 import { NextSSRPlugin, routerConfig } from '@yuki/uploader'
 
+import { SessionProvider } from '@/hooks/use-session'
 import { createMetadata } from '@/lib/metadata'
+import { TRPCReactProvider } from '@/lib/trpc/react'
 import { Footer } from './_components/footer'
 import { Header } from './_components/header'
-import { Providers } from './providers'
 
 const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] })
 
@@ -23,11 +25,21 @@ export default function RootLayout({
           geistSans.variable,
         )}
       >
-        <Providers>
-          <Header />
-          {children}
-          <Footer />
-        </Providers>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          disableTransitionOnChange
+        >
+          <TRPCReactProvider>
+            <SessionProvider>
+              <Header />
+              {children}
+              <Footer />
+            </SessionProvider>
+          </TRPCReactProvider>
+
+          <Toaster />
+        </ThemeProvider>
 
         <NextSSRPlugin
           /**

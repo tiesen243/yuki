@@ -56,7 +56,7 @@
     "GOOGLE_SECRET",
     "RESEND_KEY",
     "UPLOADTHING_TOKEN",
-    "VITE_WEB_URL",
+    "WEB_URL",
     "DASHBOARD_URL",
     "PORT"
   ],

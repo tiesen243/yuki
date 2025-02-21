@@ -25,13 +25,13 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '@yuki/ui/dropdown-menu'
-import { LogOutIcon, MoonIcon, SunIcon } from '@yuki/ui/icons'
+import { LayoutGridIcon, LogOutIcon, MoonIcon, SunIcon } from '@yuki/ui/icons'
 import { useTheme } from '@yuki/ui/utils'
 
 import { useSession } from '@/hooks/use-session'
 import { navLinks } from './configs'
 
-export const User: React.FC = () => {
+export const User: React.FC<{ dashboardUrl: string }> = ({ dashboardUrl }) => {
   const { session, isLoading, signOut } = useSession()
   const { theme, setTheme } = useTheme()
 
@@ -77,6 +77,16 @@ export const User: React.FC = () => {
                 </Link>
               </DropdownMenuItem>
             ))}
+
+            {session.user.role !== 'USER' && (
+              <DropdownMenuItem asChild>
+                <Link href={dashboardUrl}>
+                  <LayoutGridIcon />
+                  <span>Dashboard</span>
+                  <DropdownMenuShortcut>⇧⌘D</DropdownMenuShortcut>
+                </Link>
+              </DropdownMenuItem>
+            )}
 
             <DropdownMenuItem
               onClick={() => {

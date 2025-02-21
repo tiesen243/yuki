@@ -2,6 +2,7 @@ import { Suspense } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
+import { env } from '@/env'
 import { MobileMenu } from './mobile-menu'
 import { Search } from './search'
 import { User } from './user'
@@ -35,7 +36,7 @@ export const Header: React.FC = () => (
         <Search className="hidden grow md:flex" />
       </Suspense>
 
-      <User />
+      <User dashboardUrl={env.DASHBOARD_URL} />
     </div>
   </header>
 )

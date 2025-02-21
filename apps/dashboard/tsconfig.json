@@ -1,10 +1,12 @@
 {
   "extends": "@yuki/tsconfig/react-library.json",
   "compilerOptions": {
-    "rootDirs": [".", "./.react-router/types"],
+    "module": "esnext",
+    "plugins": [{ "name": "next" }],
+
     "baseUrl": ".",
-    "paths": { "@/*": ["./app/*"], "@yuki/ui/*": ["../../packages/ui/src/*"] }
+    "paths": { "@/*": ["./*"], "@yuki/ui/*": ["../../packages/ui/src/*"] }
   },
-  "include": [".", ".react-router/types/**/*"],
-  "exclude": ["node_modules", "build"]
+  "include": [".", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"]
 }
