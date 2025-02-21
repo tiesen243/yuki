@@ -4,6 +4,8 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 import type { Session } from '@yuki/auth'
 
+import { env } from '@/env'
+
 const sessionContext = React.createContext<
   | {
       session?: Session
@@ -23,7 +25,9 @@ export const SessionProvider: React.FC<{ children: React.ReactNode }> = ({
   const session = useQuery({
     queryKey: ['auth'],
     queryFn: async () => {
-      const res = await fetch('/api/auth/get-session')
+      const res = await fetch(`${env.VITE_WEB_URL}/api/auth`, {
+        credentials: 'include',
+      })
       return (await res.json()) as Session
     },
     retry: false,
@@ -31,7 +35,11 @@ export const SessionProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const signOut = useMutation({
     mutationKey: ['auth', 'sign-out'],
-    mutationFn: async () => fetch('/api/auth/sign-out', { method: 'POST' }),
+    mutationFn: async () =>
+      fetch(`${env.VITE_WEB_URL}/api/auth/sign-out`, {
+        method: 'POST',
+        credentials: 'include',
+      }),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['auth'] })
       await router({ pathname: '/' })
