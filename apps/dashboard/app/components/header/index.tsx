@@ -1,11 +1,5 @@
 import { Link, NavLink } from 'react-router'
 
-import {
-  LayoutGridIcon,
-  PackageIcon,
-  ShoppingBagIcon,
-  UsersIcon,
-} from '@yuki/ui/icons'
 import { cn } from '@yuki/ui/utils'
 
 import { env } from '@/env'
@@ -37,8 +31,7 @@ export const Header: React.FC = () => (
               )
             }
           >
-            {item.icon}
-            <span>{item.label}</span>
+            {item.label}
           </NavLink>
         ))}
       </nav>
@@ -52,21 +45,17 @@ const navItems = [
   {
     label: 'Products',
     href: '/products',
-    icon: <PackageIcon className="h-4 w-4" />,
   },
   {
     label: 'Categories',
     href: '/categories',
-    icon: <LayoutGridIcon className="h-4 w-4" />,
   },
   {
     label: 'Orders',
     href: '/orders',
-    icon: <ShoppingBagIcon className="h-4 w-4" />,
   },
   {
     label: 'Customers',
     href: '/customers',
-    icon: <UsersIcon className="h-4 w-4" />,
   },
 ]
