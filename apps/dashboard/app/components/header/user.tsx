@@ -1,5 +1,16 @@
 import { Link } from 'react-router'
 
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@yuki/ui/alert-dialog'
 import { Avatar, AvatarFallback, AvatarImage } from '@yuki/ui/avatar'
 import { buttonVariants } from '@yuki/ui/button'
 import {
@@ -11,13 +22,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@yuki/ui/dropdown-menu'
-import { SunIcon } from '@yuki/ui/icons'
 import { useTheme } from '@yuki/ui/utils'
 
 import { useSession } from '@/hooks/use-session'
 
 export const User: React.FC = () => {
-  const { session, isLoading } = useSession()
+  const { session, isLoading, signOut } = useSession()
   const { theme, setTheme } = useTheme()
 
   if (isLoading)
@@ -31,37 +41,55 @@ export const User: React.FC = () => {
     )
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Avatar className="size-9">
-          <AvatarImage src={session.user.image} />
-          <AvatarFallback>{session.user.name.at(0)}</AvatarFallback>
-        </Avatar>
-      </DropdownMenuTrigger>
+    <AlertDialog>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Avatar className="size-9">
+            <AvatarImage src={session.user.image} />
+            <AvatarFallback>{session.user.name.at(0)}</AvatarFallback>
+          </Avatar>
+        </DropdownMenuTrigger>
 
-      <DropdownMenuContent className="w-56" align="end" forceMount>
-        <DropdownMenuLabel className="flex flex-col space-y-1 font-normal">
-          <p className="text-sm leading-none font-medium">
-            {session.user.name}
-          </p>
-          <p className="text-muted-foreground text-xs leading-none">
-            {session.user.email}
-          </p>
-        </DropdownMenuLabel>
+        <DropdownMenuContent className="w-56" align="end" forceMount>
+          <DropdownMenuLabel className="flex flex-col space-y-1 font-normal">
+            <p className="text-sm leading-none font-medium">
+              {session.user.name}
+            </p>
+            <p className="text-muted-foreground text-xs leading-none">
+              {session.user.email}
+            </p>
+          </DropdownMenuLabel>
 
-        <DropdownMenuSeparator />
+          <DropdownMenuSeparator />
 
-        <DropdownMenuGroup>
-          <DropdownMenuItem
-            onClick={() => {
-              setTheme(theme === 'dark' ? 'light' : 'dark')
-            }}
-          >
-            <SunIcon />
-            Toggle Theme
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
-      </DropdownMenuContent>
-    </DropdownMenu>
+          <DropdownMenuGroup>
+            <DropdownMenuItem
+              onClick={() => {
+                setTheme(theme === 'dark' ? 'light' : 'dark')
+              }}
+            >
+              Toggle Theme
+            </DropdownMenuItem>
+
+            <AlertDialogTrigger asChild>
+              <DropdownMenuItem>Sign Out</DropdownMenuItem>
+            </AlertDialogTrigger>
+          </DropdownMenuGroup>
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Are you sure you want to log out?</AlertDialogTitle>
+          <AlertDialogDescription>
+            You will need to sign in again to access your account.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction onClick={signOut}>Log Out</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   )
 }
