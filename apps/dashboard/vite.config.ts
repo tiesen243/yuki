@@ -6,7 +6,8 @@ import tsconfigPaths from 'vite-tsconfig-paths'
 export default defineConfig(({ mode }) => ({
   plugins: [tailwindcss(), reactRouter(), tsconfigPaths()],
   optimizeDeps: {
-    include: ['@yuki/api', '@yuki/auth', '@yuki/db', '@yuki/ui'],
+    include: ['@yuki/api', '@yuki/auth', '@yuki/db', '@yuki/ui/icons'],
+    exclude: ['@node-rs/argon2-wasm32-wasi'],
   },
   build: {
     rollupOptions: {
