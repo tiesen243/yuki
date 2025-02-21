@@ -1,5 +1,4 @@
 import { Link } from 'react-router'
-import { LogOutIcon, MoonIcon, SunIcon } from 'lucide-react'
 
 import {
   AlertDialog,
@@ -70,14 +69,12 @@ export const User: React.FC = () => {
                 setTheme(theme === 'dark' ? 'light' : 'dark')
               }}
             >
-              {theme === 'dark' ? <MoonIcon /> : <SunIcon />}
               <span>Toggle Theme</span>
               <DropdownMenuShortcut>⇧⌘T</DropdownMenuShortcut>
             </DropdownMenuItem>
 
             <AlertDialogTrigger asChild>
               <DropdownMenuItem>
-                <LogOutIcon />
                 <span>Sign Out</span>
                 <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
               </DropdownMenuItem>
