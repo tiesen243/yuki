@@ -30,7 +30,6 @@ export const SessionProvider: React.FC<{ children: React.ReactNode }> = ({
       })
       return (await res.json()) as Session
     },
-    retry: false,
   })
 
   const signOut = useMutation({

@@ -2,6 +2,7 @@ import { Link } from 'react-router'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@yuki/ui/avatar'
 import { buttonVariants } from '@yuki/ui/button'
+import { DropdownMenu, DropdownMenuTrigger } from '@yuki/ui/dropdown-menu'
 
 import { useSession } from '@/hooks/use-session'
 
@@ -19,9 +20,13 @@ export const User: React.FC = () => {
     )
 
   return (
-    <Avatar className="size-9">
-      <AvatarImage src={session.user.image} />
-      <AvatarFallback>{session.user.name.at(0)}</AvatarFallback>
-    </Avatar>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Avatar className="size-9">
+          <AvatarImage src={session.user.image} />
+          <AvatarFallback>{session.user.name.at(0)}</AvatarFallback>
+        </Avatar>
+      </DropdownMenuTrigger>
+    </DropdownMenu>
   )
 }

@@ -19,7 +19,7 @@ export const Header: React.FC = () => (
         </span>
       </Link>
 
-      <nav className="ml-6 flex items-center space-x-6">
+      <nav className="flex items-center space-x-4">
         {navItems.map((item) => (
           <NavLink
             key={item.href}
