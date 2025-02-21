@@ -3,7 +3,6 @@ import { Link, NavLink } from 'react-router'
 import { cn } from '@yuki/ui/utils'
 
 import { env } from '@/env'
-import { User } from './user'
 
 export const Header: React.FC = () => (
   <header className="bg-background/70 sticky inset-0 z-50 flex h-20 items-center border-b shadow-md backdrop-blur-xl backdrop-saturate-150">
@@ -35,8 +34,6 @@ export const Header: React.FC = () => (
           </NavLink>
         ))}
       </nav>
-
-      <User />
     </div>
   </header>
 )
