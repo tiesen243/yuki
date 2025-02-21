@@ -2,15 +2,13 @@ import '@/app/globals.css'
 
 import { Geist } from 'next/font/google'
 
-import { Toaster } from '@yuki/ui/sonner'
-import { cn, ThemeProvider } from '@yuki/ui/utils'
+import { cn } from '@yuki/ui/utils'
 import { NextSSRPlugin, routerConfig } from '@yuki/uploader'
 
-import { SessionProvider } from '@/hooks/use-session'
 import { createMetadata } from '@/lib/metadata'
-import { TRPCReactProvider } from '@/lib/trpc/react'
 import { Footer } from './_components/footer'
 import { Header } from './_components/header'
+import { Providers } from './providers'
 
 const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] })
 
@@ -25,30 +23,21 @@ export default function RootLayout({
           geistSans.variable,
         )}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          disableTransitionOnChange
-        >
-          <TRPCReactProvider>
-            <SessionProvider>
-              <Header />
-              {children}
-              <Footer />
-            </SessionProvider>
-          </TRPCReactProvider>
+        <Providers>
+          <Header />
+          {children}
+          <Footer />
+        </Providers>
 
-          <NextSSRPlugin
-            /**
-             * The `extractRouterConfig` will extract **only** the route configs
-             * from the router to prevent additional information from being
-             * leaked to the client. The data passed to the client is the same
-             * as if you were to fetch `/api/uploadthing` directly.
-             */
-            routerConfig={routerConfig}
-          />
-          <Toaster />
-        </ThemeProvider>
+        <NextSSRPlugin
+          /**
+           * The `extractRouterConfig` will extract **only** the route configs
+           * from the router to prevent additional information from being
+           * leaked to the client. The data passed to the client is the same
+           * as if you were to fetch `/api/uploadthing` directly.
+           */
+          routerConfig={routerConfig}
+        />
       </body>
     </html>
   )
