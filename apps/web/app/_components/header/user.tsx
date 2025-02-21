@@ -71,7 +71,7 @@ export const User: React.FC = () => {
             {navLinks.map(({ Icon, title, href, shortcut }) => (
               <DropdownMenuItem key={href} asChild>
                 <Link href={href}>
-                  <Icon className="mr-2 size-4" />
+                  <Icon />
                   <span>{title}</span>
                   <DropdownMenuShortcut>{shortcut}</DropdownMenuShortcut>
                 </Link>
@@ -83,11 +83,7 @@ export const User: React.FC = () => {
                 setTheme(theme === 'light' ? 'dark' : 'light')
               }}
             >
-              {theme === 'dark' ? (
-                <SunIcon className="mr-2 size-4" />
-              ) : (
-                <MoonIcon className="mr-2 size-4" />
-              )}
+              {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
               <span>Toggle Theme</span>
               <DropdownMenuShortcut>⇧⌘T</DropdownMenuShortcut>
             </DropdownMenuItem>
@@ -97,7 +93,7 @@ export const User: React.FC = () => {
 
           <AlertDialogTrigger asChild>
             <DropdownMenuItem>
-              <LogOutIcon className="mr-2 h-4 w-4" />
+              <LogOutIcon />
               <span>Log out</span>
               <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
             </DropdownMenuItem>

@@ -1,4 +1,5 @@
 import { Link } from 'react-router'
+import { LogOutIcon, MoonIcon, SunIcon } from 'lucide-react'
 
 import {
   AlertDialog,
@@ -20,6 +21,7 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
+  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '@yuki/ui/dropdown-menu'
 import { useTheme } from '@yuki/ui/utils'
@@ -68,11 +70,17 @@ export const User: React.FC = () => {
                 setTheme(theme === 'dark' ? 'light' : 'dark')
               }}
             >
-              Toggle Theme
+              {theme === 'dark' ? <MoonIcon /> : <SunIcon />}
+              <span>Toggle Theme</span>
+              <DropdownMenuShortcut>⇧⌘T</DropdownMenuShortcut>
             </DropdownMenuItem>
 
             <AlertDialogTrigger asChild>
-              <DropdownMenuItem>Sign Out</DropdownMenuItem>
+              <DropdownMenuItem>
+                <LogOutIcon />
+                <span>Sign Out</span>
+                <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+              </DropdownMenuItem>
             </AlertDialogTrigger>
           </DropdownMenuGroup>
         </DropdownMenuContent>
