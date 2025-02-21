@@ -1,5 +1,4 @@
 import type { Route } from '../+types/root'
-import { env } from '@/env'
 
 interface MetadataOverride {
   title?: string
@@ -50,10 +49,5 @@ export const createLinks: Route.LinksFunction = () => [
   {
     rel: 'stylesheet',
     href: 'https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap',
-  },
-  {
-    rel: 'icon',
-    type: 'image/x-icon',
-    href: `${env.VITE_WEB_URL}/favicon.ico`,
   },
 ]
