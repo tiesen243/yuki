@@ -1,6 +1,6 @@
-import type { Route } from './+types/_main.customers'
+import type { Route } from './+types/orders'
 
-export default function CustomersPage(_: Route.ComponentProps) {
+export default function OrdersPage(_: Route.ComponentProps) {
   return (
     <main className="container py-4">
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vehicula

@@ -1,6 +1,6 @@
-import type { Route } from './+types/_main.categories'
+import type { Route } from './+types/products'
 
-export default function CategoriesPage(_: Route.ComponentProps) {
+export default function ProductsPage(_: Route.ComponentProps) {
   return (
     <main className="container py-4">
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vehicula
