@@ -104,7 +104,7 @@ export const CartDetails: React.FC = () => {
         <TableFooter>
           <TableRow>
             <TableCell colSpan={5}>Total</TableCell>
-            <TableCell align="center">${cart.total}</TableCell>
+            <TableCell align="center">${cart.total.toFixed(2)}</TableCell>
           </TableRow>
         </TableFooter>
       </Table>
@@ -209,7 +209,7 @@ const CartItem: React.FC<{
           <Button
             variant="outline"
             size="icon"
-            className="border-none"
+            className="rounded-r-none border-none"
             onClick={() => {
               handleQuantityChange(-1)
             }}
@@ -223,7 +223,7 @@ const CartItem: React.FC<{
           <Button
             variant="outline"
             size="icon"
-            className="border-none"
+            className="rounded-l-none border-none"
             onClick={() => {
               handleQuantityChange(1)
             }}

@@ -1,5 +1,3 @@
-'use client'
-
 import { buttonVariants } from '@yuki/ui/components/button'
 import { cn } from '@yuki/ui/utils'
 import { UploadButton as Base } from '@yuki/uploader/react'
