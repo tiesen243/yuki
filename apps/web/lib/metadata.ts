@@ -22,6 +22,28 @@ export const createMetadata = (
     metadataBase: new URL(getBaseUrl()),
     manifest: `${getBaseUrl()}/manifest.webmanifest`,
     title: override.title ? `${override.title} | ${siteName}` : siteName,
+    keywords: [
+      ...(Array.isArray(override.keywords)
+        ? override.keywords
+        : override.keywords
+          ? [override.keywords]
+          : []),
+      'yuki',
+      'tiesen',
+      'tiesen243',
+      'online shopping',
+      'e-commerce',
+      'shop online',
+      'best deals',
+      'digital marketplace',
+      'secure shopping',
+      'fast delivery',
+      'online store',
+      'discounts',
+      'retail',
+      'shopping cart',
+      'buy online',
+    ],
     description: override.description ?? description,
     applicationName: siteName,
     alternates: { canonical: url },
