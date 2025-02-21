@@ -3,26 +3,12 @@ import { NextResponse } from 'next/server'
 
 import { auth } from '@yuki/auth'
 
-const publicRoutes = [
-  '/deny',
-  '/sign-in',
-  '/sign-up',
-  '/forgot-password',
-  '/forgot-password/reset',
-]
-
 export const middleware = async (req: NextRequest, _event: NextFetchEvent) => {
   const { pathname } = req.nextUrl
   const session = await auth(req)
 
-  // Allow access to public routes
-  if (publicRoutes.includes(pathname)) return NextResponse.next()
-
-  // Redirect to sign-in if no session
-  if (!session.user) return NextResponse.redirect(new URL('/sign-in', req.url))
-
-  if (session.user.role === 'USER')
-    return NextResponse.redirect(new URL('/denied', req.url))
+  if (pathname.startsWith('/account') && !session.user)
+    return NextResponse.redirect(new URL('/sign-in', req.url))
 
   return NextResponse.next()
 }

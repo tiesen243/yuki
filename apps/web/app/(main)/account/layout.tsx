@@ -1,8 +1,3 @@
-import { redirect } from 'next/navigation'
-
-import { auth } from '@yuki/auth'
-
-import { createMetadata } from '@/lib/metadata'
 import { NavLink } from './layout.client'
 
 export default function AccountLayout({
@@ -22,15 +17,6 @@ export default function AccountLayout({
       {children}
     </div>
   )
-}
-
-export const generateMetadata = async () => {
-  const session = await auth()
-  if (!session.user) redirect('/sign-in')
-
-  return createMetadata({
-    title: session.user.name,
-  })
 }
 
 const navs = [
