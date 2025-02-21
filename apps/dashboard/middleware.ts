@@ -4,6 +4,7 @@ import { NextResponse } from 'next/server'
 import { auth } from '@yuki/auth'
 
 const publicRoutes = [
+  '/deny',
   '/sign-in',
   '/sign-up',
   '/forgot-password',
