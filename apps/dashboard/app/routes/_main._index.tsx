@@ -1,4 +1,4 @@
-import type { Route } from './+types/_index'
+import type { Route } from './+types/_main._index'
 
 export default function HomePage(_: Route.ComponentProps) {
   return (

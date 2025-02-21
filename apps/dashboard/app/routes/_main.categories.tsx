@@ -1,4 +1,4 @@
-import type { Route } from './+types/categories'
+import type { Route } from './+types/_main.categories'
 
 export default function CategoriesPage(_: Route.ComponentProps) {
   return (

@@ -1,4 +1,4 @@
-import type { Route } from './+types/customers'
+import type { Route } from './+types/_main.customers'
 
 export default function CustomersPage(_: Route.ComponentProps) {
   return (

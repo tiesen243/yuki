@@ -1,4 +1,4 @@
-import type { Route } from './+types/orders'
+import type { Route } from './+types/_main.orders'
 
 export default function OrdersPage(_: Route.ComponentProps) {
   return (

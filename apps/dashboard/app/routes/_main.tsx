@@ -1,11 +1,10 @@
 import { Outlet } from 'react-router'
 
-import { Header } from '@/components/header'
+import type { Route } from './+types/_main'
 
-export default function MainLayout() {
+export default function MainLayout(_: Route.ComponentProps) {
   return (
     <>
-      <Header />
       <Outlet />
     </>
   )
