@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation'
 import { Typography } from '@yuki/ui/typography'
 
 import { createMetadata } from '@/lib/metadata'
-import { api, getQueryClient, HydrateClient, trpc } from '@/lib/trpc/server'
+import { getQueryClient, HydrateClient, trpc } from '@/lib/trpc/server'
 import { OrderDetails } from './page.client'
 
 interface Props {
@@ -50,7 +50,9 @@ export default async function OrderDetailsPage({ params }: Props) {
 export const generateMetadata = async ({ params }: Props) => {
   const id = +(await params).id
   try {
-    const order = await api.order.getDetails({ id })
+    const order = await getQueryClient().fetchQuery(
+      trpc.order.getDetails.queryOptions({ id }),
+    )
 
     return createMetadata({
       title: `Order #${order.id}`,
