@@ -1,9 +1,8 @@
 'use client'
 
 import { Suspense, useState } from 'react'
-import NextForm from 'next/form'
 import Link from 'next/link'
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useQuery, useSuspenseQuery } from '@tanstack/react-query'
 import { useFormStatus } from 'react-dom'
 
@@ -33,9 +32,9 @@ import { cn } from '@yuki/ui/utils'
 
 import { ProductCard } from '@/app/_components/product-card'
 import { useTRPC } from '@/lib/trpc/react'
-import { getIdFromSlug } from '@/lib/utils'
+import { slugify } from '@/lib/utils'
 
-export const FilterSidebar: React.FC<Query & { slug?: string[] }> = (props) => {
+export const FilterSidebar: React.FC<{ slug?: string[] }> = (props) => {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
@@ -66,101 +65,132 @@ export const FilterSidebar: React.FC<Query & { slug?: string[] }> = (props) => {
   )
 }
 
-const FilterContent: React.FC<
-  Query & { slug?: string[]; className?: string }
-> = ({ slug, className, ...query }) => {
+const FilterContent: React.FC<{ slug?: string[]; className?: string }> = ({
+  slug,
+  className,
+}) => {
   const searchParams = useSearchParams()
+  const router = useRouter()
   const trpc = useTRPC()
 
   const { data: categories = [] } = useQuery(
     trpc.category.getAll.queryOptions({ limit: 999 }),
   )
-  const [category, setCategory] = useState(getIdFromSlug(slug?.at(0)))
 
-  const q = searchParams.get('q') ?? ''
+  const handleFilter = (data: {
+    q: string
+    category?: string
+    sortBy: string
+    orderBy: string
+    limit: number
+  }) => {
+    const searchParams = new URLSearchParams()
+
+    // Only add params that have values
+    if (data.q) searchParams.set('q', data.q)
+    if (data.sortBy) searchParams.set('sortBy', data.sortBy)
+    if (data.orderBy) searchParams.set('orderBy', data.orderBy)
+    if (data.limit) searchParams.set('limit', data.limit.toString())
+
+    router.push(`/shop/${data.category ?? ''}?${searchParams.toString()}`)
+  }
 
   return (
-    <Form className={cn('min-w-48 space-y-2 md:space-y-4', className)} asChild>
-      <NextForm action={`/shop/${category}`}>
-        <FormField
-          name="q"
-          render={() => (
-            <FormItem>
-              <FormLabel>Search</FormLabel>
-              <FormControl placeholder="Search products..." defaultValue={q} />
-            </FormItem>
-          )}
-        />
+    <Form<typeof handleFilter>
+      className={cn('min-w-48 space-y-2 md:space-y-4', className)}
+      defaultValues={{
+        q: searchParams.get('q') ?? '',
+        category: slug?.at(0),
+        sortBy: searchParams.get('sortBy') ?? 'createdAt',
+        orderBy: searchParams.get('orderBy') ?? 'asc',
+        limit: +(searchParams.get('limit') ?? 20),
+      }}
+      onSubmit={handleFilter}
+    >
+      <FormField
+        name="q"
+        render={(field) => (
+          <FormItem>
+            <FormLabel>Search</FormLabel>
+            <FormControl placeholder="Search products..." {...field} />
+          </FormItem>
+        )}
+      />
 
-        <FormField
-          name="category"
-          render={() => (
-            <FormItem>
-              <FormLabel>Category</FormLabel>
-              <Select value={category} onValueChange={setCategory}>
-                <FormControl asChild>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select..." />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value={' '}>None</SelectItem>
-                  {categories.map((c) => (
-                    <SelectItem key={c.name} value={c.id}>
-                      {c.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </FormItem>
-          )}
-        />
+      <FormField
+        name="category"
+        render={(field) => (
+          <FormItem>
+            <FormLabel>Category</FormLabel>
+            <Select value={field.value} onValueChange={field.onChange}>
+              <FormControl asChild>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select..." />
+                </SelectTrigger>
+              </FormControl>
+              <SelectContent>
+                <SelectItem value={' '}>None</SelectItem>
+                {categories.map((c) => (
+                  <SelectItem key={c.name} value={`${slugify(c.name)}-${c.id}`}>
+                    {c.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </FormItem>
+        )}
+      />
 
-        <FormField
-          name="sortBy"
-          render={() => (
-            <FormItem>
-              <FormLabel>Sort by</FormLabel>
-              <Select name="sortBy" defaultValue={query.sortBy}>
-                <FormControl asChild>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select..." />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value="name">Name</SelectItem>
-                  <SelectItem value="price">Price</SelectItem>
-                  <SelectItem value="createdAt">Date</SelectItem>
-                </SelectContent>
-              </Select>
-            </FormItem>
-          )}
-        />
+      <FormField
+        name="sortBy"
+        render={(field) => (
+          <FormItem>
+            <FormLabel>Sort by</FormLabel>
+            <Select
+              name="sortBy"
+              value={field.value}
+              onValueChange={field.onChange}
+            >
+              <FormControl asChild>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select..." />
+                </SelectTrigger>
+              </FormControl>
+              <SelectContent>
+                <SelectItem value="name">Name</SelectItem>
+                <SelectItem value="price">Price</SelectItem>
+                <SelectItem value="createdAt">Date</SelectItem>
+              </SelectContent>
+            </Select>
+          </FormItem>
+        )}
+      />
 
-        <FormField
-          name="orderBy"
-          render={() => (
-            <FormItem>
-              <FormLabel>Order</FormLabel>
-              <Select name="orderBy" defaultValue={query.orderBy}>
-                <FormControl asChild>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select..." />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value="asc">Ascending</SelectItem>
-                  <SelectItem value="desc">Descending</SelectItem>
-                </SelectContent>
-              </Select>
-            </FormItem>
-          )}
-        />
+      <FormField
+        name="orderBy"
+        render={(field) => (
+          <FormItem>
+            <FormLabel>Order</FormLabel>
+            <Select
+              name="orderBy"
+              value={field.value}
+              onValueChange={field.onChange}
+            >
+              <FormControl asChild>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select..." />
+                </SelectTrigger>
+              </FormControl>
+              <SelectContent>
+                <SelectItem value="asc">Ascending</SelectItem>
+                <SelectItem value="desc">Descending</SelectItem>
+              </SelectContent>
+            </Select>
+          </FormItem>
+        )}
+      />
 
-        <input name="limit" defaultValue={query.limit} hidden />
-
-        <SubmitButton className="w-full">Apply Filters</SubmitButton>
-      </NextForm>
+      <SubmitButton className="w-full">Apply Filters</SubmitButton>
     </Form>
   )
 }

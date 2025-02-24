@@ -53,7 +53,7 @@ export default async function ShopPage({ params, searchParams }: Props) {
       <main className="container flex grow flex-col gap-8 py-4 md:flex-row">
         <h1 className="sr-only">All Product of Shop</h1>
 
-        <FilterSidebar slug={slug} {...query} />
+        <FilterSidebar slug={slug} />
 
         <section className="grow">
           <h3 className="sr-only">Product List Section</h3>

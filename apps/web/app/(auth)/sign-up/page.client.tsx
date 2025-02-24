@@ -33,6 +33,12 @@ export const SignUpForm = () => {
   return (
     <CardContent className="space-y-4">
       <Form<typeof mutate>
+        defaultValues={{
+          name: '',
+          email: '',
+          password: '',
+          confirmPassword: '',
+        }}
         onSubmit={mutate}
         isPending={isPending}
         errors={error?.data?.zodError}
@@ -41,10 +47,10 @@ export const SignUpForm = () => {
           <FormField
             {...field}
             key={field.name}
-            render={() => (
+            render={(fieldProps) => (
               <FormItem>
                 <FormLabel>{field.label}</FormLabel>
-                <FormControl {...field} />
+                <FormControl {...field} {...fieldProps} />
                 <FormMessage />
               </FormItem>
             )}

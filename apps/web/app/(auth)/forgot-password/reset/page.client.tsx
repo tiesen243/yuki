@@ -34,6 +34,7 @@ export const ResetPasswordForm: React.FC<{ token: string }> = ({ token }) => {
   return (
     <CardContent className="space-y-4">
       <Form<typeof mutate>
+        defaultValues={{ token, password: '', confirmPassword: '' }}
         onSubmit={mutate}
         isPending={isPending}
         errors={error?.data?.zodError}
@@ -59,8 +60,6 @@ export const ResetPasswordForm: React.FC<{ token: string }> = ({ token }) => {
             </FormItem>
           )}
         />
-
-        <input name="token" defaultValue={token} hidden />
 
         <Button className="w-full" disabled={isPending}>
           Reset password

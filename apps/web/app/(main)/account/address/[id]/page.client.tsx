@@ -34,6 +34,7 @@ export const UpdateAddressForm: React.FC<{ id: string }> = ({ id }) => {
 
   return (
     <Form<typeof mutate>
+      defaultValues={{ name: '', phone: '', state: '', street: '' }}
       className="container mt-4"
       onSubmit={mutate}
       isPending={isPending}

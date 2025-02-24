@@ -34,6 +34,11 @@ export const ChangePasswordForm = () => {
   return (
     <Form<typeof mutate>
       className="container mt-4"
+      defaultValues={{
+        currentPassword: '',
+        newPassword: '',
+        confirmNewPassword: '',
+      }}
       onSubmit={mutate}
       isPending={isPending}
       errors={error?.data?.zodError}

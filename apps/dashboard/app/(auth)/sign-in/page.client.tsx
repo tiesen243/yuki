@@ -40,16 +40,21 @@ export const SignInForm: React.FC<{
   return (
     <CardContent className="space-y-4">
       <Form<typeof mutate>
+        defaultValues={{ email: '', password: '' }}
         onSubmit={mutate}
         isPending={isPending}
         errors={error?.data?.zodError}
       >
         <FormField
           name="email"
-          render={() => (
+          render={(field) => (
             <FormItem>
               <FormLabel>Email</FormLabel>
-              <FormControl type="email" placeholder="yuki@example.com" />
+              <FormControl
+                type="email"
+                placeholder="yuki@example.com"
+                {...field}
+              />
               <FormMessage />
             </FormItem>
           )}
@@ -57,7 +62,7 @@ export const SignInForm: React.FC<{
 
         <FormField
           name="password"
-          render={() => (
+          render={(field) => (
             <FormItem>
               <div className="flex items-center justify-between">
                 <FormLabel>Password</FormLabel>
@@ -70,7 +75,7 @@ export const SignInForm: React.FC<{
                   Forgot your password?
                 </a>
               </div>
-              <FormControl type="password" />
+              <FormControl type="password" {...field} />
               <FormMessage />
             </FormItem>
           )}

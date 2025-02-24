@@ -1,6 +1,13 @@
+import { Table, TableHeader, TableRow } from '@yuki/ui/table'
+
 export default function RestPage() {
   return (
     <main className="container grow">
+      <Table>
+        <TableHeader>
+          <TableRow></TableRow>
+        </TableHeader>
+      </Table>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vehicula
       massa vitae tellus ultrices, id volutpat nunc lobortis. Nulla facilisi.
       Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere

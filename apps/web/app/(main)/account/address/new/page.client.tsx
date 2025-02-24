@@ -33,6 +33,7 @@ export const NewAddressForm: React.FC = () => {
   return (
     <Form<typeof mutate>
       className="container mt-4"
+      defaultValues={{ name: '', phone: '', state: '', street: '' }}
       onSubmit={mutate}
       isPending={isPending}
       errors={error?.data?.zodError}

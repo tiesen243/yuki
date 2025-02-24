@@ -29,16 +29,21 @@ export const ForgotPasswordForm = () => {
   return (
     <CardContent className="space-y-4">
       <Form<typeof mutate>
+        defaultValues={{ email: '' }}
         onSubmit={mutate}
         isPending={isPending}
         errors={error?.data?.zodError}
       >
         <FormField
           name="email"
-          render={() => (
+          render={(field) => (
             <FormItem>
               <FormLabel>Email</FormLabel>
-              <FormControl type="email" placeholder="yuki@example.com" />
+              <FormControl
+                type="email"
+                placeholder="yuki@example.com"
+                {...field}
+              />
             </FormItem>
           )}
         />

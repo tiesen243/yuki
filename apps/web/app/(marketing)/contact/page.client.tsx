@@ -41,27 +41,35 @@ export const ContactForm: React.FC<{
 
   return (
     <Form<typeof handleSubmit>
+      defaultValues={{
+        firstName: '',
+        lastName: '',
+        senderEmail: '',
+        subject: '',
+        message: '',
+      }}
       onSubmit={handleSubmit}
       isPending={isPending}
       errors={errors}
+      isReset
     >
       <div className="grid grid-cols-2 gap-4">
         <FormField
           name="firstName"
-          render={() => (
+          render={(field) => (
             <FormItem>
               <FormLabel>First name</FormLabel>
-              <FormControl placeholder="Enter your first name" />
+              <FormControl placeholder="Enter your first name" {...field} />
               <FormMessage />
             </FormItem>
           )}
         />
         <FormField
           name="lastName"
-          render={() => (
+          render={(field) => (
             <FormItem>
               <FormLabel>Last name</FormLabel>
-              <FormControl placeholder="Enter your last name" />
+              <FormControl placeholder="Enter your last name" {...field} />
               <FormMessage />
             </FormItem>
           )}
@@ -70,10 +78,10 @@ export const ContactForm: React.FC<{
 
       <FormField
         name="senderEmail"
-        render={() => (
+        render={(field) => (
           <FormItem>
             <FormLabel>Email</FormLabel>
-            <FormControl placeholder="Enter your email" />
+            <FormControl placeholder="Enter your email" {...field} />
             <FormMessage />
           </FormItem>
         )}
@@ -81,10 +89,10 @@ export const ContactForm: React.FC<{
 
       <FormField
         name="subject"
-        render={() => (
+        render={(field) => (
           <FormItem>
             <FormLabel>Subject</FormLabel>
-            <FormControl placeholder="How can we help you?" />
+            <FormControl placeholder="How can we help you?" {...field} />
             <FormMessage />
           </FormItem>
         )}
@@ -92,10 +100,10 @@ export const ContactForm: React.FC<{
 
       <FormField
         name="message"
-        render={() => (
+        render={(field) => (
           <FormItem>
             <FormLabel>Message</FormLabel>
-            <FormControl asChild>
+            <FormControl {...field} asChild>
               <Textarea
                 placeholder="Tell us more about your inquiry..."
                 className="min-h-[150px] resize-none"
