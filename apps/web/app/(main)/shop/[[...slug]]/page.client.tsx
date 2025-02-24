@@ -30,7 +30,7 @@ import {
 } from '@yuki/ui/select'
 import { cn } from '@yuki/ui/utils'
 
-import { ProductCard } from '@/app/_components/product-card'
+import { ProductCard } from '@/app/(main)/_components/product-card'
 import { useTRPC } from '@/lib/trpc/react'
 import { slugify } from '@/lib/utils'
 

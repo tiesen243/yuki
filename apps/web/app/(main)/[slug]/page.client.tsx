@@ -16,7 +16,7 @@ import { ShoppingCartIcon, Star } from '@yuki/ui/icons'
 import { toast } from '@yuki/ui/sonner'
 import { Typography } from '@yuki/ui/typography'
 
-import { ProductCard } from '@/app/_components/product-card'
+import { ProductCard } from '@/app/(main)/_components/product-card'
 import { useTRPC } from '@/lib/trpc/react'
 import { slugify } from '@/lib/utils'
 

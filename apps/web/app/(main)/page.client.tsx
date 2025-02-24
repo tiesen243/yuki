@@ -9,8 +9,8 @@ import { Button } from '@yuki/ui/button'
 import { Typography } from '@yuki/ui/typography'
 import { cn } from '@yuki/ui/utils'
 
-import { CategoryCard } from '@/app/_components/category-card'
-import { ProductCard } from '@/app/_components/product-card'
+import { CategoryCard } from '@/app/(main)/_components/category-card'
+import { ProductCard } from '@/app/(main)/_components/product-card'
 import { useTRPC } from '@/lib/trpc/react'
 
 export const Slider: React.FC<{

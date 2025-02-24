@@ -9,8 +9,7 @@ import { NextSSRPlugin, routerConfig } from '@yuki/uploader'
 import { SessionProvider } from '@/hooks/use-session'
 import { createMetadata } from '@/lib/metadata'
 import { TRPCReactProvider } from '@/lib/trpc/react'
-import { Footer } from './_components/footer'
-import { Header } from './_components/header'
+import { Footer } from './_footer'
 
 const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] })
 
@@ -32,7 +31,6 @@ export default function RootLayout({
         >
           <TRPCReactProvider>
             <SessionProvider>
-              <Header />
               {children}
               <Footer />
             </SessionProvider>

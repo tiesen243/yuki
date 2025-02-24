@@ -3,8 +3,8 @@ import { Suspense } from 'react'
 import { Typography } from '@yuki/ui/typography'
 
 import { getQueryClient, HydrateClient, trpc } from '@/lib/trpc/server'
-import { CategoryCardSkeleton } from '../_components/category-card'
-import { ProductCardSkeleton } from '../_components/product-card'
+import { CategoryCardSkeleton } from './_components/category-card'
+import { ProductCardSkeleton } from './_components/product-card'
 import { CategoryList, ProductList, Slider } from './page.client'
 
 export const dynamic = 'force-dynamic'

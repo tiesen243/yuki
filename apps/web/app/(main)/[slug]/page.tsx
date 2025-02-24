@@ -5,7 +5,7 @@ import { Button } from '@yuki/ui/button'
 import { ShoppingCartIcon } from '@yuki/ui/icons'
 import { Typography } from '@yuki/ui/typography'
 
-import { ProductCardSkeleton } from '@/app/_components/product-card'
+import { ProductCardSkeleton } from '@/app/(main)/_components/product-card'
 import { createMetadata } from '@/lib/metadata'
 import { getQueryClient, HydrateClient, trpc } from '@/lib/trpc/server'
 import { getIdFromSlug } from '@/lib/utils'
