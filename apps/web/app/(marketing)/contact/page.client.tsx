@@ -81,7 +81,11 @@ export const ContactForm: React.FC<{
         render={(field) => (
           <FormItem>
             <FormLabel>Email</FormLabel>
-            <FormControl placeholder="Enter your email" {...field} />
+            <FormControl
+              type="email"
+              placeholder="Enter your email"
+              {...field}
+            />
             <FormMessage />
           </FormItem>
         )}
