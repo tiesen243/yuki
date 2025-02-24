@@ -33,7 +33,7 @@ export default async function ShopPage({ params, searchParams }: Props) {
       page: +page,
       limit: +limit,
       q,
-      orderBy: 'asc',
+      orderBy: 'desc',
       sortBy: 'createdAt',
       category: categoryId,
     }),
@@ -41,11 +41,11 @@ export default async function ShopPage({ params, searchParams }: Props) {
 
   const query = {
     category: categoryId,
-    limit: +limit,
-    orderBy,
     page: +page,
+    orderBy,
     q,
     sortBy,
+    limit: +limit,
   }
 
   return (

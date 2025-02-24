@@ -102,7 +102,7 @@ const FilterContent: React.FC<{ slug?: string[]; className?: string }> = ({
         q: searchParams.get('q') ?? '',
         category: slug?.at(0),
         sortBy: searchParams.get('sortBy') ?? 'createdAt',
-        orderBy: searchParams.get('orderBy') ?? 'asc',
+        orderBy: searchParams.get('orderBy') ?? 'desc',
         limit: +(searchParams.get('limit') ?? 20),
       }}
       onSubmit={handleFilter}
@@ -146,11 +146,7 @@ const FilterContent: React.FC<{ slug?: string[]; className?: string }> = ({
         render={(field) => (
           <FormItem>
             <FormLabel>Sort by</FormLabel>
-            <Select
-              name="sortBy"
-              value={field.value}
-              onValueChange={field.onChange}
-            >
+            <Select value={field.value} onValueChange={field.onChange}>
               <FormControl asChild>
                 <SelectTrigger>
                   <SelectValue placeholder="Select..." />
@@ -171,11 +167,7 @@ const FilterContent: React.FC<{ slug?: string[]; className?: string }> = ({
         render={(field) => (
           <FormItem>
             <FormLabel>Order</FormLabel>
-            <Select
-              name="orderBy"
-              value={field.value}
-              onValueChange={field.onChange}
-            >
+            <Select value={field.value} onValueChange={field.onChange}>
               <FormControl asChild>
                 <SelectTrigger>
                   <SelectValue placeholder="Select..." />
