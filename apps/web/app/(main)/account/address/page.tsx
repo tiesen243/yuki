@@ -7,6 +7,8 @@ import { Typography } from '@yuki/ui/typography'
 import { getQueryClient, HydrateClient, trpc } from '@/lib/trpc/server'
 import { AddressCardSkeleton, AddressList } from './page.client'
 
+export const dynamic = 'force-dynamic'
+
 export default function AddressPage() {
   void getQueryClient().prefetchQuery(trpc.user.getAddresses.queryOptions())
 

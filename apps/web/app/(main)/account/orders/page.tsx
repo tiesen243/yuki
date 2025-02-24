@@ -6,6 +6,8 @@ import { Typography } from '@yuki/ui/typography'
 import { getQueryClient, HydrateClient, trpc } from '@/lib/trpc/server'
 import { OrderHistories } from './page.client'
 
+export const dynamic = 'force-dynamic'
+
 export default function OrdersPage() {
   void getQueryClient().prefetchQuery(trpc.order.getHistories.queryOptions())
 
