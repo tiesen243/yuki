@@ -35,23 +35,23 @@ model User {
 }
 
 model Account {
-  provider   String
-  providerId String
-  name       String
+  provider            String
+  providerAccountId   String
+  providerAccountName String
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 
-  @@id([provider, providerId])
+  createdAt DateTime @default(now())
+
+  @@id([provider, providerAccountId])
 }
 
 model Session {
   sessionToken String   @unique
-  expiresAt    DateTime
+  expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId       String
-
-  createdAt DateTime @default(now())
 }
 
 model Verifier {

@@ -1,25 +1,10 @@
-import { Suspense } from 'react'
+import { HydrateClient } from '@/lib/trpc/server'
+import { Slider } from './page.client'
 
-import { Typography } from '@yuki/ui/typography'
-
-import { getQueryClient, HydrateClient, trpc } from '@/lib/trpc/server'
-import { CategoryCardSkeleton } from './_components/category-card'
-import { ProductCardSkeleton } from './_components/product-card'
-import { CategoryList, ProductList, Slider } from './page.client'
-
-export const dynamic = 'force-dynamic'
-
-export default async function HomePage() {
-  const queryClient = getQueryClient()
-
-  await Promise.all([
-    queryClient.prefetchQuery(trpc.product.getAll.queryOptions({})),
-    queryClient.prefetchQuery(trpc.category.getAll.queryOptions({})),
-  ])
-
+export default function HomePage() {
   return (
     <HydrateClient>
-      <main className="flex grow flex-col gap-4 pb-4">
+      <main className="flex grow flex-col gap-4">
         <Slider
           slides={[
             {
@@ -45,43 +30,43 @@ export default async function HomePage() {
             },
           ]}
         />
-
-        <section className="space-y-6">
-          <h1 className="sr-only">Featured Products and Categories</h1>
-
-          <Suspense
-            fallback={
-              <section className="container grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
-                <Typography variant="h2" className="col-span-full">
-                  New Arrivals
-                </Typography>
-
-                {Array.from({ length: 12 }).map((_, i) => (
-                  <ProductCardSkeleton key={i} />
-                ))}
-              </section>
-            }
-          >
-            <ProductList />
-          </Suspense>
-
-          <Suspense
-            fallback={
-              <section className="container grid grid-cols-2 gap-4 md:grid-cols-4">
-                <Typography variant="h2" className="col-span-2 md:col-span-4">
-                  Categories
-                </Typography>
-
-                {Array.from({ length: 6 }).map((_, i) => (
-                  <CategoryCardSkeleton key={i} />
-                ))}
-              </section>
-            }
-          >
-            <CategoryList />
-          </Suspense>
-        </section>
       </main>
     </HydrateClient>
   )
 }
+
+//<section className="space-y-6">
+//  <h1 className="sr-only">Featured Products and Categories</h1>
+//
+//  <Suspense
+//    fallback={
+//      <section className="container grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+//        <Typography variant="h2" className="col-span-full">
+//          New Arrivals
+//        </Typography>
+//
+//        {Array.from({ length: 12 }).map((_, i) => (
+//          <ProductCardSkeleton key={i} />
+//        ))}
+//      </section>
+//    }
+//  >
+//    <ProductList />
+//  </Suspense>
+//
+//  <Suspense
+//    fallback={
+//      <section className="container grid grid-cols-2 gap-4 md:grid-cols-4">
+//        <Typography variant="h2" className="col-span-2 md:col-span-4">
+//          Categories
+//        </Typography>
+//
+//        {Array.from({ length: 6 }).map((_, i) => (
+//          <CategoryCardSkeleton key={i} />
+//        ))}
+//      </section>
+//    }
+//  >
+//    <CategoryList />
+//  </Suspense>
+//</section>

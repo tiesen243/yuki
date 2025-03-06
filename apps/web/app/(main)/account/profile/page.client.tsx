@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useMutation, useQuery } from '@tanstack/react-query'
 
+import { signIn } from '@yuki/auth'
 import { Button } from '@yuki/ui/button'
 import {
   Dialog,
@@ -15,7 +16,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@yuki/ui/dialog'
-import { DiscordIcon, GithubIcon, GoogleIcon } from '@yuki/ui/icons'
+import { DiscordIcon, GoogleIcon } from '@yuki/ui/icons'
 import { Input } from '@yuki/ui/input'
 import { Label } from '@yuki/ui/label'
 import { toast } from '@yuki/ui/sonner'
@@ -40,6 +41,8 @@ export const LinkedAccountList: React.FC = () => {
       </li>
     ))
 
+  console.log(linkedAccounts)
+
   const accountMap = new Map(linkedAccounts.map((acc) => [acc.provider, acc]))
   return providers.map((provider) => {
     const linkedAccount = accountMap.get(provider.name)
@@ -50,7 +53,7 @@ export const LinkedAccountList: React.FC = () => {
 
         {linkedAccount ? (
           <>
-            <p className="w-32">{linkedAccount.name}</p>
+            <p className="w-32">{linkedAccount.providerAccountName}</p>
             <UnlinkButton provider={provider.name} />
           </>
         ) : (
@@ -65,9 +68,8 @@ export const LinkedAccountList: React.FC = () => {
 }
 
 const providers = [
-  { name: 'discord', Icon: DiscordIcon },
-  { name: 'github', Icon: GithubIcon },
-  { name: 'google', Icon: GoogleIcon },
+  { name: 'discord' as const, Icon: DiscordIcon },
+  { name: 'google' as const, Icon: GoogleIcon },
 ]
 
 const UnlinkButton: React.FC<{ provider: string }> = ({ provider }) => {
@@ -97,12 +99,19 @@ const UnlinkButton: React.FC<{ provider: string }> = ({ provider }) => {
   )
 }
 
-const LinkButton: React.FC<{ provider: string }> = ({ provider }) => (
-  <form action={`/api/auth/${provider}`}>
-    <Button size="sm" variant="outline" className="w-20">
-      Link
-    </Button>
-  </form>
+const LinkButton: React.FC<{ provider: 'discord' | 'google' }> = ({
+  provider,
+}) => (
+  <Button
+    size="sm"
+    variant="outline"
+    className="w-20"
+    onClick={async () => {
+      await signIn(provider)
+    }}
+  >
+    Link
+  </Button>
 )
 
 export const EditProfileForm: React.FC<{ name: string; image: string }> = (

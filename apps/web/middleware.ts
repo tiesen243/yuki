@@ -3,9 +3,19 @@ import { NextResponse } from 'next/server'
 
 import { auth } from '@yuki/auth'
 
+const authRoutes = [
+  '/sign-in',
+  '/sign-up',
+  '/forgot-password',
+  '/forgot-password/reset',
+]
+
 export const middleware = async (req: NextRequest, _event: NextFetchEvent) => {
   const { pathname } = req.nextUrl
   const session = await auth(req)
+
+  if (authRoutes.includes(pathname) && session.user)
+    return NextResponse.redirect(new URL('/account/profile', req.url))
 
   if (pathname.startsWith('/account') && !session.user)
     return NextResponse.redirect(new URL('/sign-in', req.url))

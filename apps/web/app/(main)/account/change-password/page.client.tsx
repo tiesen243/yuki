@@ -47,10 +47,10 @@ export const ChangePasswordForm = () => {
         <FormField
           key={field.name}
           name={field.name}
-          render={() => (
+          render={(fieldProps) => (
             <FormItem>
               <FormLabel>{field.label}</FormLabel>
-              <FormControl type="password" />
+              <FormControl {...fieldProps} type="password" />
               <FormMessage />
               {field.description && (
                 <FormDescription>{field.description}</FormDescription>

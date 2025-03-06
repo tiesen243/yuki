@@ -1,3 +1,3 @@
 import { handlers } from '@yuki/auth'
 
-export const { GET, POST, OPTIONS } = handlers
+export { handlers as GET, handlers as POST, handlers as OPTIONS }

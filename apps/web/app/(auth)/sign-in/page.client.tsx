@@ -1,8 +1,10 @@
 'use client'
 
+import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
+import { signIn } from '@yuki/auth'
 import { Button } from '@yuki/ui/button'
 import { CardContent } from '@yuki/ui/card'
 import {
@@ -15,35 +17,38 @@ import {
 } from '@yuki/ui/form'
 import { toast } from '@yuki/ui/sonner'
 
-import { useTRPC } from '@/lib/trpc/react'
-
-export const SignInForm: React.FC<{
-  setToken: (token: string, expiresAt: Date) => Promise<void>
-}> = ({ setToken }) => {
-  const router = useRouter()
+export const SignInForm: React.FC = () => {
+  const [errors, setErrors] = useState<Record<string, string[]> | undefined>({})
   const queryClient = useQueryClient()
-  const trpc = useTRPC()
+  const router = useRouter()
 
-  const { mutate, isPending, error } = useMutation(
-    trpc.auth.signIn.mutationOptions({
-      onError: (error) => toast.error(error.message),
-      onSuccess: async (data) => {
-        await setToken(data.token, data.expiresAt)
-        await queryClient.invalidateQueries({ queryKey: ['auth'] })
-        router.push('/')
-        router.refresh()
-        toast.success('Logged in successfully')
-      },
-    }),
-  )
+  const { mutate, isPending } = useMutation({
+    mutationFn: async (data: { email: string; password: string }) => {
+      const res = await signIn('credentials', data)
 
+      if (!res?.success) {
+        setErrors(res?.fieldErrors)
+        throw new Error('Validation error')
+      } else {
+        setErrors({})
+        return res
+      }
+    },
+    onSuccess: async (data) => {
+      router.push('/')
+      router.refresh()
+      await queryClient.invalidateQueries({ queryKey: ['auth'] })
+      toast.success(data.message)
+    },
+    onError: (err) => toast.error(err.message),
+  })
   return (
     <CardContent className="space-y-4">
       <Form<typeof mutate>
         defaultValues={{ email: '', password: '' }}
         onSubmit={mutate}
         isPending={isPending}
-        errors={error?.data?.zodError}
+        errors={errors}
       >
         <FormField
           name="email"

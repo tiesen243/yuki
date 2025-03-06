@@ -69,9 +69,9 @@ export const userRouter = {
       if (!account) return false
       await ctx.db.account.delete({
         where: {
-          provider_providerId: {
+          provider_providerAccountId: {
             provider: account.provider,
-            providerId: account.providerId,
+            providerAccountId: account.providerAccountId,
           },
         },
       })

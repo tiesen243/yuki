@@ -34,7 +34,7 @@ export const Slider: React.FC<{
   }, [current, slides.length])
 
   return (
-    <section className="h-[calc(100dvh-5rem)] w-screen overflow-hidden">
+    <section className="h-[calc(100dvh-4rem)] w-screen overflow-hidden">
       <div className="flex h-full w-max">
         {slides.map((s) => (
           <div

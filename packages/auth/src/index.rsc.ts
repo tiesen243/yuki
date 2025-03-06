@@ -1,6 +1,6 @@
 import { cache } from 'react'
 
-import { generateGravatar, OAuthConfig, auth as uncachedAuth } from './config'
+import { handlers, signIn, signOut, auth as uncachedAuth } from './configs'
 
 /**
  * This is the main way to get session data for your RSCs.
@@ -8,11 +8,7 @@ import { generateGravatar, OAuthConfig, auth as uncachedAuth } from './config'
  */
 const auth = cache(uncachedAuth)
 
-export type { Session } from './config'
-export { auth, OAuthConfig, generateGravatar }
-export { handlers } from './lib/handlers'
-export {
-  createSession,
-  invalidateSessionToken,
-  validateSessionToken,
-} from './lib/session'
+export type { SessionResult } from './utils/session'
+export { auth, signIn, signOut, handlers }
+export { Session } from './utils/session'
+export { Password } from './utils/password'

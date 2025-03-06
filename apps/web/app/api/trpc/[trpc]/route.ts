@@ -35,6 +35,13 @@ const handler = async (req: NextRequest) => {
   })
 
   setCorsHeaders(response)
+
+  const STALE_TIME_IN_SECONDS = 60 * 1000
+  response.headers.set(
+    'Cache-Control',
+    `public, max-age=${STALE_TIME_IN_SECONDS}`,
+  )
+
   return response
 }
 

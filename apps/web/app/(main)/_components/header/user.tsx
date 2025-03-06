@@ -1,7 +1,10 @@
 'use client'
 
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
+import { signOut } from '@yuki/auth'
+import { useSession } from '@yuki/auth/react'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -28,17 +31,17 @@ import {
 import { LayoutGridIcon, LogOutIcon, MoonIcon, SunIcon } from '@yuki/ui/icons'
 import { useTheme } from '@yuki/ui/utils'
 
-import { useSession } from '@/hooks/use-session'
 import { navLinks } from './configs'
 
 export const User: React.FC<{ dashboardUrl: string }> = ({ dashboardUrl }) => {
-  const { session, isLoading, signOut } = useSession()
+  const { session, isLoading, refresh } = useSession()
   const { theme, setTheme } = useTheme()
+  const router = useRouter()
 
   if (isLoading)
     return <div className="size-9 animate-pulse rounded-full bg-current" />
 
-  if (!session?.user)
+  if (!session.user)
     return (
       <Link href="/sign-in" className={buttonVariants({ size: 'sm' })}>
         Sign in
@@ -121,7 +124,16 @@ export const User: React.FC<{ dashboardUrl: string }> = ({ dashboardUrl }) => {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={signOut}>Log Out</AlertDialogAction>
+            <AlertDialogAction
+              onClick={async () => {
+                await signOut()
+                router.push('/')
+                await refresh()
+                router.refresh()
+              }}
+            >
+              Log Out
+            </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

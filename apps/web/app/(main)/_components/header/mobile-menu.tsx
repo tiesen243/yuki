@@ -4,11 +4,11 @@ import { Suspense, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
+import { useSession } from '@yuki/auth/react'
 import { Button } from '@yuki/ui/button'
 import { MenuIcon, StoreIcon } from '@yuki/ui/icons'
 import { cn } from '@yuki/ui/utils'
 
-import { useSession } from '@/hooks/use-session'
 import { legalNavLinks, navLinks } from './configs'
 import { Search } from './search'
 
@@ -76,7 +76,7 @@ export const MobileMenu: React.FC = () => {
           </Link>
 
           {navLinks
-            .slice(0, session?.user ? undefined : 0)
+            .slice(0, session.user ? undefined : 0)
             .map(({ Icon, title, href }) => (
               <Link
                 key={title}

@@ -1,16 +1,11 @@
-import { redirect } from 'next/navigation'
-
-import { auth } from '@yuki/auth'
+import { signIn } from '@yuki/auth'
 import { Button } from '@yuki/ui/button'
 import { Card, CardFooter } from '@yuki/ui/card'
-import { DiscordIcon, GithubIcon, GoogleIcon } from '@yuki/ui/icons'
+import { DiscordIcon, GoogleIcon } from '@yuki/ui/icons'
 
-export default async function AuthLayout({
+export default function AuthLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const session = await auth()
-  if (session.user) redirect('/')
-
   return (
     <main className="container my-12 flex grow flex-col items-center justify-center gap-8">
       <Card className="w-full max-w-md">
@@ -23,12 +18,15 @@ export default async function AuthLayout({
             </span>
           </div>
 
-          <form className="grid w-full grid-cols-3 gap-4 *:w-full">
+          <form className="grid w-full grid-cols-2 gap-4 *:w-full">
             {authProviders.map((provider) => (
               <Button
                 key={provider.name}
                 variant="outline"
-                formAction={`/api/auth/${provider.name}`}
+                formAction={async () => {
+                  'use server'
+                  await signIn(provider.name)
+                }}
               >
                 <provider.icon />
                 <span className="sr-only">Login with {provider.name}</span>
@@ -46,7 +44,6 @@ export default async function AuthLayout({
 }
 
 const authProviders = [
-  { icon: DiscordIcon, name: 'Discord' },
-  { icon: GithubIcon, name: 'Github' },
-  { icon: GoogleIcon, name: 'Google' },
+  { icon: DiscordIcon, name: 'discord' as const },
+  { icon: GoogleIcon, name: 'google' as const },
 ]
