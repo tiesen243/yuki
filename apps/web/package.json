@@ -6,7 +6,7 @@
   "scripts": {
     "build": "bun with-env next build",
     "clean": "git clean -xdf .cache .next .turbo node_modules",
-    "dev": "bun with-env next dev --port 3000",
+    "dev": "bun with-env next dev --port 3000 --turbopack",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
     "start": "bun with-env next start --port 3000",
@@ -16,25 +16,25 @@
   "prettier": "@yuki/prettier-config",
   "dependencies": {
     "@t3-oss/env-nextjs": "^0.12.0",
-    "@tanstack/react-query": "^5.66.9",
-    "@trpc/client": "^11.0.0-rc.802",
-    "@trpc/server": "^11.0.0-rc.802",
-    "@trpc/tanstack-react-query": "^11.0.0-rc.802",
+    "@tanstack/react-query": "^5.67.1",
+    "@trpc/client": "^11.0.0-rc.824",
+    "@trpc/server": "^11.0.0-rc.824",
+    "@trpc/tanstack-react-query": "^11.0.0-rc.824",
     "@yuki/api": "workspace:*",
     "@yuki/auth": "workspace:*",
     "@yuki/db": "workspace:*",
     "@yuki/email": "workspace:*",
     "@yuki/ui": "workspace:*",
     "@yuki/uploader": "workspace:*",
-    "next": "15.1.7",
+    "next": "15.2.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "superjson": "^2.2.2",
     "zod": "^3.24.2"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4.0.8",
-    "@types/node": "^22.13.5",
+    "@tailwindcss/postcss": "^4.0.10",
+    "@types/node": "^22.13.9",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "@yuki/eslint-config": "workspace:*",
@@ -44,7 +44,7 @@
     "eslint": "latest",
     "postcss": "^8.5.3",
     "prettier": "latest",
-    "tailwindcss": "^4.0.8",
+    "tailwindcss": "^4.0.10",
     "typescript": "latest"
   }
 }

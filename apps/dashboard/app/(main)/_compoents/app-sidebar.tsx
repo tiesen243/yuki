@@ -124,13 +124,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg">
-              <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
+              <div className="bg-primary flex aspect-square size-8 items-center justify-center rounded-lg">
                 <Image
                   src={`${env.WEB_URL}/assets/logo.svg`}
                   alt="logo"
                   width={16}
                   height={16}
-                  className="size-4 dark:invert"
+                  className="size-4 invert dark:invert-0"
                 />
               </div>
               <span className="font-semibold">Dashboard</span>

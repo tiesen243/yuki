@@ -30,7 +30,7 @@
     "ws": "^8.18.1"
   },
   "devDependencies": {
-    "@types/ws": "^8.5.14",
+    "@types/ws": "^8.18.0",
     "@yuki/eslint-config": "workspace:*",
     "@yuki/prettier-config": "workspace:*",
     "@yuki/tsconfig": "workspace:*",
