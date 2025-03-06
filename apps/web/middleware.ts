@@ -1,11 +1,15 @@
 import type { NextFetchEvent, NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 
-import { auth } from '@yuki/auth'
+import { Session } from '@yuki/auth'
 
 export const middleware = async (req: NextRequest, _event: NextFetchEvent) => {
   const { pathname } = req.nextUrl
-  const session = await auth(req)
+  const session = await new Session().validateSessionToken(
+    req.cookies.get('auth_token')?.value ??
+      req.headers.get('Authorization')?.replace('Bearer ', '') ??
+      '',
+  )
 
   if (pathname.startsWith('/account') && !session.user)
     return NextResponse.redirect(new URL('/sign-in', req.url))
