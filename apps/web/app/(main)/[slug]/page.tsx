@@ -1,6 +1,7 @@
 import { Suspense } from 'react'
 import { notFound } from 'next/navigation'
 
+import { db } from '@yuki/db'
 import { Button } from '@yuki/ui/button'
 import { ShoppingCartIcon } from '@yuki/ui/icons'
 import { Typography } from '@yuki/ui/typography'
@@ -8,7 +9,7 @@ import { Typography } from '@yuki/ui/typography'
 import { ProductCardSkeleton } from '@/app/(main)/_components/product-card'
 import { createMetadata } from '@/lib/metadata'
 import { getQueryClient, HydrateClient, trpc } from '@/lib/trpc/server'
-import { getIdFromSlug } from '@/lib/utils'
+import { getIdFromSlug, slugify } from '@/lib/utils'
 import {
   ProductDetails,
   ProductReviews,
@@ -193,4 +194,12 @@ export const generateMetadata = async ({ params }: Props) => {
   } catch {
     notFound()
   }
+}
+
+export async function generateStaticParams() {
+  const products = await db.product.findMany()
+
+  return products.map((product) => ({
+    slug: `${slugify(product.name)}-${product.id}`,
+  }))
 }
