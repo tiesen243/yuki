@@ -20,7 +20,7 @@ export const Footer: React.FC = () => (
                 title: 'Returns & Exchanges',
                 href: 'https://youtu.be/JsMK2yZc3fE',
               },
-              { title: 'FAQ', href: 'https://youtu.be/ORV5v-8OU6Y' },
+              { title: 'FAQ', href: '/faq' },
             ].map(({ title, href }) => (
               <li
                 key={href}

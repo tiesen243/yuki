@@ -1,7 +1,11 @@
-import { signIn } from '@yuki/auth'
+import { redirect } from 'next/navigation'
+
+import { auth, signIn } from '@yuki/auth'
 import { Button } from '@yuki/ui/button'
 import { Card, CardFooter } from '@yuki/ui/card'
 import { DiscordIcon, GoogleIcon } from '@yuki/ui/icons'
+
+import { createMetadata } from '@/lib/metadata'
 
 export default function AuthLayout({
   children,
@@ -41,6 +45,15 @@ export default function AuthLayout({
       </div>
     </main>
   )
+}
+
+export const generateMetadata = async () => {
+  const session = await auth()
+  if (session.user) redirect('/account/profile')
+
+  return createMetadata({
+    title: 'Authentication',
+  })
 }
 
 const authProviders = [

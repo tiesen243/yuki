@@ -7,27 +7,24 @@ import * as schemas from '../validators/product'
 export const productRouter = {
   // [GET] /api/trpc/product.getAll
   getAll: publicProcedure.input(schemas.query).query(async ({ ctx, input }) => {
-    const products = await ctx.db.product.findMany({
-      where: {
-        name: { contains: input.q, mode: 'insensitive' },
-        categoryId: { contains: input.category, mode: 'insensitive' },
-        stock: { gt: 0 },
-      },
-      take: input.limit,
-      skip: (input.page - 1) * input.limit,
-      orderBy: { [input.sortBy]: input.orderBy },
-      include: { category: { select: { name: true } } },
-    })
+    const where = {
+      name: { contains: input.q, mode: 'insensitive' as const },
+      categoryId: { contains: input.category, mode: 'insensitive' as const },
+      stock: { gt: 0 },
+    }
 
-    const totalPage = Math.ceil(
-      (await ctx.db.product.count({
-        where: {
-          name: { contains: input.q, mode: 'insensitive' },
-          categoryId: { contains: input.category, mode: 'insensitive' },
-          stock: { gt: 0 },
-        },
-      })) / input.limit,
-    )
+    const [products, totalCount] = await Promise.all([
+      ctx.db.product.findMany({
+        where,
+        take: input.limit,
+        skip: (input.page - 1) * input.limit,
+        orderBy: { [input.sortBy]: input.orderBy },
+        include: { category: { select: { name: true } } },
+      }),
+      ctx.db.product.count({ where }),
+    ])
+
+    const totalPage = Math.ceil(totalCount / input.limit)
 
     return { products, totalPage }
   }),
@@ -52,42 +49,47 @@ export const productRouter = {
         throw new TRPCError({ code: 'NOT_FOUND', message: 'Product not found' })
 
       const averageRating =
-        product.reviews.reduce((acc, cur) => acc + cur.rating, 0) /
-        product._count.reviews
+        product._count.reviews > 0
+          ? product.reviews.reduce((acc, cur) => acc + cur.rating, 0) /
+            product._count.reviews
+          : 0
+
+      const soldQuantity = product.carts.reduce(
+        (acc, cur) => acc + cur.quantity,
+        0,
+      )
 
       return {
         ...product,
-        rating: product._count.reviews !== 0 ? averageRating : 0,
+        rating: averageRating,
         reviews: product._count.reviews,
-        sold: product.carts.reduce((acc, cur) => acc + cur.quantity, 0),
+        sold: soldQuantity,
       }
     }),
 
   // [GET] /api/trpc/product.getProductReviews
   getProductReviews: publicProcedure
-    .input(schemas.getReviews)
+    .input(schemas.getReviewsSchema)
     .query(async ({ ctx, input }) => {
-      const limit = 5
-      const reviews = await ctx.db.review.findMany({
-        where: { product: { id: input.productId } },
-        take: limit,
-        skip: limit * (input.page - 1),
-        include: { user: { select: { id: true, name: true, image: true } } },
-      })
+      const [reviews, reviewStats] = await Promise.all([
+        ctx.db.review.findMany({
+          where: { product: { id: input.productId } },
+          take: input.limit,
+          skip: input.limit * (input.page - 1),
+          include: { user: { select: { id: true, name: true, image: true } } },
+        }),
+        ctx.db.review.aggregate({
+          where: { product: { id: input.productId } },
+          _count: true,
+          _avg: { rating: true },
+        }),
+      ])
 
-      const fullReviews = await ctx.db.review.findMany({
-        where: { product: { id: input.productId } },
-        select: { rating: true },
-      })
-      const averageRating =
-        fullReviews.reduce((acc, cur) => acc + cur.rating, 0) /
-        fullReviews.length
-
-      const totalPage = Math.ceil(fullReviews.length / limit)
+      const totalPage = Math.ceil(reviewStats._count / input.limit)
 
       return {
         reviews,
-        rating: fullReviews.length <= 0 ? 0 : averageRating,
+        rating: reviewStats._count <= 0 ? 0 : (reviewStats._avg.rating ?? 0),
         totalPage,
       }
     }),
@@ -106,24 +108,22 @@ export const productRouter = {
         },
       })
 
-      return c?.products ?? []
+      if (!c) return []
+      return c.products
     }),
 
   // [POST] /api/trpc/product.create
   create: restrictedProcedure
-    .input(schemas.createSchema)
+    .input(schemas.createProductSchema)
     .mutation(async ({ ctx, input }) => {
       return ctx.db.product.create({
-        data: {
-          ...input,
-          userId: ctx.session.user.id,
-        },
+        data: { ...input, userId: ctx.session.user.id },
       })
     }),
 
   // [POST] /api/trpc/product.update
   update: restrictedProcedure
-    .input(schemas.updateSchema)
+    .input(schemas.updateProductSchema)
     .mutation(async ({ ctx, input: { id, ...data } }) => {
       const product = await ctx.db.product.findUnique({
         where: { id, userId: ctx.session.user.id },

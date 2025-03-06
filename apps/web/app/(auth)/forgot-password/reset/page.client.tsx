@@ -41,10 +41,10 @@ export const ResetPasswordForm: React.FC<{ token: string }> = ({ token }) => {
       >
         <FormField
           name="password"
-          render={() => (
+          render={(field) => (
             <FormItem>
               <FormLabel>Password</FormLabel>
-              <FormControl type="password" />
+              <FormControl {...field} type="password" />
               <FormMessage />
             </FormItem>
           )}
@@ -52,10 +52,10 @@ export const ResetPasswordForm: React.FC<{ token: string }> = ({ token }) => {
 
         <FormField
           name="confirmPassword"
-          render={() => (
+          render={(field) => (
             <FormItem>
               <FormLabel>Confirm Password</FormLabel>
-              <FormControl type="password" />
+              <FormControl {...field} type="password" />
               <FormMessage />
             </FormItem>
           )}

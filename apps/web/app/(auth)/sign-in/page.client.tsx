@@ -35,9 +35,10 @@ export const SignInForm: React.FC = () => {
       }
     },
     onSuccess: async (data) => {
-      router.push('/')
-      router.refresh()
       await queryClient.invalidateQueries({ queryKey: ['auth'] })
+      router.refresh()
+
+      router.push('/')
       toast.success(data.message)
     },
     onError: (err) => toast.error(err.message),

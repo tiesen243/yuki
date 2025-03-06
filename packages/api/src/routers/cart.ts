@@ -34,11 +34,10 @@ export const cartRouter = {
 
   // [POST] /api/trpc/cart.updateCart
   updateCart: protectedProcedure
-    .input(schemas.cartSchema)
+    .input(schemas.updateCartSchema)
     .mutation(async ({ ctx, input: { productId, quantity, isUpdate } }) => {
       const userId = ctx.session.user.id
 
-      // Combine cart and existing item query
       const [product, existingCartWithItems] = await Promise.all([
         ctx.db.product.findUnique({
           where: { id: productId },
@@ -99,33 +98,31 @@ export const cartRouter = {
 
   // [POST] /api/trpc/cart.deleteItemFromCart
   deleteItemFromCart: protectedProcedure
-    .input(schemas.cartSchema)
+    .input(schemas.updateCartSchema)
     .mutation(async ({ ctx, input }) => {
       const cart = await ctx.db.cart.findUnique({ where: { id: input.cartId } })
       if (!cart)
         throw new TRPCError({ code: 'NOT_FOUND', message: 'Cart not found' })
 
-      try {
-        const deletedItem = await ctx.db.cartItem.delete({
-          where: {
-            cartId_productId: { cartId: cart.id, productId: input.productId },
-          },
-          include: { product: { select: { price: true } } },
+      const deletedItem = await ctx.db.cartItem.delete({
+        where: {
+          cartId_productId: { cartId: cart.id, productId: input.productId },
+        },
+        include: { product: { select: { price: true } } },
+      })
+
+      if (!deletedItem.productId)
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Item not found in cart',
         })
 
-        await ctx.db.cart.update({
-          where: { id: cart.id },
-          data: {
-            total:
-              cart.total - deletedItem.quantity * deletedItem.product.price,
-          },
-        })
-      } catch {
-        throw new TRPCError({
-          code: 'BAD_GATEWAY',
-          message: 'Fail to delete item from cart',
-        })
-      }
+      await ctx.db.cart.update({
+        where: { id: cart.id },
+        data: {
+          total: cart.total - deletedItem.quantity * deletedItem.product.price,
+        },
+      })
 
       return true
     }),

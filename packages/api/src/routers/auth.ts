@@ -1,6 +1,4 @@
 import type { TRPCRouterRecord } from '@trpc/server'
-import { sha256 } from '@oslojs/crypto/sha2'
-import { encodeHexLowerCase } from '@oslojs/encoding'
 import { TRPCError } from '@trpc/server'
 
 import { Password } from '@yuki/auth'
@@ -28,9 +26,7 @@ export const authRouter = {
 
       await sendEmail({ type: 'Welcome', data: input })
 
-      const gravatarHash = encodeHexLowerCase(
-        sha256(new TextEncoder().encode(input.email)),
-      )
+      const gravatarHash = password.hashWithoutSalt(input.email)
       return await ctx.db.user.create({
         data: {
           name: input.name,
@@ -81,7 +77,7 @@ export const authRouter = {
 
       const bytes = new Uint8Array(20)
       crypto.getRandomValues(bytes)
-      const token = encodeHexLowerCase(bytes)
+      const token = password.hashWithoutSalt(bytes.toString())
 
       const expiresAt = new Date(Date.now() + 30 * 60 * 1000) // 30 minutes from now
       const code = await ctx.db.verifier.create({

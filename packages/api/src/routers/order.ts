@@ -11,17 +11,19 @@ export const orderRouter = {
   getAllOrders: restrictedProcedure
     .input(schemas.getAllSchema)
     .query(async ({ ctx, input }) => {
-      const orders = await ctx.db.cart.findMany({
-        where: { status: { not: 'NEW' } },
-        take: input.limit,
-        skip: (input.page - 1) * input.limit,
-        include: { user: true },
-      })
+      const where = { status: { not: 'NEW' as const } }
 
-      const totalPage = Math.ceil(
-        (await ctx.db.cart.count({ where: { status: { not: 'NEW' } } })) /
-          input.limit,
-      )
+      const [orders, totalCount] = await Promise.all([
+        ctx.db.cart.findMany({
+          where,
+          take: input.limit,
+          skip: (input.page - 1) * input.limit,
+          include: { user: true },
+        }),
+        ctx.db.cart.count({ where }),
+      ])
+
+      const totalPage = Math.ceil(totalCount / input.limit)
 
       return {
         orders: orders.map((o) => ({
@@ -63,10 +65,11 @@ export const orderRouter = {
       if (!order)
         throw new TRPCError({ code: 'NOT_FOUND', message: 'Order not found' })
 
-      if (
-        order.userId !== ctx.session.user.id &&
-        ctx.session.user.role !== 'ADMIN'
-      )
+      const isOwnerOrAdmin =
+        order.userId === ctx.session.user.id ||
+        ctx.session.user.role === 'ADMIN'
+
+      if (!isOwnerOrAdmin)
         throw new TRPCError({
           code: 'FORBIDDEN',
           message:

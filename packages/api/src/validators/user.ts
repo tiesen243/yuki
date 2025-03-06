@@ -10,11 +10,11 @@ export type Query = z.infer<typeof query>
 export const getOneSchema = z.object({ id: z.string() })
 export type GetOneInput = z.infer<typeof getOneSchema>
 
-export const updateProfile = z.object({
+export const updateProfileSchema = z.object({
   name: z.string().min(1),
   image: z.string().url(),
 })
-export type UpdateProfile = z.infer<typeof updateProfile>
+export type UpdateProfileInput = z.infer<typeof updateProfileSchema>
 
 export const unlinkAccountSchema = z.object({ provider: z.string() })
 export type UnlinkAccountInput = z.infer<typeof unlinkAccountSchema>

@@ -24,8 +24,8 @@ export const SignUpForm = () => {
     trpc.auth.signUp.mutationOptions({
       onError: (error) => toast.error(error.message),
       onSuccess: () => {
-        toast.success('Account created successfully')
         router.push('/sign-in')
+        toast.success('Account created successfully')
       },
     }),
   )

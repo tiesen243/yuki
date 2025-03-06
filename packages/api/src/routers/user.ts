@@ -43,7 +43,7 @@ export const userRouter = {
 
   // [POST] /api/trpc/user.updateProfile
   updateProfile: protectedProcedure
-    .input(schemas.updateProfile)
+    .input(schemas.updateProfileSchema)
     .mutation(({ ctx, input }) =>
       ctx.db.user.update({
         where: { id: ctx.session.user.id },
