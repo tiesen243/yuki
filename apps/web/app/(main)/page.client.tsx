@@ -54,7 +54,7 @@ export const Slider: React.FC<{
               alt={s.title}
               width={800}
               height={1200}
-              className="h-2/3 w-full object-cover xl:h-full xl:w-1/2"
+              className="basis-full object-cover"
             />
           </div>
         ))}
