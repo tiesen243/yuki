@@ -129,7 +129,7 @@ const FilterContent: React.FC<{ slug?: string[]; className?: string }> = ({
                 </SelectTrigger>
               </FormControl>
               <SelectContent>
-                <SelectItem value={' '}>None</SelectItem>
+                <SelectItem value={''}>None</SelectItem>
                 {categories.map((c) => (
                   <SelectItem key={c.name} value={`${slugify(c.name)}-${c.id}`}>
                     {c.name}
