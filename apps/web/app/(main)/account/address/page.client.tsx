@@ -34,12 +34,14 @@ export const AddressCard: React.FC<{
 }> = ({ address, isLatest = false }) => {
   const queryClient = useQueryClient()
   const trpc = useTRPC()
+
   const { mutate, isPending } = useMutation(
     trpc.user.deleteAddress.mutationOptions({
-      onSuccess: () =>
-        queryClient.invalidateQueries({
+      onSuccess: async () => {
+        await queryClient.invalidateQueries({
           queryKey: trpc.user.getAddresses.queryKey(),
-        }),
+        })
+      },
     }),
   )
 

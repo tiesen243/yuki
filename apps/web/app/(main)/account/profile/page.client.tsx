@@ -24,6 +24,11 @@ import { UploadButton } from '@yuki/ui/upload-button'
 
 import { useTRPC } from '@/lib/trpc/react'
 
+const providers = [
+  { name: 'discord' as const, Icon: DiscordIcon },
+  { name: 'google' as const, Icon: GoogleIcon },
+]
+
 export const LinkedAccountList: React.FC = () => {
   const trpc = useTRPC()
   const { data: linkedAccounts, isLoading } = useQuery(
@@ -41,8 +46,6 @@ export const LinkedAccountList: React.FC = () => {
       </li>
     ))
 
-  console.log(linkedAccounts)
-
   const accountMap = new Map(linkedAccounts.map((acc) => [acc.provider, acc]))
   return providers.map((provider) => {
     const linkedAccount = accountMap.get(provider.name)
@@ -50,7 +53,6 @@ export const LinkedAccountList: React.FC = () => {
     return (
       <li key={provider.name} className="flex items-center gap-2">
         <provider.Icon className="size-4" />
-
         {linkedAccount ? (
           <>
             <p className="w-32">{linkedAccount.providerAccountName}</p>
@@ -66,11 +68,6 @@ export const LinkedAccountList: React.FC = () => {
     )
   })
 }
-
-const providers = [
-  { name: 'discord' as const, Icon: DiscordIcon },
-  { name: 'google' as const, Icon: GoogleIcon },
-]
 
 const UnlinkButton: React.FC<{ provider: string }> = ({ provider }) => {
   const router = useRouter()

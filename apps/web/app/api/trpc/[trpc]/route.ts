@@ -3,6 +3,8 @@ import { fetchRequestHandler } from '@trpc/server/adapters/fetch'
 
 import { appRouter, createTRPCContext } from '@yuki/api'
 
+export const revalidate = 30
+
 /**
  * Configure basic CORS headers
  * You should extend this to match your needs
@@ -35,12 +37,6 @@ const handler = async (req: NextRequest) => {
   })
 
   setCorsHeaders(response)
-
-  const STALE_TIME_IN_SECONDS = 60 * 1000
-  response.headers.set(
-    'Cache-Control',
-    `public, max-age=${STALE_TIME_IN_SECONDS}`,
-  )
 
   return response
 }

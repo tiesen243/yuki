@@ -3,6 +3,7 @@ import * as React from 'react'
 import { Label } from '@radix-ui/react-label'
 import { Slot } from '@radix-ui/react-slot'
 
+import { Input } from '@yuki/ui/components/input'
 import { cn } from '@yuki/ui/utils'
 
 type FormContextValue =
@@ -189,7 +190,7 @@ function FormLabel({
       data-slot="form-label"
       htmlFor={formItemId}
       className={cn(
-        'text-sm leading-none font-medium select-none group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50 peer-disabled:cursor-not-allowed peer-disabled:opacity-50',
+        'flex items-center gap-2 text-sm leading-none font-medium select-none group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50 peer-disabled:cursor-not-allowed peer-disabled:opacity-50',
         error && 'text-destructive',
         className,
       )}
@@ -199,12 +200,11 @@ function FormLabel({
 
 function FormControl({
   asChild,
-  className,
   ...props
 }: React.ComponentProps<'input'> & { asChild?: boolean }) {
   const { name, error, formItemId, formDescriptionId, formMessageId } =
     useFormField()
-  const Comp = asChild ? Slot : 'input'
+  const Comp = asChild ? Slot : Input
 
   return (
     <Comp
@@ -216,11 +216,6 @@ function FormControl({
         !error ? formDescriptionId : `${formDescriptionId} ${formMessageId}`
       }
       aria-invalid={!!error}
-      className={cn(
-        !asChild &&
-          'border-input file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground aria-invalid:outline-destructive/60 aria-invalid:ring-destructive/20 dark:aria-invalid:outline-destructive dark:aria-invalid:ring-destructive/50 ring-ring/10 dark:ring-ring/20 dark:outline-ring/40 outline-ring/50 aria-invalid:outline-destructive/60 dark:aria-invalid:outline-destructive dark:aria-invalid:ring-destructive/40 aria-invalid:ring-destructive/20 aria-invalid:border-destructive/60 dark:aria-invalid:border-destructive flex h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:ring-4 focus-visible:outline-1 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:focus-visible:ring-[3px] aria-invalid:focus-visible:outline-none md:text-sm dark:aria-invalid:focus-visible:ring-4',
-        className,
-      )}
     />
   )
 }

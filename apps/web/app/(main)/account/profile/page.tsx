@@ -1,5 +1,3 @@
-import { redirect } from 'next/navigation'
-
 import { auth } from '@yuki/auth'
 import { Avatar, AvatarFallback, AvatarImage } from '@yuki/ui/avatar'
 import { Typography } from '@yuki/ui/typography'
@@ -8,7 +6,7 @@ import { EditProfileForm, LinkedAccountList } from './page.client'
 
 export default async function ProfilePage() {
   const session = await auth()
-  if (!session.user) redirect('/sign-in')
+  if (!session.user) return
 
   return (
     <main className="flex-1 rounded-md border py-6 pt-4 shadow-md">

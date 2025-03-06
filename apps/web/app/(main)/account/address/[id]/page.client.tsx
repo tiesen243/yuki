@@ -19,22 +19,37 @@ export const UpdateAddressForm: React.FC<{ id: string }> = ({ id }) => {
   const queryClient = useQueryClient()
   const router = useRouter()
   const trpc = useTRPC()
+
   const { mutate, isPending, error } = useMutation(
     trpc.user.updateAddress.mutationOptions({
       onSuccess: async () => {
         await queryClient.invalidateQueries({
           queryKey: trpc.user.getAddresses.queryKey(),
         })
+        await queryClient.invalidateQueries({
+          queryKey: trpc.user.getOneAddress.queryKey({ id }),
+        })
+
+        router.refresh()
         router.push('/account/address')
       },
     }),
   )
 
-  const { data } = useQuery(trpc.user.getOneAddress.queryOptions({ id }))
+  const { data, isLoading } = useQuery(
+    trpc.user.getOneAddress.queryOptions({ id }),
+  )
+
+  if (isLoading || !data)
+    return (
+      <div className="z-10 flex h-4/5 w-full items-center justify-center">
+        <div className="border-primary size-12 animate-spin rounded-full border-t-2 border-b-2" />
+      </div>
+    )
 
   return (
     <Form<typeof mutate>
-      defaultValues={{ name: '', phone: '', state: '', street: '' }}
+      defaultValues={data}
       className="container mt-4"
       onSubmit={mutate}
       isPending={isPending}
@@ -44,10 +59,10 @@ export const UpdateAddressForm: React.FC<{ id: string }> = ({ id }) => {
         <FormField
           key={field.name}
           name={field.name}
-          render={() => (
+          render={(fieldProps) => (
             <FormItem>
               <FormLabel>{field.label}</FormLabel>
-              <FormControl {...field} defaultValue={data?.[field.name]} />
+              <FormControl {...fieldProps} {...field} />
               <FormMessage />
             </FormItem>
           )}

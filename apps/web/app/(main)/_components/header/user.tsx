@@ -50,7 +50,7 @@ export const User: React.FC<{ dashboardUrl: string }> = ({ dashboardUrl }) => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
+      <DropdownMenuTrigger>
         <Avatar className="size-9 cursor-pointer">
           <AvatarImage src={session.user.image} alt={session.user.name} />
           <AvatarFallback>{session.user.name[0]}</AvatarFallback>

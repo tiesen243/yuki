@@ -6,29 +6,29 @@ import { cva } from 'class-variance-authority'
 import { cn } from '@yuki/ui/utils'
 
 const buttonVariants = cva(
-  "ring-ring/10 dark:ring-ring/20 dark:outline-ring/40 outline-ring/50 inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium whitespace-nowrap transition-[color,box-shadow] focus-visible:ring-4 focus-visible:outline-1 disabled:pointer-events-none disabled:opacity-50 aria-invalid:focus-visible:ring-0 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+  "focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive inline-flex shrink-0 items-center justify-center gap-2 rounded-md text-sm font-medium whitespace-nowrap transition-[color,box-shadow] outline-none focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
   {
     variants: {
       variant: {
         default:
-          'bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm',
-        secondary:
-          'bg-secondary text-secondary-foreground hover:bg-secondary/80 shadow-xs',
+          'bg-primary text-primary-foreground hover:bg-primary/90 shadow-xs',
         success:
-          'bg-success text-success-foreground hover:bg-success/90 shadow-xs',
-        info: 'bg-info text-info-foreground hover:bg-info/90 shadow-xs',
+          'bg-success hover:bg-success/90 focus-visible:ring-success/20 dark:focus-visible:ring-success/40 text-white shadow-xs',
+        info: 'bg-info hover:bg-info/90 focus-visible:ring-info/20 dark:focus-visible:ring-info/40 text-white shadow-xs',
         warning:
-          'bg-warning text-warning-foreground hover:bg-warning/90 shadow-xs',
+          'bg-warning hover:bg-warning/90 focus-visible:ring-warning/20 dark:focus-visible:ring-warning/40 text-white shadow-xs',
         destructive:
-          'bg-destructive text-destructive-foreground hover:bg-destructive/90 shadow-xs',
+          'bg-destructive hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 text-white shadow-xs',
         outline:
           'border-input bg-background hover:bg-accent hover:text-accent-foreground border shadow-xs',
+        secondary:
+          'bg-secondary text-secondary-foreground hover:bg-secondary/80 shadow-xs',
         ghost: 'hover:bg-accent hover:text-accent-foreground',
         link: 'text-primary underline-offset-4 hover:underline',
       },
       size: {
         default: 'h-9 px-4 py-2 has-[>svg]:px-3',
-        sm: 'h-8 rounded-md px-3 has-[>svg]:px-2.5',
+        sm: 'h-8 gap-1.5 rounded-md px-3 has-[>svg]:px-2.5',
         lg: 'h-10 rounded-md px-6 has-[>svg]:px-4',
         icon: 'size-9',
       },

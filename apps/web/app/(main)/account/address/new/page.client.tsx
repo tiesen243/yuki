@@ -25,6 +25,8 @@ export const NewAddressForm: React.FC = () => {
         await queryClient.invalidateQueries({
           queryKey: trpc.user.getAddresses.queryKey(),
         })
+
+        router.refresh()
         router.push('/account/address')
       },
     }),
@@ -42,10 +44,10 @@ export const NewAddressForm: React.FC = () => {
         <FormField
           key={field.name}
           {...field}
-          render={() => (
+          render={(fieldProps) => (
             <FormItem>
               <FormLabel>{field.label}</FormLabel>
-              <FormControl {...field} />
+              <FormControl {...fieldProps} {...field} />
               <FormMessage />
             </FormItem>
           )}
