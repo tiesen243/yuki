@@ -1,10 +1,17 @@
 'use client'
 
+import React, { useReducer } from 'react'
 import Image from 'next/image'
-import { useSuspenseQuery } from '@tanstack/react-query'
+import { useRouter } from 'next/navigation'
+import {
+  useMutation,
+  useQueryClient,
+  useSuspenseQuery,
+} from '@tanstack/react-query'
 
 import { Button } from '@yuki/ui/button'
 import { StarIcon } from '@yuki/ui/icons'
+import { toast } from '@yuki/ui/sonner'
 import { Typography } from '@yuki/ui/typography'
 import { cn } from '@yuki/ui/utils'
 
@@ -97,14 +104,123 @@ export const ProductDetails: React.FC<{ id: string }> = ({ id }) => {
             <Typography>{product.description}</Typography>
           </section>
 
-          <section className="mt-4 grid grid-cols-2 gap-4 md:w-1/2">
-            <h3 className="sr-only">Add to Cart Section</h3>
-
-            <Button>Add to cart</Button>
-            <Button variant="outline">Buy now</Button>
-          </section>
+          <AddToCartButton id={id} name={product.name} stock={product.stock} />
         </section>
       </section>
+    </section>
+  )
+}
+
+type Action =
+  | { type: 'increment' }
+  | { type: 'decrement' }
+  | { type: 'input'; quantity: number }
+
+const AddToCartButton: React.FC<{
+  id: string
+  name: string
+  stock: number
+}> = ({ id, name, stock }) => {
+  const [state, dispatch] = useReducer(
+    (state, action: Action) => {
+      switch (action.type) {
+        case 'increment':
+          return { quantity: Math.min(state.quantity + 1, stock) }
+        case 'decrement':
+          return { quantity: Math.max(state.quantity - 1, 0) }
+        case 'input':
+          return { quantity: action.quantity }
+        default:
+          return state
+      }
+    },
+    { quantity: 0 },
+  )
+
+  const trpc = useTRPC()
+  const router = useRouter()
+  const queryClient = useQueryClient()
+  const { mutate, isPending } = useMutation(
+    trpc.cart.updateCart.mutationOptions({
+      onSuccess: async () => {
+        toast.success(`Product ${name} added to cart`)
+        dispatch({ type: 'input', quantity: 0 })
+        await queryClient.invalidateQueries({
+          queryKey: trpc.cart.getCart.queryKey(),
+        })
+        router.refresh()
+      },
+      onError: (error) => toast.error(error.message),
+    }),
+  )
+
+  return (
+    <section className="mt-4 grid grid-cols-2 gap-4 md:w-1/2">
+      <h3 className="sr-only">Add to Cart Section</h3>
+
+      <div className="col-span-2 flex items-center gap-4">
+        <span>Quantity:</span>
+        <div className="flex h-9 items-center rounded-lg border">
+          <Button
+            variant="outline"
+            size="icon"
+            className="rounded-r-none"
+            onClick={() => dispatch({ type: 'decrement' })}
+            disabled={state.quantity === 0 || isPending}
+          >
+            -
+          </Button>
+          <input
+            className="w-20 [appearance:textfield] text-center outline-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+            type="number"
+            value={state.quantity}
+            onChange={(e) => {
+              const newValue = parseInt(e.target.value)
+              if (!isNaN(newValue) && newValue <= stock)
+                dispatch({ type: 'input', quantity: newValue })
+            }}
+            disabled={isPending}
+          />
+          <Button
+            variant="outline"
+            size="icon"
+            className="rounded-l-none"
+            onClick={() => dispatch({ type: 'increment' })}
+            disabled={state.quantity === stock || isPending}
+          >
+            +
+          </Button>
+        </div>
+
+        <span className="text-muted-foreground text-sm">{stock} in stock</span>
+      </div>
+
+      <Button
+        onClick={() => {
+          mutate({
+            productId: id,
+            quantity: state.quantity,
+          })
+        }}
+        disabled={state.quantity === 0 || state.quantity > stock || isPending}
+      >
+        Add to cart
+      </Button>
+      <Button
+        variant="outline"
+        onClick={async () => {
+          mutate({
+            productId: id,
+            quantity: state.quantity,
+          })
+          router.push('/account/cart')
+          await new Promise((resolve) => setTimeout(resolve, 100))
+          router.refresh()
+        }}
+        disabled={state.quantity === 0 || state.quantity > stock || isPending}
+      >
+        Buy now
+      </Button>
     </section>
   )
 }
@@ -165,6 +281,36 @@ export const ProductDetailsSkeleton: React.FC = () => (
 
       <section className="mt-4 grid grid-cols-2 gap-4 md:w-1/2">
         <h2 className="sr-only">Add to Cart Section</h2>
+
+        <div className="col-span-2 flex items-center gap-4">
+          <span>Quantity:</span>
+          <div className="flex h-9 items-center rounded-lg border">
+            <Button
+              variant="outline"
+              size="icon"
+              className="rounded-r-none"
+              disabled
+            >
+              -
+            </Button>
+            <input
+              className="w-20 [appearance:textfield] text-center outline-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+              type="number"
+              value={0}
+              disabled
+            />
+            <Button
+              variant="outline"
+              size="icon"
+              className="rounded-l-none"
+              disabled
+            >
+              +
+            </Button>
+          </div>
+
+          <span className="text-muted-foreground text-sm">0 in stock</span>
+        </div>
 
         <Button disabled>Add to cart</Button>
         <Button variant="outline" disabled>
