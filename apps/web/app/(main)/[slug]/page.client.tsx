@@ -16,6 +16,7 @@ import { Typography } from '@yuki/ui/typography'
 import { cn } from '@yuki/ui/utils'
 
 import { useTRPC } from '@/lib/trpc/react'
+import { ProductCard } from '../_components/product-card'
 
 export const ProductDetails: React.FC<{ id: string }> = ({ id }) => {
   const trpc = useTRPC()
@@ -165,7 +166,9 @@ const AddToCartButton: React.FC<{
             variant="outline"
             size="icon"
             className="rounded-r-none"
-            onClick={() => dispatch({ type: 'decrement' })}
+            onClick={() => {
+              dispatch({ type: 'decrement' })
+            }}
             disabled={state.quantity === 0 || isPending}
           >
             -
@@ -185,7 +188,9 @@ const AddToCartButton: React.FC<{
             variant="outline"
             size="icon"
             className="rounded-l-none"
-            onClick={() => dispatch({ type: 'increment' })}
+            onClick={() => {
+              dispatch({ type: 'increment' })
+            }}
             disabled={state.quantity === stock || isPending}
           >
             +
@@ -320,3 +325,14 @@ export const ProductDetailsSkeleton: React.FC = () => (
     </section>
   </section>
 )
+
+export const RelatedProducts: React.FC<{ id: string }> = ({ id }) => {
+  const trpc = useTRPC()
+  const {
+    data: { products },
+  } = useSuspenseQuery(trpc.product.getRelatedProducts.queryOptions({ id }))
+
+  return products.map((product) => (
+    <ProductCard key={product.id} {...product} />
+  ))
+}

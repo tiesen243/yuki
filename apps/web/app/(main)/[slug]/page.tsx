@@ -4,7 +4,12 @@ import { notFound } from 'next/navigation'
 import { createMetadata } from '@/lib/metadata'
 import { getQueryClient, HydrateClient, trpc } from '@/lib/trpc/server'
 import { getIdFromSlug } from '@/lib/utils'
-import { ProductDetails, ProductDetailsSkeleton } from './page.client'
+import { ProductCardSkeleton } from '../_components/product-card'
+import {
+  ProductDetails,
+  ProductDetailsSkeleton,
+  RelatedProducts,
+} from './page.client'
 
 interface Props {
   params: Promise<{ slug?: string }>
@@ -22,7 +27,7 @@ export default async function ProductPage({ params }: Props) {
       trpc.product.getProductReviews.queryOptions({ productId: id }),
     ),
     queryClient.prefetchQuery(
-      trpc.product.getRelativeProducts.queryOptions({ id }),
+      trpc.product.getRelatedProducts.queryOptions({ id }),
     ),
   ])
 
@@ -93,6 +98,21 @@ export default async function ProductPage({ params }: Props) {
           <Suspense fallback={<ProductDetailsSkeleton />}>
             <ProductDetails id={id} />
           </Suspense>
+
+          <section className="mt-4 grid gap-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6">
+            <h2 className="sr-only">Related Products Section</h2>
+            <span className="col-span-full text-2xl font-bold">
+              Related Products
+            </span>
+
+            <Suspense
+              fallback={Array.from({ length: 12 }).map((_, i) => (
+                <ProductCardSkeleton key={i} />
+              ))}
+            >
+              <RelatedProducts id={id} />
+            </Suspense>
+          </section>
         </main>
       </HydrateClient>
     </>

@@ -104,7 +104,7 @@ export const productRouter = {
     }),
 
   // [GET] /api/trpc/product.getRelativeProducts
-  getRelativeProducts: publicProcedure
+  getRelatedProducts: publicProcedure
     .input(schemas.getOneSchema)
     .query(async ({ ctx, input }) => {
       const c = await ctx.db.category.findFirst({
@@ -127,6 +127,7 @@ export const productRouter = {
         name: product.name,
         image: product.image,
         price: product.price,
+        discount: product.discount,
         category: product.category.name,
         averageRating:
           product.reviews.length > 0
