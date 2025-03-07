@@ -8,6 +8,7 @@ import { generateCodeVerifier, generateState, OAuth2RequestError } from 'arctic'
 import { z } from 'zod'
 
 import { db } from '@yuki/db'
+import { sendEmail } from '@yuki/email'
 
 import type { SessionResult } from './session'
 import { env } from '../env'
@@ -258,7 +259,7 @@ class AuthClass {
       providerAccountName,
     }
 
-    return await db.user.upsert({
+    const user = await db.user.upsert({
       where: { email },
       update: { accounts: { create: accountData } },
       create: {
@@ -267,7 +268,13 @@ class AuthClass {
         image,
         accounts: { create: accountData },
       },
+      include: { accounts: true },
     })
+
+    if (user.accounts.length === 1)
+      await sendEmail({ type: 'Welcome', data: user })
+
+    return user
   }
 
   private setCorsHeaders(res: Response): void {
