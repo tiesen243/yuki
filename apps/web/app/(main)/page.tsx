@@ -44,7 +44,7 @@ export default function HomePage() {
       <section className="container">
         <Typography variant="h2">New Arrivals</Typography>
 
-        <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-4">
           <Suspense
             fallback={Array.from({ length: 12 }).map((_, i) => (
               <ProductCardSkeleton key={i} />
