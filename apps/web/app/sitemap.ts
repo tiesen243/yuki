@@ -9,8 +9,7 @@ export const revalidate = false
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const url = (path: string): string => new URL(path, getBaseUrl()).toString()
 
-  const marketingPages = ['/about', '/contact', '/privacy', '/terms']
-  const categories = await db.category.findMany()
+  const marketingPages = ['/about', '/contact', '/faq', '/privacy', '/terms']
   const products = await db.product.findMany()
 
   return [
@@ -32,14 +31,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'monthly',
       priority: 0.7,
     },
-    ...categories.map(
-      (c) =>
-        ({
-          url: url(`/shop/${slugify(c.name)}-${c.id}`),
-          changeFrequency: 'monthly',
-          priority: 0.7,
-        }) as MetadataRoute.Sitemap[number],
-    ),
     ...products.map(
       (p) =>
         ({

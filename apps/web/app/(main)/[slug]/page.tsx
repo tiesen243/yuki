@@ -1,9 +1,10 @@
 import { Suspense } from 'react'
 import { notFound } from 'next/navigation'
+import Script from 'next/script'
 
 import { createMetadata } from '@/lib/metadata'
 import { getQueryClient, HydrateClient, trpc } from '@/lib/trpc/server'
-import { getIdFromSlug } from '@/lib/utils'
+import { getBaseUrl, getIdFromSlug } from '@/lib/utils'
 import { ProductCardSkeleton } from '../_components/product-card'
 import {
   ProductDetails,
@@ -33,7 +34,8 @@ export default async function ProductPage({ params }: Props) {
 
   return (
     <>
-      <script
+      <Script
+        id="json-ld"
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
@@ -50,7 +52,7 @@ export default async function ProductPage({ params }: Props) {
             },
             offers: {
               '@type': 'Offer',
-              url: `https://yourdomain.com/products/${product.id}`,
+              url: `${getBaseUrl()}/${slug}`,
               priceCurrency: 'USD',
               price: product.price,
               priceValidUntil: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
@@ -99,7 +101,7 @@ export default async function ProductPage({ params }: Props) {
             <ProductDetails id={id} />
           </Suspense>
 
-          <section className="mt-4 grid gap-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6">
+          <section className="mt-4 grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-6">
             <h2 className="sr-only">Related Products Section</h2>
             <span className="col-span-full text-2xl font-bold">
               Related Products
