@@ -22,11 +22,10 @@ type Product = RouterOutputs['product']['getAll']['products'][number]
 
 interface ProductCardProps extends Product {
   currency?: string
-  discount?: number
   className?: string
 }
 
-export default function ProductCard({
+export const ProductCard: React.FC<ProductCardProps> = ({
   id,
   name,
   image,
@@ -36,7 +35,7 @@ export default function ProductCard({
   currency = '$',
   discount,
   className = '',
-}: ProductCardProps) {
+}) => {
   const discountedPrice = discount
     ? parseFloat((price - (price * discount) / 100).toFixed(2))
     : null

@@ -1,21 +1,10 @@
 import { Suspense } from 'react'
 import { notFound } from 'next/navigation'
 
-import { db } from '@yuki/db'
-import { Button } from '@yuki/ui/button'
-import { ShoppingCartIcon } from '@yuki/ui/icons'
-import { Typography } from '@yuki/ui/typography'
-
-import { ProductCardSkeleton } from '@/app/(main)/_components/product-card'
 import { createMetadata } from '@/lib/metadata'
 import { getQueryClient, HydrateClient, trpc } from '@/lib/trpc/server'
-import { getIdFromSlug, slugify } from '@/lib/utils'
-import {
-  ProductDetails,
-  ProductReviews,
-  RelativeProducts,
-  StarRating,
-} from './page.client'
+import { getIdFromSlug } from '@/lib/utils'
+import { ProductDetails, ProductDetailsSkeleton } from './page.client'
 
 interface Props {
   params: Promise<{ slug?: string }>
@@ -27,9 +16,9 @@ export default async function ProductPage({ params }: Props) {
 
   const queryClient = getQueryClient()
 
-  void Promise.all([
-    queryClient.prefetchQuery(trpc.product.getOne.queryOptions({ id })),
-    queryClient.prefetchQuery(
+  const [product, { reviews, averageRating }] = await Promise.all([
+    queryClient.fetchQuery(trpc.product.getOne.queryOptions({ id })),
+    queryClient.fetchQuery(
       trpc.product.getProductReviews.queryOptions({ productId: id }),
     ),
     queryClient.prefetchQuery(
@@ -38,135 +27,75 @@ export default async function ProductPage({ params }: Props) {
   ])
 
   return (
-    <HydrateClient>
-      <main className="container grow py-4">
-        <Suspense
-          fallback={
-            <section className="grid gap-4 md:grid-cols-12">
-              <section className="md:col-span-5">
-                <h2 className="sr-only">Product Image Section</h2>
-                <div className="aspect-square w-full animate-pulse rounded-md bg-current object-cover" />
-              </section>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Product',
+            name: product.name,
+            image: product.image,
+            description: product.description,
+            sku: product.id,
+            mpn: product.id,
+            brand: {
+              '@type': 'Brand',
+              name: 'Yuki',
+            },
+            offers: {
+              '@type': 'Offer',
+              url: `https://yourdomain.com/products/${product.id}`,
+              priceCurrency: 'USD',
+              price: product.price,
+              priceValidUntil: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
+                .toISOString()
+                .split('T')[0],
+              availability:
+                product.stock > 0
+                  ? 'https://schema.org/InStock'
+                  : 'https://schema.org/OutOfStock',
+              seller: {
+                '@type': 'Organization',
+                name: 'Yuki',
+              },
+            },
+            aggregateRating:
+              reviews.length > 0
+                ? {
+                    '@type': 'AggregateRating',
+                    ratingValue: averageRating,
+                    reviewCount: reviews.length,
+                  }
+                : undefined,
+            review:
+              reviews.length > 0
+                ? reviews.map((review) => ({
+                    '@type': 'Review',
+                    reviewRating: {
+                      '@type': 'Rating',
+                      ratingValue: review.rating,
+                    },
+                    author: {
+                      '@type': 'Person',
+                      name: review.user.name,
+                    },
+                    reviewBody: review.comment,
+                    datePublished: review.createdAt,
+                  }))
+                : undefined,
+          }),
+        }}
+      />
 
-              <section className="flex max-h-full flex-col md:col-span-7">
-                <h2 className="sr-only">Product Information Section</h2>
-                <Typography
-                  variant="h3"
-                  className="animate-pulse rounded-md bg-current"
-                >
-                  &nbsp;
-                </Typography>
-                <div className="my-4 flex items-center gap-4">
-                  <StarRating rating={0} />
-                  <hr className="bg-border h-6 w-0.5" />
-                  <p>0 Reviews</p>
-                  <hr className="bg-border h-6 w-0.5" />
-                  <p>0 Sold</p>
-                </div>
-
-                <Typography className="w-1/3 animate-pulse rounded-md bg-current">
-                  &nbsp;
-                </Typography>
-
-                <Typography className="w-full grow animate-pulse rounded-md bg-current">
-                  &nbsp;
-                </Typography>
-
-                <section className="flex items-center text-lg">
-                  <h3 className="sr-only">Product Price Section</h3>
-                  <Typography className="mb-4 w-1/6 animate-pulse rounded-md bg-current">
-                    &nbsp;
-                  </Typography>
-                </section>
-
-                <div className="flex items-center gap-4">
-                  <span>Quantity:</span>
-
-                  <div className="flex items-center rounded-md border">
-                    <label htmlFor="quantity" className="sr-only">
-                      Quantity
-                    </label>
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      className="rounded-r-none border-none"
-                      disabled
-                    >
-                      -
-                    </Button>
-                    <input
-                      name="quantity"
-                      className="text-muted-foreground flex h-9 w-16 items-center justify-center border-x text-center focus-visible:outline-none"
-                      value={0}
-                      disabled
-                    />
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      className="rounded-l-none border-none"
-                      disabled
-                    >
-                      +
-                    </Button>
-                  </div>
-
-                  <span className="text-muted-foreground text-xs">
-                    0 items available
-                  </span>
-                </div>
-
-                <div className="mt-4 grid grid-cols-2 items-center gap-4 md:flex">
-                  <Button variant="outline" disabled>
-                    <ShoppingCartIcon />
-                    Add to cart
-                  </Button>
-                  <Button disabled>Buy now</Button>
-                </div>
-              </section>
-            </section>
-          }
-        >
-          <ProductDetails id={id} />
-        </Suspense>
-
-        <section className="my-8">
-          <h2 className="sr-only">PRODUCT REVIEWS Section</h2>
-          <p className="my-4 text-lg uppercase">PRODUCT REVIEWS</p>
-          <Suspense
-            fallback={
-              <>
-                <StarRating rating={0} />
-
-                <div className="my-4">
-                  <span className="text-muted-foreground">
-                    No reviews yet. Be the first to review this product!
-                  </span>
-                </div>
-              </>
-            }
-          >
-            <ProductReviews id={id} />{' '}
+      <HydrateClient>
+        <main className="container grow py-4">
+          <Suspense fallback={<ProductDetailsSkeleton />}>
+            <ProductDetails id={id} />
           </Suspense>
-        </section>
-
-        <section>
-          <h2 className="sr-only">Relative Products Section</h2>
-          <p className="my-4 text-lg uppercase">You may also like</p>
-
-          <Suspense
-            fallback={
-              <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
-                {Array.from({ length: 12 }).map((_, i) => (
-                  <ProductCardSkeleton key={i} />
-                ))}
-              </div>
-            }
-          >
-            <RelativeProducts id={id} />
-          </Suspense>
-        </section>
-      </main>
-    </HydrateClient>
+        </main>
+      </HydrateClient>
+    </>
   )
 }
 
@@ -181,12 +110,12 @@ export const generateMetadata = async ({ params }: Props) => {
 
     return createMetadata({
       title: product.name,
-      description: product.description,
+      description: product.description.substring(0, 160),
       openGraph: {
         images: `/api/og?title=${encodeURIComponent(
           product.name,
         )}&description=${encodeURIComponent(
-          product.description,
+          product.description.substring(0, 160),
         )}&image=${encodeURIComponent(product.image)}`,
         url: `/${slug}`,
       },
@@ -194,12 +123,4 @@ export const generateMetadata = async ({ params }: Props) => {
   } catch {
     notFound()
   }
-}
-
-export async function generateStaticParams() {
-  const products = await db.product.findMany()
-
-  return products.map((product) => ({
-    slug: `${slugify(product.name)}-${product.id}`,
-  }))
 }

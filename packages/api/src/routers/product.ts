@@ -32,6 +32,7 @@ export const productRouter = {
       name: product.name,
       image: product.image,
       price: product.price,
+      discount: product.discount,
       category: product.category.name,
       averageRating:
         product.reviews.length > 0
@@ -52,9 +53,7 @@ export const productRouter = {
       const product = await ctx.db.product.findUnique({
         where: { id: input.id },
         include: {
-          _count: { select: { reviews: true } },
-          category: { select: { id: true, name: true } },
-          reviews: { select: { rating: true } },
+          category: { select: { name: true } },
           carts: {
             where: { cart: { status: 'DELIVERED' } },
             select: { quantity: true },
@@ -64,22 +63,11 @@ export const productRouter = {
       if (!product)
         throw new TRPCError({ code: 'NOT_FOUND', message: 'Product not found' })
 
-      const averageRating =
-        product._count.reviews > 0
-          ? product.reviews.reduce((acc, cur) => acc + cur.rating, 0) /
-            product._count.reviews
-          : 0
-
-      const soldQuantity = product.carts.reduce(
-        (acc, cur) => acc + cur.quantity,
-        0,
-      )
+      const sold = product.carts.reduce((acc, cur) => acc + cur.quantity, 0)
 
       return {
         ...product,
-        rating: averageRating,
-        reviews: product._count.reviews,
-        sold: soldQuantity,
+        sold,
       }
     }),
 
@@ -87,12 +75,17 @@ export const productRouter = {
   getProductReviews: publicProcedure
     .input(schemas.getReviewsSchema)
     .query(async ({ ctx, input }) => {
-      const [reviews, reviewStats] = await Promise.all([
+      const [reviews, averageRating] = await Promise.all([
         ctx.db.review.findMany({
           where: { product: { id: input.productId } },
           take: input.limit,
           skip: input.limit * (input.page - 1),
-          include: { user: { select: { id: true, name: true, image: true } } },
+          select: {
+            user: { select: { name: true, image: true } },
+            rating: true,
+            comment: true,
+            createdAt: true,
+          },
         }),
         ctx.db.review.aggregate({
           where: { product: { id: input.productId } },
@@ -101,11 +94,11 @@ export const productRouter = {
         }),
       ])
 
-      const totalPage = Math.ceil(reviewStats._count / input.limit)
+      const totalPage = Math.ceil(averageRating._count / input.limit)
 
       return {
         reviews,
-        rating: reviewStats._count <= 0 ? 0 : (reviewStats._avg.rating ?? 0),
+        averageRating: averageRating._avg.rating ?? 0,
         totalPage,
       }
     }),
@@ -119,13 +112,30 @@ export const productRouter = {
         include: {
           products: {
             take: 12,
-            include: { category: { select: { name: true } } },
+            include: {
+              category: { select: { name: true } },
+              reviews: { select: { rating: true } },
+            },
           },
         },
       })
 
-      if (!c) return []
-      return c.products
+      if (!c) return { products: [] }
+
+      const products = c.products.map((product) => ({
+        id: product.id,
+        name: product.name,
+        image: product.image,
+        price: product.price,
+        category: product.category.name,
+        averageRating:
+          product.reviews.length > 0
+            ? product.reviews.reduce((sum, review) => sum + review.rating, 0) /
+              product.reviews.length
+            : 0,
+      }))
+
+      return { products }
     }),
 
   // [POST] /api/trpc/product.create

@@ -10,7 +10,7 @@ import { Typography } from '@yuki/ui/typography'
 import { cn } from '@yuki/ui/utils'
 
 import { useTRPC } from '@/lib/trpc/react'
-import ProductCard, { ProductCardSkeleton } from './_components/product-card'
+import { ProductCard } from './_components/product-card'
 
 export const Slider: React.FC<{
   slides: {
@@ -91,7 +91,7 @@ export const ProductList: React.FC = () => {
   return (
     <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
       {products.map((product) => (
-        <ProductCard key={product.id} {...product} discount={15} />
+        <ProductCard key={product.id} {...product} />
       ))}
     </div>
   )
