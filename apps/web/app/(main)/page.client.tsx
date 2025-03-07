@@ -88,11 +88,7 @@ export const ProductList: React.FC = () => {
     data: { products },
   } = useSuspenseQuery(trpc.product.getAll.queryOptions({ limit: 12 }))
 
-  return (
-    <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
-      {products.map((product) => (
-        <ProductCard key={product.id} {...product} />
-      ))}
-    </div>
-  )
+  return products.map((product) => (
+    <ProductCard key={product.id} {...product} />
+  ))
 }
