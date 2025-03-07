@@ -33,7 +33,7 @@
     "@oslojs/encoding": "^1.1.0",
     "@t3-oss/env-nextjs": "^0.12.0",
     "@yuki/db": "workspace:*",
-    "@yukki/email": "workspace:*",
+    "@yuki/email": "workspace:*",
     "arctic": "^3.4.0",
     "next": "15.2.1",
     "react": "^19.0.0",
