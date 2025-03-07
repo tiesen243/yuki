@@ -160,7 +160,9 @@ const AddToCartButton: React.FC<{
       <h3 className="sr-only">Add to Cart Section</h3>
 
       <div className="col-span-2 flex items-center gap-4">
-        <span>Quantity:</span>
+        <label htmlFor="quantity-input" className="text-sm font-medium">
+          Quantity:
+        </label>
         <div className="flex h-9 items-center rounded-lg border">
           <Button
             variant="outline"
@@ -174,6 +176,8 @@ const AddToCartButton: React.FC<{
             -
           </Button>
           <input
+            id="quantity-input"
+            name="quantity-input"
             className="w-20 [appearance:textfield] text-center outline-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
             type="number"
             value={state.quantity}
