@@ -154,5 +154,8 @@ export default function TermsOfServicePage() {
 
 export const metadata = createMetadata({
   title: 'Terms of Service',
-  description: 'Terms of Service',
+  openGraph: {
+    images: `/api/og?title=Terms%20of%20Service`,
+    url: '/terms',
+  },
 })

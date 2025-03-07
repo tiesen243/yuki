@@ -1,5 +1,7 @@
 import { Typography } from '@yuki/ui/typography'
 
+import { createMetadata } from '@/lib/metadata'
+
 export default function PrivacyPolicyPage() {
   return (
     <main className="container max-w-4xl py-12">
@@ -125,3 +127,11 @@ export default function PrivacyPolicyPage() {
     </main>
   )
 }
+
+export const metadata = createMetadata({
+  title: 'Privacy Policy',
+  openGraph: {
+    images: `/api/og?title=Privacy%20Policy`,
+    url: '/privacy',
+  },
+})
