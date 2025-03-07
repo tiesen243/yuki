@@ -16,7 +16,6 @@ import { ShoppingCartIcon, Star } from '@yuki/ui/icons'
 import { toast } from '@yuki/ui/sonner'
 import { Typography } from '@yuki/ui/typography'
 
-import { ProductCard } from '@/app/(main)/_components/product-card'
 import { useTRPC } from '@/lib/trpc/react'
 import { slugify } from '@/lib/utils'
 
@@ -261,7 +260,7 @@ export const RelativeProducts: React.FC<{ id: string }> = ({ id }) => {
   return (
     <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
       {relativeProducts.map((p) => (
-        <ProductCard key={p.id} product={p} />
+        <div key={p.id}>{p.name}</div>
       ))}
     </div>
   )

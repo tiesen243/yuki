@@ -3,10 +3,14 @@
 import * as React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useSuspenseQuery } from '@tanstack/react-query'
 
 import { Button } from '@yuki/ui/button'
 import { Typography } from '@yuki/ui/typography'
 import { cn } from '@yuki/ui/utils'
+
+import { useTRPC } from '@/lib/trpc/react'
+import ProductCard, { ProductCardSkeleton } from './_components/product-card'
 
 export const Slider: React.FC<{
   slides: {
@@ -54,7 +58,7 @@ export const Slider: React.FC<{
               alt={s.title}
               width={800}
               height={1200}
-              className="basis-full object-cover"
+              className="mx-auto basis-full object-cover"
             />
           </div>
         ))}
@@ -75,5 +79,20 @@ export const Slider: React.FC<{
         ))}
       </div>
     </section>
+  )
+}
+
+export const ProductList: React.FC = () => {
+  const trpc = useTRPC()
+  const {
+    data: { products },
+  } = useSuspenseQuery(trpc.product.getAll.queryOptions({ limit: 12 }))
+
+  return (
+    <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
+      {products.map((product) => (
+        <ProductCard key={product.id} {...product} discount={15} />
+      ))}
+    </div>
   )
 }

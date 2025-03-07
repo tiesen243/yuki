@@ -1,6 +1,16 @@
-import { Slider } from './page.client'
+import { Suspense } from 'react'
+
+import { Typography } from '@yuki/ui/typography'
+
+import { getQueryClient, trpc } from '@/lib/trpc/server'
+import { ProductCardSkeleton } from './_components/product-card'
+import { ProductList, Slider } from './page.client'
 
 export default function HomePage() {
+  void getQueryClient().prefetchQuery(
+    trpc.product.getAll.queryOptions({ limit: 12 }),
+  )
+
   return (
     <main className="flex grow flex-col gap-4">
       <Slider
@@ -28,6 +38,22 @@ export default function HomePage() {
           },
         ]}
       />
+
+      <section className="container">
+        <Typography variant="h2">New Arrivals</Typography>
+
+        <Suspense
+          fallback={
+            <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
+              {Array.from({ length: 12 }).map((_, i) => (
+                <ProductCardSkeleton key={i} />
+              ))}
+            </div>
+          }
+        >
+          <ProductList />
+        </Suspense>
+      </section>
     </main>
   )
 }

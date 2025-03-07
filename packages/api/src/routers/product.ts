@@ -13,16 +13,32 @@ export const productRouter = {
       stock: { gt: 0 },
     }
 
-    const [products, totalCount] = await Promise.all([
+    const [baseProducts, totalCount] = await Promise.all([
       ctx.db.product.findMany({
         where,
         take: input.limit,
         skip: (input.page - 1) * input.limit,
         orderBy: { [input.sortBy]: input.orderBy },
-        include: { category: { select: { name: true } } },
+        include: {
+          category: { select: { name: true } },
+          reviews: { select: { rating: true } },
+        },
       }),
       ctx.db.product.count({ where }),
     ])
+
+    const products = baseProducts.map((product) => ({
+      id: product.id,
+      name: product.name,
+      image: product.image,
+      price: product.price,
+      category: product.category.name,
+      averageRating:
+        product.reviews.length > 0
+          ? product.reviews.reduce((sum, review) => sum + review.rating, 0) /
+            product.reviews.length
+          : 0,
+    }))
 
     const totalPage = Math.ceil(totalCount / input.limit)
 

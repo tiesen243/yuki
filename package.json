@@ -16,7 +16,6 @@
     "clean:workspaces": "turbo run clean",
     "db:generate": "turbo -F @yuki/db gnr",
     "db:push": "turbo -F @yuki/db push",
-    "db:seed": "uv sync && turbo -F @yuki/db seed",
     "db:studio": "turbo -F @yuki/db studio",
     "dev": "turbo watch dev --continue",
     "format": "turbo run format --continue -- --cache --cache-location .cache/.prettiercache",
