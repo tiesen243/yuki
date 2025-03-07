@@ -22,8 +22,8 @@ export default async function ProductPage({ params }: Props) {
   const queryClient = getQueryClient()
 
   const [product, { reviews, averageRating }] = await Promise.all([
-    queryClient.fetchQuery(trpc.product.getOne.queryOptions({ id })),
-    queryClient.fetchQuery(
+    queryClient.ensureQueryData(trpc.product.getOne.queryOptions({ id })),
+    queryClient.ensureQueryData(
       trpc.product.getProductReviews.queryOptions({ productId: id }),
     ),
     queryClient.prefetchQuery(
