@@ -1,6 +1,6 @@
 'use client'
 
-import { useSuspenseQuery } from '@tanstack/react-query'
+import { useQuery, useSuspenseQuery } from '@tanstack/react-query'
 import { useQueryStates } from 'nuqs'
 
 import { Button } from '@yuki/ui/button'
@@ -60,7 +60,7 @@ export const ProductFilter: React.FC = () => {
 
 const ProductFilterForm: React.FC = () => {
   const trpc = useTRPC()
-  const { data: categories } = useSuspenseQuery(
+  const { data: categories = [] } = useQuery(
     trpc.category.getAll.queryOptions({ limit: 999 }),
   )
   const [query, setSearchParams] = useQueryStates(shopSearchParsers)
@@ -69,7 +69,11 @@ const ProductFilterForm: React.FC = () => {
     void setSearchParams({
       ...query,
       ...formData,
-      ...(formData.q !== query.q && { page: 1 }),
+      category: formData.category.trim(),
+      ...((formData.q !== query.q ||
+        formData.category.trim() !== query.category) && {
+        page: 1,
+      }),
     })
   }
 
