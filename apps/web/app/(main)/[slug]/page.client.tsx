@@ -54,7 +54,7 @@ export const ProductDetails: React.FC<{ id: string }> = ({ id }) => {
         <section>
           <Typography variant="h3">{product.name}</Typography>
 
-          <div className="divide-muted-foreground flex items-center gap-2 divide-x-1 divide-solid *:h-6 *:pr-2">
+          <div className="divide-muted-foreground flex items-center gap-2 divide-x-1 divide-solid pt-2 *:h-6 *:pr-2">
             <div className="flex items-center">
               {Array.from({ length: 5 }).map((_, i) => (
                 <StarIcon
@@ -254,7 +254,7 @@ export const ProductDetailsSkeleton: React.FC = () => (
           &nbsp;
         </Typography>
 
-        <div className="divide-muted-foreground flex items-center gap-2 divide-x-1 divide-solid *:h-6 *:pr-2">
+        <div className="divide-muted-foreground flex items-center gap-2 divide-x-1 divide-solid pt-2 *:h-6 *:pr-2">
           <div className="flex items-center">
             {Array.from({ length: 5 }).map((_, i) => (
               <StarIcon
