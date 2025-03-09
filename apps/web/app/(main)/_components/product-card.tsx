@@ -41,7 +41,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     : null
 
   return (
-    <Card className={cn('group pt-0', className)}>
+    <Card className={cn('group h-fit pt-0', className)}>
       <div className="relative overflow-hidden">
         <Image
           src={image}
