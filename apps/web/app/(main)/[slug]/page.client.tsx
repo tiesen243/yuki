@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useReducer } from 'react'
+import { useReducer } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import {
@@ -13,7 +13,6 @@ import { Avatar, AvatarFallback, AvatarImage } from '@yuki/ui/avatar'
 import { Button } from '@yuki/ui/button'
 import { Card, CardContent } from '@yuki/ui/card'
 import { StarIcon } from '@yuki/ui/icons'
-import { Separator } from '@yuki/ui/separator'
 import { toast } from '@yuki/ui/sonner'
 import { Typography } from '@yuki/ui/typography'
 import { cn } from '@yuki/ui/utils'
@@ -463,7 +462,7 @@ export const ProductReviewsSkeleton: React.FC = () => (
           {[1, 2, 3, 4, 5].map((star) => (
             <StarIcon
               key={star}
-              className={`h-5 w-5 ${'fill-muted text-muted-foreground'}`}
+              className={`fill-muted text-muted-foreground h-5 w-5`}
             />
           ))}
         </div>
