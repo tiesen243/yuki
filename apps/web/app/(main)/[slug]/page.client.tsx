@@ -9,8 +9,11 @@ import {
   useSuspenseQuery,
 } from '@tanstack/react-query'
 
+import { Avatar, AvatarFallback, AvatarImage } from '@yuki/ui/avatar'
 import { Button } from '@yuki/ui/button'
+import { Card, CardContent } from '@yuki/ui/card'
 import { StarIcon } from '@yuki/ui/icons'
+import { Separator } from '@yuki/ui/separator'
 import { toast } from '@yuki/ui/sonner'
 import { Typography } from '@yuki/ui/typography'
 import { cn } from '@yuki/ui/utils'
@@ -328,6 +331,174 @@ export const ProductDetailsSkeleton: React.FC = () => (
       </section>
     </section>
   </section>
+)
+
+export const ProductReviews = ({ id }: { id: string }) => {
+  const trpc = useTRPC()
+  const {
+    data: { reviews, averageRating },
+  } = useSuspenseQuery(
+    trpc.product.getProductReviews.queryOptions({ productId: id }),
+  )
+
+  const ratingCounts = [0, 0, 0, 0, 0]
+  reviews.forEach((review) => {
+    if (review.rating && review.rating >= 1 && review.rating <= 5)
+      // @ts-expect-error - trust me bri
+      ratingCounts[review.rating - 1]++
+  })
+  const percentages = ratingCounts.map((count) =>
+    reviews.length > 0 ? (count / reviews.length) * 100 : 0,
+  )
+
+  return (
+    <>
+      <div className="my-4 grid gap-8 md:grid-cols-[1fr_2fr]">
+        <Card className="flex flex-col items-center justify-center">
+          <div className="mb-2 text-4xl font-bold">
+            {averageRating.toFixed(1)}
+          </div>
+          <div className="mb-2 flex items-center">
+            {[1, 2, 3, 4, 5].map((star) => (
+              <StarIcon
+                key={star}
+                className={`h-5 w-5 ${
+                  star <= Math.round(averageRating)
+                    ? 'fill-primary text-primary'
+                    : 'fill-muted text-muted-foreground'
+                }`}
+              />
+            ))}
+          </div>
+          <p className="text-muted-foreground mb-4 text-sm">
+            Based on {reviews.length || 0} review
+            {reviews.length !== 1 ? 's' : ''}
+          </p>
+        </Card>
+
+        <Card>
+          <CardContent>
+            <h3 className="mb-4 font-medium">Rating Distribution</h3>
+            <div className="space-y-2">
+              {[5, 4, 3, 2, 1].map((rating) => (
+                <div key={rating} className="flex items-center gap-2">
+                  <div className="flex w-16 items-center gap-1">
+                    <span className="text-sm">{rating}</span>
+                    <StarIcon className="fill-primary text-primary h-4 w-4" />
+                  </div>
+                  <div className="bg-muted h-2 flex-1 overflow-hidden rounded-full">
+                    <div
+                      className="bg-primary h-full rounded-full"
+                      style={{ width: `${percentages[rating - 1]}%` }}
+                    />
+                  </div>
+                  <div className="w-10 text-right text-xs">
+                    {ratingCounts[rating - 1]}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      <section className="space-y-6">
+        <h3 className="sr-only">Reviews Section</h3>
+
+        {reviews.length === 0 ? (
+          <p className="text-muted-foreground py-4">
+            No reviews yet. Be the first to review this product!
+          </p>
+        ) : (
+          reviews.map((review) => (
+            <div key={review.id} className="space-y-4">
+              <div className="flex gap-4">
+                <Avatar className="h-10 w-10 border">
+                  <AvatarImage
+                    src={review.user.image || ''}
+                    alt={review.user.name}
+                  />
+                  <AvatarFallback>{review.user.name.charAt(0)}</AvatarFallback>
+                </Avatar>
+                <div className="grid gap-1">
+                  <div className="flex items-start gap-4">
+                    <div className="grid gap-0.5">
+                      <h4 className="font-semibold">{review.user.name}</h4>
+                      <time className="text-muted-foreground text-sm">
+                        {new Date(review.createdAt).toLocaleDateString()}
+                      </time>
+                    </div>
+                    <div className="ml-auto flex items-center gap-0.5">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <StarIcon
+                          key={star}
+                          className={`h-4 w-4 ${
+                            star <= review.rating
+                              ? 'fill-primary text-primary'
+                              : 'fill-muted text-muted-foreground'
+                          }`}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                  <div className="text-muted-foreground mt-2 text-sm leading-loose">
+                    <p>{review.comment}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))
+        )}
+      </section>
+    </>
+  )
+}
+
+export const ProductReviewsSkeleton: React.FC = () => (
+  <>
+    <div className="my-4 grid gap-8 md:grid-cols-[1fr_2fr]">
+      <Card className="flex flex-col items-center justify-center">
+        <div className="mb-2 text-4xl font-bold">0.0</div>
+        <div className="mb-2 flex items-center">
+          {[1, 2, 3, 4, 5].map((star) => (
+            <StarIcon
+              key={star}
+              className={`h-5 w-5 ${'fill-muted text-muted-foreground'}`}
+            />
+          ))}
+        </div>
+        <p className="text-muted-foreground mb-4 text-sm">Based on 0 reviews</p>
+      </Card>
+
+      <Card>
+        <CardContent>
+          <h3 className="mb-4 font-medium">Rating Distribution</h3>
+          <div className="space-y-2">
+            {[5, 4, 3, 2, 1].map((rating) => (
+              <div key={rating} className="flex items-center gap-2">
+                <div className="flex w-16 items-center gap-1">
+                  <span className="text-sm">{rating}</span>
+                  <StarIcon className="fill-primary text-primary h-4 w-4" />
+                </div>
+                <div className="bg-muted h-2 flex-1 overflow-hidden rounded-full">
+                  <div className="bg-primary h-full w-0 rounded-full" />
+                </div>
+                <div className="w-10 text-right text-xs">0</div>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+
+    <section className="space-y-6">
+      <h3 className="sr-only">Reviews Section</h3>
+
+      <p className="text-muted-foreground py-4">
+        No reviews yet. Be the first to review this product!
+      </p>
+    </section>
+  </>
 )
 
 export const RelatedProducts: React.FC<{ id: string }> = ({ id }) => {

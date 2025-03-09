@@ -81,6 +81,7 @@ export const productRouter = {
           take: input.limit,
           skip: input.limit * (input.page - 1),
           select: {
+            id: true,
             user: { select: { name: true, image: true } },
             rating: true,
             comment: true,

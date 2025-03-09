@@ -9,6 +9,8 @@ import { ProductCardSkeleton } from '../_components/product-card'
 import {
   ProductDetails,
   ProductDetailsSkeleton,
+  ProductReviews,
+  ProductReviewsSkeleton,
   RelatedProducts,
 } from './page.client'
 
@@ -100,6 +102,15 @@ export default async function ProductPage({ params }: Props) {
           <Suspense fallback={<ProductDetailsSkeleton />}>
             <ProductDetails id={id} />
           </Suspense>
+
+          <section className="mt-4">
+            <h2 className="sr-only">Product Reviews Section</h2>
+            <span className="text-2xl font-bold">Product Reviews</span>
+
+            <Suspense fallback={<ProductReviewsSkeleton />}>
+              <ProductReviews id={id} />
+            </Suspense>
+          </section>
 
           <section className="mt-4 grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-6">
             <h2 className="sr-only">Related Products Section</h2>
