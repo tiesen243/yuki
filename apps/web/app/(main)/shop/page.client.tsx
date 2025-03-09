@@ -103,6 +103,8 @@ const ProductFilterForm: React.FC = () => {
               </FormControl>
 
               <SelectContent>
+                <SelectItem value="">All</SelectItem>
+
                 {categories.map((category) => (
                   <SelectItem key={category.id} value={category.id}>
                     {category.name}
