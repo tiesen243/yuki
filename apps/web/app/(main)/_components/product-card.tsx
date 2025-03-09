@@ -2,6 +2,7 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
+import { useMutation } from '@tanstack/react-query'
 
 import type { RouterOutputs } from '@yuki/api'
 import { Badge } from '@yuki/ui/badge'
@@ -13,9 +14,11 @@ import {
   CardHeader,
   CardTitle,
 } from '@yuki/ui/card'
-import { ExternalLinkIcon, StarIcon } from '@yuki/ui/icons'
+import { StarIcon } from '@yuki/ui/icons'
+import { toast } from '@yuki/ui/sonner'
 import { cn } from '@yuki/ui/utils'
 
+import { useTRPC } from '@/lib/trpc/react'
 import { slugify } from '@/lib/utils'
 
 type Product = RouterOutputs['product']['getAll']['products'][number]
@@ -40,65 +43,77 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     ? parseFloat((price - (price * discount) / 100).toFixed(2))
     : null
 
+  const trpc = useTRPC()
+  const { mutate, isPending } = useMutation(
+    trpc.cart.updateCart.mutationOptions({
+      onSuccess: () => toast.success(`${name} added to cart`),
+    }),
+  )
+
   return (
     <Card className={cn('group h-fit pt-0', className)}>
-      <div className="relative overflow-hidden">
-        <Image
-          src={image}
-          alt={name}
-          width={400}
-          height={400}
-          className="aspect-square h-full w-full rounded-t-xl object-cover transition-transform duration-300 group-hover:scale-105"
-        />
+      <Link href={`/${slugify(name)}-${id}`} className="flex flex-col gap-6">
+        <div className="relative overflow-hidden rounded-t-xl">
+          <Image
+            src={image}
+            alt={name}
+            width={400}
+            height={400}
+            className="aspect-square h-full w-full rounded-t-xl object-cover transition-transform duration-300 group-hover:scale-105"
+          />
 
-        <Badge
-          variant="outline"
-          className="bg-card/70 absolute right-6 bottom-2 z-10 backdrop-blur-xl"
-        >
-          {category}
-        </Badge>
-      </div>
-
-      <CardHeader>
-        <CardTitle className="line-clamp-1">{name}</CardTitle>
-        <div className="flex items-center">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <StarIcon
-              key={i}
-              className={cn(
-                'h-4 w-4',
-                i < averageRating
-                  ? 'fill-warning-foreground text-warning-foreground'
-                  : 'fill-muted text-muted-foreground',
-              )}
-            />
-          ))}
-          <span className="text-muted-foreground ml-1 text-xs">
-            ({averageRating.toFixed(1)})
-          </span>
+          <Badge
+            variant="outline"
+            className="bg-card/70 absolute right-6 bottom-2 z-10 backdrop-blur-xl"
+          >
+            {category}
+          </Badge>
         </div>
-        <CardDescription className="inline-flex justify-between gap-1">
-          {currency}
-          {discountedPrice ?? price}
 
-          {discount && (
-            <>
-              <del className="grow">
-                {currency}
-                {price}
-              </del>
-              <Badge variant="destructive">{discount}% off</Badge>
-            </>
-          )}
-        </CardDescription>
-      </CardHeader>
+        <CardHeader>
+          <CardTitle className="line-clamp-1">{name}</CardTitle>
+          <div className="flex items-center">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <StarIcon
+                key={i}
+                className={cn(
+                  'h-4 w-4',
+                  i < averageRating
+                    ? 'fill-warning-foreground text-warning-foreground'
+                    : 'fill-muted text-muted-foreground',
+                )}
+              />
+            ))}
+            <span className="text-muted-foreground ml-1 text-xs">
+              ({averageRating.toFixed(1)})
+            </span>
+          </div>
+          <CardDescription className="inline-flex justify-between gap-1">
+            {currency}
+            {discountedPrice ?? price}
+
+            {discount && (
+              <>
+                <del className="grow">
+                  {currency}
+                  {price}
+                </del>
+                <Badge variant="destructive">{discount}% off</Badge>
+              </>
+            )}
+          </CardDescription>
+        </CardHeader>
+      </Link>
 
       <CardFooter className="flex-col gap-2">
-        <Button className="w-full">Add to cart</Button>
-        <Button variant="outline" className="w-full" asChild>
-          <Link href={`/${slugify(name)}-${id}`}>
-            View details <ExternalLinkIcon />
-          </Link>
+        <Button
+          className="w-full"
+          onClick={() => {
+            mutate({ productId: id, quantity: 1 })
+          }}
+          disabled={isPending}
+        >
+          Add to cart
         </Button>
       </CardFooter>
     </Card>
@@ -141,7 +156,6 @@ export const ProductCardSkeleton: React.FC<
 
     <CardFooter className="flex-col gap-2">
       <Button className="w-full animate-pulse" />
-      <Button variant="outline" className="w-full animate-pulse" />
     </CardFooter>
   </Card>
 )
