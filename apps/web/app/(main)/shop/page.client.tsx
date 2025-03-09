@@ -66,7 +66,11 @@ const ProductFilterForm: React.FC = () => {
   const [query, setSearchParams] = useQueryStates(shopSearchParsers)
 
   const handleSubmit = (formData: typeof query) => {
-    void setSearchParams({ ...query, ...formData })
+    void setSearchParams({
+      ...query,
+      ...formData,
+      ...(formData.q !== query.q && { page: 1 }),
+    })
   }
 
   return (
