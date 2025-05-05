@@ -11,7 +11,7 @@
   ],
   "scripts": {
     "build": "turbo run build",
-    "bump-deps": "bunx --bun npm-check-updates --deep -u -x react-day-picker && bun install",
+    "bump-deps": "bunx --bun npm-check-updates --deep -u && bun install",
     "clean": "git clean -xdf node_modules",
     "clean:workspaces": "turbo run clean",
     "db:generate": "turbo -F @yuki/db gnr",
@@ -29,14 +29,14 @@
   },
   "prettier": "@yuki/prettier-config",
   "devDependencies": {
-    "@turbo/gen": "2.4.4",
+    "@turbo/gen": "2.5.2",
     "@yuki/prettier-config": "workspace:*",
     "@yuki/tsconfig": "workspace:*",
     "prettier": "^3.5.3",
-    "turbo": "2.4.4",
-    "typescript": "^5.8.2"
+    "turbo": "2.5.2",
+    "typescript": "^5.8.3"
   },
-  "packageManager": "bun@1.2.4",
+  "packageManager": "bun@1.2.12",
   "engines": {
     "bun": ">=1.2.2",
     "node": ">=20.18.1"

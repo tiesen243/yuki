@@ -26,7 +26,7 @@
   "dependencies": {
     "@uploadthing/react": "^7.3.0",
     "@yuki/auth": "workspace:*",
-    "uploadthing": "^7.5.2"
+    "uploadthing": "^7.6.0"
   },
   "devDependencies": {
     "@yuki/eslint-config": "workspace:*",
