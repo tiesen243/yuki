@@ -35,13 +35,7 @@ export const LoginForm: React.FC = () => {
     onSuccess: async (session) => {
       await refresh(session.sessionToken)
       await setSessionCookie(session)
-      router.push(
-        redirectTo.startsWith('http://') ||
-          redirectTo.startsWith('https://') ||
-          redirectTo.startsWith('exp://')
-          ? `${redirectTo}?token=${session.sessionToken}`
-          : redirectTo,
-      )
+      router.push(redirectTo)
 
       toast.success('You have successfully logged in!')
     },

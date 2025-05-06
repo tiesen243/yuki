@@ -1,8 +1,6 @@
 import { relations } from 'drizzle-orm'
 import { pgTable, primaryKey } from 'drizzle-orm/pg-core'
 
-import { posts } from './post'
-
 export const users = pgTable('user', (t) => ({
   id: t.uuid().primaryKey().defaultRandom().notNull(),
   name: t.varchar({ length: 255 }).notNull(),
@@ -18,7 +16,6 @@ export const users = pgTable('user', (t) => ({
 export const usersRelations = relations(users, ({ many }) => ({
   accounts: many(accounts),
   sessions: many(sessions),
-  posts: many(posts),
 }))
 
 export const accounts = pgTable(

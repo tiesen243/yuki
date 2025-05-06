@@ -2,7 +2,7 @@
 
 import type { AuthOptions } from './core/auth'
 import { Auth } from './core/auth'
-import { DiscordProvider } from './providers/discord'
+import { FacebookProvider } from './providers/facebook'
 import { GoogleProvider } from './providers/google'
 
 /**
@@ -18,7 +18,7 @@ import { GoogleProvider } from './providers/google'
 const authOptions = {
   cookieKey: 'auth_token',
   providers: {
-    discord: new DiscordProvider(),
+    facebook: new FacebookProvider(),
     google: new GoogleProvider(),
   },
 } satisfies AuthOptions

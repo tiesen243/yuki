@@ -2,7 +2,6 @@ import type { inferRouterInputs, inferRouterOutputs } from '@trpc/server'
 import { fetchRequestHandler } from '@trpc/server/adapters/fetch'
 
 import { authRouter } from './routers/auth'
-import { postRouter } from './routers/post'
 import {
   createCallerFactory,
   createTRPCContext,
@@ -11,7 +10,6 @@ import {
 
 const appRouter = createTRPCRouter({
   auth: authRouter,
-  post: postRouter,
 })
 
 /**

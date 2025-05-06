@@ -4,7 +4,7 @@ import { useQueryStates } from 'nuqs'
 
 import { Button } from '@yuki/ui/button'
 import { CardFooter } from '@yuki/ui/card'
-import { DiscordIcon, GoogleIcon } from '@yuki/ui/icons'
+import { FacebookIcon, GoogleIcon } from '@yuki/ui/icons'
 
 import { redirect } from './_search-params'
 
@@ -22,9 +22,9 @@ export const OauthButtons: React.FC = () => {
       <form className="grid grid-cols-2 gap-4">
         <input type="hidden" name="redirect_to" value={redirectTo} />
 
-        <Button variant="outline" formAction="/api/auth/discord">
-          <DiscordIcon />
-          <span className="sr-only md:not-sr-only">Discord</span>
+        <Button variant="outline" formAction="/api/auth/facebook">
+          <FacebookIcon />
+          <span className="sr-only md:not-sr-only">Facebook</span>
         </Button>
         <Button variant="outline" formAction="/api/auth/google">
           <GoogleIcon />
