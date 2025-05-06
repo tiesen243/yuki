@@ -9,10 +9,10 @@
 
 import { initTRPC, TRPCError } from '@trpc/server'
 import superjson from 'superjson'
-import { ZodError } from 'zod'
+import { treeifyError, ZodError } from 'zod'
 
 import type { SessionResult } from '@yuki/auth'
-import { auth, Session } from '@yuki/auth'
+import { auth, Password, Session } from '@yuki/auth'
 import { db } from '@yuki/db'
 
 /**
@@ -23,9 +23,10 @@ import { db } from '@yuki/db'
 const isomorphicGetSession = async (
   headers: Headers,
 ): Promise<SessionResult> => {
-  const authToken = headers.get('Authorization') ?? null
+  const authToken = headers.get('Authorization') ?? ''
+
   if (authToken)
-    return new Session().validateSessionToken(authToken.replace('Bearer ', ''))
+    return new Session().validateToken(authToken.replace('Bearer ', ''))
   return auth()
 }
 
@@ -55,6 +56,8 @@ export const createTRPCContext = async (opts: { headers: Headers }) => {
   return {
     db,
     session,
+    sessionService: new Session(),
+    passwordService: new Password(),
   }
 }
 
@@ -66,6 +69,11 @@ export const createTRPCContext = async (opts: { headers: Headers }) => {
  */
 const t = initTRPC.context<typeof createTRPCContext>().create({
   transformer: superjson,
+  sse: {
+    maxDurationMs: 5 * 60 * 1_000, // 5 minutes
+    ping: { enabled: true, intervalMs: 3_000 },
+    client: { reconnectAfterInactivityMs: 5_000 },
+  },
   errorFormatter: ({ shape, error }) => ({
     ...shape,
     message:
@@ -73,9 +81,7 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
     data: {
       ...shape.data,
       zodError:
-        error.cause instanceof ZodError
-          ? error.cause.flatten().fieldErrors
-          : null,
+        error.cause instanceof ZodError ? treeifyError(error.cause).errors : {},
     },
   }),
 })
@@ -100,19 +106,13 @@ export const createCallerFactory = t.createCallerFactory
 export const createTRPCRouter = t.router
 
 /**
- * Middleware for timing procedure execution and adding an articifial delay in development.
+ * Middleware for timing procedure execution.
  *
  * You can remove this if you don't like it, but it can help catch unwanted waterfalls by simulating
  * network latency that would occur in production but not in local development.
  */
 const timingMiddleware = t.middleware(async ({ next, path }) => {
   const start = Date.now()
-
-  if (t._config.isDev) {
-    // artificial delay in dev 100-500ms
-    const waitMs = Math.floor(Math.random() * 400) + 100
-    await new Promise((resolve) => setTimeout(resolve, waitMs))
-  }
 
   const result = await next()
 
@@ -151,18 +151,3 @@ export const protectedProcedure = t.procedure
       },
     })
   })
-
-/**
- * Restricted (ADMIM or SELLER) procedure
- *
- * If you want a query or mutation to ONLY be accessible to ADMIN or SELLER users, use this. It verifies
- * the session is valid and checks if the user has either ADMIN or SELLER role.
- *
- * @see https://trpc.io/docs/procedures
- */
-export const restrictedProcedure = protectedProcedure.use(({ ctx, next }) => {
-  if (!['ADMIN', 'SELLER'].includes(ctx.session.user.role))
-    throw new TRPCError({ code: 'FORBIDDEN' })
-
-  return next({ ctx })
-})

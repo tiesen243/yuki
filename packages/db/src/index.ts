@@ -1,28 +1,18 @@
-import { neonConfig, Pool } from '@neondatabase/serverless'
-import { PrismaNeon } from '@prisma/adapter-neon'
-import { PrismaClient } from '@prisma/client'
-import ws from 'ws'
+import { Pool } from '@neondatabase/serverless'
+import { drizzle } from 'drizzle-orm/neon-serverless'
 
-neonConfig.poolQueryViaFetch = true
-neonConfig.webSocketConstructor = ws
+import { env } from '@yuki/env'
 
-const pool = new Pool({ connectionString: process.env.DATABASE_URL })
-const adapter = new PrismaNeon(pool)
+import * as schema from './schema'
 
-const createPrismaClient = () =>
-  new PrismaClient({
-    adapter,
-    log:
-      process.env.NODE_ENV === 'development'
-        ? ['query', 'error', 'warn']
-        : ['error'],
-  })
-
-const globalForPrisma = globalThis as unknown as {
-  prisma: ReturnType<typeof createPrismaClient> | undefined
+const createDrizzleClient = () => {
+  const pool = new Pool({ connectionString: env.DATABASE_URL })
+  return drizzle({ client: pool, schema, casing: 'snake_case' })
 }
+const globalForDrizzle = globalThis as unknown as {
+  db: ReturnType<typeof createDrizzleClient> | undefined
+}
+export const db = globalForDrizzle.db ?? createDrizzleClient()
+if (env.NODE_ENV !== 'production') globalForDrizzle.db = db
 
-export const db = globalForPrisma.prisma ?? createPrismaClient()
-if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = db
-
-export * from '@prisma/client'
+export * from 'drizzle-orm/sql'

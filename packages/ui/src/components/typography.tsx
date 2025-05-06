@@ -24,9 +24,6 @@ const typographyVariants = cva('font-sans text-base leading-7 font-normal', {
     },
     color: {
       default: 'text-foreground',
-      success: 'text-success-foreground',
-      info: 'text-info-foreground',
-      warning: 'text-warning-foreground',
       desctructive: 'text-destructive-foreground',
       muted: 'text-muted-foreground',
     },

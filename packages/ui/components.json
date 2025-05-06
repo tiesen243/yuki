@@ -11,7 +11,7 @@
     "prefix": ""
   },
   "aliases": {
-    "components": "@workspace/ui",
+    "components": "@yuki/ui",
     "utils": "@yuki/ui/utils",
     "ui": "@yuki/ui/components",
     "lib": "@yuki/ui",

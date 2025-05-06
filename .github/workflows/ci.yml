@@ -42,9 +42,6 @@ jobs:
         shell: bash
         run: cp .env.example .env
 
-      - name: Generate prisma client
-        run: bun db:generate
-
       - name: Lint
         run: bun lint && bun lint:ws
 
@@ -55,9 +52,6 @@ jobs:
 
       - name: Setup
         uses: ./tooling/github/setup
-
-      - name: Generate prisma client
-        run: bun db:generate
 
       - name: Typecheck
         run: bun typecheck

@@ -6,4 +6,4 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export * from 'next-themes'
+export { ThemeProvider, useTheme } from 'next-themes'
