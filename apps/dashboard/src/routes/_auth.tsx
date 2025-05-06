@@ -2,7 +2,7 @@ import { Outlet } from 'react-router'
 
 import { Button } from '@yuki/ui/button'
 import { Card, CardFooter } from '@yuki/ui/card'
-import { DiscordIcon, GoogleIcon } from '@yuki/ui/icons'
+import { FacebookIcon, GoogleIcon } from '@yuki/ui/icons'
 
 export default function AuthLayout() {
   return (
@@ -18,9 +18,9 @@ export default function AuthLayout() {
           </div>
 
           <form className="grid grid-cols-2 gap-4">
-            <Button variant="outline" formAction="/api/auth/oauth/discord">
-              <DiscordIcon />
-              <span className="sr-only md:not-sr-only">Discord</span>
+            <Button variant="outline" formAction="/api/auth/oauth/facebook">
+              <FacebookIcon />
+              <span className="sr-only md:not-sr-only">Facebook</span>
             </Button>
             <Button variant="outline" formAction="/api/auth/oauth/google">
               <GoogleIcon />
