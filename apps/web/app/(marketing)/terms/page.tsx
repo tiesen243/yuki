@@ -3,6 +3,7 @@ import { ChevronRight } from 'lucide-react'
 
 import { Typography } from '@yuki/ui/typography'
 
+import { createMetadata } from '@/lib/metadata'
 import { PrintButton } from '../_print-button'
 
 export default function TermsOfServicePage() {
@@ -278,3 +279,10 @@ export default function TermsOfServicePage() {
     </main>
   )
 }
+
+export const metadata = createMetadata({
+  title: 'Terms of Service',
+  description:
+    'Read our Terms of Service to understand your rights and responsibilities when using Yuki.',
+  openGraph: { url: '/terms' },
+})

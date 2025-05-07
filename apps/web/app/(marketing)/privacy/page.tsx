@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { ChevronRightIcon } from '@yuki/ui/icons'
 import { Typography } from '@yuki/ui/typography'
 
+import { createMetadata } from '@/lib/metadata'
 import { PrintButton } from '../_print-button'
 
 export default function PrivacyPolicyPage() {
@@ -343,3 +344,10 @@ export default function PrivacyPolicyPage() {
     </main>
   )
 }
+
+export const metadata = createMetadata({
+  title: 'Privacy Policy',
+  description:
+    'Read our Privacy Policy to understand how we collect, use, and protect your personal information.',
+  openGraph: { url: '/privacy' },
+})

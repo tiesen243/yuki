@@ -1,3 +1,4 @@
+import { createMetadata } from '@/lib/metadata'
 import { AppShowcase } from './_components/app-showcase'
 import { CtaSection } from './_components/cta-section'
 import { FeatureSection } from './_components/feature-section'
@@ -12,7 +13,7 @@ export default function LandingPage() {
     <>
       <Header />
       <SmoothScrollHelper />
-      <main className="scroll-smooth">
+      <main>
         <HeroSection />
         <FeatureSection />
         <AppShowcase />
@@ -23,3 +24,10 @@ export default function LandingPage() {
     </>
   )
 }
+
+export const metadata = createMetadata({
+  title: 'Yuki - Comprehensive E-Commerce Platform',
+  description:
+    'Discover Yuki, your ultimate shopping destination. Explore our extensive catalog featuring fashion, electronics, home goods, and more with personalized recommendations tailored to your preferences.',
+  openGraph: { url: '/home' },
+})

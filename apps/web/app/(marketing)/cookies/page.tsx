@@ -11,6 +11,7 @@ import {
 } from '@yuki/ui/table'
 import { Typography } from '@yuki/ui/typography'
 
+import { createMetadata } from '@/lib/metadata'
 import { getBaseUrl } from '@/lib/utils'
 import { PrintButton } from '../_print-button'
 
@@ -448,3 +449,10 @@ export default function CookiePolicyPage() {
     </main>
   )
 }
+
+export const metadata = createMetadata({
+  title: 'Cookie Policy',
+  description:
+    'Learn about our cookie policy, how we use cookies, and your rights regarding them.',
+  openGraph: { url: '/cookies' },
+})
