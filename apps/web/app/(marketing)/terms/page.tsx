@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import { ChevronRight } from 'lucide-react'
 
 import { Typography } from '@yuki/ui/typography'
 
@@ -9,15 +8,6 @@ import { PrintButton } from '../_print-button'
 export default function TermsOfServicePage() {
   return (
     <main className="container py-4">
-      {/* Breadcrumb */}
-      <nav className="text-muted-foreground mb-6 flex items-center text-sm">
-        <Link href="/home" className="hover:text-foreground transition-colors">
-          Home
-        </Link>
-        <ChevronRight className="mx-2 h-4 w-4" />
-        <span className="text-foreground font-medium">Terms of Service</span>
-      </nav>
-
       {/* Header */}
       <div className="mb-10">
         <Typography variant="h1">Terms of Service</Typography>

@@ -1,6 +1,5 @@
 import Link from 'next/link'
 
-import { ChevronRightIcon } from '@yuki/ui/icons'
 import {
   Table,
   TableBody,
@@ -18,15 +17,6 @@ import { PrintButton } from '../_print-button'
 export default function CookiePolicyPage() {
   return (
     <main className="container py-4">
-      {/* Breadcrumb */}
-      <nav className="text-muted-foreground mb-6 flex items-center text-sm">
-        <Link href="/home" className="hover:text-foreground transition-colors">
-          Home
-        </Link>
-        <ChevronRightIcon className="mx-2 h-4 w-4" />
-        <span className="text-foreground font-medium">Cookie Policy</span>
-      </nav>
-
       {/* Header */}
       <div className="mb-10">
         <Typography variant="h1">Cookie Policy</Typography>

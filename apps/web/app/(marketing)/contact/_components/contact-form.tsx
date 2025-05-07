@@ -2,7 +2,6 @@
 
 import type React from 'react'
 import { useState } from 'react'
-import { CheckCircle2 } from 'lucide-react'
 import { z } from 'zod'
 
 import { Button } from '@yuki/ui/button'
@@ -15,6 +14,7 @@ import {
   FormMessage,
   useForm,
 } from '@yuki/ui/form'
+import { CheckCircle2Icon } from '@yuki/ui/icons'
 import { Input } from '@yuki/ui/input'
 import {
   Select,
@@ -49,7 +49,7 @@ export function ContactForm() {
     return (
       <div className="border-success bg-success/20 rounded-lg border p-6 text-center">
         <div className="mb-4 flex justify-center">
-          <CheckCircle2 className="h-12 w-12 text-green-500" />
+          <CheckCircle2Icon className="h-12 w-12 text-green-500" />
         </div>
         <Typography variant="h4" className="mb-2">
           Thank you!

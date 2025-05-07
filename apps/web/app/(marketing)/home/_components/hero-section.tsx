@@ -1,8 +1,8 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowRightIcon, PlayIcon } from 'lucide-react'
 
 import { Button } from '@yuki/ui/button'
+import { ArrowRightIcon, PlayIcon } from '@yuki/ui/icons'
 import { Typography } from '@yuki/ui/typography'
 
 export function HeroSection() {

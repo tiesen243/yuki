@@ -2,9 +2,9 @@
 
 import type React from 'react'
 import { useState } from 'react'
-import { Search } from 'lucide-react'
 
 import { Button } from '@yuki/ui/button'
+import { SearchIcon } from '@yuki/ui/icons'
 import { Input } from '@yuki/ui/input'
 import { Typography } from '@yuki/ui/typography'
 
@@ -32,7 +32,7 @@ export function FaqSearch() {
       </Typography>
       <form onSubmit={handleSearch} className="flex gap-2">
         <div className="relative flex-1">
-          <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
+          <SearchIcon className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
           <Input
             type="search"
             placeholder="Search for answers..."

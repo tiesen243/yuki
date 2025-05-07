@@ -1,8 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { ChevronDownIcon } from 'lucide-react'
 
+import { ChevronDownIcon } from '@yuki/ui/icons'
 import { Typography } from '@yuki/ui/typography'
 import { cn } from '@yuki/ui/utils'
 
