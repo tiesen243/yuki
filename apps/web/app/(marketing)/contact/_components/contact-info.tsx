@@ -20,11 +20,8 @@ export function ContactInfo() {
               Email
             </Typography>
             <Typography variant="p" color="muted">
-              <a
-                href="mailto:support@yukiapp.com"
-                className="hover:text-primary"
-              >
-                support@yukiapp.com
+              <a href="mailto:support@yuki.com" className="hover:text-primary">
+                support@yuki.com
               </a>
             </Typography>
           </div>
@@ -51,7 +48,7 @@ export function ContactInfo() {
               Address
             </Typography>
             <Typography variant="p" color="muted">
-              123 Fashion Street
+              123 Skibidi Street
               <br />
               Tokyo, Japan 100-0001
             </Typography>
@@ -80,33 +77,29 @@ export function ContactInfo() {
           Connect with us
         </Typography>
         <div className="flex space-x-4">
-          <a
-            href="https://instagram.com/yukiapp"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bg-muted/30 text-muted-foreground hover:bg-primary/10 hover:text-primary rounded-full p-2.5 transition-colors"
-            aria-label="Instagram"
-          >
-            <InstagramIcon className="h-5 w-5" />
-          </a>
-          <a
-            href="https://twitter.com/yukiapp"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bg-muted/30 text-muted-foreground hover:bg-primary/10 hover:text-primary rounded-full p-2.5 transition-colors"
-            aria-label="Twitter"
-          >
-            <XFormerTwitterIcon className="h-5 w-5" />
-          </a>
-          <a
-            href="https://facebook.com/yukiapp"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bg-muted/30 text-muted-foreground hover:bg-primary/10 hover:text-primary rounded-full p-2.5 transition-colors"
-            aria-label="Facebook"
-          >
-            <FacebookIcon className="h-5 w-5" />
-          </a>
+          {[
+            {
+              href: 'https://facebook.com/tiesen243.nanoda',
+              icon: FacebookIcon,
+            },
+            {
+              href: 'https://instagram.com/tiesen243.nanoda',
+              icon: InstagramIcon,
+            },
+            { href: 'https://x.com/tiesen243', icon: XFormerTwitterIcon },
+          ].map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-muted/30 text-muted-foreground hover:bg-primary/10 hover:text-primary rounded-full p-2.5 transition-colors"
+              aria-label={link.href}
+            >
+              <link.icon className="size-6" />
+              <span className="sr-only">Link to {link.href}</span>
+            </a>
+          ))}
         </div>
       </div>
     </div>

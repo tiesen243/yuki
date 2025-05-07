@@ -20,7 +20,7 @@ export function MapSection() {
         <Typography variant="p" className="text-sm">
           <strong>Yuki Headquarters</strong>
           <br />
-          123 Fashion Street, Tokyo, Japan 100-0001
+          123 Skibidi Street, Tokyo, Japan 100-0001
         </Typography>
         <a
           href="https://maps.google.com/?q=Tokyo+Japan"

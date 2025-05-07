@@ -17,7 +17,7 @@ import { PrintButton } from '../_print-button'
 
 export default function CookiePolicyPage() {
   return (
-    <main className="container max-w-prose py-8">
+    <main className="container py-4">
       {/* Breadcrumb */}
       <nav className="text-muted-foreground mb-6 flex items-center text-sm">
         <Link href="/home" className="hover:text-foreground transition-colors">
@@ -406,7 +406,7 @@ export default function CookiePolicyPage() {
         <Typography as="address">
           Yuki Inc.
           <br />
-          123 Fashion Street
+          123 Skibidi Street
           <br />
           Tokyo, Japan
           <br />
