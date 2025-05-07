@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { ArrowRightIcon, PlayIcon } from 'lucide-react'
 
 import { Button } from '@yuki/ui/button'
+import { Typography } from '@yuki/ui/typography'
 
 import Yuki_1 from '@/public/assets/yuki-1.png'
 
@@ -16,14 +17,14 @@ export function HeroSection() {
               <div className="bg-primary/10 text-primary inline-block rounded-lg px-3 py-1 text-sm">
                 Introducing Yuki
               </div>
-              <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl">
+              <Typography variant="h1">
                 Elevate your shopping experience
-              </h1>
-              <p className="text-muted-foreground max-w-[600px] md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+              </Typography>
+              <Typography className="text-muted-foreground max-w-[600px] md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                 Discover a new way to shop with Yuki. Personalized
                 recommendations, seamless checkout, and a beautiful interface
                 designed for the modern shopper.
-              </p>
+              </Typography>
             </div>
             <div className="flex flex-col gap-2 min-[400px]:flex-row">
               <Button size="lg" asChild>
@@ -74,7 +75,7 @@ export function HeroSection() {
           </div>
         </div>
       </div>
-      <div className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80">
+      <div className="bg-card absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80">
         <div
           className="from-primary/20 to-primary/5 relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
           style={{

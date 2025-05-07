@@ -9,6 +9,7 @@ import {
   SearchIcon,
   ShoppingBagIcon,
 } from '@yuki/ui/icons'
+import { Typography } from '@yuki/ui/typography'
 
 import Yuki_2 from '@/public/assets/yuki-2.png'
 import Yuki_3 from '@/public/assets/yuki-3.png'
@@ -18,13 +19,11 @@ export function AppShowcase() {
     <section id="showcase" className="py-20 md:py-32">
       <div className="container px-4 md:px-6">
         <div className="mx-auto flex max-w-[58rem] flex-col items-center justify-center gap-4 text-center">
-          <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-            Experience shopping reimagined
-          </h2>
-          <p className="text-muted-foreground max-w-[85%] md:text-xl/relaxed">
+          <Typography variant="h2">Experience shopping reimagined</Typography>
+          <Typography className="text-muted-foreground max-w-[85%] md:text-xl/relaxed">
             See how Yuki transforms the way you discover and purchase products
             online.
-          </p>
+          </Typography>
         </div>
 
         <div className="mt-16 grid gap-12 md:grid-cols-2">
@@ -35,10 +34,10 @@ export function AppShowcase() {
                 <span>Discover</span>
               </div>
               <h3 className="text-2xl font-bold">Curated Collections</h3>
-              <p className="text-muted-foreground">
+              <Typography color="muted">
                 Browse thoughtfully curated collections based on trends,
                 seasons, and your personal style preferences.
-              </p>
+              </Typography>
             </div>
             <div className="space-y-2">
               <div className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-sm font-semibold">
@@ -46,10 +45,10 @@ export function AppShowcase() {
                 <span>Personalize</span>
               </div>
               <h3 className="text-2xl font-bold">Tailored For You</h3>
-              <p className="text-muted-foreground">
+              <Typography color="muted">
                 The more you shop, the better we understand your preferences,
                 creating a shopping experience that&apos;s uniquely yours.
-              </p>
+              </Typography>
             </div>
             <div className="pt-4">
               <Button asChild>

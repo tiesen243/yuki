@@ -14,7 +14,7 @@ export function Header() {
     <header className="bg-sidebar/95 supports-[backdrop-filter]:bg-sidebar/60 sticky top-0 z-50 w-full border-b backdrop-blur-xl backdrop-saturate-150">
       <div className="container flex h-16 items-center justify-between">
         <div className="flex items-center gap-6 md:gap-10">
-          <Link href="/" className="flex items-center space-x-2">
+          <Link href="/home" className="flex items-center space-x-2">
             <Image
               src="/assets/logo.svg"
               alt="Yuki Logo"
