@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 
 import { Button } from '@yuki/ui/button'
 import {
@@ -34,6 +34,13 @@ export default function RegisterPage() {
 
       <CardContent>
         <RegisterForm />
+
+        <p className="mt-4 text-sm">
+          Already have an account?{' '}
+          <Link to="/login" className="hover:underline">
+            Login
+          </Link>
+        </p>
       </CardContent>
     </>
   )

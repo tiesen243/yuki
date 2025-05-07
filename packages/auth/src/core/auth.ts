@@ -17,11 +17,17 @@ export interface AuthOptions<T extends Providers = Providers> {
 }
 
 export class Auth<TProviders extends Providers> {
-  private readonly db = db
   private readonly session = new Session()
+  private readonly providers: TProviders
+  private readonly db = db
 
   private readonly COOKIE_KEY: string
-  private readonly providers: TProviders
+  private readonly CSRF_COOKIE = {
+    Path: '/',
+    HttpOnly: 'true',
+    SameSite: 'Lax',
+    Secure: env.NODE_ENV === 'production' ? 'true' : 'false',
+  }
 
   constructor(options: AuthOptions<TProviders>) {
     this.COOKIE_KEY = options.cookieKey
@@ -38,8 +44,6 @@ export class Auth<TProviders extends Providers> {
   }
 
   public async handlers(req: Request): Promise<Response> {
-    const url = new URL(req.url)
-
     let response: Response = Response.json(
       { error: 'Not found' },
       { status: 404 },
@@ -50,16 +54,8 @@ export class Auth<TProviders extends Providers> {
         response = Response.json('', { status: 204 })
       } else if (req.method === 'GET') {
         response = await this.handleGetRequests(req)
-      } else if (
-        req.method === 'POST' &&
-        url.pathname === '/api/auth/sign-out'
-      ) {
-        await this.signOut(req)
-        response = new Response('', {
-          headers: new Headers({ Location: '/' }),
-          status: 302,
-        })
-        response.headers.set('Set-Cookie', this.deleteCookie(this.COOKIE_KEY))
+      } else if (req.method === 'POST') {
+        response = await this.handlePostRequests(req)
       }
     } catch (error) {
       response = this.handleError(error)
@@ -143,32 +139,23 @@ export class Auth<TProviders extends Providers> {
       codeVerifier,
     )
 
-    const response = new Response('', {
-      headers: new Headers({ Location: authorizationUrl.toString() }),
-      status: 302,
-    })
+    const response = this.createRedirectResponse(authorizationUrl)
     response.headers.append(
       'Set-Cookie',
       this.setCookie('oauth_state', state, {
-        Path: '/',
-        HttpOnly: '',
-        SameSite: 'Lax',
+        Expires: new Date(Date.now() + 60 * 1000).toUTCString(),
       }),
     )
     response.headers.append(
       'Set-Cookie',
       this.setCookie('code_verifier', codeVerifier, {
-        Path: '/',
-        HttpOnly: '',
-        SameSite: 'Lax',
+        Expires: new Date(Date.now() + 60 * 1000).toUTCString(),
       }),
     )
     response.headers.append(
       'Set-Cookie',
       this.setCookie('redirect_to', redirectTo, {
-        Path: '/',
-        HttpOnly: '',
-        SameSite: 'Lax',
+        Expires: new Date(Date.now() + 60 * 1000).toUTCString(),
       }),
     )
 
@@ -208,17 +195,13 @@ export class Auth<TProviders extends Providers> {
       redirectLocation = redirectUrl.href
     }
 
-    const response = new Response('', {
-      headers: new Headers({ Location: redirectLocation }),
-      status: 302,
-    })
+    const response = this.createRedirectResponse(
+      new URL(redirectLocation, req.url),
+    )
     response.headers.set(
       'Set-Cookie',
       this.setCookie(this.COOKIE_KEY, session.sessionToken, {
-        Path: '/',
-        HttpOnly: 'true',
-        SameSite: 'Lax',
-        Secure: env.NODE_ENV === 'production' ? 'true' : 'false',
+        ...this.CSRF_COOKIE,
         Expires: session.expires.toUTCString(),
       }),
     )
@@ -229,20 +212,54 @@ export class Auth<TProviders extends Providers> {
     return response
   }
 
+  private async handlePostRequests(req: Request): Promise<Response> {
+    const url = new URL(req.url)
+    const path = url.pathname
+
+    let response: Response = Response.json(
+      { error: 'Not found' },
+      { status: 404 },
+    )
+
+    if (path === '/api/auth/sign-in') {
+      const { userId } = (await req.json()) as { userId: string }
+      if (!userId)
+        return Response.json({ error: 'Missing userId' }, { status: 400 })
+
+      const sessionCookie = await this.session.create(userId)
+      response = Response.json({ token: sessionCookie.sessionToken })
+      response.headers.set(
+        'Set-Cookie',
+        this.setCookie(this.COOKIE_KEY, sessionCookie.sessionToken, {
+          ...this.CSRF_COOKIE,
+          Expires: sessionCookie.expires.toUTCString(),
+        }),
+      )
+    } else if (path === '/api/auth/sign-out') {
+      await this.signOut(req)
+      response = this.createRedirectResponse(new URL('/', req.url))
+      response.headers.set('Set-Cookie', this.deleteCookie(this.COOKIE_KEY))
+    }
+
+    return response
+  }
+
   private handleError(error: unknown): Response {
+    let response = Response.json(
+      { error: 'An unknown error occurred' },
+      { status: 400 },
+    )
+
     if (error instanceof OAuth2RequestError)
-      return Response.json(
+      response = Response.json(
         { error: error.message, description: error.description },
         { status: 400 },
       )
 
     if (error instanceof Error)
-      return Response.json({ error: error.message }, { status: 400 })
+      response = Response.json({ error: error.message }, { status: 400 })
 
-    return Response.json(
-      { error: 'An unknown error occurred' },
-      { status: 400 },
-    )
+    return response
   }
 
   private async createUser(data: {
@@ -254,7 +271,6 @@ export class Auth<TProviders extends Providers> {
   }): Promise<typeof users.$inferSelect> {
     const { provider, providerAccountId, email } = data
 
-    // Check for existing account with this provider
     const existingAccount = await this.db.query.accounts.findFirst({
       where: (accounts, { and, eq }) =>
         and(
@@ -265,7 +281,6 @@ export class Auth<TProviders extends Providers> {
     })
     if (existingAccount?.user) return existingAccount.user
 
-    // Check for existing user with this email
     const existingUser = await this.db.query.users.findFirst({
       where: (user, { eq }) => eq(user.email, email),
     })

@@ -19,21 +19,16 @@ export const authRouter = {
         where: (users, { eq }) => eq(users.email, input.email),
       })
 
-      if (!user)
-        throw new TRPCError({ code: 'NOT_FOUND', message: 'User not found' })
-      if (!user.password)
+      if (
+        !user?.password ||
+        !ctx.passwordService.verify(input.password, user.password)
+      )
         throw new TRPCError({
           code: 'UNAUTHORIZED',
           message: 'Incorrect username or password',
         })
 
-      if (!ctx.passwordService.verify(input.password, user.password))
-        throw new TRPCError({
-          code: 'UNAUTHORIZED',
-          message: 'Incorrect username or password',
-        })
-
-      return ctx.sessionService.create(user.id)
+      return user.id
     }),
 
   signUp: publicProcedure
@@ -46,10 +41,10 @@ export const authRouter = {
       if (user)
         throw new TRPCError({
           code: 'CONFLICT',
-          message: 'User already exists',
+          message: 'User with this email already exists',
         })
 
-      return await ctx.db
+      await ctx.db
         .insert(users)
         .values({
           name: input.name,
@@ -58,6 +53,8 @@ export const authRouter = {
           password: ctx.passwordService.hash(input.password),
         })
         .returning()
+
+      return true
     }),
 
   changePassword: protectedProcedure
@@ -75,10 +72,12 @@ export const authRouter = {
           message: 'Invalid password',
         })
 
-      return await ctx.db
+      await ctx.db
         .update(users)
         .set({ password: ctx.passwordService.hash(input.newPassword) })
         .where(eq(users.id, ctx.session.user.id))
         .returning()
+
+      return true
     }),
 } satisfies TRPCRouterRecord

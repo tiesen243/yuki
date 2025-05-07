@@ -20,7 +20,6 @@ import { signInSchema } from '@yuki/validators/auth'
 
 import { useTRPC } from '@/lib/trpc/react'
 import { redirect } from '../_search-params'
-import { setSessionCookie } from './page.action'
 
 export const LoginForm: React.FC = () => {
   const [{ redirectTo }] = useQueryStates(redirect.parsers, redirect.configs)
@@ -32,12 +31,35 @@ export const LoginForm: React.FC = () => {
     schema: signInSchema,
     defaultValues: { email: '', password: '' },
     submitFn: trpcClient.auth.signIn.mutate,
-    onSuccess: async (session) => {
-      await refresh(session.sessionToken)
-      await setSessionCookie(session)
-      router.push(redirectTo)
+    onSuccess: async (userId) => {
+      try {
+        const res = await fetch('/api/auth/sign-in', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId }),
+        })
 
-      toast.success('You have successfully logged in!')
+        if (!res.ok) {
+          const errorData = await res.text()
+          toast.error(`Failed to sign in: ${errorData || 'Unknown error'}`)
+          return
+        }
+
+        const { token } = (await res.json()) as { token: string }
+        await refresh(token)
+
+        toast.success('You have successfully logged in!')
+
+        // Determine redirect URL with cleaner conditional
+        const url = /^(https?|exp):\/\//.test(redirectTo)
+          ? `${redirectTo}${redirectTo.includes('?') ? '&' : '?'}token=${token}`
+          : redirectTo
+
+        router.push(url)
+      } catch (error) {
+        console.error('Login error:', error)
+        toast.error('An unexpected error occurred')
+      }
     },
     onError: (error) => {
       toast.error(error)
