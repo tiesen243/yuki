@@ -7,10 +7,12 @@ import { cn } from '@yuki/ui/utils'
 const typographyVariants = cva('font-sans text-base leading-7 font-normal', {
   variants: {
     variant: {
-      h1: 'scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl',
-      h2: 'scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0',
-      h3: 'scroll-m-20 text-2xl font-semibold tracking-tight',
-      h4: 'scroll-m-20 text-xl font-semibold tracking-tight',
+      h1: 'scroll-m-20 text-5xl font-extrabold tracking-tight lg:text-6xl',
+      h2: 'scroll-m-20 pb-2 text-4xl font-semibold tracking-tight first:mt-0 lg:text-5xl',
+      h3: 'scroll-m-20 text-3xl font-semibold tracking-tight lg:text-4xl',
+      h4: 'scroll-m-20 text-2xl font-semibold tracking-tight lg:text-3xl',
+      h5: 'scroll-m-20 text-xl font-semibold tracking-tight lg:text-2xl',
+      h6: 'scroll-m-20 text-lg font-semibold tracking-tight lg:text-xl',
       p: 'leading-7 [&:not(:first-child)]:mt-6',
       ul: 'my-6 ml-6 list-disc [&>li]:mt-2',
       ol: '"my-6 [&>li]:mt-2" ml-6 list-decimal',
@@ -24,7 +26,10 @@ const typographyVariants = cva('font-sans text-base leading-7 font-normal', {
     },
     color: {
       default: 'text-foreground',
-      desctructive: 'text-destructive-foreground',
+      success: 'text-success',
+      info: 'text-info',
+      warning: 'text-warning',
+      destructive: 'text-destructive',
       muted: 'text-muted-foreground',
     },
   },
@@ -35,14 +40,21 @@ const typographyVariants = cva('font-sans text-base leading-7 font-normal', {
   },
 })
 
+interface TypographyProps
+  extends Omit<React.ComponentProps<'p'>, 'color'>,
+    VariantProps<typeof typographyVariants> {
+  as?: React.ElementType
+}
+
 function Typography({
   className,
   variant = 'p',
   size,
   color,
+  as,
   ...props
-}: React.ComponentProps<'p'> & VariantProps<typeof typographyVariants>) {
-  const Comp = variant as React.ElementType
+}: TypographyProps) {
+  const Comp = as ?? (variant as React.ElementType)
 
   return (
     <Comp
