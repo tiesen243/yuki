@@ -11,7 +11,7 @@
   ],
   "scripts": {
     "build": "turbo run build",
-    "bump-deps": "bunx --bun npm-check-updates --deep -u '/^(?!react).*$/' && bun install",
+    "bump-deps": "bunx --bun npm-check-updates --deep -u && bun install",
     "clean": "git clean -xdf node_modules",
     "clean:workspaces": "turbo run clean",
     "db:push": "turbo -F @yuki/db db:push",
@@ -28,10 +28,10 @@
   },
   "prettier": "@yuki/prettier-config",
   "devDependencies": {
-    "@turbo/gen": "^2.5.2",
+    "@turbo/gen": "^2.5.3",
     "@yuki/prettier-config": "workspace:*",
     "@yuki/tsconfig": "workspace:*",
-    "turbo": "^2.5.2"
+    "turbo": "^2.5.3"
   },
   "packageManager": "bun@1.2.12",
   "engines": {

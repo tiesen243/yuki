@@ -4,12 +4,17 @@ import * as React from 'react'
 
 import type { SessionResult } from './core/session'
 
-interface SessionContextValue {
-  session: SessionResult
-  status: 'loading' | 'authenticated' | 'unauthenticated'
+type SessionContextValue = {
   signOut: () => Promise<void>
   refresh: (token?: string) => Promise<void>
-}
+} & (
+  | { status: 'loading'; session: SessionResult }
+  | {
+      status: 'authenticated'
+      session: { user: NonNullable<SessionResult['user']>; expires: Date }
+    }
+  | { status: 'unauthenticated'; session: { expires: Date } }
+)
 
 const SessionContext = React.createContext<SessionContextValue | undefined>(
   undefined,
@@ -82,12 +87,13 @@ export function SessionProvider({
   }, [fetchSession, hasInitialSession])
 
   const value = React.useMemo(
-    () => ({
-      session,
-      status,
-      signOut,
-      refresh: fetchSession,
-    }),
+    () =>
+      ({
+        session,
+        status,
+        signOut,
+        refresh: fetchSession,
+      }) as SessionContextValue,
     [session, status, signOut, fetchSession],
   )
 

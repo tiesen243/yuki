@@ -21,7 +21,10 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={cn('min-h-dvh font-sans antialiased', geistSans.variable)}
+        className={cn(
+          'flex min-h-dvh flex-col font-sans antialiased',
+          geistSans.variable,
+        )}
       >
         <ThemeProvider
           attribute="class"
