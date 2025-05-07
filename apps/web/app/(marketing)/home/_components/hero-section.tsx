@@ -5,8 +5,6 @@ import { ArrowRightIcon, PlayIcon } from 'lucide-react'
 import { Button } from '@yuki/ui/button'
 import { Typography } from '@yuki/ui/typography'
 
-import Yuki_1 from '@/public/assets/yuki-1.png'
-
 export function HeroSection() {
   return (
     <section className="relative h-[calc(100vh-4rem)] overflow-hidden py-20 md:py-32 lg:py-40">
@@ -63,7 +61,7 @@ export function HeroSection() {
             <div className="border-muted bg-background relative h-[500px] w-screen rounded-[40px] border-[8px] p-2 shadow-xl md:h-[600px] md:max-w-[560px]">
               <div className="from-primary/20 via-primary/5 to-background absolute inset-0 rounded-[32px] bg-gradient-to-br">
                 <Image
-                  src={Yuki_1}
+                  src="/assets/yuki-1.png"
                   width={320}
                   height={600}
                   alt="Yuki app screenshot"

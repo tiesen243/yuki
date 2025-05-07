@@ -11,9 +11,6 @@ import {
 } from '@yuki/ui/icons'
 import { Typography } from '@yuki/ui/typography'
 
-import Yuki_2 from '@/public/assets/yuki-2.png'
-import Yuki_3 from '@/public/assets/yuki-3.png'
-
 export function AppShowcase() {
   return (
     <section id="showcase" className="py-20 md:py-32">
@@ -63,7 +60,7 @@ export function AppShowcase() {
             <div className="border-muted bg-background relative h-[500px] w-screen rounded-[40px] border-[8px] p-2 shadow-xl md:h-[600px] md:max-w-[660px]">
               <div className="from-primary/20 via-primary/5 to-background absolute inset-0 rounded-[32px] bg-gradient-to-br">
                 <Image
-                  src={Yuki_2}
+                  src="/assets/yuki-2.png"
                   width={320}
                   height={600}
                   alt="Yuki app browse screen"
@@ -80,7 +77,7 @@ export function AppShowcase() {
             <div className="border-muted bg-background relative h-[500px] w-screen rounded-[40px] border-[8px] p-2 shadow-xl md:h-[600px] md:max-w-[660px]">
               <div className="from-primary/20 via-primary/5 to-background absolute inset-0 rounded-[32px] bg-gradient-to-br">
                 <Image
-                  src={Yuki_3}
+                  src="/assets/yuki-3.png"
                   width={320}
                   height={600}
                   alt="Yuki app checkout screen"
