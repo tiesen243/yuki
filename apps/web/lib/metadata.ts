@@ -8,11 +8,11 @@ type Metadata = Omit<NextMetadata, 'title' | 'keywords'> & {
 }
 
 export const createMetadata = (override: Partial<Metadata> = {}): Metadata => {
-  const siteName = 'Create Yuki Turbo'
+  const siteName = 'Yuki'
   const title = override.title ? `${override.title} | ${siteName}` : siteName
   const description =
     override.description ??
-    'Clean and typesafe starter monorepo using Turborepo along with Next.js and tRPC '
+    'Shop the latest products with fast shipping and secure checkout. Discover our wide selection of quality merchandise at competitive prices.'
 
   const {
     title: _,
@@ -29,7 +29,14 @@ export const createMetadata = (override: Partial<Metadata> = {}): Metadata => {
     applicationName: siteName,
     title,
     description,
-    keywords: [...keywords, 'Turborepo'],
+    keywords: [
+      ...keywords,
+      'yuki',
+      'ecommerce',
+      'shop',
+      'online shop',
+      'shopping',
+    ],
     openGraph: {
       url,
       title,
