@@ -1,4 +1,5 @@
 import { Alert, AlertDescription, AlertTitle } from '@yuki/ui/alert'
+import { Badge } from '@yuki/ui/badge'
 import { Button } from '@yuki/ui/button'
 import {
   Card,
@@ -52,6 +53,23 @@ export default function HomePage() {
           <Button key={variant} variant={variant}>
             {variant}
           </Button>
+        ))}
+      </div>
+
+      <div className="flex gap-4">
+        {(
+          [
+            'default',
+            'success',
+            'info',
+            'warning',
+            'destructive',
+            'outline',
+          ] as const
+        ).map((variant) => (
+          <Badge key={variant} variant={variant} radius="full">
+            {variant}
+          </Badge>
         ))}
       </div>
 

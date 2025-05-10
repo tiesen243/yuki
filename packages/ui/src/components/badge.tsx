@@ -6,7 +6,7 @@ import { cva } from 'class-variance-authority'
 import { cn } from '@yuki/ui/utils'
 
 const badgeVariants = cva(
-  'focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive inline-flex w-fit shrink-0 items-center justify-center gap-1 overflow-hidden rounded-md border px-2 py-0.5 text-xs font-medium whitespace-nowrap transition-[color,box-shadow] focus-visible:ring-[3px] [&>svg]:pointer-events-none [&>svg]:size-3',
+  'focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive inline-flex w-fit shrink-0 items-center justify-center gap-1 overflow-hidden border px-2 py-0.5 text-xs font-medium whitespace-nowrap transition-[color,box-shadow] focus-visible:ring-[3px] [&>svg]:pointer-events-none [&>svg]:size-3',
   {
     variants: {
       variant: {
@@ -15,18 +15,25 @@ const badgeVariants = cva(
         secondary:
           'bg-secondary text-secondary-foreground [a&]:hover:bg-secondary/90 border-transparent',
         success:
-          'bg-success [a&]:hover:bg-success/90 focus-visible:ring-success/20 dark:focus-visible:ring-success/40 dark:bg-success/60 border-transparent text-white',
-        info: 'bg-info [a&]:hover:bg-info/90 focus-visible:ring-info/20 dark:focus-visible:ring-info/40 dark:bg-info/60 border-transparent text-white',
+          'bg-success [a&]:hover:bg-success/90 focus-visible:ring-success/20 dark:focus-visible:ring-success/40 border-transparent text-white',
+        info: 'bg-info [a&]:hover:bg-info/90 focus-visible:ring-info/20 dark:focus-visible:ring-info/40 border-transparent text-white',
         warning:
-          'bg-warning [a&]:hover:bg-warning/90 focus-visible:ring-warning/20 dark:focus-visible:ring-warning/40 dark:bg-warning/60 border-transparent text-white',
+          'bg-warning [a&]:hover:bg-warning/90 focus-visible:ring-warning/20 dark:focus-visible:ring-warning/40 border-transparent text-white',
         destructive:
-          'bg-destructive [a&]:hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60 border-transparent text-white',
+          'bg-destructive [a&]:hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 border-transparent text-white',
         outline:
           'text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground',
+      },
+      radius: {
+        sm: 'rounded-sm',
+        md: 'rounded-md',
+        lg: 'rounded-lg',
+        full: 'rounded-full',
       },
     },
     defaultVariants: {
       variant: 'default',
+      radius: 'md',
     },
   },
 )
@@ -34,6 +41,7 @@ const badgeVariants = cva(
 function Badge({
   className,
   variant,
+  radius,
   asChild = false,
   ...props
 }: React.ComponentProps<'span'> &
@@ -43,7 +51,7 @@ function Badge({
   return (
     <Comp
       data-slot="badge"
-      className={cn(badgeVariants({ variant }), className)}
+      className={cn(badgeVariants({ variant, radius }), className)}
       {...props}
     />
   )
