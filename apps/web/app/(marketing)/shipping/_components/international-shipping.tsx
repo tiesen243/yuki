@@ -35,10 +35,7 @@ export function InternationalShipping() {
       </Typography>
 
       {/* Important notice */}
-      <Alert
-        variant="destructive"
-        className="bg-destructive/10 text-destructive border-destructive/30"
-      >
+      <Alert variant="destructive">
         <AlertCircleIcon className="h-4 w-4" />
         <AlertTitle>Important Notice</AlertTitle>
         <AlertDescription>

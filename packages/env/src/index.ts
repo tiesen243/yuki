@@ -17,7 +17,7 @@ export const env = createEnv({
 
     // Auth
     AUTH_PROXY_URL: z.string().optional(),
-    AUTH_SECRET: z.string(),
+    AUTH_SECRET: z.string().optional(),
 
     // OAuth providers
     FACEBOOK_CLIENT_ID: z.string(),
@@ -38,18 +38,7 @@ export const env = createEnv({
    * You can't destruct `process.env` as a regular object in the Next.js edge runtimes (e.g.
    * middlewares) or client-side so we need to destruct manually.
    */
-  runtimeEnv: {
-    NODE_ENV: process.env.NODE_ENV,
-
-    DATABASE_URL: process.env.DATABASE_URL,
-
-    AUTH_SECRET: process.env.AUTH_SECRET,
-
-    FACEBOOK_CLIENT_ID: process.env.FACEBOOK_CLIENT_ID,
-    FACEBOOK_CLIENT_SECRET: process.env.FACEBOOK_CLIENT_SECRET,
-    GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
-    GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
-  },
+  runtimeEnv: process.env,
 
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

@@ -6,9 +6,6 @@
       "dependsOn": ["^build"],
       "outputs": [".next/**", "!.next/cache/**", "next-env.d.ts"]
     },
-    "dev": {
-      "with": ["@yuki/api#dev"],
-      "persistent": true
-    }
+    "dev": { "persistent": true }
   }
 }

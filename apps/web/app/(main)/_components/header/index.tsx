@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
-import { UserButton } from '../../user-button'
+import { UserButton } from '@/app/(main)/_components/user-button'
 
 export const Header: React.FC = () => (
   <header className="bg-sidebar/95 supports-[backdrop-filter]:bg-sidebar/60 sticky inset-0 z-50 flex h-16 items-center border-b drop-shadow-md backdrop-blur-xl backdrop-saturate-150">

@@ -11,6 +11,7 @@
     "resolveJsonModule": true,
     "moduleDetection": "force",
     "isolatedModules": true,
+    "verbatimModuleSyntax": true,
     /** Keep TSC performant in monorepos */
     "incremental": true,
     "disableSourceOfProjectReferenceRedirect": true,
@@ -18,6 +19,7 @@
     /** Strictness */
     "strict": true,
     "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
     "checkJs": true,
     /** Transpile using Bundler (not tsc) */
     "module": "Preserve",

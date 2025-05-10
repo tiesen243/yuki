@@ -2,6 +2,7 @@
 
 import { useQueryStates } from 'nuqs'
 
+import { useSession } from '@yuki/auth/react'
 import { Button } from '@yuki/ui/button'
 import { CardFooter } from '@yuki/ui/card'
 import { FacebookIcon, GoogleIcon } from '@yuki/ui/icons'
@@ -10,6 +11,7 @@ import { redirect } from './_search-params'
 
 export const OauthButtons: React.FC = () => {
   const [{ redirectTo }] = useQueryStates(redirect.parsers, redirect.configs)
+  const { signIn } = useSession()
 
   return (
     <CardFooter className="grid gap-2">
@@ -19,18 +21,20 @@ export const OauthButtons: React.FC = () => {
         </span>
       </div>
 
-      <form className="grid grid-cols-2 gap-4">
-        <input type="hidden" name="redirect_to" value={redirectTo} />
-
-        <Button variant="outline" formAction="/api/auth/facebook">
-          <FacebookIcon />
-          <span className="xs:not-sr-only sr-only">Facebook</span>
+      <div className="grid grid-cols-2 gap-4">
+        <Button
+          variant="outline"
+          onClick={() => signIn('facebook', { redirectTo })}
+        >
+          <FacebookIcon /> Discord
         </Button>
-        <Button variant="outline" formAction="/api/auth/google">
-          <GoogleIcon />
-          <span className="xs:not-sr-only sr-only">Google</span>
+        <Button
+          variant="outline"
+          onClick={() => signIn('google', { redirectTo })}
+        >
+          <GoogleIcon /> Google
         </Button>
-      </form>
+      </div>
     </CardFooter>
   )
 }

@@ -1,137 +1,110 @@
-import { cookies } from 'next/headers'
 import { generateCodeVerifier, generateState, OAuth2RequestError } from 'arctic'
 
-import { db } from '@yuki/db'
-import { accounts, users } from '@yuki/db/schema'
-import { env } from '@yuki/env'
+import type { AuthOptions, Providers, SessionResult } from '../types'
+import { SESSION_COOKIE_NAME } from '../config'
+import { deleteCookie, getCookie, setCookie } from './cookies'
+import {
+  createSession,
+  createUser,
+  signIn,
+  signOut,
+  validateToken,
+} from './queries'
 
-import type { BaseProvider } from '../providers/base'
-import type { SessionResult } from './session'
-import { Session } from './session'
-
-type Providers = Record<string, BaseProvider>
-
-export interface AuthOptions<T extends Providers = Providers> {
-  cookieKey: string
-  providers: T
-}
-
-export class Auth<TProviders extends Providers> {
-  private readonly session = new Session()
-  private readonly providers: TProviders
-  private readonly db = db
-
-  private readonly COOKIE_KEY: string
-  private readonly CSRF_COOKIE = {
-    Path: '/',
-    HttpOnly: 'true',
-    SameSite: 'Lax',
-    Secure: env.NODE_ENV === 'production' ? 'true' : 'false',
-  }
-
-  constructor(options: AuthOptions<TProviders>) {
-    this.COOKIE_KEY = options.cookieKey
-    this.providers = options.providers
-  }
-
-  public async auth(req?: Request): Promise<SessionResult> {
-    const authToken =
-      (await this.getCookie(req)) ??
-      req?.headers.get('Authorization')?.split(' ')[1]
-
-    if (!authToken) return { expires: new Date() }
-    return await this.session.validateToken(authToken)
-  }
-
-  public async handlers(req: Request): Promise<Response> {
-    let response: Response = Response.json(
-      { error: 'Not found' },
-      { status: 404 },
-    )
-
-    try {
-      if (req.method === 'OPTIONS') {
-        response = Response.json('', { status: 204 })
-      } else if (req.method === 'GET') {
-        response = await this.handleGetRequests(req)
-      } else if (req.method === 'POST') {
-        response = await this.handlePostRequests(req)
-      }
-    } catch (error) {
-      response = this.handleError(error)
-    }
-
-    this.setCorsHeaders(response)
-    return response
-  }
-
-  public async signOut(req?: Request): Promise<void> {
+/**
+ * Creates an authentication handler with OAuth providers
+ *
+ * @description
+ * The Auth function creates a complete authentication system with OAuth providers.
+ * It handles OAuth flows (login initiation and callback), session management,
+ * and provides HTTP handlers for authentication operations.
+ *
+ * @param providers - Configuration object containing OAuth provider settings
+ *
+ * @returns Authentication handlers and utility functions:
+ *  - auth: Function to verify authentication status
+ *  - signIn: Function to authenticate users with email/password
+ *  - signOut: Function to end user sessions
+ *  - handlers: HTTP handlers for auth routes (GET/POST)
+ *    - GET: Handles OAuth flow and session validation
+ *    - POST: Handles email/password signin and signout
+ *
+ * @example
+ * ```typescript
+ * // Create authentication handler with Google provider
+ * const authHandler = Auth({
+ *   google: new Google(),
+ * })
+ *
+ * // Use in API route
+ * export const { GET, POST } = authHandler.handlers
+ * ```
+ */
+export function Auth<TProviders extends Providers>(
+  providers: AuthOptions<TProviders>,
+) {
+  /**
+   * Authenticates a request by validating the session token
+   *
+   * @param request - Optional request object to extract the session token from
+   * @returns Promise resolving to a SessionResult with user information if authenticated
+   *
+   * @example
+   * // Authenticate the current request
+   * const session = await auth();
+   *
+   * @example
+   * // Authenticate with a specific request
+   * const session = await auth(request);
+   */
+  async function auth(request?: Request): Promise<SessionResult> {
     const token =
-      (await this.getCookie(req)) ??
-      req?.headers.get('Authorization')?.split(' ')[1]
-    if (token) await this.session.invalidateToken(token)
+      (await getCookie(SESSION_COOKIE_NAME, request)) ??
+      request?.headers.get('Authorization')?.replace('Bearer ', '') ??
+      ''
+    return validateToken(token)
   }
 
-  public middleware(
-    callbackFn: (params: {
-      request: Request
-      session: SessionResult
-    }) => Promise<Response> | Response,
-  ) {
-    return async (req: Request): Promise<Response> => {
-      const session = await this.auth(req)
-      return callbackFn({ request: req, session })
-    }
-  }
+  /**
+   * Creates a HTTP 302 redirect response with the specified URL
+   * @param url - The destination URL to redirect to (string or URL object)
+   * @returns A Response object configured for redirection
+   */
+  const createRedirectResponse = (url: string | URL): Response =>
+    new Response(null, {
+      status: 302,
+      headers: { location: url.toString() },
+    })
 
-  private async handleGetRequests(req: Request): Promise<Response> {
+  /**
+   * Handles the initial OAuth flow by generating authorization URL and setting cookies
+   * @param req - Incoming request
+   * @returns Redirect response to the provider's authorization URL
+   * @throws Error if provider is not supported or configuration is invalid
+   */
+  const handleOAuthStart = async (req: Request): Promise<Response> => {
     const url = new URL(req.url)
-    const path = url.pathname
-
-    if (path === '/api/auth' || path === '/api/auth/') {
-      const session = await this.auth(req)
-      if (session.user) session.user.password = undefined as unknown as null
-      return Response.json(session)
-    }
-
-    if (
-      path.startsWith('/api/auth/') &&
-      path !== '/api/auth' &&
-      path !== '/api/auth/'
-    )
-      return await this.handleOAuthRequest(req)
-
-    return Response.json({ error: 'Not found' }, { status: 404 })
-  }
-
-  private async handleOAuthRequest(req: Request): Promise<Response> {
-    const url = new URL(req.url)
-    const isCallback = url.pathname.endsWith('/callback')
-
-    if (!isCallback) return this.handleOAuthStart(url)
-    else return this.handleOAuthCallback(req)
-  }
-
-  private handleOAuthStart(url: URL): Response {
     const redirectTo = url.searchParams.get('redirect_to') ?? '/'
-
     const providerName = String(url.pathname.split('/').pop())
-    const provider = this.providers[providerName]
-    if (!provider)
-      return Response.json({ error: 'Provider not supported' }, { status: 404 })
+    const provider = providers[providerName]
+    if (!provider) throw new Error(`Provider ${providerName} is not supported`)
 
+    // Handle mobile development redirects
     if (
       redirectTo.startsWith('exp://') &&
-      env.NODE_ENV === 'development' &&
-      env.AUTH_PROXY_URL
+      process.env.NODE_ENV === 'development'
     ) {
+      if (!process.env.AUTH_PROXY_URL)
+        throw new Error('AUTH_PROXY_URL is not set')
+
       const redirectUrl = new URL(
-        `https://${env.AUTH_PROXY_URL}${url.pathname}`,
+        `https://${process.env.AUTH_PROXY_URL}${url.pathname}`,
       )
       redirectUrl.searchParams.set('redirect_to', redirectTo)
-      return this.createRedirectResponse(redirectUrl)
+      return createRedirectResponse(redirectUrl)
     }
 
+    // Generate OAuth parameters and create authorization URL
     const state = generateState()
     const codeVerifier = generateCodeVerifier()
     const authorizationUrl = provider.createAuthorizationURL(
@@ -139,212 +112,171 @@ export class Auth<TProviders extends Providers> {
       codeVerifier,
     )
 
-    const response = this.createRedirectResponse(authorizationUrl)
-    response.headers.append(
-      'Set-Cookie',
-      this.setCookie('oauth_state', state, {
-        Expires: new Date(Date.now() + 60 * 1000).toUTCString(),
-      }),
-    )
-    response.headers.append(
-      'Set-Cookie',
-      this.setCookie('code_verifier', codeVerifier, {
-        Expires: new Date(Date.now() + 60 * 1000).toUTCString(),
-      }),
-    )
-    response.headers.append(
-      'Set-Cookie',
-      this.setCookie('redirect_to', redirectTo, {
-        Expires: new Date(Date.now() + 60 * 1000).toUTCString(),
-      }),
-    )
+    // Set cookies for the callback and create response
+    const response = createRedirectResponse(authorizationUrl)
+    const cookieOptions = { maxAge: 60 * 5 } // 5 minutes
+    await Promise.all([
+      setCookie('auth_state', state, cookieOptions, response),
+      setCookie('code_verifier', codeVerifier, cookieOptions, response),
+      setCookie('redirect_to', redirectTo, cookieOptions, response),
+    ])
 
     return response
   }
 
-  private async handleOAuthCallback(req: Request): Promise<Response> {
+  /**
+   * Handles the OAuth callback by verifying state, exchanging code for tokens,
+   * creating user session, and setting session cookies
+   * @param req - Incoming request with OAuth code and state
+   * @returns Redirect response to the original destination with session
+   * @throws Error if required parameters are missing or validation fails
+   */
+  const handleOAuthCallback = async (req: Request): Promise<Response> => {
     const url = new URL(req.url)
-    const providerName = String(url.pathname.split('/').slice(-2)[0])
-    const provider = this.providers[providerName]
+    const providerName = String(url.pathname.split('/').slice(-2, -1))
+    const provider = providers[providerName]
+    if (!provider) throw new Error(`Provider ${providerName} is not supported`)
 
-    if (!provider)
-      return Response.json({ error: 'Provider not supported' }, { status: 404 })
-
+    // Get parameters from URL and cookies
     const code = url.searchParams.get('code')
     const state = url.searchParams.get('state')
-    const storedState = (await this.getCookie(req, 'oauth_state')) ?? ''
-    const codeVerifier = (await this.getCookie(req, 'code_verifier')) ?? ''
-    const redirectUri = (await this.getCookie(req, 'redirect_to')) ?? '/'
+    const storedState = await getCookie('auth_state', req)
+    const storedCode = await getCookie('code_verifier', req)
+    const redirectTo = (await getCookie('redirect_to', req)) ?? '/'
 
-    if (!code || !state || state !== storedState)
-      throw new Error('Invalid state')
+    if (!code || !state || !storedState || !storedCode)
+      throw new Error('Missing required parameters')
 
-    const userData = await provider.fetchUserData(code, codeVerifier)
+    // Fetch user data and create session
+    const userData = await provider.fetchUserData(code, storedCode)
+    const user = await createUser({ ...userData, provider: providerName })
+    const sessionCookie = await createSession(user.id)
 
-    const user = await this.createUser({ ...userData, provider: providerName })
-    const session = await this.session.create(user.id)
+    // Create response and handle cross-origin redirects
+    const redirectUrl = new URL(redirectTo, req.url)
+    if (redirectUrl.origin !== url.origin)
+      redirectUrl.searchParams.set('token', sessionCookie.sessionToken)
 
-    let redirectLocation = redirectUri
-    if (
-      redirectUri.startsWith('https://') ||
-      redirectUri.startsWith('http://') ||
-      redirectUri.startsWith('exp://')
-    ) {
-      const redirectUrl = new URL(redirectUri, req.url)
-      redirectUrl.searchParams.set('token', session.sessionToken)
-      redirectLocation = redirectUrl.href
-    }
+    const response = createRedirectResponse(redirectUrl)
 
-    const response = this.createRedirectResponse(
-      new URL(redirectLocation, req.url),
+    // Set session cookie and clear temporary cookies
+    await setCookie(
+      SESSION_COOKIE_NAME,
+      sessionCookie.sessionToken,
+      { expires: sessionCookie.expires },
+      response,
     )
-    response.headers.set(
-      'Set-Cookie',
-      this.setCookie(this.COOKIE_KEY, session.sessionToken, {
-        ...this.CSRF_COOKIE,
-        Expires: session.expires.toUTCString(),
-      }),
-    )
-    response.headers.append('Set-Cookie', this.deleteCookie('oauth_state'))
-    response.headers.append('Set-Cookie', this.deleteCookie('code_verifier'))
-    response.headers.append('Set-Cookie', this.deleteCookie('redirect_to'))
+
+    await Promise.all([
+      deleteCookie('auth_state', response),
+      deleteCookie('code_verifier', response),
+      deleteCookie('redirect_to', response),
+    ])
 
     return response
   }
 
-  private async handlePostRequests(req: Request): Promise<Response> {
+  /**
+   * Handles GET requests for authentication flows
+   * @param req - Incoming request
+   * @returns Response based on the requested auth operation
+   */
+  const handleGetRequest = async (req: Request): Promise<Response> => {
     const url = new URL(req.url)
-    const path = url.pathname
+    const pathName = url.pathname
 
-    let response: Response = Response.json(
-      { error: 'Not found' },
-      { status: 404 },
-    )
+    try {
+      // User session verification endpoint
+      if (pathName === '/api/auth') {
+        const session = await auth(req)
+        if (session.user) {
+          session.user.password = undefined as unknown as null
+        }
+        return Response.json(session)
+      }
 
-    if (path === '/api/auth/sign-in') {
-      const { userId } = (await req.json()) as { userId: string }
-      if (!userId)
-        return Response.json({ error: 'Missing userId' }, { status: 400 })
-
-      const sessionCookie = await this.session.create(userId)
-      response = Response.json({ token: sessionCookie.sessionToken })
-      response.headers.set(
-        'Set-Cookie',
-        this.setCookie(this.COOKIE_KEY, sessionCookie.sessionToken, {
-          ...this.CSRF_COOKIE,
-          Expires: sessionCookie.expires.toUTCString(),
-        }),
-      )
-    } else if (path === '/api/auth/sign-out') {
-      await this.signOut(req)
-      response = this.createRedirectResponse(new URL('/', req.url))
-      response.headers.set('Set-Cookie', this.deleteCookie(this.COOKIE_KEY))
+      // OAuth flow endpoints
+      return url.pathname.endsWith('/callback')
+        ? await handleOAuthCallback(req)
+        : await handleOAuthStart(req)
+    } catch (error) {
+      const errorMessage =
+        error instanceof OAuth2RequestError
+          ? { error: error.message, description: error.description }
+          : error instanceof Error
+            ? { error: error.message }
+            : { error: 'Internal Server Error' }
+      const status = error instanceof OAuth2RequestError ? 400 : 500
+      return Response.json(errorMessage, { status })
     }
-
-    return response
   }
 
-  private handleError(error: unknown): Response {
-    let response = Response.json(
-      { error: 'An unknown error occurred' },
-      { status: 400 },
-    )
+  /**
+   * Handles POST requests for authentication operations
+   * @param req - Incoming request
+   * @returns Response based on the requested auth operation
+   */
+  const handlePostRequest = async (req: Request): Promise<Response> => {
+    const { pathname } = new URL(req.url)
 
-    if (error instanceof OAuth2RequestError)
-      response = Response.json(
-        { error: error.message, description: error.description },
-        { status: 400 },
-      )
+    try {
+      // Sign-in endpoint
+      if (pathname === '/api/auth/sign-in') {
+        const { email, password } = (await req.json()) as {
+          email: string
+          password: string
+        }
+        const { sessionToken, expires } = await signIn({ email, password })
 
-    if (error instanceof Error)
-      response = Response.json({ error: error.message }, { status: 400 })
+        const response = Response.json({ token: sessionToken }, { status: 200 })
+        await setCookie(
+          SESSION_COOKIE_NAME,
+          sessionToken,
+          { expires },
+          response,
+        )
+        return response
+      }
 
-    return response
-  }
+      // Sign-out endpoint
+      if (pathname === '/api/auth/sign-out') {
+        await signOut(req)
+        const response = createRedirectResponse('/')
+        await deleteCookie(SESSION_COOKIE_NAME, response)
+        return response
+      }
 
-  private async createUser(data: {
-    provider: string
-    providerAccountId: string
-    name: string
-    email: string
-    image: string
-  }): Promise<typeof users.$inferSelect> {
-    const { provider, providerAccountId, email } = data
-
-    const existingAccount = await this.db.query.accounts.findFirst({
-      where: (accounts, { and, eq }) =>
-        and(
-          eq(accounts.provider, provider),
-          eq(accounts.providerAccountId, providerAccountId),
-        ),
-      with: { user: true },
-    })
-    if (existingAccount?.user) return existingAccount.user
-
-    const existingUser = await this.db.query.users.findFirst({
-      where: (user, { eq }) => eq(user.email, email),
-    })
-    if (existingUser) {
-      await this.db.insert(accounts).values({
-        provider,
-        providerAccountId,
-        userId: existingUser.id,
-      })
-      return existingUser
+      return new Response('Not Found', { status: 404 })
+    } catch (error) {
+      if (error instanceof Error)
+        return Response.json({ error: error.message }, { status: 401 })
+      return Response.json({ error: 'Internal Server Error' }, { status: 500 })
     }
-
-    return await this.db.transaction(async (tx) => {
-      const [newUser] = await tx.insert(users).values(data).returning()
-      if (!newUser) throw new Error('Failed to create user')
-
-      await tx.insert(accounts).values({
-        provider,
-        providerAccountId,
-        userId: newUser.id,
-      })
-
-      return newUser
-    })
   }
 
-  private createRedirectResponse(url: URL): Response {
-    return new Response(null, {
-      headers: new Headers({ Location: url.toString() }),
-      status: 302,
-    })
-  }
-
-  private async getCookie(
-    req?: Request,
-    key: string = this.COOKIE_KEY,
-  ): Promise<string | undefined> {
-    if (req) {
-      const cookie = req.headers.get('cookie')
-      return cookie ? new RegExp(`${key}=([^;]+)`).exec(cookie)?.[1] : undefined
+  /**
+   * Wraps handler functions with CORS headers
+   * @param handler - Request handler function
+   * @returns Handler function with CORS headers applied to response
+   */
+  const withCors = (handler: (req: Request) => Promise<Response>) => {
+    return async (req: Request) => {
+      const response = await handler(req)
+      response.headers.set('Access-Control-Allow-Origin', '*')
+      response.headers.set('Access-Control-Request-Method', '*')
+      response.headers.set('Access-Control-Allow-Methods', 'OPTIONS, GET, POST')
+      response.headers.set('Access-Control-Allow-Headers', '*')
+      return response
     }
-    return (await cookies()).get(key)?.value
   }
 
-  private setCookie(
-    key: string,
-    value: string,
-    attributes: Record<string, string | number>,
-  ): string {
-    return `${key}=${value}; ${Object.entries(attributes)
-      .map(([k, v]) => `${k}=${v}`)
-      .join('; ')}`
-  }
-
-  private deleteCookie(key: string): string {
-    return `${key}=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0; ${
-      env.NODE_ENV === 'production' ? 'Secure;' : ''
-    }`
-  }
-
-  private setCorsHeaders(res: Response): void {
-    res.headers.set('Access-Control-Allow-Origin', '*')
-    res.headers.set('Access-Control-Request-Method', '*')
-    res.headers.set('Access-Control-Allow-Methods', 'OPTIONS, GET, POST')
-    res.headers.set('Access-Control-Allow-Headers', '*')
+  return {
+    auth,
+    signIn,
+    signOut,
+    handlers: {
+      GET: withCors(handleGetRequest),
+      POST: withCors(handlePostRequest),
+    },
   }
 }

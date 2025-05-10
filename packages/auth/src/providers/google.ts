@@ -1,7 +1,5 @@
 import { Google } from 'arctic'
 
-import { env } from '@yuki/env'
-
 import { BaseProvider } from './base'
 
 export class GoogleProvider extends BaseProvider {
@@ -13,8 +11,8 @@ export class GoogleProvider extends BaseProvider {
   constructor() {
     super()
     this.provider = new Google(
-      env.GOOGLE_CLIENT_ID,
-      env.GOOGLE_CLIENT_SECRET,
+      process.env.GOOGLE_CLIENT_ID ?? '',
+      process.env.GOOGLE_CLIENT_SECRET ?? '',
       this.createCallbackUrl('google'),
     )
   }

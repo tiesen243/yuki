@@ -1,5 +1,3 @@
-import { env } from '@yuki/env'
-
 /**
  * Common user profile data structure returned by all authentication providers
  */
@@ -42,12 +40,11 @@ export abstract class BaseProvider {
    * @returns Complete callback URL
    */
   protected createCallbackUrl(provider: string) {
-    const baseUrl = env.VERCEL_PROJECT_PRODUCTION_URL
-      ? `https://${env.VERCEL_PROJECT_PRODUCTION_URL}`
-      : env.VERCEL_URL
-        ? `https://${env.VERCEL_URL}`
-        : // eslint-disable-next-line no-restricted-properties
-          `http://localhost:${process.env.PORT ?? 3000}`
+    const baseUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
+      ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+      : process.env.VERCEL_URL
+        ? `https://${process.env.VERCEL_URL}`
+        : `http://localhost:${process.env.PORT ?? 3000}`
     return `${baseUrl}/api/auth/${provider}/callback`
   }
 }

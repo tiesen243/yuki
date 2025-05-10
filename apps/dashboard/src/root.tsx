@@ -1,4 +1,4 @@
-import '@/app.css'
+import '@/globals.css'
 
 import { NuqsAdapter } from 'nuqs/adapters/react-router/v7'
 import {
@@ -29,7 +29,7 @@ export function Layout({ children }: Readonly<{ children: React.ReactNode }>) {
         <Links />
       </head>
 
-      <body className="min-h-dvh font-sans antialiased">
+      <body className="flecx-col flex min-h-dvh font-sans antialiased">
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"

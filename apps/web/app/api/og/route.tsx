@@ -29,9 +29,8 @@ export function GET(req: NextRequest) {
             tw="w-20 h-20 mr-4"
             style={{ filter: 'invert(1)' }}
           />
-          <p style={{ fontSize: '56px', fontWeight: 600 }}>
-            {defaultMeta.openGraph?.siteName}
-          </p>
+
+          <p style={{ fontSize: '56px', fontWeight: 600 }}>Yuki</p>
         </div>
 
         <p

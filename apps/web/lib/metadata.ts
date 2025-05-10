@@ -12,7 +12,7 @@ export const createMetadata = (override: Partial<Metadata> = {}): Metadata => {
   const title = override.title ? `${override.title} | ${siteName}` : siteName
   const description =
     override.description ??
-    'Shop the latest products with fast shipping and secure checkout. Discover our wide selection of quality merchandise at competitive prices.'
+    'Clean and typesafe starter monorepo using Turborepo along with Next.js and tRPC '
 
   const {
     title: _,
@@ -29,14 +29,7 @@ export const createMetadata = (override: Partial<Metadata> = {}): Metadata => {
     applicationName: siteName,
     title,
     description,
-    keywords: [
-      ...keywords,
-      'yuki',
-      'ecommerce',
-      'shop',
-      'online shop',
-      'shopping',
-    ],
+    keywords: [...keywords, 'e-commerce', 'nextjs', 'tRPC'],
     openGraph: {
       url,
       title,
@@ -54,9 +47,9 @@ export const createMetadata = (override: Partial<Metadata> = {}): Metadata => {
       ...override.twitter,
     },
     icons: {
-      icon: 'https://tiesen.id.vn/favicon.ico',
-      shortcut: 'https://tiesen.id.vn/favicon-16x16.png',
-      apple: 'https://tiesen.id.vn/apple-touch-icon.png',
+      icon: '/favicon.ico',
+      shortcut: '/favicon-16x16.png',
+      apple: '/apple-touch-icon.png',
     },
     alternates: {
       canonical: url,

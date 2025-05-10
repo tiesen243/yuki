@@ -1,3 +1,4 @@
+import { Alert, AlertDescription, AlertTitle } from '@yuki/ui/alert'
 import { Button } from '@yuki/ui/button'
 import {
   Card,
@@ -18,11 +19,23 @@ import {
   TableHeader,
   TableRow,
 } from '@yuki/ui/table'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@yuki/ui/tabs'
 import { Typography } from '@yuki/ui/typography'
 
 export default function HomePage() {
   return (
     <main className="container flex flex-1 flex-col gap-4 py-4">
+      {(['default', 'success', 'info', 'warning', 'destructive'] as const).map(
+        (color) => (
+          <Alert key={color} variant={color}>
+            <AlertTitle>Alert Title</AlertTitle>
+            <AlertDescription>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            </AlertDescription>
+          </Alert>
+        ),
+      )}
+
       <div className="flex gap-4">
         {(
           [
@@ -58,6 +71,35 @@ export default function HomePage() {
           </Typography>
         ))}
       </article>
+
+      <div className="grid grid-cols-2 gap-4">
+        {(['default', 'underline', 'bordered', 'light'] as const).map(
+          (variant) => (
+            <Tabs key={variant} defaultValue="tab1">
+              <TabsList variant={variant}>
+                <TabsTrigger value="tab1" variant={variant}>
+                  Tab 1
+                </TabsTrigger>
+                <TabsTrigger value="tab2" variant={variant}>
+                  Tab 2
+                </TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="tab1">
+                Tab 1: Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Quisquam, voluptatibus. Quisquam, voluptatibus. Quisquam,
+                voluptatibus. Quisquam, voluptatibus.
+              </TabsContent>
+
+              <TabsContent value="tab2">
+                Tab 2: Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Quisquam, voluptatibus. Quisquam, voluptatibus. Quisquam,
+                voluptatibus. Quisquam, voluptatibus.
+              </TabsContent>
+            </Tabs>
+          ),
+        )}
+      </div>
 
       <div className="grid gap-4 md:grid-cols-3">
         {Array.from({ length: 3 }, (_, i) => (

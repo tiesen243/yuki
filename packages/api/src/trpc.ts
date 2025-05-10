@@ -9,26 +9,9 @@
 
 import { initTRPC, TRPCError } from '@trpc/server'
 import superjson from 'superjson'
-import { treeifyError, ZodError } from 'zod'
 
-import type { SessionResult } from '@yuki/auth'
-import { auth, Password, Session } from '@yuki/auth'
+import { auth } from '@yuki/auth'
 import { db } from '@yuki/db'
-
-/**
- * Isomorphic Session getter for API requests
- * - Expo requests will have a session token in the Authorization header
- * - Next.js requests will have a session token in cookies
- */
-const isomorphicGetSession = async (
-  headers: Headers,
-): Promise<SessionResult> => {
-  const authToken = headers.get('Authorization') ?? ''
-
-  if (authToken)
-    return new Session().validateToken(authToken.replace('Bearer ', ''))
-  return auth()
-}
 
 /**
  * 1. CONTEXT
@@ -43,7 +26,7 @@ const isomorphicGetSession = async (
  * @see https://trpc.io/docs/server/context
  */
 export const createTRPCContext = async (opts: { headers: Headers }) => {
-  const session = await isomorphicGetSession(opts.headers)
+  const session = await auth(opts as Request)
 
   const source = opts.headers.get('x-trpc-source') ?? 'unknown'
   console.log(
@@ -56,7 +39,6 @@ export const createTRPCContext = async (opts: { headers: Headers }) => {
   return {
     db,
     session,
-    passwordService: new Password(),
   }
 }
 
@@ -73,15 +55,8 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
     ping: { enabled: true, intervalMs: 3_000 },
     client: { reconnectAfterInactivityMs: 5_000 },
   },
-  errorFormatter: ({ shape, error }) => ({
+  errorFormatter: ({ shape }) => ({
     ...shape,
-    message:
-      error.cause instanceof ZodError ? 'Validation error' : error.message,
-    data: {
-      ...shape.data,
-      zodError:
-        error.cause instanceof ZodError ? treeifyError(error.cause).errors : {},
-    },
   }),
 })
 
@@ -103,6 +78,7 @@ export const createCallerFactory = t.createCallerFactory
  * @see https://trpc.io/docs/router
  */
 export const createTRPCRouter = t.router
+export const mergeTRPCRouters = t.mergeRouters
 
 /**
  * Middleware for timing procedure execution.
@@ -112,6 +88,12 @@ export const createTRPCRouter = t.router
  */
 const timingMiddleware = t.middleware(async ({ next, path }) => {
   const start = Date.now()
+
+  if (t._config.isDev) {
+    // artificial delay in dev 100-500ms
+    const waitMs = Math.floor(Math.random() * 400) + 100
+    await new Promise((resolve) => setTimeout(resolve, waitMs))
+  }
 
   const result = await next()
 

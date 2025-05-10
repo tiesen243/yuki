@@ -1,10 +1,13 @@
 import { Outlet } from 'react-router'
 
+import { useSession } from '@yuki/auth/react'
 import { Button } from '@yuki/ui/button'
 import { Card, CardFooter } from '@yuki/ui/card'
 import { FacebookIcon, GoogleIcon } from '@yuki/ui/icons'
 
 export default function AuthLayout() {
+  const { signIn } = useSession()
+
   return (
     <main className="container grid min-h-dvh place-items-center">
       <Card className="w-full max-w-md">
@@ -18,13 +21,11 @@ export default function AuthLayout() {
           </div>
 
           <form className="grid grid-cols-2 gap-4">
-            <Button variant="outline" formAction="/api/auth/facebook">
-              <FacebookIcon />
-              <span className="xs:not-sr-only sr-only">Facebook</span>
+            <Button variant="outline" onClick={() => signIn('facebook')}>
+              <FacebookIcon /> Facebook
             </Button>
-            <Button variant="outline" formAction="/api/auth/google">
-              <GoogleIcon />
-              <span className="xs:not-sr-only sr-only">Google</span>
+            <Button variant="outline" onClick={() => signIn('google')}>
+              <GoogleIcon /> Google
             </Button>
           </form>
         </CardFooter>

@@ -68,7 +68,7 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
               const version = await fetch(
                 `https://registry.npmjs.org/-/package/${dep}/dist-tags`,
               )
-                .then((res) => res.json())
+                .then((res) => res.json() as Promise<{ latest: string }>)
                 .then((json) => json.latest)
               if (!pkg.dependencies) pkg.dependencies = {}
               pkg.dependencies[dep] = `^${version}`

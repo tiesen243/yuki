@@ -34,7 +34,7 @@ export function ShippingRestrictions() {
           <BanIcon className="text-primary h-5 w-5" />
           Geographic Restrictions
         </Typography>
-        <Alert className="bg-destructive/10 text-destructive border-destructive/30 mb-6">
+        <Alert className="mb-6">
           <AlertCircleIcon className="h-4 w-4" />
           <AlertTitle>Important</AlertTitle>
           <AlertDescription>

@@ -1,4 +1,4 @@
-import { Footer } from '../(main)/_components/layouts/footer'
+import { Footer } from '../(main)/_components/footer'
 import { Header } from './_header'
 
 export default function MarketingLayout({

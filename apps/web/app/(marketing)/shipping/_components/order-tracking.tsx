@@ -139,10 +139,7 @@ export function OrderTracking() {
       </div>
 
       {/* Tracking delays notice */}
-      <Alert
-        variant="warning"
-        className="bg-warning/10 text-warning border-warning/30"
-      >
+      <Alert variant="warning">
         <AlertCircle className="text-warning h-4 w-4" />
         <AlertTitle>Tracking Updates</AlertTitle>
         <AlertDescription>

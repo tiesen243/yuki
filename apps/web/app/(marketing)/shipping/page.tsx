@@ -27,7 +27,10 @@ export default function ShippingPage() {
 
       {/* Tabbed content for better organization */}
       <Tabs defaultValue="methods" className="mb-12">
-        <TabsList className="mb-8 grid grid-cols-2 md:grid-cols-5">
+        <TabsList
+          className="mb-8 grid grid-cols-2 md:grid-cols-5"
+          variant="underline"
+        >
           {[
             {
               value: 'methods',
@@ -51,7 +54,7 @@ export default function ShippingPage() {
             },
             { value: 'faq', label: 'FAQs', Component: ShippingFAQ },
           ].map(({ value, label }) => (
-            <TabsTrigger key={value} value={value}>
+            <TabsTrigger key={value} value={value} variant="underline">
               {label}
             </TabsTrigger>
           ))}

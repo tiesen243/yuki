@@ -1,26 +1,27 @@
-import type { MiddlewareConfig } from 'next/server'
+import type { MiddlewareConfig, NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 
-import { middleware } from '@yuki/auth'
+import { auth } from '@yuki/auth'
 
 const authRoutes: string[] = ['/login', '/register']
-const protectedRoutes: string[] = ['/protected']
+const protectedRoutes: string[] = []
 
-export default middleware(({ request, session }) => {
-  const { pathname } = new URL(request.url)
+export default async function middleware(req: NextRequest) {
+  const { pathname } = new URL(req.url)
+  const session = await auth(req)
 
-  if (request.method === 'GET') {
+  if (req.method === 'GET') {
     if (
       !session.user &&
       protectedRoutes.some((route) => pathname.startsWith(route))
     ) {
-      const url = new URL('/login', request.url)
+      const url = new URL('/login', req.url)
       url.searchParams.set('redirect_to', pathname)
       return NextResponse.redirect(url)
     }
 
     if (session.user && authRoutes.some((route) => pathname.startsWith(route)))
-      return NextResponse.redirect(new URL('/', request.url))
+      return NextResponse.redirect(new URL('/', req.url))
 
     return NextResponse.next()
   }
@@ -28,32 +29,24 @@ export default middleware(({ request, session }) => {
   /**
    * CSRF Protection Implementation
    *
-   * This middleware implements Cross-Site Request Forgery protection using origin verification:
+   * Provides protection against Cross-Site Request Forgery by:
+   * - Comparing Origin header with Host header to verify same-origin requests
+   * - Blocking requests with missing or mismatched headers (403 Forbidden)
+   * - Bypassing protection for authenticated users
    *
    * Security approach:
-   * - Only requests with matching Origin and Host headers are allowed to proceed
-   * - GET requests should be treated as safe (read-only operations)
-   * - For non-GET requests, we verify that the request originated from our own domain
+   * - Validates Origin as proper URL and matches against request host
+   * - Basic protection complemented by CSRF tokens and SameSite cookies
    *
-   * Security considerations:
-   * 1. Modern browsers automatically send Origin headers for cross-origin requests
-   * 2. This approach is effective against basic CSRF attacks but should be combined with:
-   *    - CSRF tokens for sensitive operations
-   *    - SameSite cookie attributes (Strict or Lax)
-   *    - Content-Type verification for additional protection
-   *
-   * Known exceptions:
-   * - React Native clients bypass CSRF checks (identified by 'x-trpc-source' header)
-   *   WARNING: This creates a security vulnerability and should be addressed by implementing
-   *   a proper token-based authentication system for mobile clients before deployment.
+   * Note: Consider additional validation for authenticated users or
+   * implementing request-specific CSRF tokens for enhanced security.
    */
 
-  const isReactNative = request.headers.get('x-trpc-source') === 'react-native'
-  if (isReactNative) return NextResponse.next()
+  if (session.user) return NextResponse.next()
 
-  const originHeader = request.headers.get('Origin') ?? ''
+  const originHeader = req.headers.get('Origin') ?? ''
   const hostHeader =
-    request.headers.get('Host') ?? request.headers.get('X-Forwarded-Host') ?? ''
+    req.headers.get('Host') ?? req.headers.get('X-Forwarded-Host') ?? ''
   if (!originHeader || !hostHeader)
     return new NextResponse(null, { status: 403 })
 
@@ -67,7 +60,7 @@ export default middleware(({ request, session }) => {
     return new NextResponse(null, { status: 403 })
 
   return NextResponse.next()
-})
+}
 
 export const config = {
   matcher: [

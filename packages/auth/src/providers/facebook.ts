@@ -1,7 +1,5 @@
 import { Facebook } from 'arctic'
 
-import { env } from '@yuki/env'
-
 import { BaseProvider } from './base'
 
 export class FacebookProvider extends BaseProvider {
@@ -12,8 +10,8 @@ export class FacebookProvider extends BaseProvider {
   constructor() {
     super()
     this.provider = new Facebook(
-      env.FACEBOOK_CLIENT_ID,
-      env.FACEBOOK_CLIENT_SECRET,
+      process.env.FACEBOOK_CLIENT_ID ?? '',
+      process.env.FACEBOOK_CLIENT_SECRET ?? '',
       this.createCallbackUrl('facebook'),
     )
   }

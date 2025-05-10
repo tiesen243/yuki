@@ -6,9 +6,6 @@
       "dependsOn": ["^build"],
       "outputs": [".react-router/**", ".vercel/**", "build/**"]
     },
-    "dev": {
-      "with": ["@yuki/api#dev"],
-      "persistent": true
-    }
+    "dev": { "persistent": true }
   }
 }

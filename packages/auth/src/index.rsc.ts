@@ -1,6 +1,9 @@
 import { cache } from 'react'
 
-import { handlers, middleware, signOut, auth as uncachedAuth } from './config'
+import { authOptions } from './config'
+import { Auth } from './core/auth'
+
+const { auth: uncachedAuth, signIn, signOut, handlers } = Auth(authOptions)
 
 /**
  * React-cached authentication function
@@ -12,7 +15,12 @@ import { handlers, middleware, signOut, auth as uncachedAuth } from './config'
  */
 const auth = cache(uncachedAuth)
 
-export type { SessionResult } from './core/session'
-export { auth, handlers, signOut, middleware }
-export { Session } from './core/session'
-export { Password } from './core/password'
+export type * from './types'
+export { auth, signIn, signOut, handlers }
+export {
+  hashSHA256,
+  validateToken,
+  invalidateToken,
+  invalidateAllTokens,
+} from './core/queries'
+export { hash, verify } from './core/password'

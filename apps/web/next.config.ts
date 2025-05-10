@@ -1,12 +1,8 @@
-/**
- * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially useful
- * for Docker builds.
- */
 import '@yuki/env'
 
 import type { NextConfig } from 'next'
 
-const nextConfig: NextConfig = {
+const nextConfig = {
   reactStrictMode: true,
   images: { unoptimized: true },
 
@@ -23,6 +19,6 @@ const nextConfig: NextConfig = {
   /** We already do linting and typechecking as separate tasks in CI */
   eslint: { ignoreDuringBuilds: true },
   typescript: { ignoreBuildErrors: true },
-}
+} satisfies NextConfig
 
 export default nextConfig

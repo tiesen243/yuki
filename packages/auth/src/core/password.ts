@@ -1,25 +1,40 @@
 import { sha3_512 } from '@oslojs/crypto/sha3'
 import { encodeHexLowerCase } from '@oslojs/encoding'
 
-import { env } from '@yuki/env'
+/**
+ * Secret key used for password hashing
+ * Must be set in environment variables
+ */
+const AUTH_SECRET = process.env.AUTH_SECRET
 
-export class Password {
-  private readonly pepper = env.AUTH_SECRET
+/**
+ * Creates a secure hash of a password using SHA3-512
+ *
+ * @param password - The plain text password to hash
+ * @returns A hexadecimal string representation of the hashed password
+ */
+function hash(password: string): string {
+  // Salt the password with the authentication secret
+  const salted = `${password}${AUTH_SECRET}`
 
-  public hash(password: string): string {
-    return this._hash(password)
-  }
+  // Convert the salted password to bytes, hash it, and encode as hex
+  const passwordBytes = new TextEncoder().encode(salted)
+  const hashedBytes = sha3_512(passwordBytes)
+  const hashedHex = encodeHexLowerCase(hashedBytes)
 
-  public verify(password: string, hash: string): boolean {
-    const hashedPassword = this._hash(password)
-    return hashedPassword === hash
-  }
-
-  private _hash(password: string): string {
-    const salted = `${password}${this.pepper}`
-    return (
-      encodeHexLowerCase(sha3_512(new TextEncoder().encode(salted))) +
-      this.pepper
-    )
-  }
+  // Append the secret to the hash for additional security
+  return `${hashedHex}${AUTH_SECRET}`
 }
+
+/**
+ * Verifies a password against a stored hash
+ *
+ * @param password - The plain text password to verify
+ * @param hashedPassword - The stored password hash to compare against
+ * @returns Boolean indicating whether the password matches the hash
+ */
+function verify(password: string, hashedPassword: string): boolean {
+  return hash(password) === hashedPassword
+}
+
+export { hash, verify }
