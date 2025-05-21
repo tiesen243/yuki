@@ -31,11 +31,7 @@ export default function RootLayout({
           geistMono.variable,
         )}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          disableTransitionOnChange
-        >
+        <ThemeProvider attribute="class" disableTransitionOnChange>
           <NuqsAdapter>
             <TRPCReactProvider>
               <SessionProvider>{children}</SessionProvider>

@@ -1,4 +1,3 @@
-import type { SearchParams } from 'nuqs'
 import Link from 'next/link'
 
 import {
@@ -8,14 +7,9 @@ import {
   CardTitle,
 } from '@yuki/ui/card'
 
-import { loader } from '../_search-params'
 import { RegisterForm } from './page.client'
 
-export default async function RegisterPage(props: {
-  searchParams: Promise<SearchParams>
-}) {
-  const { redirectTo } = await loader(props.searchParams)
-
+export default function RegisterPage() {
   return (
     <>
       <CardHeader>
@@ -30,10 +24,7 @@ export default async function RegisterPage(props: {
 
         <p className="mt-4 text-sm">
           Already have an account?{' '}
-          <Link
-            href={`/login?redirect_to=${redirectTo}`}
-            className="hover:underline"
-          >
+          <Link href={`/login`} className="hover:underline">
             Login
           </Link>
         </p>

@@ -1,7 +1,6 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { useQueryStates } from 'nuqs'
 
 import { Button } from '@yuki/ui/button'
 import {
@@ -18,10 +17,8 @@ import { toast } from '@yuki/ui/sonner'
 import { signUpSchema } from '@yuki/validators/auth'
 
 import { useTRPC } from '@/lib/trpc/react'
-import { redirect } from '../_search-params'
 
 export const RegisterForm: React.FC = () => {
-  const [{ redirectTo }] = useQueryStates(redirect.parsers, redirect.configs)
   const { trpcClient } = useTRPC()
   const router = useRouter()
 
@@ -31,7 +28,7 @@ export const RegisterForm: React.FC = () => {
     submitFn: trpcClient.auth.signUp.mutate,
     onSuccess: () => {
       toast.success('You have successfully registered!')
-      router.push(`/login?redirect_to=${redirectTo}`)
+      router.push(`/login`)
     },
     onError: (error) => {
       toast.error(error)
