@@ -3,7 +3,7 @@ import { Typography } from '@yuki/ui/typography'
 
 export default function IndexPage() {
   return (
-    <main className="container space-y-4 py-4">
+    <main className="container grow space-y-4 py-4">
       <div className="flex gap-4">
         {(['default', 'success', 'warning', 'info', 'muted'] as const).map(
           (color) => (
