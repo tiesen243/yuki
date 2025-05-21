@@ -1,8 +1,8 @@
 {
   "name": "create-yuki-turbo",
-  "version": "2.0.1",
+  "version": "1.0.0",
   "private": true,
-  "description": "Turborepo template for doing stuff",
+  "description": "Clean and typesafe starter monorepo using Turborepo along with React and tRPC ",
   "license": "MIT",
   "workspaces": [
     "apps/*",
@@ -14,31 +14,28 @@
     "bump-deps": "bunx --bun npm-check-updates --deep -u && bun install",
     "clean": "git clean -xdf node_modules",
     "clean:workspaces": "turbo run clean",
-    "db:generate": "turbo -F @yuki/db gnr",
-    "db:push": "turbo -F @yuki/db push",
-    "db:studio": "turbo -F @yuki/db studio",
-    "dev": "turbo watch dev --continue",
+    "db:push": "turbo -F @yuki/db db:push",
+    "db:studio": "turbo -F @yuki/db db:studio",
+    "dev": "turbo dev --continue",
     "format": "turbo run format --continue -- --cache --cache-location .cache/.prettiercache",
     "format:fix": "turbo run format --continue -- --write --cache --cache-location .cache/.prettiercache",
     "postinstall": "bun lint:ws",
     "lint": "turbo run lint --continue -- --cache --cache-location .cache/.eslintcache",
     "lint:fix": "turbo run lint --continue -- --fix --cache --cache-location .cache/.eslintcache",
-    "lint:ws": "bunx --bun sherif@latest",
+    "lint:ws": "bun x --bun sherif@latest",
     "typecheck": "turbo run typecheck",
     "ui-add": "turbo run ui-add"
   },
   "prettier": "@yuki/prettier-config",
   "devDependencies": {
-    "@turbo/gen": "2.5.2",
+    "@turbo/gen": "^2.5.3",
     "@yuki/prettier-config": "workspace:*",
     "@yuki/tsconfig": "workspace:*",
-    "prettier": "^3.5.3",
-    "turbo": "2.5.2",
-    "typescript": "^5.8.3"
+    "turbo": "^2.5.3"
   },
-  "packageManager": "bun@1.2.12",
+  "packageManager": "bun@1.2.13",
   "engines": {
-    "bun": ">=1.2.2",
-    "node": ">=20.18.1"
+    "bun": ">=1.2.0",
+    "node": ">=22.0.0"
   }
 }

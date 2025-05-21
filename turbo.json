@@ -1,9 +1,8 @@
 {
-  "$schema": "https://turborepo.org/schema.json",
+  "$schema": "./node_modules/turbo/schema.json",
   "ui": "tui",
   "tasks": {
     "build": {
-      "dependsOn": ["^gnr", "^build"],
       "outputs": [".cache/tsbuildinfo.json", "dist/**"]
     },
     "clean": {
@@ -13,7 +12,6 @@
       "cache": false
     },
     "dev": {
-      "dependsOn": ["^dev"],
       "cache": false,
       "persistent": false
     },
@@ -22,24 +20,20 @@
       "outputLogs": "new-only"
     },
     "lint": {
-      "dependsOn": ["^lint"],
-      "outputs": [".cache/.eslintcache"]
+      "outputs": [".cache/.eslintcache"],
+      "outputLogs": "new-only"
     },
     "typecheck": {
-      "dependsOn": ["^typecheck"],
-      "outputs": [".cache/tsbuildinfo.json"]
+      "outputs": [".cache/tsbuildinfo.json"],
+      "outputLogs": "new-only"
     },
-    "push": {
+    "db:push": {
       "cache": false,
       "interactive": true
     },
-    "studio": {
+    "db:studio": {
       "cache": false,
-      "persistent": false
-    },
-    "gnr": {
-      "cache": false,
-      "interactive": false
+      "persistent": true
     },
     "ui-add": {
       "cache": false,
@@ -47,24 +41,24 @@
     }
   },
   "globalEnv": [
-    "AUTH_SECRET",
+    "AUTH_PROXY_URL",
     "DATABASE_URL",
-    "DISCORD_CLIENT_ID",
-    "DISCORD_CLIENT_SECRET",
+    "FACEBOOK_CLIENT_ID",
+    "FACEBOOK_CLIENT_SECRET",
     "GOOGLE_CLIENT_ID",
     "GOOGLE_CLIENT_SECRET",
-    "RESEND_KEY",
-    "UPLOADTHING_TOKEN",
-    "WEB_URL",
-    "DASHBOARD_URL",
-    "PORT"
+    "PORT",
+    "NEXT_PUBLIC_WEB_URL",
+    "NEXT_PUBLIC_DASHBOARD_URL"
   ],
   "globalPassThroughEnv": [
-    "NODE_ENV",
     "CI",
+    "NODE_ENV",
+    "SKIP_ENV_VALIDATION",
     "VERCEL",
     "VERCEL_ENV",
     "VERCEL_URL",
+    "VERCEL_PROJECT_PRODUCTION_URL",
     "npm_lifecycle_event"
   ]
 }

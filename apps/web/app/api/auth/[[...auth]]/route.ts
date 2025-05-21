@@ -1,3 +1,5 @@
 import { handlers } from '@yuki/auth'
 
-export { handlers as GET, handlers as POST, handlers as OPTIONS }
+// export const runtime = 'edge'
+
+export const { GET, POST } = handlers

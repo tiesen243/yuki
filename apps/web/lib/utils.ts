@@ -1,7 +1,4 @@
-import type { Payment, Status } from '@yuki/db'
-import type { Badge } from '@yuki/ui/badge'
-
-import { env } from '@/env'
+import { env } from '@yuki/env'
 
 export const getBaseUrl = () => {
   if (typeof window !== 'undefined') return window.location.origin
@@ -12,32 +9,8 @@ export const getBaseUrl = () => {
   return `http://localhost:${process.env.PORT ?? 3000}`
 }
 
-export const slugify = (text: string) => {
-  return text
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/\W+/g, '-')
-    .replace(/^-+/, '')
-    .replace(/-+$/, '')
-}
-
-export const getIdFromSlug = (slug?: string): string => {
-  if (!slug) return ''
-  return slug.split('-').pop() ?? ''
-}
-
-export const mapStatusBadge: Record<
-  Status | Payment,
-  React.ComponentProps<typeof Badge>['variant']
-> = {
-  NEW: 'default',
-  PENDING: 'warning',
-  CONFIRMED: 'success',
-  PROCESSING: 'info',
-  DELIVERED: 'success',
-  CANCELLED: 'destructive',
-  PAID: 'success',
-  UNPAID: 'destructive',
-  REFUNDED: 'warning',
+export const getDashboardUrl = () => {
+  if (env.NEXT_PUBLIC_DASHBOARD_URL)
+    return `https://${env.NEXT_PUBLIC_DASHBOARD_URL}`
+  return 'http://localhost:3001'
 }

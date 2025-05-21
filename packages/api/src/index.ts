@@ -1,12 +1,7 @@
 import type { inferRouterInputs, inferRouterOutputs } from '@trpc/server'
+import { fetchRequestHandler } from '@trpc/server/adapters/fetch'
 
 import { authRouter } from './routers/auth'
-import { cartRouter } from './routers/cart'
-import { categoryRouter } from './routers/category'
-import { dashboardRouter } from './routers/dashboard'
-import { orderRouter } from './routers/order'
-import { productRouter } from './routers/product'
-import { userRouter } from './routers/user'
 import {
   createCallerFactory,
   createTRPCContext,
@@ -15,16 +10,41 @@ import {
 
 const appRouter = createTRPCRouter({
   auth: authRouter,
-  cart: cartRouter,
-  category: categoryRouter,
-  dashboard: dashboardRouter,
-  order: orderRouter,
-  product: productRouter,
-  user: userRouter,
 })
 
-// export type definition of API
+/**
+ * Export type definition of API
+ */
 type AppRouter = typeof appRouter
+
+/**
+ * Handle incoming API requests
+ */
+const handlers = async (req: Request) => {
+  let response: Response
+
+  if (req.method === 'OPTIONS') response = new Response(null, { status: 204 })
+  else
+    response = await fetchRequestHandler({
+      endpoint: '/api/trpc',
+      router: appRouter,
+      req,
+      createContext: () => createTRPCContext({ headers: req.headers }),
+      onError({ error, path }) {
+        console.error(`>>> tRPC Error on '${path}'`, error)
+      },
+    })
+
+  /**
+   * Configure basic CORS headers
+   * You should extend this to match your needs
+   */
+  response.headers.set('Access-Control-Allow-Origin', '*')
+  response.headers.set('Access-Control-Request-Method', '*')
+  response.headers.set('Access-Control-Allow-Methods', 'OPTIONS, GET, POST')
+  response.headers.set('Access-Control-Allow-Headers', '*')
+  return response
+}
 
 /**
  * Create a server-side caller for the tRPC API
@@ -52,4 +72,4 @@ type RouterInputs = inferRouterInputs<AppRouter>
 type RouterOutputs = inferRouterOutputs<AppRouter>
 
 export type { AppRouter, RouterInputs, RouterOutputs }
-export { appRouter, createCaller, createTRPCContext }
+export { appRouter, createCaller, createTRPCContext, handlers }

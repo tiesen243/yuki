@@ -8,7 +8,7 @@ import turboPlugin from 'eslint-plugin-turbo'
 import tseslint from 'typescript-eslint'
 
 /**
- * All packages that leverage t3-env should use this rule
+ * All packages that leverage @yuki/env should use this rule
  */
 export const restrictEnvAccess = tseslint.config(
   { ignores: ['**/env.ts'] },
@@ -21,7 +21,7 @@ export const restrictEnvAccess = tseslint.config(
           object: 'process',
           property: 'env',
           message:
-            "Use `import { env } from '@/env'` instead to ensure validated types.",
+            "Use `import { env } from '@yuki/env'` instead to ensure validated types.",
         },
       ],
       'no-restricted-imports': [
@@ -30,7 +30,7 @@ export const restrictEnvAccess = tseslint.config(
           name: 'process',
           importNames: ['env'],
           message:
-            "Use `import { env } from '@/env'` instead to ensure validated types.",
+            "Use `import { env } from '@yuki/env'` instead to ensure validated types.",
         },
       ],
     },
@@ -40,9 +40,9 @@ export const restrictEnvAccess = tseslint.config(
 export default tseslint.config(
   // Ignore files not tracked by VCS and any config files
   includeIgnoreFile(path.join(import.meta.dirname, '../../.gitignore')),
-  { ignores: ['*.config.js'] },
+  { ignores: ['*.config.*'] },
   {
-    files: ['**/*.js', '**/*.ts', '**/*.tsx'],
+    files: ['**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx'],
     plugins: { import: importPlugin },
     extends: [
       jseslint.configs.recommended,
@@ -75,7 +75,6 @@ export default tseslint.config(
     plugins: { turbo: turboPlugin },
     rules: {
       ...turboPlugin.configs.recommended.rules,
-      'turbo/no-undeclared-env-vars': 'warn',
     },
   },
   {

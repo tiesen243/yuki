@@ -4,10 +4,13 @@
 node_modules
 .pnp
 .pnp.js
-.data
 
 # testing
 coverage
+
+# database
+migrations/
+generated/
 
 # next.js
 .next/
@@ -18,24 +21,20 @@ next-env.d.ts
 .nitro/
 .output/
 
-# Nuxt dev/build outputs
-.output
-.data
-.nuxt
-.nitro
-.cache
-dist
-
 # expo
 .expo/
 expo-env.d.ts
-apps/expo/.gitignore
-apps/expo/ios
-apps/expo/android
+apps/native/.gitignore
+apps/native/ios
+apps/native/android
 
-# React Router
+# react router
 .react-router/
-/build/
+
+# tanstack start
+.vinxi/
+dist-ssr/
+routeTree.gen.ts
 
 # production
 build
@@ -60,11 +59,6 @@ yarn-error.log*
 # typescript
 dist/
 .cache
-
-# python
-.python-version
-.venv/
-__pycache__/
 
 # turbo
 .turbo

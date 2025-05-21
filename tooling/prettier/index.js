@@ -1,5 +1,3 @@
-import { fileURLToPath } from 'url'
-
 /** @typedef {import("prettier").Config} PrettierConfig */
 /** @typedef {import("prettier-plugin-tailwindcss").PluginOptions} TailwindConfig */
 /** @typedef {import("@ianvs/prettier-plugin-sort-imports").PluginConfig} SortImportsConfig */
@@ -18,16 +16,12 @@ const config = {
     'prettier-plugin-tailwindcss',
   ],
 
-  tailwindConfig: fileURLToPath(
-    new URL('../../tooling/tailwind/web.ts', import.meta.url),
-  ),
   tailwindFunctions: ['cn', 'cva'],
 
   importOrder: [
     '<TYPES>',
     '^(react/(.*)$)|^(react$)|^(react-native(.*)$)',
     '^(next/(.*)$)|^(next$)',
-    '^(react-router/(.*)$)|^(react-router$)',
     '^(expo(.*)$)|^(expo$)',
     '<THIRD_PARTY_MODULES>',
     '',
@@ -46,6 +40,7 @@ const config = {
   overrides: [
     { files: '*.json.hbs', options: { parser: 'json' } },
     { files: '*.js.hbs', options: { parser: 'babel' } },
+    { files: '*.ts.hbs', options: { parser: 'typescript' } },
   ],
 }
 

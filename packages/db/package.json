@@ -1,44 +1,43 @@
 {
   "name": "@yuki/db",
-  "version": "2.0.0",
+  "version": "1.0.0",
   "private": true,
   "license": "MIT",
   "type": "module",
   "exports": {
     ".": {
-      "type": "./dist/index.d.ts",
+      "types": "./dist/index.d.ts",
       "default": "./src/index.ts"
+    },
+    "./schema": {
+      "types": "./dist/schema.d.ts",
+      "default": "./src/schema.ts"
     }
   },
   "scripts": {
     "build": "tsc",
     "clean": "git clean -xdf .cache .turbo dist node_modules",
+    "db:push": "bun with-env drizzle-kit push",
+    "db:studio": "bun with-env drizzle-kit studio",
     "dev": "tsc --watch",
     "format": "prettier --check . --ignore-path ../../.gitignore",
-    "gnr": "bun with-env prisma generate",
     "lint": "eslint",
-    "push": "bun with-env prisma db push",
-    "studio": "bun with-env prisma studio --browser none",
-    "typecheck": "tsc --noEmit --emitDeclarationOnly false",
+    "typecheck": "tsc --noEmit",
     "with-env": "dotenv -e ../../.env --"
   },
   "prettier": "@yuki/prettier-config",
   "dependencies": {
     "@neondatabase/serverless": "^1.0.0",
-    "@prisma/adapter-neon": "^6.7.0",
-    "@prisma/client": "^6.7.0",
-    "ws": "^8.18.2"
+    "drizzle-orm": "^0.43.1"
   },
   "devDependencies": {
-    "@types/ws": "^8.18.1",
     "@yuki/eslint-config": "workspace:*",
     "@yuki/prettier-config": "workspace:*",
     "@yuki/tsconfig": "workspace:*",
-    "bufferutil": "^4.0.9",
     "dotenv-cli": "^8.0.0",
+    "drizzle-kit": "^0.31.1",
     "eslint": "latest",
     "prettier": "latest",
-    "prisma": "^6.7.0",
     "typescript": "latest"
   }
 }

@@ -1,4 +1,4 @@
 User-Agent: *
 Allow: /
 
-Sitemap: https://shop.tiesen.id.vn/sitemap.xml
+Sitemap: https://tiesen.id.vn/sitemap.xml

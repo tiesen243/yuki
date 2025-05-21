@@ -1,6 +1,6 @@
 {
   "name": "@yuki/auth",
-  "version": "2.0.0",
+  "version": "1.0.0",
   "private": true,
   "license": "MIT",
   "type": "module",
@@ -13,10 +13,6 @@
     "./react": {
       "types": "./dist/react.d.ts",
       "default": "./src/react.tsx"
-    },
-    "./env": {
-      "types": "./dist/env.d.ts",
-      "default": "./src/env.ts"
     }
   },
   "scripts": {
@@ -25,19 +21,16 @@
     "dev": "tsc --watch",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
-    "typecheck": "tsc --noEmit --emitDeclarationOnly false"
+    "typecheck": "tsc --noEmit"
   },
   "prettier": "@yuki/prettier-config",
   "dependencies": {
     "@oslojs/crypto": "^1.0.1",
     "@oslojs/encoding": "^1.1.0",
-    "@t3-oss/env-nextjs": "^0.13.4",
     "@yuki/db": "workspace:*",
-    "@yuki/email": "workspace:*",
-    "arctic": "^3.6.0",
-    "next": "15.3.1",
-    "react": "^19.1.0",
-    "zod": "^3.24.4"
+    "arctic": "^3.7.0",
+    "next": "15.3.2",
+    "react": "19.1.0"
   },
   "devDependencies": {
     "@yuki/eslint-config": "workspace:*",

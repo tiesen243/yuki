@@ -1,7 +1,7 @@
 {
-  "name": "Yuki",
-  "short_name": "Yuki",
-  "description": "An innovative E-Commerce application built using Turbo repo and Next.js, offering a seamless shopping experience with fast performance and modern design.",
+  "name": "Yukinu",
+  "short_name": "Yukinu",
+  "description": "Yukinu - Your complete e-commerce destination for shopping online with a wide selection of products, easy checkout, and secure payments.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",

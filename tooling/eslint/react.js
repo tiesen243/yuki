@@ -1,3 +1,4 @@
+import a11yPlugin from 'eslint-plugin-jsx-a11y'
 import reactPlugin from 'eslint-plugin-react'
 import hooksPlugin from 'eslint-plugin-react-hooks'
 
@@ -10,12 +11,14 @@ export default [
     files: ['**/*.ts', '**/*.tsx'],
     plugins: {
       react: reactPlugin,
+      'jsx-a11y': a11yPlugin,
       'react-hooks': hooksPlugin,
     },
     settings: { react: { version: 'detect' } },
     rules: {
-      ...reactPlugin.configs.recommended.rules,
-      ...hooksPlugin.configs.recommended.rules,
+      ...reactPlugin.configs.flat.recommended.rules,
+      ...a11yPlugin.flatConfigs.strict.rules,
+      ...hooksPlugin.configs['recommended-latest'].rules,
 
       'react/no-unknown-property': 'off',
       'react/react-in-jsx-scope': 'off',

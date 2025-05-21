@@ -1,11 +1,14 @@
 {
   "name": "@yuki/{{ name }}",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "license": "MIT",
   "type": "module",
   "exports": {
-    ".": "./src/index.ts"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./src/index.ts"
+    }
   },
   "scripts": {
     "build": "tsc",
@@ -13,7 +16,7 @@
     "dev": "tsc --watch",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
-    "typecheck": "tsc --noEmit --emitDeclarationOnly false"
+    "typecheck": "tsc --noEmit"
   },
   "prettier": "@yuki/prettier-config",
   "dependencies": {},
