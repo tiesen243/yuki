@@ -1,5 +1,5 @@
 import { relations } from 'drizzle-orm'
-import { pgTable, primaryKey } from 'drizzle-orm/pg-core'
+import { pgEnum, pgTable, primaryKey } from 'drizzle-orm/pg-core'
 
 export const users = pgTable('user', (t) => ({
   id: t.uuid().primaryKey().defaultRandom().notNull(),
@@ -67,7 +67,7 @@ export const products = pgTable('product', (t) => ({
   description: t.text().notNull(),
   image: t.varchar({ length: 255 }).notNull(),
   stock: t.integer().notNull(),
-  price: t.integer().notNull(),
+  price: t.real().notNull(),
   categoryId: t
     .uuid()
     .notNull()
@@ -117,12 +117,20 @@ export const orderItemsRelations = relations(orderItems, ({ one }) => ({
   }),
 }))
 
+export const orderStatusEnum = pgEnum('order_status', [
+  'pending',
+  'completed',
+  'cancelled',
+  'refunded',
+])
+
 export const orders = pgTable('order', (t) => ({
   id: t.uuid().primaryKey().defaultRandom().notNull(),
   userId: t
     .uuid()
     .notNull()
     .references(() => users.id, { onDelete: 'cascade' }),
+  status: orderStatusEnum().default('pending').notNull(),
   createdAt: t.timestamp().defaultNow().notNull(),
   updatedAt: t
     .timestamp({ mode: 'date', withTimezone: true })
