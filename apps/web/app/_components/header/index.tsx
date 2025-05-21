@@ -1,19 +1,15 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
-import { Button } from '@yuki/ui/button'
-import { MenuIcon } from '@yuki/ui/icons'
-
 import { Searchbar } from '@/app/_components/header/search-bar'
 import { UserButton } from '@/app/_components/header/user-button'
+import { MobileNav } from './mobile-nav'
 
 export const Header: React.FC = () => {
   return (
     <header className="bg-card/70 border-border/50 sticky inset-0 z-50 flex h-16 items-center border-b backdrop-blur-xl backdrop-saturate-150">
       <div className="container flex items-center justify-between gap-4">
-        <Button variant="outline" size="icon" className="md:hidden">
-          <MenuIcon />
-        </Button>
+        <MobileNav />
 
         <Link href="/" className="flex items-center gap-2">
           <Image
@@ -29,7 +25,7 @@ export const Header: React.FC = () => {
           </span>
         </Link>
 
-        <Searchbar className="grow" />
+        <Searchbar className="hidden grow md:flex" />
 
         <UserButton />
       </div>
