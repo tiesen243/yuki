@@ -1,36 +1,14 @@
-import { Button } from '@yuki/ui/button'
-import { Typography } from '@yuki/ui/typography'
+import { api } from '@/lib/trpc/server'
+import { ProductCard } from '../_components/product-card'
 
-export default function IndexPage() {
+export default async function IndexPage() {
+  const { products } = await api.product.all({ limit: 12 })
+
   return (
     <main className="container grow space-y-4 py-4">
-      <div className="flex gap-4">
-        {(['default', 'success', 'warning', 'info', 'muted'] as const).map(
-          (color) => (
-            <Typography key={color} color={color} variant="h5">
-              {color}
-            </Typography>
-          ),
-        )}
-      </div>
-
-      <div className="flex gap-4">
-        {(
-          [
-            'default',
-            'secondary',
-            'success',
-            'warning',
-            'info',
-            'destructive',
-            'ghost',
-            'outline',
-            'link',
-          ] as const
-        ).map((variant) => (
-          <Button key={variant} variant={variant}>
-            {variant}{' '}
-          </Button>
+      <div className="grid grid-cols-1 gap-4 sm:grid-rows-2 md:grid-cols-3 lg:grid-cols-4">
+        {products.map((product) => (
+          <ProductCard key={product.id} product={product} />
         ))}
       </div>
     </main>

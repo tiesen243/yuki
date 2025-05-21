@@ -79,8 +79,8 @@ export const Footer = () => (
               { href: '/#', text: 'FAQ' },
               { href: '/#', text: 'Shipping & Delivery' },
               { href: '/#', text: 'Returns & Exchanges' },
-            ].map((link) => (
-              <li key={link.href}>
+            ].map((link, idx) => (
+              <li key={idx}>
                 <Link
                   href={link.href}
                   className="text-muted-foreground hover:text-foreground text-sm transition-colors"
@@ -140,9 +140,9 @@ export const Footer = () => (
             { href: '/#', text: 'Terms of Service' },
             { href: '/#', text: 'Privacy Policy' },
             { href: '/#', text: 'Cookie Policy' },
-          ].map((link) => (
+          ].map((link, idx) => (
             <Link
-              key={link.href}
+              key={idx}
               href={link.href}
               className="text-muted-foreground hover:text-foreground text-sm transition-colors"
             >
