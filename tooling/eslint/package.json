@@ -27,8 +27,8 @@
   "devDependencies": {
     "@yuki/prettier-config": "workspace:*",
     "@yuki/tsconfig": "workspace:*",
-    "eslint": "latest",
-    "prettier": "latest",
-    "typescript": "latest"
+    "eslint": "catalog:tool",
+    "prettier": "catalog:tool",
+    "typescript": "catalog:tool"
   }
 }

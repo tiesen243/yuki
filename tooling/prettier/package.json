@@ -14,11 +14,11 @@
   "prettier": "@yuki/prettier-config",
   "dependencies": {
     "@ianvs/prettier-plugin-sort-imports": "^4.4.1",
-    "prettier": "latest",
     "prettier-plugin-tailwindcss": "^0.6.11"
   },
   "devDependencies": {
     "@yuki/tsconfig": "workspace:*",
-    "typescript": "latest"
+    "prettier": "catalog:tool",
+    "typescript": "catalog:tool"
   }
 }

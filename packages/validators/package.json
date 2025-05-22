@@ -20,14 +20,14 @@
   },
   "prettier": "@yuki/prettier-config",
   "dependencies": {
-    "zod": "^3.25.17"
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@yuki/eslint-config": "workspace:*",
     "@yuki/prettier-config": "workspace:*",
     "@yuki/tsconfig": "workspace:*",
-    "eslint": "latest",
-    "prettier": "latest",
-    "typescript": "latest"
+    "eslint": "catalog:tool",
+    "prettier": "catalog:tool",
+    "typescript": "catalog:tool"
   }
 }

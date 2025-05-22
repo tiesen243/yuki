@@ -4,11 +4,41 @@
   "private": true,
   "description": "Clean and typesafe starter monorepo using Turborepo along with React and tRPC ",
   "license": "MIT",
-  "workspaces": [
-    "apps/*",
-    "packages/*",
-    "tooling/*"
-  ],
+  "workspaces": {
+    "packages": [
+      "apps/*",
+      "packages/*",
+      "tooling/*"
+    ],
+    "catalog": {
+      "zod": "^3.25.20"
+    },
+    "catalogs": {
+      "react": {
+        "react": "^19.1.0",
+        "react-dom": "^19.1.0",
+        "@types/react": "^19.1.5",
+        "@types/react-dom": "^19.1.5"
+      },
+      "trpc": {
+        "@tanstack/react-query": "^5.76.1",
+        "@trpc/client": "^11.1.2",
+        "@trpc/server": "^11.1.2",
+        "@trpc/tanstack-react-query": "^11.1.2",
+        "superjson": "^2.2.2"
+      },
+      "tailwind": {
+        "@tailwindcss/postcss": "^4.1.7",
+        "@tailwindcss/vite": "^4.1.7",
+        "tailwindcss": "^4.1.7"
+      },
+      "tool": {
+        "eslint": "^9.27.0",
+        "prettier": "^3.5.3",
+        "typescript": "^5.8.3"
+      }
+    }
+  },
   "scripts": {
     "build": "turbo run build",
     "bump-deps": "bunx --bun npm-check-updates --deep -u && bun install",
@@ -33,7 +63,7 @@
     "@yuki/tsconfig": "workspace:*",
     "turbo": "^2.5.3"
   },
-  "packageManager": "bun@1.2.13",
+  "packageManager": "bun@1.2.14",
   "engines": {
     "bun": ">=1.2.0",
     "node": ">=22.0.0"

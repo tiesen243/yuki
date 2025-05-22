@@ -36,8 +36,8 @@
     "@yuki/tsconfig": "workspace:*",
     "dotenv-cli": "^8.0.0",
     "drizzle-kit": "^0.31.1",
-    "eslint": "latest",
-    "prettier": "latest",
-    "typescript": "latest"
+    "eslint": "catalog:tool",
+    "prettier": "catalog:tool",
+    "typescript": "catalog:tool"
   }
 }

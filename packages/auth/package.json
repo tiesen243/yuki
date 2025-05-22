@@ -30,14 +30,14 @@
     "@yuki/db": "workspace:*",
     "arctic": "^3.7.0",
     "next": "15.3.2",
-    "react": "19.1.0"
+    "react": "catalog:react"
   },
   "devDependencies": {
     "@yuki/eslint-config": "workspace:*",
     "@yuki/prettier-config": "workspace:*",
     "@yuki/tsconfig": "workspace:*",
-    "eslint": "latest",
-    "prettier": "latest",
-    "typescript": "latest"
+    "eslint": "catalog:tool",
+    "prettier": "catalog:tool",
+    "typescript": "catalog:tool"
   }
 }

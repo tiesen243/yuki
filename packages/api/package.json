@@ -20,19 +20,19 @@
   },
   "prettier": "@yuki/prettier-config",
   "dependencies": {
-    "@trpc/server": "^11.1.2",
+    "@trpc/server": "catalog:trpc",
     "@yuki/auth": "workspace:*",
     "@yuki/db": "workspace:*",
     "@yuki/redis": "workspace:*",
     "@yuki/validators": "workspace:*",
-    "superjson": "^2.2.2"
+    "superjson": "catalog:trpc"
   },
   "devDependencies": {
     "@yuki/eslint-config": "workspace:*",
     "@yuki/prettier-config": "workspace:*",
     "@yuki/tsconfig": "workspace:*",
-    "eslint": "latest",
-    "prettier": "latest",
-    "typescript": "latest"
+    "eslint": "catalog:tool",
+    "prettier": "catalog:tool",
+    "typescript": "catalog:tool"
   }
 }
