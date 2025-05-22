@@ -1,1 +1,1 @@
-export { config as default } from '@yuki/ui/postcss.config'
+export { config as default } from '@yuki/ui/postcss'
