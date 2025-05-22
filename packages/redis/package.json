@@ -1,5 +1,5 @@
 {
-  "name": "@yuki/api",
+  "name": "@yuki/redis",
   "version": "1.0.0",
   "private": true,
   "license": "MIT",
@@ -20,12 +20,7 @@
   },
   "prettier": "@yuki/prettier-config",
   "dependencies": {
-    "@trpc/server": "^11.1.2",
-    "@yuki/auth": "workspace:*",
-    "@yuki/db": "workspace:*",
-    "@yuki/redis": "workspace:*",
-    "@yuki/validators": "workspace:*",
-    "superjson": "^2.2.2"
+    "@upstash/redis": "^1.34.9"
   },
   "devDependencies": {
     "@yuki/eslint-config": "workspace:*",

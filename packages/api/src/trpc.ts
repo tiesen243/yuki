@@ -12,6 +12,7 @@ import superjson from 'superjson'
 
 import { auth } from '@yuki/auth'
 import { db } from '@yuki/db'
+import { redis } from '@yuki/redis'
 
 /**
  * 1. CONTEXT
@@ -38,6 +39,7 @@ export const createTRPCContext = async (opts: { headers: Headers }) => {
 
   return {
     db,
+    redis,
     session,
   }
 }

@@ -15,7 +15,12 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '@yuki/ui/dropdown-menu'
-import { LogOutIcon, SettingsIcon, UserIcon } from '@yuki/ui/icons'
+import {
+  LogOutIcon,
+  SettingsIcon,
+  ShoppingCartIcon,
+  UserIcon,
+} from '@yuki/ui/icons'
 
 import { ThemeSwitcher } from '@/app/_components/header/theme-switcher'
 
@@ -78,5 +83,11 @@ export const UserButton: React.FC = () => {
 
 const userNavItems = [
   { href: '#', label: 'Profile', icon: UserIcon, shortcut: '⌘P' },
+  {
+    href: '/profile/cart',
+    label: 'Cart',
+    icon: ShoppingCartIcon,
+    shortcut: '⌘C',
+  },
   { href: '#', label: 'Settings', icon: SettingsIcon, shortcut: '⌘S' },
 ]

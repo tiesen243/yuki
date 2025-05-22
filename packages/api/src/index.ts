@@ -2,6 +2,7 @@ import type { inferRouterInputs, inferRouterOutputs } from '@trpc/server'
 import { fetchRequestHandler } from '@trpc/server/adapters/fetch'
 
 import { authRouter } from './routers/auth'
+import { cartRouter } from './routers/cart'
 import { productRouter } from './routers/product'
 import {
   createCallerFactory,
@@ -11,6 +12,7 @@ import {
 
 const appRouter = createTRPCRouter({
   auth: authRouter,
+  cart: cartRouter,
   product: productRouter,
 })
 

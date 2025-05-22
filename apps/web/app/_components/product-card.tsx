@@ -1,4 +1,7 @@
+'use client'
+
 import Image from 'next/image'
+import { useMutation } from '@tanstack/react-query'
 
 import { Badge } from '@yuki/ui/badge'
 import { Button } from '@yuki/ui/button'
@@ -12,6 +15,8 @@ import {
 } from '@yuki/ui/card'
 import { ShoppingCartIcon } from '@yuki/ui/icons'
 
+import { useTRPC } from '@/lib/trpc/react'
+
 interface ProductCardProps {
   product: {
     id: string
@@ -23,6 +28,14 @@ interface ProductCardProps {
   }
 }
 export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+  const { trpc, queryClient } = useTRPC()
+  const { mutate, isPending } = useMutation(
+    trpc.cart.update.mutationOptions({
+      onSuccess: () =>
+        queryClient.invalidateQueries(trpc.cart.get.queryFilter()),
+    }),
+  )
+
   const isNew =
     product.createdAt > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
 
@@ -55,7 +68,19 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       </CardContent>
 
       <CardFooter className="px-4">
-        <Button className="w-full">
+        <Button
+          className="w-full"
+          disabled={isPending}
+          onClick={() => {
+            mutate({
+              productId: product.id,
+              productName: product.name,
+              productImage: product.image,
+              productPrice: product.price,
+              quantity: 1,
+            })
+          }}
+        >
           <ShoppingCartIcon /> Add to Cart
         </Button>
       </CardFooter>
