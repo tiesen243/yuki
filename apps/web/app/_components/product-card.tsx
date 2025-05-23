@@ -29,12 +29,20 @@ interface ProductCardProps {
   }
 }
 export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
-  const { trpc } = useTRPC()
-  const { mutate, isPending } = useMutation(
-    trpc.cart.addItem.mutationOptions({
-      onError: (error) => toast.error(error.message),
-    }),
-  )
+  const { trpc, queryClient } = useTRPC()
+  const { mutate, isPending } = useMutation({
+    ...trpc.cart.addItem.mutationOptions(),
+    onError: (error) => toast.error(error.message),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries(trpc.cart.getCart.queryFilter())
+      toast.success('Item added to cart', {
+        action: {
+          label: 'View Cart',
+          onClick: () => (window.location.href = '/profile/cart'),
+        },
+      })
+    },
+  })
 
   const isNew =
     product.createdAt > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)

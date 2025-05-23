@@ -4,10 +4,19 @@ import { useCallback, useState } from 'react'
 import Image from 'next/image'
 import { useMutation, useSuspenseQuery } from '@tanstack/react-query'
 
+import type { addresses } from '@yuki/db/schema'
 import type { CartItem as ICartItem } from '@yuki/redis/schema'
 import { Button } from '@yuki/ui/button'
 import { MinusIcon, PlusIcon, Trash2Icon } from '@yuki/ui/icons'
 import { Input } from '@yuki/ui/input'
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@yuki/ui/select'
 
 import { useDebounce } from '@/hooks/use-debounce'
 import { useTRPC } from '@/lib/trpc/react'
@@ -15,6 +24,48 @@ import { useTRPC } from '@/lib/trpc/react'
 export const CardList: React.FC = () => {
   const { trpc } = useTRPC()
   const { data: cart } = useSuspenseQuery(trpc.cart.getCart.queryOptions())
+
+  const mockAddress: (typeof addresses.$inferSelect)[] = [
+    {
+      id: 'address1',
+      name: 'Home Address',
+      city: 'Los Angeles',
+      country: 'USA',
+      address: '123 Main St, Los Angeles, CA 90001',
+      isDefault: true,
+      phone: '1234567890',
+      state: 'California',
+      zipCode: '90001',
+      userId: 'userId',
+      createdAt: new Date(),
+    },
+    {
+      id: 'address2',
+      name: 'Work Office',
+      city: 'New York',
+      country: 'USA',
+      address: '456 Broadway Ave, New York, NY 10001',
+      isDefault: false,
+      phone: '0987654321',
+      state: 'New York',
+      zipCode: '10001',
+      userId: 'userId',
+      createdAt: new Date(),
+    },
+    {
+      id: 'address3',
+      name: 'Parents House',
+      city: 'Chicago',
+      country: 'USA',
+      address: '789 Oak Street, Chicago, IL 60601',
+      isDefault: false,
+      phone: '5551234567',
+      state: 'Illinois',
+      zipCode: '60601',
+      userId: 'userId',
+      createdAt: new Date(),
+    },
+  ]
 
   return (
     <div className="grid gap-4">
@@ -34,6 +85,45 @@ export const CardList: React.FC = () => {
           <p className="text-muted-foreground text-sm">
             Items: {cart?.items.length}
           </p>
+
+          <div className="grid grid-cols-2 gap-4 pt-4">
+            <Select
+              defaultValue={
+                mockAddress.find((address) => address.isDefault)?.id
+              }
+            >
+              <SelectTrigger className="line-clamp-1 w-full">
+                <SelectValue placeholder="Select a address" />
+              </SelectTrigger>
+
+              <SelectContent>
+                <SelectGroup>
+                  {mockAddress.map((address) => (
+                    <SelectItem key={address.id} value={address.id}>
+                      <div className="flex flex-col gap-1">
+                        <div className="flex items-center gap-2">
+                          <span className="font-medium">{address.name}</span>
+                          {address.isDefault && (
+                            <span className="rounded bg-blue-100 px-2 py-0.5 text-xs text-blue-700">
+                              Default
+                            </span>
+                          )}
+                        </div>
+                        <span className="text-muted-foreground text-sm">
+                          {address.address}
+                        </span>
+                        <span className="text-muted-foreground text-xs">
+                          {address.city}, {address.state} {address.zipCode}
+                        </span>
+                      </div>
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+
+            <Button className="w-full">Checkout</Button>
+          </div>
         </div>
       )}
     </div>

@@ -17,7 +17,8 @@ import {
 } from '@yuki/ui/dropdown-menu'
 import {
   LogOutIcon,
-  SettingsIcon,
+  ShieldIcon,
+  ShoppingBagIcon,
   ShoppingCartIcon,
   UserIcon,
 } from '@yuki/ui/icons'
@@ -82,12 +83,23 @@ export const UserButton: React.FC = () => {
 }
 
 const userNavItems = [
-  { href: '#', label: 'Profile', icon: UserIcon, shortcut: '⌘P' },
+  { href: '/profile', label: 'Profile', icon: UserIcon, shortcut: '⌘P' },
   {
     href: '/profile/cart',
     label: 'Cart',
     icon: ShoppingCartIcon,
     shortcut: '⌘C',
   },
-  { href: '#', label: 'Settings', icon: SettingsIcon, shortcut: '⌘S' },
+  {
+    href: '/profile/orders',
+    label: 'Orders',
+    icon: ShoppingBagIcon,
+    shortcut: '⌘O',
+  },
+  {
+    href: '/profile/sercurity',
+    label: 'Sercurity',
+    icon: ShieldIcon,
+    shortcut: '⌘S',
+  },
 ]
