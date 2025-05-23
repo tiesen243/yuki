@@ -14,6 +14,7 @@ import {
   CardTitle,
 } from '@yuki/ui/card'
 import { ShoppingCartIcon } from '@yuki/ui/icons'
+import { toast } from '@yuki/ui/sonner'
 
 import { useTRPC } from '@/lib/trpc/react'
 
@@ -28,11 +29,10 @@ interface ProductCardProps {
   }
 }
 export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
-  const { trpc, queryClient } = useTRPC()
+  const { trpc } = useTRPC()
   const { mutate, isPending } = useMutation(
-    trpc.cart.update.mutationOptions({
-      onSuccess: () =>
-        queryClient.invalidateQueries(trpc.cart.get.queryFilter()),
+    trpc.cart.addItem.mutationOptions({
+      onError: (error) => toast.error(error.message),
     }),
   )
 
@@ -72,13 +72,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           className="w-full"
           disabled={isPending}
           onClick={() => {
-            mutate({
-              productId: product.id,
-              productName: product.name,
-              productImage: product.image,
-              productPrice: product.price,
-              quantity: 1,
-            })
+            mutate({ productId: product.id, quantity: 1 })
           }}
         >
           <ShoppingCartIcon /> Add to Cart

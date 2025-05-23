@@ -1,16 +1,11 @@
 import * as z from 'zod/v4'
 
-export const updateCartSchema = z.object({
-  productId: z.string(),
-  productName: z.string().optional(),
-  productImage: z.string().optional(),
-  productPrice: z.coerce.number().optional(),
-  quantity: z.coerce.number().min(1),
-  isIncreate: z.boolean().default(true),
+export const addToCartSchema = z.object({
+  productId: z.uuid(),
+  quantity: z.number().int().min(1).max(100),
+  action: z.enum(['increment', 'replace']).default('increment'),
 })
 
-export type CartItem = Omit<z.infer<typeof updateCartSchema>, 'isIncreate'>
-
-export const removeFromCartSchema = z.object({
-  productId: z.string(),
+export const removeCartItemSchema = z.object({
+  productId: z.uuid(),
 })

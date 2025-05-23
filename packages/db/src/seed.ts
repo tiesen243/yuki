@@ -171,7 +171,14 @@ async function main() {
 
   const cs = await db
     .insert(categories)
-    .values(seedCategories.map((name) => ({ name, image: '/assets/logo.svg' })))
+    .values(
+      seedCategories.map((name) => ({
+        name,
+        description:
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        image: '/assets/logo.svg',
+      })),
+    )
     .returning()
 
   // Create a map of category names to IDs
