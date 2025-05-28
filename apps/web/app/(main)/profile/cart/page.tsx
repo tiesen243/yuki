@@ -5,6 +5,8 @@ import { Typography } from '@yuki/ui/typography'
 import { getQueryClient, HydrateClient, trpc } from '@/lib/trpc/server'
 import { CardList, CardListSkeleton } from './page.client'
 
+export const dynamic = 'force-dynamic'
+
 export default function CartPage() {
   void getQueryClient().prefetchQuery(trpc.cart.get.queryOptions())
   void getQueryClient().prefetchQuery(trpc.address.all.queryOptions())
