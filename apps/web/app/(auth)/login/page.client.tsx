@@ -36,6 +36,7 @@ export const LoginForm: React.FC = () => {
   return (
     <Form form={form}>
       <FormField
+        form={form}
         name="email"
         render={(field) => (
           <FormItem>
@@ -49,6 +50,7 @@ export const LoginForm: React.FC = () => {
       />
 
       <FormField
+        form={form}
         name="password"
         render={(field) => (
           <FormItem>

@@ -1,5 +1,5 @@
 {
-  "name": "@yuki/react-router",
+  "name": "@yuki/dashboard",
   "private": true,
   "type": "module",
   "scripts": {
@@ -13,8 +13,8 @@
   },
   "prettier": "@yuki/prettier-config",
   "dependencies": {
-    "@react-router/node": "^7.6.0",
-    "@react-router/serve": "^7.6.0",
+    "@react-router/node": "^7.6.1",
+    "@react-router/serve": "^7.6.1",
     "@tanstack/react-query": "catalog:trpc",
     "@trpc/client": "catalog:trpc",
     "@trpc/tanstack-react-query": "catalog:trpc",
@@ -28,17 +28,17 @@
     "nuqs": "^2.4.3",
     "react": "catalog:react",
     "react-dom": "catalog:react",
-    "react-router": "^7.6.0",
+    "react-router": "^7.6.1",
     "superjson": "catalog:trpc"
   },
   "devDependencies": {
-    "@react-router/dev": "^7.6.0",
-    "@react-router/fs-routes": "^7.6.0",
+    "@react-router/dev": "^7.6.1",
+    "@react-router/fs-routes": "^7.6.1",
     "@tailwindcss/vite": "catalog:tailwind",
-    "@types/node": "22.15.21",
+    "@types/node": "22.15.23",
     "@types/react": "catalog:react",
     "@types/react-dom": "catalog:react",
-    "@vercel/react-router": "^1.1.0",
+    "@vercel/react-router": "^1.1.1",
     "@yuki/eslint-config": "workspace:*",
     "@yuki/prettier-config": "workspace:*",
     "@yuki/tsconfig": "workspace:*",
