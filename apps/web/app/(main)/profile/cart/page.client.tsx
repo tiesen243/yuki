@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { useMutation, useSuspenseQuery } from '@tanstack/react-query'
 
 import type { CartItem as ICartItem } from '@yuki/redis/schema'
+import { Badge } from '@yuki/ui/badge'
 import { Button } from '@yuki/ui/button'
 import { MinusIcon, PlusIcon, Trash2Icon } from '@yuki/ui/icons'
 import { Input } from '@yuki/ui/input'
@@ -60,9 +61,9 @@ export const CardList: React.FC = () => {
                         <div className="flex items-center gap-2">
                           <span className="font-medium">{address.name}</span>
                           {address.isDefault && (
-                            <span className="bg-info/20 text-info rounded-md px-2 text-xs font-semibold">
+                            <Badge variant="info" className="py-0">
                               Default
-                            </span>
+                            </Badge>
                           )}
                         </div>
                         <span className="text-muted-foreground text-sm">

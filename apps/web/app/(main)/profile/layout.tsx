@@ -1,3 +1,6 @@
+import { auth } from '@yuki/auth'
+
+import { createMetadata } from '@/lib/metadata'
 import { NavLinks } from './layout.client'
 
 export default function ProfileLayout({
@@ -11,4 +14,18 @@ export default function ProfileLayout({
       <main className="md:col-span-9">{children}</main>
     </div>
   )
+}
+
+export const generateMetadata = async () => {
+  const { user } = await auth()
+  if (!user) return createMetadata()
+
+  return createMetadata({
+    title: user.name,
+    description: `Profile page of ${user.name}`,
+    openGraph: {
+      images: { url: user.image, alt: `Profile picture of ${user.name}` },
+      url: '/profile',
+    },
+  })
 }

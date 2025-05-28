@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useMutation, useSuspenseQuery } from '@tanstack/react-query'
 
 import type { RouterOutputs } from '@yuki/api'
+import { Badge } from '@yuki/ui/badge'
 import { Button } from '@yuki/ui/button'
 import { PencilIcon, TrashIcon } from '@yuki/ui/icons'
 import { toast } from '@yuki/ui/sonner'
@@ -42,9 +43,7 @@ const AddressCard: React.FC<{
     <div className="bg-card relative min-w-48 rounded-xl p-4 shadow-md">
       <div className="flex w-[80%] items-center gap-2">
         {address.isDefault ? (
-          <span className="bg-info rounded-full px-2 py-1 text-xs font-semibold">
-            Default
-          </span>
+          <Badge variant="info">Default</Badge>
         ) : (
           <Button
             size="sm"
