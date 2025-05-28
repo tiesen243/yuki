@@ -4,7 +4,6 @@ import { useCallback, useState } from 'react'
 import Image from 'next/image'
 import { useMutation, useSuspenseQuery } from '@tanstack/react-query'
 
-import type { addresses } from '@yuki/db/schema'
 import type { CartItem as ICartItem } from '@yuki/redis/schema'
 import { Button } from '@yuki/ui/button'
 import { MinusIcon, PlusIcon, Trash2Icon } from '@yuki/ui/icons'
@@ -24,48 +23,7 @@ import { useTRPC } from '@/lib/trpc/react'
 export const CardList: React.FC = () => {
   const { trpc } = useTRPC()
   const { data: cart } = useSuspenseQuery(trpc.cart.get.queryOptions())
-
-  const mockAddress: (typeof addresses.$inferSelect)[] = [
-    {
-      id: 'address1',
-      name: 'Home Address',
-      city: 'Los Angeles',
-      country: 'USA',
-      address: '123 Main St, Los Angeles, CA 90001',
-      isDefault: true,
-      phone: '1234567890',
-      state: 'California',
-      zipCode: '90001',
-      userId: 'userId',
-      createdAt: new Date(),
-    },
-    {
-      id: 'address2',
-      name: 'Work Office',
-      city: 'New York',
-      country: 'USA',
-      address: '456 Broadway Ave, New York, NY 10001',
-      isDefault: false,
-      phone: '0987654321',
-      state: 'New York',
-      zipCode: '10001',
-      userId: 'userId',
-      createdAt: new Date(),
-    },
-    {
-      id: 'address3',
-      name: 'Parents House',
-      city: 'Chicago',
-      country: 'USA',
-      address: '789 Oak Street, Chicago, IL 60601',
-      isDefault: false,
-      phone: '5551234567',
-      state: 'Illinois',
-      zipCode: '60601',
-      userId: 'userId',
-      createdAt: new Date(),
-    },
-  ]
+  const { data: addresses } = useSuspenseQuery(trpc.address.all.queryOptions())
 
   return (
     <div className="grid gap-4">
@@ -88,9 +46,7 @@ export const CardList: React.FC = () => {
 
           <div className="grid grid-cols-2 gap-4 pt-4">
             <Select
-              defaultValue={
-                mockAddress.find((address) => address.isDefault)?.id
-              }
+              defaultValue={addresses.find((address) => address.isDefault)?.id}
             >
               <SelectTrigger className="line-clamp-1 w-full">
                 <SelectValue placeholder="Select a address" />
@@ -98,13 +54,13 @@ export const CardList: React.FC = () => {
 
               <SelectContent>
                 <SelectGroup>
-                  {mockAddress.map((address) => (
+                  {addresses.map((address) => (
                     <SelectItem key={address.id} value={address.id}>
                       <div className="flex flex-col gap-1">
                         <div className="flex items-center gap-2">
                           <span className="font-medium">{address.name}</span>
                           {address.isDefault && (
-                            <span className="rounded bg-blue-100 px-2 py-0.5 text-xs text-blue-700">
+                            <span className="bg-info/20 text-info rounded-md px-2 text-xs font-semibold">
                               Default
                             </span>
                           )}
@@ -233,6 +189,51 @@ const CartItem: React.FC<{ item: ICartItem }> = ({ item }) => {
         >
           <Trash2Icon /> Remove
         </Button>
+      </div>
+    </div>
+  )
+}
+
+export const CardListSkeleton: React.FC = () => {
+  return (
+    <div className="grid gap-4">
+      <div className="grid gap-2">
+        {Array.from({ length: 3 }).map((_, index) => (
+          <CartItemSkeleton key={index} />
+        ))}
+      </div>
+
+      <div className="grid gap-1 border-t pt-4">
+        <p className="font-semibold">Total: $0</p>
+        <p className="text-muted-foreground text-sm">Items:0</p>
+
+        <div className="grid grid-cols-2 gap-4 pt-4">
+          <div className="h-9 w-full animate-pulse rounded-md bg-current" />
+          <div className="h-9 w-full animate-pulse rounded-md bg-current" />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+const CartItemSkeleton: React.FC = () => {
+  return (
+    <div className="bg-card grid grid-cols-7 gap-4 rounded-xl border p-4 shadow-md">
+      <div className="aspect-square h-20 w-20 animate-pulse rounded-md bg-current" />
+
+      <div className="col-span-5 grid gap-2">
+        <div className="h-6 w-3/4 animate-pulse rounded-md bg-current" />
+
+        <div className="flex">
+          <div className="size-8 animate-pulse rounded-md bg-current" />
+          <div className="mx-2 h-8 w-16 animate-pulse rounded-md bg-current" />
+          <div className="size-8 animate-pulse rounded-md bg-current" />
+        </div>
+      </div>
+
+      <div className="grid gap-2">
+        <div className="h-6 w-20 animate-pulse rounded-md bg-current" />
+        <div className="h-9 w-20 animate-pulse rounded-md bg-current" />
       </div>
     </div>
   )

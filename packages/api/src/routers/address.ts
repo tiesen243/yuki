@@ -11,6 +11,7 @@ export const addressRouter = {
   all: protectedProcedure.query(async ({ ctx }) => {
     return ctx.db.query.addresses.findMany({
       where: (addresses, { eq }) => eq(addresses.userId, ctx.session.user.id),
+      orderBy: (addresses, { desc }) => desc(addresses.createdAt),
     })
   }),
 
@@ -65,9 +66,62 @@ export const addressRouter = {
       return true
     }),
 
+  setDefault: protectedProcedure
+    .input(byIdSchema)
+    .mutation(async ({ ctx, input }) => {
+      const [address] = await ctx.db
+        .select()
+        .from(addresses)
+        .where(
+          and(
+            eq(addresses.id, input.id),
+            eq(addresses.userId, ctx.session.user.id),
+          ),
+        )
+
+      if (!address)
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Address not found' })
+
+      await ctx.db.transaction(async (tx) => {
+        if (!address.isDefault) {
+          await tx
+            .update(addresses)
+            .set({ isDefault: false })
+            .where(eq(addresses.userId, ctx.session.user.id))
+
+          await tx
+            .update(addresses)
+            .set({ isDefault: true })
+            .where(
+              and(
+                eq(addresses.id, input.id),
+                eq(addresses.userId, ctx.session.user.id),
+              ),
+            )
+        }
+      })
+
+      return true
+    }),
+
   remove: protectedProcedure
     .input(byIdSchema)
     .mutation(async ({ ctx, input }) => {
+      const [address] = await ctx.db
+        .select()
+        .from(addresses)
+        .where(
+          and(
+            eq(addresses.id, input.id),
+            eq(addresses.userId, ctx.session.user.id),
+          ),
+        )
+      if (address?.isDefault)
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Cannot delete default address',
+        })
+
       await ctx.db
         .delete(addresses)
         .where(

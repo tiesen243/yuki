@@ -6,6 +6,7 @@ import { useMutation, useSuspenseQuery } from '@tanstack/react-query'
 import type { RouterOutputs } from '@yuki/api'
 import { Button } from '@yuki/ui/button'
 import { PencilIcon, TrashIcon } from '@yuki/ui/icons'
+import { toast } from '@yuki/ui/sonner'
 import { Typography } from '@yuki/ui/typography'
 
 import { useTRPC } from '@/lib/trpc/react'
@@ -23,19 +24,39 @@ const AddressCard: React.FC<{
   address: RouterOutputs['address']['all'][number]
 }> = ({ address }) => {
   const { trpc, queryClient } = useTRPC()
-  const { mutate, isPending } = useMutation({
+  const { mutate: remove, isPending: isRemoving } = useMutation({
     ...trpc.address.remove.mutationOptions(),
     onSuccess: () =>
       queryClient.invalidateQueries(trpc.address.all.queryFilter()),
+    onError: (error) => toast.error(error.message),
+  })
+
+  const { mutate: setDefault, isPending: isSetting } = useMutation({
+    ...trpc.address.setDefault.mutationOptions(),
+    onSuccess: () =>
+      queryClient.invalidateQueries(trpc.address.all.queryFilter()),
+    onError: (error) => toast.error(error.message),
   })
 
   return (
     <div className="bg-card relative min-w-48 rounded-xl p-4 shadow-md">
       <div className="flex w-[80%] items-center gap-2">
-        {address.isDefault && (
-          <span className="bg-info text-foreground rounded-full px-2 py-1 text-xs font-semibold">
+        {address.isDefault ? (
+          <span className="bg-info rounded-full px-2 py-1 text-xs font-semibold">
             Default
           </span>
+        ) : (
+          <Button
+            size="sm"
+            variant="ghost"
+            className="text-info hover:bg-info/10 dark:hover:bg-info/20 hover:text-info"
+            onClick={() => {
+              setDefault({ id: address.id })
+            }}
+            disabled={isSetting}
+          >
+            Set as Default
+          </Button>
         )}
         <Typography variant="h4" as="h3">
           {address.name}
@@ -58,9 +79,9 @@ const AddressCard: React.FC<{
           variant="ghost"
           className="text-destructive hover:bg-destructive/10 dark:hover:bg-destructive/20 hover:text-destructive"
           onClick={() => {
-            mutate({ id: address.id })
+            remove({ id: address.id })
           }}
-          disabled={isPending}
+          disabled={isRemoving}
         >
           <TrashIcon />
           <span className="sr-only sm:not-sr-only">Delete</span>
