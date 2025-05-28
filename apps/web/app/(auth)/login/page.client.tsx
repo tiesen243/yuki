@@ -4,15 +4,7 @@ import { useRouter } from 'next/navigation'
 
 import { useSession } from '@yuki/auth/react'
 import { Button } from '@yuki/ui/button'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-  useForm,
-} from '@yuki/ui/form'
+import { useForm } from '@yuki/ui/form'
 import { Input } from '@yuki/ui/input'
 import { toast } from '@yuki/ui/sonner'
 import { signInSchema } from '@yuki/validators/auth'
@@ -22,48 +14,52 @@ export const LoginForm: React.FC = () => {
   const router = useRouter()
 
   const form = useForm({
-    schema: signInSchema,
     defaultValues: { email: '', password: '' },
-    submitFn: (values) => signIn('credentials', values),
+    validator: signInSchema,
+    onSubmit: (values) => signIn('credentials', values),
     onSuccess: () => {
+      toast.success('You have successfully logged in!')
       router.push('/')
     },
-    onError: (error) => {
-      toast.error(error)
-    },
+    onError: (error) => toast.error(error.message),
   })
 
   return (
-    <Form form={form}>
-      <FormField
-        form={form}
+    <form
+      className="grid gap-4"
+      onSubmit={(e) => {
+        e.preventDefault()
+        e.stopPropagation()
+        form.handleSubmit()
+      }}
+    >
+      <form.Field
         name="email"
-        render={(field) => (
-          <FormItem>
-            <FormLabel>Email</FormLabel>
-            <FormControl {...field}>
+        render={({ field, meta }) => (
+          <div id={meta.id} className="grid gap-1">
+            <form.Label>Email</form.Label>
+            <form.Control {...field}>
               <Input type="email" placeholder="yuki@example.com" />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
+            </form.Control>
+            <form.Message />
+          </div>
         )}
       />
 
-      <FormField
-        form={form}
+      <form.Field
         name="password"
-        render={(field) => (
-          <FormItem>
-            <FormLabel>Password</FormLabel>
-            <FormControl {...field}>
-              <Input type="password" placeholder="••••••••" />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
+        render={({ field, meta }) => (
+          <div id={meta.id} className="grid gap-1">
+            <form.Label>Password</form.Label>
+            <form.Control {...field}>
+              <Input type="password" placeholder="********" />
+            </form.Control>
+            <form.Message />
+          </div>
         )}
       />
 
-      <Button disabled={form.isPending}>Login</Button>
-    </Form>
+      <Button disabled={form.state.isPending}>Login</Button>
+    </form>
   )
 }

@@ -7,15 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@yuki/ui/card'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-  useForm,
-} from '@yuki/ui/form'
+import { useForm } from '@yuki/ui/form'
 import { Input } from '@yuki/ui/input'
 import { toast } from '@yuki/ui/sonner'
 import { signUpSchema } from '@yuki/validators/auth'
@@ -51,62 +43,67 @@ const RegisterForm: React.FC = () => {
   const { trpcClient } = useTRPC()
 
   const form = useForm({
-    schema: signUpSchema,
     defaultValues: { name: '', email: '', password: '', confirmPassword: '' },
-    submitFn: trpcClient.auth.signUp.mutate,
+    validator: signUpSchema,
+    onSubmit: trpcClient.auth.signUp.mutate,
     onSuccess: () => {
       toast.success('You have successfully registered!')
       void router('/login')
     },
-    onError: (error) => {
-      toast.error(error)
-    },
+    onError: (error) => toast.error(error.message),
   })
 
   return (
-    <Form form={form}>
+    <form
+      className="grid gap-4"
+      onSubmit={(e) => {
+        e.preventDefault()
+        e.stopPropagation()
+        form.handleSubmit()
+      }}
+    >
       {formItems.map((item) => (
-        <FormField
+        <form.Field
           key={item.name}
           name={item.name}
-          render={(field) => (
-            <FormItem>
-              <FormLabel>{item.label}</FormLabel>
-              <FormControl {...field}>
+          render={({ field, meta }) => (
+            <div id={meta.id} className="grid gap-1">
+              <form.Label>{item.label}</form.Label>
+              <form.Control {...field}>
                 <Input {...item} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
+              </form.Control>
+              <form.Message />
+            </div>
           )}
         />
       ))}
 
-      <Button disabled={form.isPending}>Register</Button>
-    </Form>
+      <Button disabled={form.state.isPending}>Register</Button>
+    </form>
   )
 }
 
 const formItems = [
   {
-    name: 'name',
+    name: 'name' as const,
     label: 'Name',
     type: 'text',
     placeholder: 'Yuki',
   },
   {
-    name: 'email',
+    name: 'email' as const,
     label: 'Email',
     type: 'email',
     placeholder: 'yuki@example.com',
   },
   {
-    name: 'password',
+    name: 'password' as const,
     label: 'Password',
     type: 'password',
     placeholder: '••••••••',
   },
   {
-    name: 'confirmPassword',
+    name: 'confirmPassword' as const,
     label: 'Confirm Password',
     type: 'password',
     placeholder: '••••••••',
