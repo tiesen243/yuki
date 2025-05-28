@@ -1,25 +1,7 @@
-import type { inferRouterInputs, inferRouterOutputs } from '@trpc/server'
 import { fetchRequestHandler } from '@trpc/server/adapters/fetch'
 
-import { authRouter } from './routers/auth'
-import { cartRouter } from './routers/cart'
-import { productRouter } from './routers/product'
-import {
-  createCallerFactory,
-  createTRPCContext,
-  createTRPCRouter,
-} from './trpc'
-
-const appRouter = createTRPCRouter({
-  auth: authRouter,
-  cart: cartRouter,
-  product: productRouter,
-})
-
-/**
- * Export type definition of API
- */
-type AppRouter = typeof appRouter
+import { appRouter } from './routers/_app'
+import { createCallerFactory, createTRPCContext } from './trpc'
 
 /**
  * Handle incoming API requests
@@ -59,21 +41,5 @@ const handlers = async (req: Request) => {
  */
 const createCaller = createCallerFactory(appRouter)
 
-/**
- * Inference helpers for input types
- * @example
- * type PostByIdInput = RouterInputs['post']['byId']
- *      ^? { id: number }
- **/
-type RouterInputs = inferRouterInputs<AppRouter>
-
-/**
- * Inference helpers for output types
- * @example
- * type AllPostsOutput = RouterOutputs['post']['all']
- *      ^? Post[]
- **/
-type RouterOutputs = inferRouterOutputs<AppRouter>
-
-export type { AppRouter, RouterInputs, RouterOutputs }
+export type { AppRouter, RouterInputs, RouterOutputs } from './routers/_app'
 export { appRouter, createCaller, createTRPCContext, handlers }

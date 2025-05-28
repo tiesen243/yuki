@@ -31,10 +31,10 @@ interface ProductCardProps {
 export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const { trpc, queryClient } = useTRPC()
   const { mutate, isPending } = useMutation({
-    ...trpc.cart.addItem.mutationOptions(),
+    ...trpc.cart.add.mutationOptions(),
     onError: (error) => toast.error(error.message),
     onSuccess: async () => {
-      await queryClient.invalidateQueries(trpc.cart.getCart.queryFilter())
+      await queryClient.invalidateQueries(trpc.cart.get.queryFilter())
       toast.success('Item added to cart', {
         action: {
           label: 'View Cart',

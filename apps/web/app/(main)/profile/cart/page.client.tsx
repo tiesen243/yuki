@@ -23,7 +23,7 @@ import { useTRPC } from '@/lib/trpc/react'
 
 export const CardList: React.FC = () => {
   const { trpc } = useTRPC()
-  const { data: cart } = useSuspenseQuery(trpc.cart.getCart.queryOptions())
+  const { data: cart } = useSuspenseQuery(trpc.cart.get.queryOptions())
 
   const mockAddress: (typeof addresses.$inferSelect)[] = [
     {
@@ -135,18 +135,16 @@ const CartItem: React.FC<{ item: ICartItem }> = ({ item }) => {
 
   const { trpc, queryClient } = useTRPC()
   const { mutate: update, isPending: isUpdating } = useMutation({
-    ...trpc.cart.updateItem.mutationOptions(),
-    onSuccess: () =>
-      queryClient.invalidateQueries(trpc.cart.getCart.queryFilter()),
+    ...trpc.cart.update.mutationOptions(),
+    onSuccess: () => queryClient.invalidateQueries(trpc.cart.get.queryFilter()),
     onError: () => {
       setLocalQuantity(item.quantity)
     },
   })
 
   const { mutate: remove, isPending: isRemoving } = useMutation({
-    ...trpc.cart.removeItem.mutationOptions(),
-    onSuccess: () =>
-      queryClient.invalidateQueries(trpc.cart.getCart.queryFilter()),
+    ...trpc.cart.remove.mutationOptions(),
+    onSuccess: () => queryClient.invalidateQueries(trpc.cart.get.queryFilter()),
   })
 
   const debouncedUpdate = useDebounce((quantity: number) => {

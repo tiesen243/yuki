@@ -22,8 +22,9 @@ export const NavLinks: React.FC = () => {
           key={item.name}
           href={item.href}
           className={cn(
-            'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground flex items-center gap-2 rounded-lg px-2 py-1 font-semibold',
-            pathName === item.href
+            'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground flex items-center gap-2 rounded-lg px-2 py-1 font-semibold whitespace-nowrap',
+            pathName === item.href ||
+              (pathName.startsWith(item.href) && item.href !== '/profile')
               ? 'bg-sidebar-accent text-sidebar-accent-foreground'
               : 'text-muted-foreground',
           )}

@@ -9,7 +9,7 @@ import { addToCartSchema, removeCartItemSchema } from '@yuki/validators/cart'
 import { protectedProcedure } from '../trpc'
 
 export const cartRouter = {
-  getCart: protectedProcedure.query(async ({ ctx }) => {
+  get: protectedProcedure.query(async ({ ctx }) => {
     const cartKey = `cart:${ctx.session.user.id}`
     const cart = await ctx.redis.get<Cart>(cartKey)
 
@@ -39,7 +39,7 @@ export const cartRouter = {
     }
   }),
 
-  addItem: protectedProcedure
+  add: protectedProcedure
     .input(addToCartSchema)
     .mutation(async ({ ctx, input }) => {
       const { productId, quantity } = input
@@ -102,7 +102,7 @@ export const cartRouter = {
       return { success: true }
     }),
 
-  updateItem: protectedProcedure
+  update: protectedProcedure
     .input(addToCartSchema)
     .mutation(async ({ ctx, input }) => {
       const { productId, quantity, action } = input
@@ -147,7 +147,7 @@ export const cartRouter = {
       return { success: true }
     }),
 
-  removeItem: protectedProcedure
+  remove: protectedProcedure
     .input(removeCartItemSchema)
     .mutation(async ({ ctx, input }) => {
       const cartKey = `cart:${ctx.session.user.id}`

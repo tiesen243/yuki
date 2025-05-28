@@ -5,7 +5,7 @@ export default function ProfileLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <div className="container grid grow gap-4 py-4 md:grid-cols-12">
-      <aside className="bg-sidebar rounded-xl shadow-md md:col-span-3">
+      <aside className="bg-sidebar max-w-full overflow-x-auto rounded-xl shadow-md md:col-span-3">
         <NavLinks />
       </aside>
       <main className="md:col-span-9">{children}</main>
