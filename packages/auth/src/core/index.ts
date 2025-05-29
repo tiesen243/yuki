@@ -71,6 +71,9 @@ export function Auth<TProviders extends Providers>({
       codeVerifier,
     )
 
+    console.log(process.env.VERCEL_PROJECT_PRODUCTION_URL)
+    console.log(process.env.VERCEL_URL)
+
     // Set cookies for the callback and create response
     const response = createRedirectResponse(authorizationUrl)
     await Promise.all([
