@@ -7,3 +7,7 @@ export const allSchema = z.object({
   sortBy: z.enum(['createdAt', 'updatedAt']).default('createdAt'),
   orderBy: z.enum(['asc', 'desc']).default('desc'),
 })
+
+export const byIdSchema = z.object({
+  id: z.uuid(),
+})

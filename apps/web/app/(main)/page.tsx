@@ -12,7 +12,7 @@ export default async function IndexPage() {
         <Slider />
       </section>
 
-      <section className="container grid grid-cols-1 gap-4 sm:grid-rows-2 md:grid-cols-3 lg:grid-cols-4">
+      <section className="container grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         <h2 className="sr-only">Products</h2>
         {products.map((product) => (
           <ProductCard key={product.id} product={product} />
