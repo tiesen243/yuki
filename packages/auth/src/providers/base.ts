@@ -25,8 +25,8 @@ export abstract class BaseProvider {
     let baseUrl = `http://localhost:${process.env.PORT ?? 3000}`
     if (process.env.VERCEL_PROJECT_PRODUCTION_URL)
       baseUrl = `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-    if (process.env.VERCEL_URL) baseUrl = `https://${process.env.VERCEL_URL}`
-    console.log(`Base URL: ${baseUrl}`)
+    else if (process.env.VERCEL_URL)
+      baseUrl = `https://${process.env.VERCEL_URL}`
 
     return `${baseUrl}/api/auth/${provider}/callback`
   }
