@@ -23,8 +23,7 @@ export abstract class BaseProvider {
 
   protected createCallbackUrl(provider: string) {
     let baseUrl = `http://localhost:${process.env.PORT ?? 3000}`
-    if (typeof window !== 'undefined') baseUrl = window.location.origin
-    else if (process.env.VERCEL_PROJECT_PRODUCTION_URL)
+    if (process.env.VERCEL_PROJECT_PRODUCTION_URL)
       baseUrl = `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
     else if (process.env.VERCEL_URL)
       baseUrl = `https://${process.env.VERCEL_URL}`
