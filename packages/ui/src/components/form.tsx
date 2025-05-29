@@ -67,7 +67,7 @@ function useForm<
 }: {
   defaultValues: TValue
   validator?: TSchema extends StandardSchemaV1
-    ? InferInput<TSchema> extends TValue
+    ? Required<InferInput<TSchema>> extends TValue
       ? TSchema
       : Types<TValue>['input']
     : (value: TValue) => Result<TValue>

@@ -3,7 +3,7 @@ import { TRPCError } from '@trpc/server'
 
 import { Password } from '@yuki/auth'
 import { and, eq } from '@yuki/db'
-import { accounts, users } from '@yuki/db/schema'
+import { accounts, sessions, users } from '@yuki/db/schema'
 import { changePasswordSchema, signUpSchema } from '@yuki/validators/auth'
 
 import { protectedProcedure, publicProcedure } from '../trpc'
@@ -81,4 +81,14 @@ export const authRouter = {
 
       return true
     }),
+
+  removeAccount: protectedProcedure.mutation(async ({ ctx }) => {
+    const userId = ctx.session.user.id
+
+    await ctx.db.delete(users).where(eq(users.id, userId))
+    await ctx.db.delete(accounts).where(eq(accounts.accountId, userId))
+    await ctx.db.delete(sessions).where(eq(sessions.userId, userId))
+
+    return true
+  }),
 } satisfies TRPCRouterRecord

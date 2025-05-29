@@ -5,7 +5,7 @@ export const byIdSchema = z.object({
 })
 
 export const addSchema = z.object({
-  id: z.string(),
+  id: z.string().optional(),
   name: z.string().min(1).max(255),
   phone: z.string().min(1).max(50),
   address: z.string().min(1).max(255),

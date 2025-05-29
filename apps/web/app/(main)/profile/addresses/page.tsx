@@ -14,25 +14,21 @@ export default function ProfilePage() {
 
   return (
     <HydrateClient>
-      <section>
-        <h1 className="sr-only">Addresses</h1>
+      <section className="grid gap-4">
+        <div className="mb-4 flex items-center justify-between">
+          <Typography variant="h2">My Addresses</Typography>
+          <Button asChild>
+            <Link href="/profile/addresses/new">Add New Address</Link>
+          </Button>
+        </div>
 
-        <section className="grid gap-4">
-          <div className="mb-4 flex items-center justify-between">
-            <Typography variant="h2">My Addresses</Typography>
-            <Button asChild>
-              <Link href="/profile/addresses/new">Add New Address</Link>
-            </Button>
-          </div>
-
-          <Suspense
-            fallback={Array(3).map((_, i) => (
-              <AddressCardSkeleton key={i} />
-            ))}
-          >
-            <AddressList />
-          </Suspense>
-        </section>
+        <Suspense
+          fallback={Array(3).map((_, i) => (
+            <AddressCardSkeleton key={i} />
+          ))}
+        >
+          <AddressList />
+        </Suspense>
       </section>
     </HydrateClient>
   )
