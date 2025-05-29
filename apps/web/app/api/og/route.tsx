@@ -12,7 +12,7 @@ export function GET(req: NextRequest) {
     searchParams.get('title') ?? 'Your Complete E-commerce Destination'
   const description = searchParams.get('description') ?? defaultMeta.description
   const imageUrl =
-    'https://gravatar.com/avatar/48b8ec4ce6c85e06c11bda4381a3ac6cb8161a23e5ea540544c809063090815d?size=500&w=640&q=75'
+    searchParams.get('image') ?? `${getBaseUrl()}/assets/logo.svg`
 
   return new ImageResponse(
     (
