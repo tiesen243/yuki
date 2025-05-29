@@ -58,7 +58,7 @@ export const addressRouter = {
         .set(input)
         .where(
           and(
-            eq(addresses.id, input.id),
+            eq(addresses.id, input.id ?? ''),
             eq(addresses.userId, ctx.session.user.id),
           ),
         )
