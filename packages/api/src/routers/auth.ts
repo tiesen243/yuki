@@ -49,7 +49,7 @@ export const authRouter = {
   changePassword: protectedProcedure
     .input(changePasswordSchema)
     .mutation(async ({ ctx, input }) => {
-      const { currentPassword, newPassword } = input
+      const { currentPassword, newPassword, isLogoutAll } = input
       const userId = ctx.session.user.id
 
       const account = await ctx.db.query.accounts.findFirst({
@@ -60,24 +60,38 @@ export const authRouter = {
           ),
       })
 
-      if (
-        !account ||
-        !(await password.verify(account.password ?? '', currentPassword ?? ''))
-      )
-        throw new TRPCError({
-          code: 'UNAUTHORIZED',
-          message: 'Current password is incorrect',
+      if (!account) {
+        await ctx.db.insert(accounts).values({
+          provider: 'credentials',
+          accountId: userId,
+          userId: userId,
+          password: await password.hash(newPassword),
         })
-
-      await ctx.db
-        .update(accounts)
-        .set({ password: await password.hash(newPassword) })
-        .where(
-          and(
-            eq(accounts.provider, 'credentials'),
-            eq(accounts.accountId, account.accountId),
-          ),
+      } else {
+        if (
+          !(await password.verify(
+            account.password ?? '',
+            currentPassword ?? '',
+          ))
         )
+          throw new TRPCError({
+            code: 'UNAUTHORIZED',
+            message: 'Current password is incorrect',
+          })
+
+        await ctx.db
+          .update(accounts)
+          .set({ password: await password.hash(newPassword) })
+          .where(
+            and(
+              eq(accounts.provider, 'credentials'),
+              eq(accounts.accountId, account.accountId),
+            ),
+          )
+      }
+
+      if (isLogoutAll)
+        await ctx.db.delete(sessions).where(eq(sessions.userId, userId))
 
       return true
     }),

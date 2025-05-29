@@ -12,6 +12,7 @@ import {
   AlertDialogTrigger,
 } from '@yuki/ui/alert-dialog'
 import { Button } from '@yuki/ui/button'
+import { Checkbox } from '@yuki/ui/checkbox'
 import { useForm } from '@yuki/ui/form'
 import { Input } from '@yuki/ui/input'
 import { changePasswordSchema } from '@yuki/validators/auth'
@@ -26,6 +27,7 @@ export const ChangePasswordForm: React.FC = () => {
       currentPassword: '',
       newPassword: '',
       confirmNewPassword: '',
+      isLogoutAll: false,
     },
     validator: changePasswordSchema,
     onSubmit: trpcClient.auth.changePassword.mutate,
@@ -78,6 +80,22 @@ export const ChangePasswordForm: React.FC = () => {
               <Input type="password" placeholder="Confirm New Password" />
             </form.Control>
             <form.Message />
+          </div>
+        )}
+      />
+
+      <form.Field
+        name="isLogoutAll"
+        render={({ field }) => (
+          <div className="flex items-center gap-2">
+            <form.Control>
+              <Checkbox
+                name={field.name}
+                checked={field.value}
+                onCheckedChange={field.onChange}
+              />
+            </form.Control>
+            <form.Label>Logout from all devices</form.Label>
           </div>
         )}
       />

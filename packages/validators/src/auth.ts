@@ -28,6 +28,7 @@ export const changePasswordSchema = z
     currentPassword: passwordRegex.optional(),
     newPassword: passwordRegex,
     confirmNewPassword: passwordRegex,
+    isLogoutAll: z.boolean().default(false),
   })
   .refine((val) => val.newPassword === val.confirmNewPassword, {
     path: ['confirmNewPassword'],
