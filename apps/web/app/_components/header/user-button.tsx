@@ -97,8 +97,8 @@ const userNavItems = [
     shortcut: '⌘O',
   },
   {
-    href: '/profile/sercurity',
-    label: 'Sercurity',
+    href: '/profile/security',
+    label: 'Security',
     icon: ShieldIcon,
     shortcut: '⌘S',
   },
