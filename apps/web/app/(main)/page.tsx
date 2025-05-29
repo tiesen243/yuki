@@ -1,5 +1,4 @@
 import { api } from '@/lib/trpc/server'
-import { getBaseUrl } from '@/lib/utils'
 import { ProductCard } from '../_components/product-card'
 import { Slider } from './page.client'
 
@@ -12,8 +11,6 @@ export default async function IndexPage() {
         <h2 className="sr-only">Featured Products</h2>
         <Slider />
       </section>
-
-      {getBaseUrl()}
 
       <section className="container grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         <h2 className="sr-only">Products</h2>
