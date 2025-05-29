@@ -62,12 +62,20 @@ export const generateMetadata = async ({ params }: Props) => {
       trpc.product.byId.queryOptions({ id }),
     )
 
+    const inages = new URLSearchParams()
+    inages.append('title', product.name)
+    inages.append('description', product.description)
+    inages.append('image', product.image)
+
     return createMetadata({
       title: product.name,
       description: product.description,
       keywords: [product.name, product.category],
       openGraph: {
-        images: { url: product.image, alt: product.name },
+        images: [
+          { url: `/api/og?${inages.toString()}`, alt: product.name },
+          { url: product.image, alt: product.name },
+        ],
         url: `/${productSlug}`,
       },
     })

@@ -11,7 +11,8 @@ export function GET(req: NextRequest) {
   const title =
     searchParams.get('title') ?? 'Your Complete E-commerce Destination'
   const description = searchParams.get('description') ?? defaultMeta.description
-  const _imageUrl = searchParams.get('image') ?? ''
+  const imageUrl =
+    'https://gravatar.com/avatar/48b8ec4ce6c85e06c11bda4381a3ac6cb8161a23e5ea540544c809063090815d?size=500&w=640&q=75'
 
   return new ImageResponse(
     (
@@ -21,31 +22,42 @@ export function GET(req: NextRequest) {
           backgroundColor: '#0c0c0c',
           backgroundImage: `linear-gradient(to top right, #a96249, transparent)`,
         }}
-        tw="flex flex-col w-full h-full p-12 text-white"
+        tw="flex w-full h-full p-12 text-white justify-between"
       >
-        <div tw="flex flex-row items-center mb-3 text-white">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={`${getBaseUrl()}/assets/logo.svg`}
-            alt="Logo"
-            tw="w-20 h-20 mr-4"
-            style={{ filter: 'invert(1)' }}
-          />
+        <div tw="flex flex-col max-w-[600px]">
+          <div tw="flex flex-row items-center mb-3 text-white">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={`${getBaseUrl()}/assets/logo.svg`}
+              alt="Logo"
+              tw="w-20 h-20 mr-4"
+              style={{ filter: 'invert(1)' }}
+            />
 
-          <p style={{ fontSize: '56px', fontWeight: 600 }}>Yukinu</p>
+            <p style={{ fontSize: '56px', fontWeight: 600 }}>Yukinu</p>
+          </div>
+
+          <p
+            style={{
+              fontWeight: 800,
+              fontSize: '48px',
+            }}
+          >
+            {String(title)}
+          </p>
+          <p style={{ fontSize: '32px', color: 'rgba(240,240,240,0.8)' }}>
+            {description}
+          </p>
         </div>
 
-        <p
-          style={{
-            fontWeight: 800,
-            fontSize: '48px',
-          }}
-        >
-          {String(title)}
-        </p>
-        <p style={{ fontSize: '32px', color: 'rgba(240,240,240,0.8)' }}>
-          {description}
-        </p>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={imageUrl}
+          alt={title}
+          width={500}
+          height={500}
+          tw="h-full aspect-square object-cover rounded-xl"
+        />
       </div>
     ),
     {

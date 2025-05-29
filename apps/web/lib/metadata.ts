@@ -45,8 +45,8 @@ export const createMetadata = (override: Partial<Metadata> = {}): Metadata => {
       siteName,
       type: 'website',
       images: [
-        { url: '/api/og', alt: 'Yukinu' },
         ...(Array.isArray(ogImages) ? ogImages : ogImages ? [ogImages] : []),
+        { url: '/api/og', alt: 'Yukinu' },
       ],
       ...restOpenGraph,
     },
