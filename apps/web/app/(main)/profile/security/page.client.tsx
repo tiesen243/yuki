@@ -1,5 +1,7 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -15,12 +17,14 @@ import { Button } from '@yuki/ui/button'
 import { Checkbox } from '@yuki/ui/checkbox'
 import { useForm } from '@yuki/ui/form'
 import { Input } from '@yuki/ui/input'
+import { toast } from '@yuki/ui/sonner'
 import { changePasswordSchema } from '@yuki/validators/auth'
 
 import { useTRPC } from '@/lib/trpc/react'
 
 export const ChangePasswordForm: React.FC = () => {
   const { trpcClient } = useTRPC()
+  const router = useRouter()
 
   const form = useForm({
     defaultValues: {
@@ -31,6 +35,11 @@ export const ChangePasswordForm: React.FC = () => {
     },
     validator: changePasswordSchema,
     onSubmit: trpcClient.auth.changePassword.mutate,
+    onSuccess: () => {
+      toast.success('Password changed successfully!')
+      router.push('/')
+    },
+    onError: (error) => toast.error(error.message),
   })
 
   return (
@@ -107,6 +116,7 @@ export const ChangePasswordForm: React.FC = () => {
 
 export const DeleteAccountButton: React.FC = () => {
   const { trpcClient } = useTRPC()
+  const router = useRouter()
 
   const form = useForm({
     defaultValues: {
@@ -125,6 +135,11 @@ export const DeleteAccountButton: React.FC = () => {
       return { value }
     },
     onSubmit: () => trpcClient.auth.removeAccount.mutate(),
+    onSuccess: () => {
+      toast.success('Account deleted successfully!')
+      router.push('/')
+    },
+    onError: (error) => toast.error(error.message),
   })
 
   return (
