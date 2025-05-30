@@ -16,6 +16,7 @@ import {
   DropdownMenuTrigger,
 } from '@yuki/ui/dropdown-menu'
 import {
+  LogInIcon,
   LogOutIcon,
   ShieldIcon,
   ShoppingBagIcon,
@@ -33,8 +34,11 @@ export const UserButton: React.FC = () => {
 
   if (status === 'unauthenticated')
     return (
-      <Button size="sm" asChild>
-        <Link href="/login">Login</Link>
+      <Button variant="ghost" className="w-9 md:w-auto" asChild>
+        <Link href="/login">
+          <LogInIcon />
+          <span className="sr-only md:not-sr-only">Login</span>
+        </Link>
       </Button>
     )
 
@@ -43,7 +47,7 @@ export const UserButton: React.FC = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Avatar>
+        <Avatar className="size-9 cursor-pointer">
           <AvatarImage src={user.image} />
           <AvatarFallback>{user.name.slice(0, 2)}</AvatarFallback>
         </Avatar>

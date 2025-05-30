@@ -30,6 +30,7 @@ interface ProductCardProps {
     createdAt: Date
   }
 }
+
 export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const { trpc, queryClient } = useTRPC()
   const { mutate, isPending } = useMutation({
@@ -52,7 +53,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   return (
     <Card className="h-full overflow-hidden py-4 pt-0 transition-all hover:shadow-md">
       <Link href={`/${slugify(product.name)}-${product.id}`}>
-        <div className="relative aspect-square overflow-hidden rounded-t-xl">
+        <div className="relative mb-2 aspect-square overflow-hidden rounded-t-xl">
           <Image
             src={product.image}
             alt={product.name}
@@ -93,3 +94,32 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     </Card>
   )
 }
+
+export const ProductCardSkeleton: React.FC = () => (
+  <Card className="h-full overflow-hidden py-4 pt-0 transition-all hover:shadow-md">
+    <div>
+      <div className="relative mb-2 aspect-square animate-pulse overflow-hidden rounded-t-xl bg-current" />
+
+      <CardHeader className="px-4">
+        <CardTitle className="w-2/3 animate-pulse rounded-md bg-current text-lg">
+          &nbsp;
+        </CardTitle>
+        <span className="w-1/3 animate-pulse rounded-md bg-current font-bold">
+          &nbsp;
+        </span>
+      </CardHeader>
+
+      <CardContent className="px-4">
+        <CardDescription className="w-full animate-pulse rounded-md bg-current">
+          &nbsp;
+        </CardDescription>
+      </CardContent>
+    </div>
+
+    <CardFooter className="px-4">
+      <Button className="w-full">
+        <ShoppingCartIcon /> Add to Cart
+      </Button>
+    </CardFooter>
+  </Card>
+)

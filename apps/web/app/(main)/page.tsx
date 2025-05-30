@@ -1,9 +1,13 @@
-import { api } from '@/lib/trpc/server'
-import { ProductCard } from '../_components/product-card'
-import { Slider } from './page.client'
+import { Suspense } from 'react'
 
-export default async function IndexPage() {
-  const { products } = await api.product.all({ limit: 12 })
+import { getQueryClient, trpc } from '@/lib/trpc/server'
+import { ProductCardSkeleton } from '../_components/product-card'
+import { ProductList, Slider } from './page.client'
+
+export default function IndexPage() {
+  void getQueryClient().prefetchQuery(
+    trpc.product.all.queryOptions({ limit: 12 }),
+  )
 
   return (
     <main className="grow space-y-4 pb-4">
@@ -14,9 +18,13 @@ export default async function IndexPage() {
 
       <section className="container grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         <h2 className="sr-only">Products</h2>
-        {products.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
+        <Suspense
+          fallback={Array.from({ length: 12 }).map((_, index) => (
+            <ProductCardSkeleton key={index} />
+          ))}
+        >
+          <ProductList />
+        </Suspense>
       </section>
     </main>
   )
