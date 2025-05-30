@@ -39,7 +39,11 @@ export default async function ProductDetailPage({ params }: Props) {
             <ProductDetail id={id} />
           </Suspense>
 
-          <Suspense>
+          <Suspense
+            fallback={Array.from({ length: 8 }).map((_, i) => (
+              <ProductDetailSkeleton key={i} />
+            ))}
+          >
             <RelativeProducts id={id} />
           </Suspense>
         </main>
