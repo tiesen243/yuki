@@ -24,7 +24,7 @@
     "@yuki/env": "workspace:*",
     "@yuki/ui": "workspace:*",
     "@yuki/validators": "workspace:*",
-    "next": "15.3.2",
+    "next": "15.3.3",
     "nuqs": "^2.4.3",
     "react": "catalog:react",
     "react-dom": "catalog:react",
@@ -32,7 +32,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "catalog:tailwind",
-    "@types/node": "22.15.24",
+    "@types/node": "22.15.26",
     "@types/react": "catalog:react",
     "@types/react-dom": "catalog:react",
     "@yuki/eslint-config": "workspace:*",

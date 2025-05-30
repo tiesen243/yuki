@@ -35,7 +35,7 @@
     "@react-router/dev": "^7.6.1",
     "@react-router/fs-routes": "^7.6.1",
     "@tailwindcss/vite": "catalog:tailwind",
-    "@types/node": "22.15.24",
+    "@types/node": "22.15.26",
     "@types/react": "catalog:react",
     "@types/react-dom": "catalog:react",
     "@vercel/react-router": "^1.1.1",

@@ -11,7 +11,7 @@
       "tooling/*"
     ],
     "catalog": {
-      "zod": "^3.25.30"
+      "zod": "^3.25.40"
     },
     "catalogs": {
       "react": {
@@ -28,9 +28,9 @@
         "superjson": "^2.2.2"
       },
       "tailwind": {
-        "@tailwindcss/postcss": "^4.1.7",
-        "@tailwindcss/vite": "^4.1.7",
-        "tailwindcss": "^4.1.7"
+        "@tailwindcss/postcss": "^4.1.8",
+        "@tailwindcss/vite": "^4.1.8",
+        "tailwindcss": "^4.1.8"
       },
       "tool": {
         "eslint": "^9.27.0",

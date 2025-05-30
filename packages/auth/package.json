@@ -29,7 +29,7 @@
     "@oslojs/encoding": "^1.1.0",
     "@yuki/db": "workspace:*",
     "arctic": "^3.7.0",
-    "next": "15.3.2",
+    "next": "15.3.3",
     "react": "catalog:react"
   },
   "devDependencies": {
