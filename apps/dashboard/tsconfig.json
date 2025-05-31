@@ -4,7 +4,10 @@
     "types": ["node", "vite/client"],
     "rootDirs": [".", "./.react-router/types"],
     "baseUrl": ".",
-    "paths": { "@/*": ["./src/*"] }
+    "paths": {
+      "@/*": ["./src/*"],
+      "@yuki/ui/*": ["../../packages/ui/src/*"]
+    }
   },
   "include": ["src", "*.config.ts", ".react-router/types/**/*"],
   "exclude": ["node_modules"]

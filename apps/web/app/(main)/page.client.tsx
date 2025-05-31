@@ -8,8 +8,8 @@ import { Button } from '@yuki/ui/button'
 import { Typography } from '@yuki/ui/typography'
 import { cn } from '@yuki/ui/utils'
 
+import { ProductCard } from '@/app/_components/product-card'
 import { useTRPC } from '@/lib/trpc/react'
-import { ProductCard } from '../_components/product-card'
 
 export const Slider: React.FC = () => {
   const sliders = [
@@ -71,13 +71,10 @@ export const Slider: React.FC = () => {
             )}
           >
             <div className="flex grow flex-col items-center justify-center gap-4 p-4">
-              <Typography
-                variant="h3"
-                className="text-secondary text-center text-pretty"
-              >
+              <Typography variant="h3" className="text-secondary text-center">
                 {slider.description}
               </Typography>
-              <Typography variant="h2" className="text-center text-pretty">
+              <Typography variant="h2" className="text-center">
                 {slider.title}
               </Typography>
 

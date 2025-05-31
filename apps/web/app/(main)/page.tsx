@@ -1,7 +1,7 @@
 import { Suspense } from 'react'
 
+import { ProductCardSkeleton } from '@/app/_components/product-card'
 import { getQueryClient, trpc } from '@/lib/trpc/server'
-import { ProductCardSkeleton } from '../_components/product-card'
 import { ProductList, Slider } from './page.client'
 
 export default function IndexPage() {
