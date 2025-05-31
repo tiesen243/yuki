@@ -5,9 +5,9 @@
   "license": "MIT",
   "type": "module",
   "exports": {
-    "./utils": {
-      "types": "./dist/utils.d.ts",
-      "default": "./src/utils.ts"
+    ".": {
+      "types": "./dist/lib/utils.d.ts",
+      "default": "./src/lib/utils.ts"
     },
     "./*": {
       "types": "./dist/components/*.d.ts",

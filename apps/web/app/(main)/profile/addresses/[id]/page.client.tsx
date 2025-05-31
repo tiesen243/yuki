@@ -45,7 +45,7 @@ export const CreateOrEditAddressForm: React.FC<{
       <form.Field
         name="name"
         render={({ field, meta }) => (
-          <div id={meta.id} className="grid gap-1">
+          <div id={meta.id} className="grid gap-2">
             <form.Label>Name</form.Label>
             <form.Control {...field}>
               <Input placeholder="Pepe" />
@@ -58,7 +58,7 @@ export const CreateOrEditAddressForm: React.FC<{
       <form.Field
         name="phone"
         render={({ field, meta }) => (
-          <div id={meta.id} className="grid gap-1">
+          <div id={meta.id} className="grid gap-2">
             <form.Label>Phone</form.Label>
             <form.Control {...field}>
               <Input placeholder="(+123) 456 789 012" />
@@ -71,7 +71,7 @@ export const CreateOrEditAddressForm: React.FC<{
       <form.Field
         name="address"
         render={({ field, meta }) => (
-          <div id={meta.id} className="grid gap-1">
+          <div id={meta.id} className="grid gap-2">
             <form.Label>Address</form.Label>
             <form.Control {...field}>
               <Input placeholder="123 Main St" />
@@ -84,7 +84,7 @@ export const CreateOrEditAddressForm: React.FC<{
       <form.Field
         name="city"
         render={({ field, meta }) => (
-          <div id={meta.id} className="grid gap-1">
+          <div id={meta.id} className="grid gap-2">
             <form.Label>City</form.Label>
             <form.Control {...field}>
               <Input placeholder="Springfield" />
@@ -97,7 +97,7 @@ export const CreateOrEditAddressForm: React.FC<{
       <form.Field
         name="state"
         render={({ field, meta }) => (
-          <div id={meta.id} className="grid gap-1">
+          <div id={meta.id} className="grid gap-2">
             <form.Label>State</form.Label>
             <form.Control {...field}>
               <Input placeholder="IL" />
@@ -110,7 +110,7 @@ export const CreateOrEditAddressForm: React.FC<{
       <form.Field
         name="country"
         render={({ field, meta }) => (
-          <div id={meta.id} className="grid gap-1">
+          <div id={meta.id} className="grid gap-2">
             <form.Label>Country</form.Label>
             <form.Control {...field}>
               <Input placeholder="USA" />
@@ -123,7 +123,7 @@ export const CreateOrEditAddressForm: React.FC<{
       <form.Field
         name="zipCode"
         render={({ field, meta }) => (
-          <div id={meta.id} className="grid gap-1">
+          <div id={meta.id} className="grid gap-2">
             <form.Label>Zip Code</form.Label>
             <form.Control {...field}>
               <Input placeholder="62704" />

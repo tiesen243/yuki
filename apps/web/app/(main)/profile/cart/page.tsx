@@ -14,7 +14,9 @@ export default function CartPage() {
   return (
     <HydrateClient>
       <section className="grid gap-4">
-        <Typography variant="h2">Your Shopping Cart</Typography>
+        <Typography variant="h4" component="h2">
+          Your Shopping Cart
+        </Typography>
         <Suspense fallback={<CardListSkeleton />}>
           <CardList />
         </Suspense>

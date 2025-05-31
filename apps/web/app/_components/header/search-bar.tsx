@@ -1,8 +1,8 @@
 import Form from 'next/form'
 
+import { cn } from '@yuki/ui'
 import { SearchIcon } from '@yuki/ui/icons'
 import { Input } from '@yuki/ui/input'
-import { cn } from '@yuki/ui/utils'
 
 export const Searchbar: React.FC<
   Omit<React.ComponentProps<typeof Form>, 'action'>

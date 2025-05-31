@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Slot } from '@radix-ui/react-slot'
 
-import { cn } from '@yuki/ui/utils'
+import { cn } from '@yuki/ui'
 
 interface FormError<TValue extends Record<string, unknown>> {
   message?: string
@@ -305,7 +305,7 @@ function useForm<
       <span
         data-slot="form-message"
         id={meta.formMessageId}
-        className={cn('text-destructive text-sm font-medium', className)}
+        className={cn('text-destructive text-sm', className)}
         {...props}
       >
         {body}

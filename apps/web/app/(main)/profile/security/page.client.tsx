@@ -57,7 +57,7 @@ export const ChangePasswordForm: React.FC = () => {
       <form.Field
         name="currentPassword"
         render={({ field, meta }) => (
-          <div id={meta.id} className="grid gap-1">
+          <div id={meta.id} className="grid gap-2">
             <form.Label>Current Password</form.Label>
             <form.Control {...field}>
               <Input type="password" placeholder="Current Password" />
@@ -73,7 +73,7 @@ export const ChangePasswordForm: React.FC = () => {
       <form.Field
         name="newPassword"
         render={({ field, meta }) => (
-          <div id={meta.id} className="grid gap-1">
+          <div id={meta.id} className="grid gap-2">
             <form.Label>New Password</form.Label>
             <form.Control {...field}>
               <Input type="password" placeholder="New Password" />
@@ -86,7 +86,7 @@ export const ChangePasswordForm: React.FC = () => {
       <form.Field
         name="confirmNewPassword"
         render={({ field, meta }) => (
-          <div id={meta.id} className="grid gap-1">
+          <div id={meta.id} className="grid gap-2">
             <form.Label>Confirm New Password</form.Label>
             <form.Control {...field}>
               <Input type="password" placeholder="Confirm New Password" />
@@ -99,7 +99,7 @@ export const ChangePasswordForm: React.FC = () => {
       <form.Field
         name="isLogoutAll"
         render={({ field }) => (
-          <div className="flex items-center gap-2">
+          <form.Label className="flex items-center gap-2">
             <form.Control>
               <Checkbox
                 name={field.name}
@@ -107,8 +107,8 @@ export const ChangePasswordForm: React.FC = () => {
                 onCheckedChange={field.onChange}
               />
             </form.Control>
-            <form.Label>Logout from all devices</form.Label>
-          </div>
+            Logout from all devices
+          </form.Label>
         )}
       />
 
@@ -169,7 +169,7 @@ export const DeleteAccountButton: React.FC = () => {
         <form.Field
           name="confirmDeletion"
           render={({ field, meta }) => (
-            <div id={meta.id} className="grid gap-1">
+            <div id={meta.id} className="grid gap-2">
               <form.Label>
                 Type <strong>Delete my account</strong> to confirm
               </form.Label>

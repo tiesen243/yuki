@@ -67,7 +67,7 @@ const RegisterForm: React.FC = () => {
           key={item.name}
           name={item.name}
           render={({ field, meta }) => (
-            <div id={meta.id} className="grid gap-1">
+            <div id={meta.id} className="grid gap-2">
               <form.Label>{item.label}</form.Label>
               <form.Control {...field}>
                 <Input {...item} />

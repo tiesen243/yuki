@@ -4,8 +4,8 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
 
 import { SessionProvider } from '@yuki/auth/react'
+import { cn, ThemeProvider } from '@yuki/ui'
 import { Toaster } from '@yuki/ui/sonner'
-import { cn, ThemeProvider } from '@yuki/ui/utils'
 
 import { createMetadata } from '@/lib/metadata'
 import { TRPCReactProvider } from '@/lib/trpc/react'
@@ -31,7 +31,11 @@ export default function RootLayout({
           geistMono.variable,
         )}
       >
-        <ThemeProvider attribute="class" disableTransitionOnChange>
+        <ThemeProvider
+          attribute="class"
+          enableColorScheme
+          disableTransitionOnChange
+        >
           <NuqsAdapter>
             <TRPCReactProvider>
               <SessionProvider>{children}</SessionProvider>

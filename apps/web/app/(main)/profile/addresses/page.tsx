@@ -16,7 +16,9 @@ export default function ProfilePage() {
     <HydrateClient>
       <section className="grid gap-4">
         <div className="mb-4 flex items-center justify-between">
-          <Typography variant="h2">My Addresses</Typography>
+          <Typography variant="h4" component="h2">
+            My Addresses
+          </Typography>
           <Button asChild>
             <Link href="/profile/addresses/new">Add New Address</Link>
           </Button>

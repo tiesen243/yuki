@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
+import { cn } from '@yuki/ui'
 import {
   MapPinHouseIcon,
   ShieldIcon,
@@ -10,7 +11,6 @@ import {
   ShoppingCartIcon,
   UserIcon,
 } from '@yuki/ui/icons'
-import { cn } from '@yuki/ui/utils'
 
 export const NavLinks: React.FC = () => {
   const pathName = usePathname()

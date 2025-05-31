@@ -57,11 +57,15 @@ const AddressCard: React.FC<{
             Set as Default
           </Button>
         )}
-        <Typography variant="h4" as="h3">
+        <Typography variant="h5" component="h3" className="mb-0">
           {address.name}
         </Typography>
         <div className="bg-border h-9 w-0.5" />
-        <Typography variant="h5" color="muted" as="h4">
+        <Typography
+          variant="h6"
+          component="h4"
+          className="text-muted-foreground mb-0"
+        >
           {address.phone}
         </Typography>
       </div>
@@ -102,7 +106,7 @@ export const AddressCardSkeleton: React.FC = () => (
     <div className="flex w-[80%] items-center gap-2">
       <Typography
         variant="h4"
-        as="h3"
+        component="h3"
         className="w-28 animate-pulse rounded-md bg-current"
       >
         &nbsp;
@@ -110,8 +114,7 @@ export const AddressCardSkeleton: React.FC = () => (
       <div className="bg-border h-9 w-0.5" />
       <Typography
         variant="h5"
-        color="muted"
-        as="h4"
+        component="h4"
         className="w-40 animate-pulse rounded-md bg-current"
       >
         &nbsp;

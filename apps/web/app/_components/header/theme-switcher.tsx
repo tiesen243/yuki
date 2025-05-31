@@ -1,3 +1,4 @@
+import { useTheme } from '@yuki/ui'
 import {
   DropdownMenuItem,
   DropdownMenuPortal,
@@ -7,7 +8,6 @@ import {
   DropdownMenuSubTrigger,
 } from '@yuki/ui/dropdown-menu'
 import { LaptopIcon, MoonIcon, SunIcon, SunMoonIcon } from '@yuki/ui/icons'
-import { useTheme } from '@yuki/ui/utils'
 
 export const ThemeSwitcher: React.FC = () => {
   const { theme, setTheme } = useTheme()

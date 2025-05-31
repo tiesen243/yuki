@@ -2,9 +2,9 @@
 
 import { useState } from 'react'
 
+import { cn } from '@yuki/ui'
 import { Button } from '@yuki/ui/button'
 import { MenuIcon } from '@yuki/ui/icons'
-import { cn } from '@yuki/ui/utils'
 
 import { Searchbar } from '@/app/_components/header/search-bar'
 

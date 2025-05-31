@@ -21,30 +21,28 @@ export default async function ProfilePage() {
       <div className="grid gap-6">
         {/* Profile Header */}
         <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center gap-4">
-              <Avatar className="h-16 w-16">
-                <AvatarImage src={user.image} alt={user.name} />
-                <AvatarFallback className="text-lg">{user.name}</AvatarFallback>
-              </Avatar>
-              <div className="flex-1">
-                <div className="flex items-center gap-2">
-                  <Typography variant="h3" as="h1">
-                    {user.name}
-                  </Typography>
-                  <Badge
-                    variant={user.role === 'admin' ? 'default' : 'secondary'}
-                  >
-                    {user.role}
-                  </Badge>
-                </div>
-                <Typography color="muted" className="text-sm">
-                  {user.email}
+          <CardContent className="flex items-center gap-4">
+            <Avatar className="h-16 w-16">
+              <AvatarImage src={user.image} alt={user.name} />
+              <AvatarFallback className="text-lg">{user.name}</AvatarFallback>
+            </Avatar>
+            <div className="flex-1">
+              <div className="flex items-center gap-2">
+                <Typography variant="h4" component="h2" className="mb-0">
+                  {user.name}
                 </Typography>
-                <Typography color="muted" className="text-xs">
-                  Member since {user.createdAt.toLocaleDateString()}
-                </Typography>
+                <Badge
+                  variant={user.role === 'admin' ? 'default' : 'secondary'}
+                >
+                  {user.role}
+                </Badge>
               </div>
+              <Typography className="text-muted-foreground text-sm">
+                {user.email}
+              </Typography>
+              <Typography className="text-muted-foreground text-xs">
+                Member since {user.createdAt.toLocaleDateString()}
+              </Typography>
             </div>
           </CardContent>
         </Card>
@@ -52,11 +50,11 @@ export default async function ProfilePage() {
         {/* Quick Actions */}
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           <Card className="transition-shadow hover:shadow-md">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-base">Orders</CardTitle>
+            <CardHeader>
+              <CardTitle>Orders</CardTitle>
             </CardHeader>
             <CardContent>
-              <Typography color="muted" className="mb-3 text-sm">
+              <Typography className="text-muted-foreground text-sm lg:text-base">
                 View and track your orders
               </Typography>
               <Button asChild variant="outline" size="sm" className="w-full">
@@ -66,11 +64,11 @@ export default async function ProfilePage() {
           </Card>
 
           <Card className="transition-shadow hover:shadow-md">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-base">Addresses</CardTitle>
+            <CardHeader>
+              <CardTitle>Addresses</CardTitle>
             </CardHeader>
             <CardContent>
-              <Typography color="muted" className="mb-3 text-sm">
+              <Typography className="text-muted-foreground text-sm lg:text-base">
                 Manage shipping addresses
               </Typography>
               <Button asChild variant="outline" size="sm" className="w-full">
@@ -80,12 +78,12 @@ export default async function ProfilePage() {
           </Card>
 
           <Card className="transition-shadow hover:shadow-md">
-            <CardHeader className="pb-3">
+            <CardHeader>
               <CardTitle className="text-base">Shopping Cart</CardTitle>
             </CardHeader>
             <CardContent>
-              <Typography color="muted" className="mb-3 text-sm">
-                Review items in your cart
+              <Typography className="text-muted-foreground text-sm lg:text-base">
+                Review items in your cart before checkout
               </Typography>
               <Button asChild variant="outline" size="sm" className="w-full">
                 <Link href="/profile/cart">View Cart</Link>
@@ -94,12 +92,12 @@ export default async function ProfilePage() {
           </Card>
 
           <Card className="transition-shadow hover:shadow-md">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-base">Security</CardTitle>
+            <CardHeader>
+              <CardTitle>Security</CardTitle>
             </CardHeader>
             <CardContent>
-              <Typography color="muted" className="mb-3 text-sm">
-                Update security settings
+              <Typography className="text-muted-foreground text-sm lg:text-base">
+                Update your password or delete your account
               </Typography>
               <Button asChild variant="outline" size="sm" className="w-full">
                 <Link href="/profile/security">Security Settings</Link>
@@ -109,14 +107,18 @@ export default async function ProfilePage() {
         </div>
 
         {/* Account Overview */}
-        <Card>
+        <Card className="gap-4">
           <CardHeader>
-            <CardTitle>Account Overview</CardTitle>
+            <CardTitle>
+              <Typography variant="h5" component="h2">
+                Account Overview
+              </Typography>
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid gap-4 md:grid-cols-2">
               <div>
-                <Typography variant="h4" className="mb-2 text-sm font-medium">
+                <Typography variant="h6" component="h3">
                   Account Information
                 </Typography>
                 <div className="space-y-1 text-sm">
@@ -135,7 +137,7 @@ export default async function ProfilePage() {
                 </div>
               </div>
               <div>
-                <Typography variant="h4" className="mb-2 text-sm font-medium">
+                <Typography variant="h6" component="h3">
                   Account Activity
                 </Typography>
                 <div className="space-y-1 text-sm">
