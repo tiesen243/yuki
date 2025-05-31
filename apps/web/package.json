@@ -32,7 +32,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "catalog:tailwind",
-    "@types/node": "22.15.26",
+    "@types/node": "22.15.29",
     "@types/react": "catalog:react",
     "@types/react-dom": "catalog:react",
     "@yuki/eslint-config": "workspace:*",
