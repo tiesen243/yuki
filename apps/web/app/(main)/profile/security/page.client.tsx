@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 
+import { useSession } from '@yuki/auth/react'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -24,6 +25,7 @@ import { useTRPC } from '@/lib/trpc/react'
 
 export const ChangePasswordForm: React.FC = () => {
   const { trpcClient } = useTRPC()
+  const { refresh } = useSession()
   const router = useRouter()
 
   const form = useForm({
@@ -35,9 +37,10 @@ export const ChangePasswordForm: React.FC = () => {
     },
     validator: changePasswordSchema,
     onSubmit: trpcClient.auth.changePassword.mutate,
-    onSuccess: () => {
+    onSuccess: async () => {
       toast.success('Password changed successfully!')
       router.push('/')
+      await refresh()
     },
     onError: (error) => toast.error(error.message),
   })
@@ -116,6 +119,7 @@ export const ChangePasswordForm: React.FC = () => {
 
 export const DeleteAccountButton: React.FC = () => {
   const { trpcClient } = useTRPC()
+  const { refresh } = useSession()
   const router = useRouter()
 
   const form = useForm({
@@ -135,9 +139,10 @@ export const DeleteAccountButton: React.FC = () => {
       return { value }
     },
     onSubmit: () => trpcClient.auth.removeAccount.mutate(),
-    onSuccess: () => {
+    onSuccess: async () => {
       toast.success('Account deleted successfully!')
       router.push('/')
+      await refresh()
     },
     onError: (error) => toast.error(error.message),
   })
@@ -145,7 +150,7 @@ export const DeleteAccountButton: React.FC = () => {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant="destructive" size="lg" className="mt-4 w-full">
+        <Button variant="error" size="lg" className="mt-4 w-full">
           Delete Account
         </Button>
       </AlertDialogTrigger>

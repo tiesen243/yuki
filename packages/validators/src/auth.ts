@@ -25,7 +25,7 @@ export const signUpSchema = z
 
 export const changePasswordSchema = z
   .object({
-    currentPassword: passwordRegex.optional(),
+    currentPassword: z.string().optional(),
     newPassword: passwordRegex,
     confirmNewPassword: passwordRegex,
     isLogoutAll: z.boolean().default(false),
