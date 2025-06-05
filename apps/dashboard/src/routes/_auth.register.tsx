@@ -50,7 +50,9 @@ const RegisterForm: React.FC = () => {
       toast.success('You have successfully registered!')
       void router('/login')
     },
-    onError: (error) => toast.error(error.message),
+    onError: (error) => {
+      toast.error(error.message)
+    },
   })
 
   return (

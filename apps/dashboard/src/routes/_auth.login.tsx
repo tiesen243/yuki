@@ -13,9 +13,7 @@ import { Input } from '@yuki/ui/input'
 import { toast } from '@yuki/ui/sonner'
 import { signInSchema } from '@yuki/validators/auth'
 
-import type { Route } from './+types/_auth.login'
-
-export default function LoginPage(_: Route.ComponentProps) {
+export default function LoginPage() {
   return (
     <>
       <CardHeader>
@@ -50,7 +48,9 @@ const LoginForm: React.FC = () => {
       toast.success('You have successfully logged in!')
       await navigate('/')
     },
-    onError: (error) => toast.error(error.message),
+    onError: (error) => {
+      toast.error(error.message)
+    },
   })
 
   return (
