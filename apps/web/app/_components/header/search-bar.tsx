@@ -12,6 +12,7 @@ export const Searchbar: React.FC<
       <Input name="search" placeholder="Search..." className="pr-8" />
       <button className="absolute top-2.5 right-2 z-10">
         <SearchIcon className="stroke-muted-foreground hover:stroke-foreground size-4" />
+        <span className="sr-only">Search</span>
       </button>
     </Form>
   )

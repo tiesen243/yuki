@@ -17,28 +17,28 @@ export const Slider: React.FC = () => {
       id: 1,
       title: 'Summer Sale Collections',
       description: 'Sale up to 50% off',
-      imageUrl: '/assets/images/hero-2.png',
-      bgColor: 'from-success to-destructive',
+      imageUrl: '/assets/images/hero-2.webp',
+      bgColor: 'from-success to-error',
     },
     {
       id: 2,
       title: 'Atumn Sale Collections',
       description: 'Sale up to 50% off',
-      imageUrl: '/assets/images/hero-1.png',
-      bgColor: 'from-destructive to-info',
+      imageUrl: '/assets/images/hero-1.webp',
+      bgColor: 'from-error to-info',
     },
     {
       id: 3,
       title: 'Winter Sale Collections',
       description: 'Sale up to 50% off',
-      imageUrl: '/assets/images/hero-4.png',
+      imageUrl: '/assets/images/hero-4.webp',
       bgColor: 'from-info to-warning',
     },
     {
       id: 4,
       title: 'Spring Sale Collections',
       description: 'Sale up to 50% off',
-      imageUrl: '/assets/images/hero-3.png',
+      imageUrl: '/assets/images/hero-3.webp',
       bgColor: 'from-warning to-success',
     },
   ]
@@ -104,7 +104,9 @@ export const Slider: React.FC = () => {
             onClick={() => {
               setCurrentSlide(idx)
             }}
-          />
+          >
+            <span className="sr-only">Slide {idx + 1}</span>
+          </button>
         ))}
       </div>
     </div>
