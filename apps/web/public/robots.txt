@@ -1,4 +1,5 @@
 User-Agent: *
-Allow: /
+
+Allow: /*
 
 Sitemap: https://yukinu.vercel.app/sitemap.xml
