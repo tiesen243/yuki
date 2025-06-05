@@ -1,3 +1,4 @@
+import { headers } from 'next/headers'
 import Link from 'next/link'
 
 import { auth } from '@yuki/auth'
@@ -8,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@yuki/ui/card'
 import { Typography } from '@yuki/ui/typography'
 
 export default async function ProfilePage() {
-  const { user } = await auth()
+  const { user } = await auth({ headers: await headers() })
   if (!user)
     return (
       <div className="container grid h-full place-items-center">

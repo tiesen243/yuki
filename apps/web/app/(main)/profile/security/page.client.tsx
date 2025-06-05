@@ -42,7 +42,9 @@ export const ChangePasswordForm: React.FC = () => {
       router.push('/')
       await refresh()
     },
-    onError: (error) => toast.error(error.message),
+    onError: (error) => {
+      toast.error(error.message)
+    },
   })
 
   return (
@@ -144,7 +146,9 @@ export const DeleteAccountButton: React.FC = () => {
       router.push('/')
       await refresh()
     },
-    onError: (error) => toast.error(error.message),
+    onError: (error) => {
+      toast.error(error.message)
+    },
   })
 
   return (

@@ -71,9 +71,9 @@ function useForm<
       ? TSchema
       : Types<TValue>['input']
     : (value: TValue) => Result<TValue>
-  onSubmit: (value: TValue) => Promise<TData> | TData
-  onSuccess?: (data: TData) => unknown
-  onError?: (error: TError) => unknown
+  onSubmit: (value: TValue) => TData | Promise<TData>
+  onSuccess?: (data: TData) => void | Promise<void>
+  onError?: (error: TError) => void | Promise<void>
 }) {
   const formValueRef = React.useRef<TValue>(defaultValues)
   const formDataRef = React.useRef<TData | null>(null)
@@ -133,12 +133,12 @@ function useForm<
       try {
         const result = await onSubmit(validationResult.data)
         formDataRef.current = result
-        onSuccess?.(result)
+        await onSuccess?.(result)
       } catch (error) {
         formDataRef.current = null
         const message = error instanceof Error ? error.message : 'Unknown error'
         formErrorRef.current = { message } as TError
-        onError?.({ message } as TError)
+        await onError?.({ message } as TError)
       }
     })
   }, [onError, onSubmit, onSuccess, validateField])

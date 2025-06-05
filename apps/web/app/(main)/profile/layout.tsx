@@ -1,3 +1,5 @@
+import { headers } from 'next/headers'
+
 import { auth } from '@yuki/auth'
 
 import { createMetadata } from '@/lib/metadata'
@@ -6,7 +8,7 @@ import { NavLinks } from './layout.client'
 export default async function ProfileLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const { user } = await auth()
+  const { user } = await auth({ headers: await headers() })
   if (!user)
     return (
       <div className="container mx-auto p-4">
@@ -29,7 +31,7 @@ export default async function ProfileLayout({
 }
 
 export const generateMetadata = async () => {
-  const { user } = await auth()
+  const { user } = await auth({ headers: await headers() })
   if (!user) return createMetadata()
 
   return createMetadata({

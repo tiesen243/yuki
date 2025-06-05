@@ -6,6 +6,7 @@ import type { RouterOutputs } from '@yuki/api'
 import { Button } from '@yuki/ui/button'
 import { useForm } from '@yuki/ui/form'
 import { Input } from '@yuki/ui/input'
+import { toast } from '@yuki/ui/sonner'
 import { addSchema } from '@yuki/validators/address'
 
 import { useTRPC } from '@/lib/trpc/react'
@@ -27,9 +28,17 @@ export const CreateOrEditAddressForm: React.FC<{
       id === 'new'
         ? trpcClient.address.add.mutate
         : trpcClient.address.update.mutate,
-    onSuccess: () => {
+    onSuccess: async () => {
+      await queryClient.invalidateQueries(trpc.address.all.queryFilter())
       router.back()
-      return queryClient.invalidateQueries(trpc.address.all.queryFilter())
+      toast.success(
+        id === 'new'
+          ? 'Address created successfully!'
+          : 'Address updated successfully!',
+      )
+    },
+    onError: (error) => {
+      toast.error(error.message)
     },
   })
 

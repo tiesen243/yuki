@@ -28,7 +28,7 @@
   "prettier": "@yuki/prettier-config",
   "dependencies": {
     "@neondatabase/serverless": "^1.0.0",
-    "drizzle-orm": "^0.44.1"
+    "drizzle-orm": "^0.44.2"
   },
   "devDependencies": {
     "@yuki/eslint-config": "workspace:*",

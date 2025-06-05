@@ -35,7 +35,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const { trpc, queryClient } = useTRPC()
   const { mutate, isPending } = useMutation({
     ...trpc.cart.add.mutationOptions(),
-    onError: (error) => toast.error(error.message),
+    onError: (error) => {
+      toast.error(error.message)
+    },
     onSuccess: async () => {
       await queryClient.invalidateQueries(trpc.cart.get.queryFilter())
       toast.success('Item added to cart', {

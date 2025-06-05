@@ -4,7 +4,11 @@ import * as React from 'react'
 
 import type { Options, SessionResult } from './types'
 
-type Provider = 'credentials' | keyof Options['providers']
+type Provider =
+  | 'credentials'
+  | (keyof Options['providers'] extends never
+      ? undefined
+      : keyof Options['providers'])
 
 type SessionContextValue = {
   signIn: <TProvider extends Provider>(
@@ -102,7 +106,7 @@ function SessionProvider({
       } else {
         const redirectTo =
           (args[0] as { redirectTo?: string } | undefined)?.redirectTo ?? '/'
-        window.location.href = `/api/auth/sign-in/${provider}?redirect_to=${encodeURIComponent(redirectTo)}`
+        window.location.href = `/api/auth/${provider}?redirect_to=${encodeURIComponent(redirectTo)}`
         return undefined as TProvider extends 'credentials' ? string : undefined
       }
     },

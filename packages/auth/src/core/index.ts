@@ -15,24 +15,20 @@ export function Auth<TProviders extends Providers>({
   cookieOptions,
   providers,
 }: AuthOptions<TProviders>) {
-  async function auth(request?: Request): Promise<SessionResult> {
+  async function auth(opts: { headers: Headers }): Promise<SessionResult> {
     const token =
-      (await getCookie(cookieKey, request)) ??
-      request?.headers.get('Authorization')?.replace('Bearer ', '') ??
+      getCookie(cookieKey, opts as Request) ??
+      opts.headers.get('Authorization')?.replace('Bearer ', '') ??
       ''
     return validateToken(token)
   }
 
-  async function signOut(request?: Request): Promise<void> {
+  async function signOut(opts: { headers: Headers }): Promise<void> {
     const token =
-      (await getCookie(cookieKey, request)) ??
-      request?.headers.get('Authorization')?.replace('Bearer ', '') ??
+      getCookie(cookieKey, opts as Request) ??
+      opts.headers.get('Authorization')?.replace('Bearer ', '') ??
       ''
-
-    if (token) {
-      await invalidateToken(token)
-      if (!request) await deleteCookie(cookieKey)
-    }
+    if (token) await invalidateToken(token)
   }
 
   const createRedirectResponse = (url: string | URL): Response =>
@@ -41,7 +37,7 @@ export function Auth<TProviders extends Providers>({
       headers: { location: url.toString() },
     })
 
-  const handleOAuthStart = async (req: Request): Promise<Response> => {
+  const handleOAuthStart = (req: Request): Response => {
     const url = new URL(req.url)
     const redirectTo = url.searchParams.get('redirect_to') ?? '/'
     const providerName = String(url.pathname.split('/').pop())
@@ -73,11 +69,9 @@ export function Auth<TProviders extends Providers>({
 
     // Set cookies for the callback and create response
     const response = createRedirectResponse(authorizationUrl)
-    await Promise.all([
-      setCookie('auth_state', state, cookieOptions, response),
-      setCookie('code_verifier', codeVerifier, cookieOptions, response),
-      setCookie('redirect_to', redirectTo, cookieOptions, response),
-    ])
+    setCookie('auth_state', state, cookieOptions, response)
+    setCookie('code_verifier', codeVerifier, cookieOptions, response)
+    setCookie('redirect_to', redirectTo, cookieOptions, response)
 
     return response
   }
@@ -116,17 +110,15 @@ export function Auth<TProviders extends Providers>({
     const response = createRedirectResponse(redirectUrl)
 
     // Set session cookie and clear temporary cookies
-    await Promise.all([
-      setCookie(
-        cookieKey,
-        sessionCookie.sessionToken,
-        { ...cookieOptions, expires: sessionCookie.expires },
-        response,
-      ),
-      deleteCookie('auth_state', response),
-      deleteCookie('code_verifier', response),
-      deleteCookie('redirect_to', response),
-    ])
+    setCookie(
+      cookieKey,
+      sessionCookie.sessionToken,
+      { ...cookieOptions, expires: sessionCookie.expires },
+      response,
+    )
+    deleteCookie('auth_state', response)
+    deleteCookie('code_verifier', response)
+    deleteCookie('redirect_to', response)
 
     return response
   }
@@ -138,14 +130,14 @@ export function Auth<TProviders extends Providers>({
     try {
       // User session verification endpoint
       if (pathName === '/api/auth') {
-        const session = await auth(request)
+        const session = await auth({ headers: request.headers })
         return Response.json(session)
       }
 
       // OAuth flow endpoints
       return url.pathname.endsWith('/callback')
         ? await handleOAuthCallback(request)
-        : await handleOAuthStart(request)
+        : handleOAuthStart(request)
     } catch (error) {
       const errorMessage =
         error instanceof OAuth2RequestError
@@ -174,7 +166,7 @@ export function Auth<TProviders extends Providers>({
         })
 
         const response = Response.json({ token: sessionToken }, { status: 200 })
-        await setCookie(
+        setCookie(
           cookieKey,
           sessionToken,
           { ...cookieOptions, expires },
@@ -187,7 +179,7 @@ export function Auth<TProviders extends Providers>({
       if (pathname === '/api/auth/sign-out') {
         await signOut(request)
         const response = createRedirectResponse('/')
-        await deleteCookie(cookieKey, response)
+        deleteCookie(cookieKey, response)
         return response
       }
 

@@ -11,7 +11,7 @@
       "tooling/*"
     ],
     "catalog": {
-      "zod": "^3.25.40"
+      "zod": "^3.25.50"
     },
     "catalogs": {
       "react": {
@@ -21,10 +21,10 @@
         "@types/react-dom": "^19.1.5"
       },
       "trpc": {
-        "@tanstack/react-query": "^5.79.0",
-        "@trpc/client": "^11.1.4",
-        "@trpc/server": "^11.1.4",
-        "@trpc/tanstack-react-query": "^11.1.4",
+        "@tanstack/react-query": "^5.80.5",
+        "@trpc/client": "^11.3.0",
+        "@trpc/server": "^11.3.0",
+        "@trpc/tanstack-react-query": "^11.3.0",
         "superjson": "^2.2.2"
       },
       "tailwind": {
@@ -33,7 +33,7 @@
         "tailwindcss": "^4.1.8"
       },
       "tool": {
-        "eslint": "^9.27.0",
+        "eslint": "^9.28.0",
         "prettier": "^3.5.3",
         "typescript": "^5.8.3"
       }

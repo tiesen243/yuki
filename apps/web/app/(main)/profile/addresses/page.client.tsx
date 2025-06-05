@@ -29,14 +29,18 @@ const AddressCard: React.FC<{
     ...trpc.address.remove.mutationOptions(),
     onSuccess: () =>
       queryClient.invalidateQueries(trpc.address.all.queryFilter()),
-    onError: (error) => toast.error(error.message),
+    onError: (error) => {
+      toast.error(error.message)
+    },
   })
 
   const { mutate: setDefault, isPending: isSetting } = useMutation({
     ...trpc.address.setDefault.mutationOptions(),
     onSuccess: () =>
       queryClient.invalidateQueries(trpc.address.all.queryFilter()),
-    onError: (error) => toast.error(error.message),
+    onError: (error) => {
+      toast.error(error.message)
+    },
   })
 
   return (

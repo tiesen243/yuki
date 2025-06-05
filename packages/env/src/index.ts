@@ -14,8 +14,6 @@ export const env = createEnv({
       .enum(['development', 'production', 'test'])
       .default('development'),
     DATABASE_URL: z.string(),
-    REDIS_URL: z.string(),
-    REDIS_TOKEN: z.string(),
 
     // Auth
     AUTH_PROXY_URL: z.string().optional(),
