@@ -2,149 +2,116 @@
 
 import * as React from 'react'
 
-import type { Options, SessionResult } from './types'
+import type { Providers } from './config'
+import type { SessionResult, User } from './core/types'
 
-type Provider =
+type AuthProviders =
   | 'credentials'
-  | (keyof Options['providers'] extends never
-      ? undefined
-      : keyof Options['providers'])
+  | (Providers extends never ? undefined : Providers)
 
 type SessionContextValue = {
-  signIn: <TProvider extends Provider>(
-    provider: TProvider,
-    ...args: TProvider extends 'credentials'
-      ? [options: { email: string; password: string }]
-      : [options?: { redirectTo: string }]
-  ) => Promise<TProvider extends 'credentials' ? string : undefined>
-  signOut: () => Promise<void>
-  refresh: (token?: string) => Promise<void>
+  signIn: <TProviders extends AuthProviders>(
+    provider: TProviders,
+    ...args: TProviders extends 'credentials'
+      ? [{ email: string; password: string }]
+      : [{ redirectUrl?: string }?]
+  ) => Promise<void>
+  signOut: (opts?: { redirectUrl: string }) => Promise<void>
 } & (
   | { status: 'loading'; session: SessionResult }
-  | {
-      status: 'authenticated'
-      session: { user: NonNullable<SessionResult['user']>; expires: Date }
-    }
-  | { status: 'unauthenticated'; session: { expires: Date } }
+  | { status: 'unauthenticated'; session: SessionResult & { user: null } }
+  | { status: 'authenticated'; session: SessionResult & { user: User } }
 )
 
-const SessionContext = React.createContext<SessionContextValue | undefined>(
-  undefined,
-)
+const SessionContext = React.createContext<SessionContextValue | null>(null)
 
-function useSession(): SessionContextValue {
-  const ctx = React.use(SessionContext)
-  if (!ctx) throw new Error('useSession must be used within a SessionProvider')
-  return ctx
+function useSession() {
+  const context = React.useContext(SessionContext)
+  if (!context)
+    throw new Error('useSession must be used within a SessionProvider')
+  return context
 }
 
-function SessionProvider({
-  children,
-  session: initialSession,
-}: Readonly<{ children: React.ReactNode; session?: SessionResult }>) {
-  const hasInitialSession = initialSession !== undefined
-  const [isLoading, setIsLoading] = React.useState(!hasInitialSession)
+function SessionProvider(
+  props: Readonly<{ children: React.ReactNode; session?: SessionResult }>,
+) {
+  const hasInitialSession = !!props.session
+
+  const [isLoading, startTransition] = React.useTransition()
   const [session, setSession] = React.useState<SessionResult>(() => {
-    if (hasInitialSession) return initialSession
-    return { expires: new Date() }
+    if (hasInitialSession) return props.session
+    return { user: null, expires: new Date() }
   })
 
   const status = React.useMemo(() => {
-    if (isLoading) return 'loading' as const
-    return session.user
-      ? ('authenticated' as const)
-      : ('unauthenticated' as const)
-  }, [session, isLoading])
+    if (isLoading) return 'loading'
+    return session.user ? 'authenticated' : 'unauthenticated'
+  }, [isLoading, session])
 
   const fetchSession = React.useCallback(
-    async (token?: string): Promise<void> => {
-      setIsLoading(true)
-      try {
-        const res = await fetch('/api/auth', {
-          headers: token ? { Authorization: `Bearer ${token}` } : {},
+    (token?: string) => {
+      startTransition(async () => {
+        const res = await fetch('/api/auth/get-session', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: token ? `Bearer ${token}` : '',
+          },
         })
-        if (!res.ok) throw new Error(`Failed to fetch session: ${res.status}`)
 
-        const sessionData = (await res.json()) as SessionResult
-        setSession(sessionData)
-      } catch (error) {
-        console.error('Error fetching session:', error)
-        setSession({ expires: new Date() })
-      } finally {
-        setIsLoading(false)
-      }
+        if (!res.ok) setSession({ user: null, expires: new Date() })
+        else setSession((await res.json()) as SessionResult)
+      })
     },
-    [],
+    [startTransition],
   )
 
   const signIn = React.useCallback(
-    async <TProvider extends Provider>(
-      provider: TProvider,
-      ...args: TProvider extends 'credentials'
-        ? [options: { email: string; password: string }]
-        : [options?: { redirectTo: string }]
-    ): Promise<TProvider extends 'credentials' ? string : undefined> => {
+    async <TProviders extends AuthProviders>(
+      provider: TProviders,
+      ...args: TProviders extends 'credentials'
+        ? [{ email: string; password: string }]
+        : [{ redirectUrl?: string }?]
+    ): Promise<void> => {
       if (provider === 'credentials') {
-        try {
-          const res = await fetch('/api/auth/sign-in', {
-            method: 'POST',
-            body: JSON.stringify(args[0]),
-          })
+        const res = await fetch('/api/auth/sign-in', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(args[0]),
+        })
 
-          const json = (await res.json()) as { token: string; error: string }
-
-          if (!res.ok) throw new Error(json.error || 'Authentication failed')
-
-          await fetchSession(json.token)
-          return json.token as TProvider extends 'credentials'
-            ? string
-            : undefined
-        } catch (error) {
-          console.error('Sign in error:', error)
-          throw error
-        }
+        const json = (await res.json()) as { token: string; expires: string }
+        if (!res.ok) {
+          console.error('Sign in failed', json)
+        } else fetchSession(json.token)
       } else {
-        const redirectTo =
-          (args[0] as { redirectTo?: string } | undefined)?.redirectTo ?? '/'
-        window.location.href = `/api/auth/${provider}?redirect_to=${encodeURIComponent(redirectTo)}`
-        return undefined as TProvider extends 'credentials' ? string : undefined
+        const redirectUrl = (args[0] as { redirectUrl?: string }).redirectUrl
+        window.location.href = `/api/auth/${provider}${
+          redirectUrl ? `?redirectUrl=${encodeURIComponent(redirectUrl)}` : ''
+        }`
       }
     },
     [fetchSession],
   )
 
-  const signOut = React.useCallback(async (): Promise<void> => {
-    try {
-      const res = await fetch('/api/auth/sign-out', { method: 'POST' })
-      if (!res.ok) throw new Error(`Sign out failed: ${res.status}`)
-      setSession({ expires: new Date() })
-      window.location.reload()
-    } catch (error) {
-      console.error('Error signing out:', error)
-      throw error
-    }
+  const signOut = React.useCallback(async (opts?: { redirectUrl: string }) => {
+    await fetch('/api/auth/sign-out', { method: 'POST' })
+    setSession({ user: null, expires: new Date() })
+    if (opts?.redirectUrl) window.location.href = opts.redirectUrl
   }, [])
 
-  // Fetch initial session if not provided
   React.useEffect(() => {
     if (hasInitialSession) return
-    void fetchSession()
-  }, [fetchSession, hasInitialSession])
+    fetchSession()
+  }, [hasInitialSession, fetchSession])
 
-  // Memoize the context value to prevent unnecessary re-renders
-  const value = React.useMemo(
-    () =>
-      ({
-        session,
-        status,
-        signIn,
-        signOut,
-        refresh: fetchSession,
-      }) as SessionContextValue,
-    [session, status, signIn, signOut, fetchSession],
+  return (
+    <SessionContext
+      value={{ status, session, signIn, signOut } as SessionContextValue}
+    >
+      {props.children}
+    </SessionContext>
   )
-
-  return <SessionContext value={value}>{children}</SessionContext>
 }
 
 export { useSession, SessionProvider }

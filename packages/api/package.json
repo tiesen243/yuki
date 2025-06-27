@@ -1,5 +1,5 @@
 {
-  "name": "@yuki/api",
+  "name": "@yukinu/api",
   "version": "1.0.0",
   "private": true,
   "license": "MIT",
@@ -18,21 +18,20 @@
     "lint": "eslint",
     "typecheck": "tsc --noEmit"
   },
-  "prettier": "@yuki/prettier-config",
+  "prettier": "@yukinu/prettier-config",
   "dependencies": {
-    "@trpc/server": "catalog:trpc",
-    "@yuki/auth": "workspace:*",
-    "@yuki/db": "workspace:*",
-    "@yuki/redis": "workspace:*",
-    "@yuki/validators": "workspace:*",
-    "superjson": "catalog:trpc"
+    "@trpc/server": "catalog:api",
+    "@yukinu/auth": "workspace:*",
+    "@yukinu/db": "workspace:*",
+    "@yukinu/validators": "workspace:*",
+    "superjson": "catalog:api"
   },
   "devDependencies": {
-    "@yuki/eslint-config": "workspace:*",
-    "@yuki/prettier-config": "workspace:*",
-    "@yuki/tsconfig": "workspace:*",
-    "eslint": "catalog:tool",
-    "prettier": "catalog:tool",
-    "typescript": "catalog:tool"
+    "@yukinu/eslint-config": "workspace:*",
+    "@yukinu/prettier-config": "workspace:*",
+    "@yukinu/tsconfig": "workspace:*",
+    "eslint": "catalog:",
+    "prettier": "catalog:",
+    "typescript": "catalog:"
   }
 }

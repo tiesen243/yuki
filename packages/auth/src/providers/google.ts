@@ -1,62 +1,76 @@
-import { Google } from 'arctic'
+import type { OAuth2Token, OauthAccount } from '../core/types'
+import BaseProvider, { OAuthClient } from './base'
 
-import type { ProviderUserData } from './base'
-import { BaseProvider } from './base'
+export default class Google extends BaseProvider {
+  private client: OAuthClient
 
-interface GoogleUserResponse {
-  sub: string
-  email: string
-  name: string
-  picture: string
-}
+  private authorizationEndpoint = 'https://accounts.google.com/o/oauth2/v2/auth'
+  private tokenEndpoint = 'https://oauth2.googleapis.com/token'
+  private apiEndpoint = 'https://openidconnect.googleapis.com/v1/userinfo'
 
-export class GoogleProvider extends BaseProvider {
-  protected provider = new Google(
-    process.env.GOOGLE_CLIENT_ID ?? '',
-    process.env.GOOGLE_CLIENT_SECRET ?? '',
-    this.createCallbackUrl('google'),
-  )
-
-  protected readonly API_URL =
-    'https://openidconnect.googleapis.com/v1/userinfo'
-  protected readonly SCOPES = ['openid', 'profile', 'email']
-
-  public createAuthorizationURL(
-    state: string,
-    codeVerifier: string | null,
-  ): URL {
-    return this.provider.createAuthorizationURL(
-      state,
-      codeVerifier ?? '',
-      this.SCOPES,
+  constructor(opts: {
+    clientId: string
+    clientSecret: string
+    redirectUrl?: string
+  }) {
+    super()
+    this.client = new OAuthClient(
+      opts.clientId,
+      opts.clientSecret,
+      opts.redirectUrl ?? this.createCallbackUrl('google'),
     )
   }
 
-  public async fetchUserData(
+  public override async createAuthorizationUrl(
+    state: string,
+    codeVerifier: string,
+  ): Promise<URL> {
+    const url = await this.client.createAuthorizationUrlWithPKCE(
+      this.authorizationEndpoint,
+      state,
+      ['openid', 'email', 'profile'],
+      codeVerifier,
+    )
+
+    return url
+  }
+
+  override async fetchUserData(
     code: string,
     codeVerifier: string | null,
-  ): Promise<ProviderUserData> {
-    const tokens = await this.provider.validateAuthorizationCode(
+  ): Promise<OauthAccount> {
+    const tokenResponse = await this.client.validateAuthorizationCode(
+      this.tokenEndpoint,
       code,
-      codeVerifier ?? '',
+      codeVerifier,
     )
-    const accessToken = tokens.accessToken()
+    if (!tokenResponse.ok) {
+      const error = await tokenResponse.text().catch(() => 'Unknown error')
+      throw new Error(`Google API error: ${error}`)
+    }
 
-    const response = await fetch(this.API_URL, {
-      headers: { Authorization: `Bearer ${accessToken}` },
+    const tokenData = (await tokenResponse.json()) as OAuth2Token
+    const response = await fetch(this.apiEndpoint, {
+      headers: { Authorization: `Bearer ${tokenData.access_token}` },
     })
     if (!response.ok) {
       const errorText = await response.text().catch(() => 'Unknown error')
       throw new Error(`Google API error (${response.status}): ${errorText}`)
     }
 
-    const user = (await response.json()) as GoogleUserResponse
-
+    const userData = (await response.json()) as GoogleUserResponse
     return {
-      accountId: user.sub,
-      name: user.name,
-      email: user.email,
-      image: user.picture,
+      accountId: userData.sub,
+      email: userData.email,
+      name: userData.name,
+      image: userData.picture,
     }
   }
+}
+
+interface GoogleUserResponse {
+  sub: string
+  email: string
+  name: string
+  picture: string
 }

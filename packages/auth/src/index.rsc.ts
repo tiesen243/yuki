@@ -6,20 +6,12 @@ import { Auth } from './core'
 const { auth: uncachedAuth, signIn, signOut, handlers } = Auth(authOptions)
 
 /**
- * React-cached authentication function
- *
- * @description
- * This memoized version of auth() ensures that multiple calls within the same
- * React Server Component request will only perform the authentication check once,
- * improving performance in components that need session data.
+ * This is the main way to get session data for your RSCs.
+ * This will de-duplicate all calls to auth's default `auth()` function and only call it once per request
  */
 const auth = cache(uncachedAuth)
 
-export type * from './types'
-export { auth, signIn, signOut, handlers }
-export {
-  validateToken,
-  invalidateToken,
-  invalidateAllTokens,
-} from './core/queries'
+export type { Session, SessionResult, User } from './core/types'
+export { validateSessionToken, invalidateSessionToken } from './config'
 export { Password } from './core/password'
+export { auth, signIn, signOut, handlers }

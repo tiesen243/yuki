@@ -1,18 +1,25 @@
 {
-  "name": "@yuki/auth",
+  "name": "@yukinu/auth",
   "version": "1.0.0",
   "private": true,
-  "license": "MIT",
   "type": "module",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "react-server": "./src/index.rsc.ts",
-      "default": "./src/index.ts"
+      "default": "./src/index.ts",
+      "react-server": "./src/index.rsc.ts"
     },
     "./react": {
       "types": "./dist/react.d.ts",
       "default": "./src/react.tsx"
+    },
+    "./csrf": {
+      "types": "./dist/csrf.d.ts",
+      "default": "./src/csrf.ts"
+    },
+    "./rate-limit": {
+      "types": "./dist/rate-limit.d.ts",
+      "default": "./src/rate-limit.ts"
     }
   },
   "scripts": {
@@ -23,20 +30,17 @@
     "lint": "eslint",
     "typecheck": "tsc --noEmit"
   },
-  "prettier": "@yuki/prettier-config",
+  "prettier": "@yukinu/prettier-config",
   "dependencies": {
-    "@oslojs/crypto": "^1.0.1",
-    "@oslojs/encoding": "^1.1.0",
-    "@yuki/db": "workspace:*",
-    "arctic": "^3.7.0",
-    "react": "catalog:react"
+    "@yukinu/db": "workspace:*",
+    "@yukinu/validators": "workspace:*"
   },
   "devDependencies": {
-    "@yuki/eslint-config": "workspace:*",
-    "@yuki/prettier-config": "workspace:*",
-    "@yuki/tsconfig": "workspace:*",
-    "eslint": "catalog:tool",
-    "prettier": "catalog:tool",
-    "typescript": "catalog:tool"
+    "@yukinu/eslint-config": "workspace:*",
+    "@yukinu/prettier-config": "workspace:*",
+    "@yukinu/tsconfig": "workspace:*",
+    "eslint": "catalog:",
+    "prettier": "catalog:",
+    "typescript": "catalog:"
   }
 }

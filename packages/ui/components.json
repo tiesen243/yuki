@@ -1,8 +1,8 @@
 {
   "$schema": "https://ui.shadcn.com/schema.json",
   "style": "new-york",
-  "rsc": true,
   "tsx": true,
+  "rsc": true,
   "tailwind": {
     "config": "",
     "css": "src/tailwind.css",
@@ -11,11 +11,11 @@
     "prefix": ""
   },
   "aliases": {
-    "components": "@yuki/ui",
-    "utils": "@yuki/ui",
-    "ui": "@yuki/ui/components",
-    "lib": "@yuki/ui/lib",
-    "hooks": "@yuki/ui/hooks"
+    "components": "@yukinu/ui",
+    "hooks": "@yukinu/ui/hooks",
+    "lib": "@yukinu/ui/lib",
+    "utils": "@yukinu/ui",
+    "ui": "@yukinu/ui/components"
   },
   "iconLibrary": "lucide"
 }

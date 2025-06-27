@@ -1,8 +1,7 @@
 {
-  "name": "@yuki/validators",
+  "name": "@yukinu/validators",
   "version": "1.0.0",
   "private": true,
-  "license": "MIT",
   "type": "module",
   "exports": {
     "./*": {
@@ -18,16 +17,16 @@
     "lint": "eslint",
     "typecheck": "tsc --noEmit"
   },
-  "prettier": "@yuki/prettier-config",
+  "prettier": "@yukinu/prettier-config",
   "dependencies": {
-    "zod": "catalog:"
+    "zod": "^3.25.67"
   },
   "devDependencies": {
-    "@yuki/eslint-config": "workspace:*",
-    "@yuki/prettier-config": "workspace:*",
-    "@yuki/tsconfig": "workspace:*",
-    "eslint": "catalog:tool",
-    "prettier": "catalog:tool",
-    "typescript": "catalog:tool"
+    "@yukinu/eslint-config": "workspace:*",
+    "@yukinu/prettier-config": "workspace:*",
+    "@yukinu/tsconfig": "workspace:*",
+    "eslint": "catalog:",
+    "prettier": "catalog:",
+    "typescript": "catalog:"
   }
 }

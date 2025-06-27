@@ -1,45 +1,33 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
 # dependencies
-node_modules
+node_modules/
 .pnp
 .pnp.js
 
 # testing
 coverage
 
-# database
-migrations/
-generated/
-
 # next.js
 .next/
 out/
 next-env.d.ts
 
-# nitro
-.nitro/
-.output/
-
-# expo
-.expo/
-expo-env.d.ts
-apps/native/.gitignore
-apps/native/ios
-apps/native/android
-
 # react router
 .react-router/
 
 # tanstack start
-.vinxi/
-dist-ssr/
+.nitro/
+.output/
+.tanstack/
 routeTree.gen.ts
+app.config.timestamp_*.js
 
 # production
-build
+build/
+dist/
 
 # misc
+.cache/
+generated/
 .DS_Store
 *.pem
 
@@ -53,12 +41,12 @@ yarn-error.log*
 .env*
 !.env.example
 
+# turbo
+.turbo/
+
 # vercel
 .vercel
 
 # typescript
-dist/
-.cache
-
-# turbo
-.turbo
+*.tsbuildinfo
+next-env.d.ts

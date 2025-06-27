@@ -3,7 +3,7 @@ import * as React from 'react'
 import { Slot } from '@radix-ui/react-slot'
 import { cva } from 'class-variance-authority'
 
-import { cn } from '@yuki/ui'
+import { cn } from '@yukinu/ui'
 
 const buttonVariants = cva(
   "focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive inline-flex shrink-0 items-center justify-center gap-2 rounded-md text-sm font-medium whitespace-nowrap transition-all outline-none focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
@@ -12,10 +12,6 @@ const buttonVariants = cva(
       variant: {
         default:
           'bg-primary text-primary-foreground hover:bg-primary/90 shadow-xs',
-        success: 'bg-success hover:bg-success/90 text-white shadow-xs',
-        info: 'bg-info hover:bg-info/90 text-white shadow-xs',
-        warning: 'bg-warning hover:bg-warning/90 text-white shadow-xs',
-        error: 'bg-error hover:bg-error/90 text-white shadow-xs',
         destructive:
           'bg-destructive hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60 text-white shadow-xs',
         outline:

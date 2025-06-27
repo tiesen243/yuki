@@ -1,71 +1,59 @@
 {
-  "name": "create-yuki-turbo",
-  "version": "1.0.0",
+  "name": "yukinu",
   "private": true,
-  "description": "Clean and typesafe starter monorepo using Turborepo along with React and tRPC ",
-  "license": "MIT",
   "workspaces": {
     "packages": [
       "apps/*",
       "packages/*",
-      "tooling/*"
+      "tools/*"
     ],
     "catalog": {
-      "zod": "^3.25.50"
+      "@types/node": "^24.0.4",
+      "dotenv-cli": "^8.0.0",
+      "eslint": "^9.29.0",
+      "prettier": "^3.6.2",
+      "typescript": "^5.8.3"
     },
     "catalogs": {
       "react": {
+        "@types/react": "^19.1.6",
+        "@types/react-dom": "^19.1.6",
         "react": "^19.1.0",
-        "react-dom": "^19.1.0",
-        "@types/react": "^19.1.5",
-        "@types/react-dom": "^19.1.5"
+        "react-dom": "^19.1.0"
       },
-      "trpc": {
-        "@tanstack/react-query": "^5.80.5",
-        "@trpc/client": "^11.3.0",
-        "@trpc/server": "^11.3.0",
-        "@trpc/tanstack-react-query": "^11.3.0",
+      "api": {
+        "@tanstack/react-query": "^5.81.4",
+        "@trpc/server": "^11.4.3",
+        "@trpc/client": "^11.4.3",
+        "@trpc/tanstack-react-query": "^11.4.3",
         "superjson": "^2.2.2"
-      },
-      "tailwind": {
-        "@tailwindcss/postcss": "^4.1.8",
-        "@tailwindcss/vite": "^4.1.8",
-        "tailwindcss": "^4.1.8"
-      },
-      "tool": {
-        "eslint": "^9.28.0",
-        "prettier": "^3.5.3",
-        "typescript": "^5.8.3"
       }
     }
   },
   "scripts": {
     "build": "turbo run build",
-    "bump-deps": "bunx --bun npm-check-updates --deep -u && bun install",
+    "bump-deps": "bunx npm-check-updates --deep -u && bun install",
     "clean": "git clean -xdf node_modules",
     "clean:workspaces": "turbo run clean",
-    "db:push": "turbo -F @yuki/db db:push",
-    "db:studio": "turbo -F @yuki/db db:studio",
     "dev": "turbo dev --continue",
-    "format": "turbo run format --continue -- --cache --cache-location .cache/.prettiercache",
-    "format:fix": "turbo run format --continue -- --write --cache --cache-location .cache/.prettiercache",
-    "postinstall": "bun lint:ws",
-    "lint": "turbo run lint --continue -- --cache --cache-location .cache/.eslintcache",
-    "lint:fix": "turbo run lint --continue -- --fix --cache --cache-location .cache/.eslintcache",
-    "lint:ws": "bun x --bun sherif@latest",
-    "typecheck": "turbo run typecheck",
-    "ui-add": "turbo run ui-add"
+    "format": "turbo run format --continue -- --cache --cache-location .cache/prettiercache",
+    "format:fix": "turbo run format --continue -- --write --cache --cache-location .cache/prettiercache",
+    "postinstall": "bun run lint:ws",
+    "lint": "turbo run lint --continue -- --cache --cache-location .cache/eslintcache",
+    "lint:fix": "turbo run lint --continue -- --fix --cache --cache-location .cache/eslintcache",
+    "lint:ws": "bunx sherif@latest",
+    "typecheck": "turbo run typecheck"
   },
-  "prettier": "@yuki/prettier-config",
+  "prettier": "@yukinu/prettier-config",
   "devDependencies": {
     "@turbo/gen": "^2.5.4",
-    "@yuki/prettier-config": "workspace:*",
-    "@yuki/tsconfig": "workspace:*",
+    "@yukinu/prettier-config": "workspace:*",
+    "@yukinu/tsconfig": "workspace:*",
     "turbo": "^2.5.4"
   },
-  "packageManager": "bun@1.2.15",
+  "packageManager": "bun@1.2.17",
   "engines": {
-    "bun": ">=1.2.0",
+    "bun": ">=1.2.16",
     "node": ">=22.0.0"
   }
 }

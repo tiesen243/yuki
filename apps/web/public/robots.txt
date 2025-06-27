@@ -1,5 +1,0 @@
-User-Agent: *
-Allow: /
-Disallow: /api
-
-Sitemap: https://yukinu.vercel.app/sitemap.xml

@@ -2,8 +2,9 @@
   "$schema": "../../node_modules/turbo/schema.json",
   "extends": ["//"],
   "tasks": {
-    "build": {
-      "outputs": ["dist/**"]
-    }
+    "build": { "outputs": ["dist/**"] },
+    "db:push": { "cache": false },
+    "db:studio": { "cache": false },
+    "dev": { "persistent": true }
   }
 }
