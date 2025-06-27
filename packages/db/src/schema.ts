@@ -24,6 +24,7 @@ export const users = pgTable(
 export const usersRelations = relations(users, ({ many }) => ({
   accounts: many(accounts),
   sessions: many(sessions),
+  addresses: many(addresses),
   orders: many(orders),
 }))
 
@@ -52,7 +53,7 @@ export const accountsRelations = relations(accounts, ({ one }) => ({
 export const sessions = pgTable(
   'session',
   (t) => ({
-    token: t.varchar({ length: 25 }).primaryKey().notNull(),
+    token: t.varchar({ length: 64 }).primaryKey().notNull(),
     expires: t.timestamp({ mode: 'date', withTimezone: true }).notNull(),
     userId: t
       .varchar({ length: 25 })
@@ -64,6 +65,37 @@ export const sessions = pgTable(
 
 export const sessionRelations = relations(sessions, ({ one }) => ({
   user: one(users, { fields: [sessions.userId], references: [users.id] }),
+}))
+
+export const addresses = pgTable(
+  'address',
+  (t) => ({
+    id: t.varchar({ length: 25 }).primaryKey().$defaultFn(cuid).notNull(),
+    default: t.boolean().default(false).notNull(),
+    userId: t
+      .varchar({ length: 25 })
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    name: t.varchar({ length: 100 }).notNull(),
+    phone: t.varchar({ length: 20 }).notNull(),
+    address: t.varchar({ length: 255 }).notNull(),
+    city: t.varchar({ length: 100 }).notNull(),
+    state: t.varchar({ length: 100 }).notNull(),
+    postalCode: t.varchar({ length: 20 }).notNull(),
+    country: t.varchar({ length: 100 }).notNull(),
+  }),
+  (t) => [
+    index('address_user_id_idx').on(t.userId),
+    index('address_default_idx').on(t.default),
+  ],
+)
+
+export const addressesRelations = relations(addresses, ({ one, many }) => ({
+  user: one(users, {
+    fields: [addresses.userId],
+    references: [users.id],
+  }),
+  orders: many(orders),
 }))
 
 export const categories = pgTable(
@@ -100,6 +132,11 @@ export const products = pgTable(
     createdAt: t
       .timestamp({ mode: 'date', withTimezone: true })
       .defaultNow()
+      .notNull(),
+    updatedAt: t
+      .timestamp({ mode: 'date', withTimezone: true })
+      .defaultNow()
+      .$onUpdateFn(() => new Date())
       .notNull(),
   }),
   (t) => [
@@ -165,8 +202,11 @@ export const orders = pgTable(
       .varchar({ length: 25 })
       .notNull()
       .references(() => users.id, { onDelete: 'cascade' }),
-    totalAmount: t.real().notNull(),
+    totalAmount: t.real().default(0).notNull(),
     status: orderStatus().default('new').notNull(),
+    addressId: t
+      .varchar({ length: 25 })
+      .references(() => addresses.id, { onDelete: 'set null' }),
     createdAt: t
       .timestamp({ mode: 'date', withTimezone: true })
       .defaultNow()
@@ -179,6 +219,10 @@ export const ordersRelations = relations(orders, ({ one, many }) => ({
   user: one(users, {
     fields: [orders.userId],
     references: [users.id],
+  }),
+  address: one(addresses, {
+    fields: [orders.addressId],
+    references: [addresses.id],
   }),
   orderItems: many(orderItems),
 }))
