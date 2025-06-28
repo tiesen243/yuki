@@ -1,20 +1,23 @@
 {
-  "name": "@yukinu/nextjs",
+  "name": "@yukinu/pepe",
   "version": "1.0.0",
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "bun with-env next build",
-    "clean": "git clean -xdf .cache .next .turbo node_modules",
-    "dev": "bun with-env next dev  --turbopack --port 3000",
+    "build": "bun run with-env react-router build",
+    "clean": "git clean -xdf .cache .react-router .turbo .vercel build node_modules",
+    "dev": "bun run with-env react-router dev  --port 3001",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
-    "start": "bun with-env next start  --port 3000",
-    "typecheck": "tsc --noEmit",
+    "start": "PORT=3001 bun run with-env react-router-serve ./build/server/nodejs_*/index.js",
+    "typecheck": "bun run with-env react-router typegen && tsc --noEmit",
     "with-env": "dotenv -e ../../.env --"
   },
   "prettier": "@yukinu/prettier-config",
   "dependencies": {
+    "@react-router/fs-routes": "^7.6.3",
+    "@react-router/node": "^7.6.3",
+    "@react-router/serve": "^7.6.3",
     "@tanstack/react-query": "catalog:api",
     "@trpc/client": "catalog:api",
     "@trpc/tanstack-react-query": "catalog:api",
@@ -23,20 +26,27 @@
     "@yukinu/db": "workspace:*",
     "@yukinu/ui": "workspace:*",
     "@yukinu/validators": "workspace:*",
-    "next": "15.3.4",
+    "isbot": "^5.1.28",
     "react": "catalog:react",
-    "react-dom": "catalog:react"
+    "react-dom": "catalog:react",
+    "react-router": "^7.6.3"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4.1.11",
+    "@react-router/dev": "^7.6.3",
+    "@tailwindcss/vite": "^4.1.11",
     "@types/node": "catalog:",
     "@types/react": "catalog:react",
     "@types/react-dom": "catalog:react",
+    "@vercel/react-router": "^1.1.2",
     "@yukinu/eslint-config": "workspace:*",
     "@yukinu/prettier-config": "workspace:*",
     "@yukinu/tsconfig": "workspace:*",
     "dotenv-cli": "catalog:",
+    "eslint": "catalog:",
+    "prettier": "catalog:",
     "tailwindcss": "^4.1.11",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "vite": "^7.0.0",
+    "vite-tsconfig-paths": "^5.1.4"
   }
 }
