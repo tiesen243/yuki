@@ -7,7 +7,7 @@ import { db } from '@yukinu/db'
 const isomorphicGetSession = async (headers: Headers) => {
   const authToken = headers.get('Authorization') ?? null
   if (authToken) return validateSessionToken(authToken)
-  return auth({ headers } as Request)
+  return auth({ headers })
 }
 
 const createTRPCContext = async (opts: { headers: Headers }) => {

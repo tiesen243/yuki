@@ -1,7 +1,7 @@
 import type { TRPCRouterRecord } from '@trpc/server'
 import { TRPCError } from '@trpc/server'
 
-import { desc, eq } from '@yukinu/db'
+import { and, desc, eq, ne } from '@yukinu/db'
 import { addresses } from '@yukinu/db/schema'
 import { addSchema, byIdSchema, updateSchema } from '@yukinu/validators/address'
 
@@ -44,12 +44,37 @@ export const addressRouter = {
         .update(addresses)
         .set(input)
         .where(eq(addresses.id, input.id))
+
+      if (input.default)
+        await ctx.db
+          .update(addresses)
+          .set({ default: false })
+          .where(
+            and(
+              ne(addresses.id, input.id),
+              eq(addresses.userId, ctx.session.user.id),
+            ),
+          )
+
       return { message: 'Address updated successfully' }
     }),
 
   remove: protectedProcedure
     .input(byIdSchema)
     .mutation(async ({ ctx, input }) => {
+      const [address] = await ctx.db
+        .select()
+        .from(addresses)
+        .where(eq(addresses.id, input.id))
+        .limit(1)
+      if (!address)
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Address not found' })
+      if (address.default)
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Change the default address before removing this one',
+        })
+
       await ctx.db.delete(addresses).where(eq(addresses.id, input.id))
       return { message: 'Address removed successfully' }
     }),

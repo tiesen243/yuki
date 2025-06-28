@@ -1,10 +1,11 @@
 import * as z from 'zod/v4'
 
 export const byIdSchema = z.object({
-  id: z.uuid(),
+  id: z.cuid2(),
 })
 
 export const addSchema = z.object({
+  default: z.boolean().default(false),
   name: z.string().min(1).max(100),
   phone: z.string().min(1).max(20),
   address: z.string().min(1).max(255),
