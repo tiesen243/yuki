@@ -14,3 +14,4 @@ export const db = globalForDrizzle.db ?? createDrizzleClient()
 if (process.env.NODE_ENV !== 'production') globalForDrizzle.db = db
 
 export * from 'drizzle-orm'
+export { PgTransaction } from 'drizzle-orm/pg-core'

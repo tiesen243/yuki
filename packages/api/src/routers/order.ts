@@ -2,7 +2,7 @@ import type { TRPCRouterRecord } from '@trpc/server'
 import { TRPCError } from '@trpc/server'
 
 import { and, eq, sql } from '@yukinu/db'
-import { addresses, orderItems, orders } from '@yukinu/db/schema'
+import { addresses, orderItems, orders, products } from '@yukinu/db/schema'
 import { byIdOrStatusSchema, updateCartSchema } from '@yukinu/validators/order'
 
 import { protectedProcedure } from '../trpc'
@@ -23,13 +23,13 @@ export const orderRouter = {
   byIdOrStatus: protectedProcedure
     .input(byIdOrStatusSchema)
     .query(async ({ ctx, input }) => {
-      const where = input.id
+      const whereCondition = input.id
         ? eq(orders.id, input.id)
         : input.status
           ? eq(orders.status, input.status)
           : undefined
 
-      const query = {
+      const orderQuery = {
         id: orders.id,
         status: orders.status,
         totalAmount: orders.totalAmount,
@@ -37,27 +37,61 @@ export const orderRouter = {
         createdAt: orders.createdAt,
       }
 
+      const userId = ctx.session.user.id
+
       return ctx.db.transaction(async (tx) => {
         let [order] = await tx
-          .select(query)
+          .select(orderQuery)
           .from(orders)
-          .where(and(where, eq(orders.userId, ctx.session.user.id)))
+          .where(and(whereCondition, eq(orders.userId, userId)))
           .limit(1)
-        if (!order)
-          [order] = await tx
+
+        if (!order) {
+          const [address] = await tx
+            .select({ id: addresses.id })
+            .from(addresses)
+            .where(
+              and(eq(addresses.userId, userId), eq(addresses.default, true)),
+            )
+            .limit(1)
+
+          if (!address)
+            throw new TRPCError({
+              code: 'NOT_FOUND',
+              message: 'Add your address first',
+            })
+
+          const [newOrder] = await tx
             .insert(orders)
-            .values({ userId: ctx.session.user.id })
-            .returning(query)
+            .values({ userId, totalAmount: 0, addressId: address.id })
+            .returning({ id: orders.id, addressId: orders.addressId })
 
-        if (!order)
-          throw new TRPCError({
-            code: 'INTERNAL_SERVER_ERROR',
-            message: 'Order creation failed',
-          })
+          if (!newOrder)
+            throw new TRPCError({
+              code: 'INTERNAL_SERVER_ERROR',
+              message: 'Failed to create order',
+            })
 
-        order.addressId ??= ''
+          order = {
+            ...newOrder,
+            status: 'new',
+            totalAmount: 0,
+            createdAt: new Date(),
+          }
+        }
+
         const [items, [address]] = await Promise.all([
-          tx.select().from(orderItems).where(eq(orderItems.orderId, order.id)),
+          tx
+            .select({
+              productId: orderItems.productId,
+              quantity: orderItems.quantity,
+              price: orderItems.price,
+              name: products.name,
+              image: products.image,
+            })
+            .from(orderItems)
+            .where(eq(orderItems.orderId, order.id))
+            .innerJoin(products, eq(orderItems.productId, products.id)),
           tx.select().from(addresses).where(eq(addresses.id, order.addressId)),
         ])
 
@@ -76,16 +110,34 @@ export const orderRouter = {
           where: and(eq(orders.userId, userId), eq(orders.status, 'new')),
           columns: { id: true },
         })
+
         if (!order) {
+          const [address] = await tx
+            .select({ id: addresses.id })
+            .from(addresses)
+            .where(
+              and(eq(addresses.userId, userId), eq(addresses.default, true)),
+            )
+            .limit(1)
+
+          if (!address) {
+            throw new TRPCError({
+              code: 'NOT_FOUND',
+              message: 'Add your address first',
+            })
+          }
+
           const [newOrder] = await tx
             .insert(orders)
-            .values({ userId })
-            .returning({ id: orders.id })
-          if (!newOrder)
+            .values({ userId, totalAmount: 0, addressId: address.id })
+            .returning({ id: orders.id, addressId: orders.addressId })
+
+          if (!newOrder) {
             throw new TRPCError({
               code: 'INTERNAL_SERVER_ERROR',
               message: 'Failed to create order',
             })
+          }
           order = newOrder
         }
 
@@ -101,18 +153,22 @@ export const orderRouter = {
             where: itemWhere,
             columns: { quantity: true },
           })
+
           if (existingItem) {
             const newQuantity =
-              quantity + (quantityAction === 'increment' ? quantity : 0)
+              quantityAction === 'increment'
+                ? existingItem.quantity + quantity
+                : quantity
 
             await tx
               .update(orderItems)
               .set({ quantity: newQuantity, price })
               .where(itemWhere)
-          } else
+          } else {
             await tx
               .insert(orderItems)
               .values({ orderId: order.id, productId, price, quantity })
+          }
         }
 
         const [totalResult] = await tx
@@ -121,11 +177,14 @@ export const orderRouter = {
           })
           .from(orderItems)
           .where(eq(orderItems.orderId, order.id))
-        if (!totalResult)
+
+        if (!totalResult) {
           throw new TRPCError({
             code: 'INTERNAL_SERVER_ERROR',
             message: 'Failed to calculate total price',
           })
+        }
+
         await tx.update(orders).set(totalResult).where(eq(orders.id, order.id))
       })
     }),

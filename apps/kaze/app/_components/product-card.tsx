@@ -93,7 +93,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               productId: product.id,
               price: product.price,
               quantity: 1,
-              action: 'add',
+              action: 'update',
               quantityAction: 'increment',
             })
           }}

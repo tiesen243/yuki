@@ -11,6 +11,6 @@ export const updateCartSchema = z.object({
   productId: z.cuid2(),
   price: z.number().min(1),
   quantity: z.number().min(1).max(100),
-  action: z.enum(['add', 'remove']),
+  action: z.enum(['update', 'remove']),
   quantityAction: z.enum(['replace', 'increment']).default('increment'),
 })

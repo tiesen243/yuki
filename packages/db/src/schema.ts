@@ -206,6 +206,7 @@ export const orders = pgTable(
     status: orderStatus().default('new').notNull(),
     addressId: t
       .varchar({ length: 25 })
+      .notNull()
       .references(() => addresses.id, { onDelete: 'set null' }),
     createdAt: t
       .timestamp({ mode: 'date', withTimezone: true })
