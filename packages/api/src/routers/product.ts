@@ -70,9 +70,11 @@ export const productRouter = {
 const productPreview = {
   id: products.id,
   name: products.name,
+  description: products.description,
   image: products.image,
   price: products.price,
   discount: products.discount,
+  createdAt: products.createdAt,
 }
 
 const productDetail = {

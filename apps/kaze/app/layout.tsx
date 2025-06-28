@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from 'next/font/google'
 
 import { SessionProvider } from '@yukinu/auth/react'
 import { cn, ThemeProvider } from '@yukinu/ui'
+import { Toaster } from '@yukinu/ui/sonner'
 
 import { createMetadata } from '@/lib/metadata'
 import { TRPCReactProvider } from '@/trpc/react'
@@ -30,14 +31,22 @@ export default function RootLayout({
           geistMono.variable,
         )}
       >
-        <ThemeProvider attribute="class" disableTransitionOnChange enableSystem>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          disableTransitionOnChange
+          enableColorScheme
+          enableSystem
+        >
           <TRPCReactProvider>
             <SessionProvider>{children}</SessionProvider>
           </TRPCReactProvider>
+
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>
   )
 }
 
-export const metadata = createMetadata({ title: 'Next.js' })
+export const metadata = createMetadata()
