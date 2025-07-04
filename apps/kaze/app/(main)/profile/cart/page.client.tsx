@@ -2,6 +2,7 @@
 
 import { useCallback, useState } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useMutation, useSuspenseQuery } from '@tanstack/react-query'
 
 import type { RouterOutputs } from '@yuki/api'
@@ -19,6 +20,7 @@ import {
   SelectValue,
 } from '@yuki/ui/select'
 
+import { slugify } from '@/lib/utils'
 import { useTRPC } from '@/trpc/react'
 
 export const CardList: React.FC = () => {
@@ -124,14 +126,17 @@ const CartItem: React.FC<{
 
   return (
     <div className="bg-card hover:bg-card/80 grid grid-cols-7 gap-4 rounded-xl border p-4 shadow-md transition-colors">
-      <Image
-        src={item.productImage}
-        alt={item.productName}
-        className="aspect-square object-cover"
-        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-        width={80}
-        height={80}
-      />
+      <Link href={`/${slugify(item.productName)}-${item.productId}`}>
+        <Image
+          src={item.productImage}
+          alt={item.productName}
+          className="aspect-square rounded-md object-cover"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          width={80}
+          height={80}
+        />
+        <span className="sr-only">View details for {item.productName}</span>
+      </Link>
 
       <div className="col-span-5 grid gap-2">
         <h3 className="text-lg font-semibold">{item.productName}</h3>
@@ -174,7 +179,7 @@ const CartItem: React.FC<{
       </div>
 
       <div className="grid gap-2">
-        <p className="pl-6 font-semibold">
+        <p className="text-right font-semibold">
           ${(item.price * localQuantity).toFixed(2)}
         </p>
 
@@ -186,7 +191,7 @@ const CartItem: React.FC<{
             mutate({
               productId: item.productId,
               type: 'remove',
-              quantity: 0,
+              quantity: 1,
             })
           }}
         >

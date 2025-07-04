@@ -1,7 +1,8 @@
 import type { TRPCRouterRecord } from '@trpc/server'
+import { TRPCError } from '@trpc/server'
 
 import { and, eq } from '@yuki/db'
-import { cartItems } from '@yuki/db/schema'
+import { cartItems, products } from '@yuki/db/schema'
 import { updateCartSchema } from '@yuki/validators/cart'
 
 import { protectedProcedure } from '../trpc'
@@ -50,24 +51,43 @@ export const cartRouter = {
         eq(cartItems.productId, productId),
       )
 
-      let cartItem = await ctx.db.query.cartItems.findFirst({ where })
-      if (!cartItem) {
-        ;[cartItem] = await ctx.db
-          .insert(cartItems)
-          .values({ userId, productId, quantity })
-          .returning()
-      } else if (type === 'remove') {
-        await ctx.db.delete(cartItems).where(where)
-      } else {
-        const newQuantity =
-          cartItem.quantity + (type === 'increment' ? quantity : 0)
-        ;[cartItem] = await ctx.db
-          .update(cartItems)
-          .set({ quantity: newQuantity })
-          .where(where)
-          .returning()
+      const [cartItem, product] = await Promise.all([
+        ctx.db.query.cartItems.findFirst({ where }),
+        ctx.db.query.products.findFirst({
+          where: eq(products.id, productId), // Fixed: use products.id instead of cartItems.productId
+        }),
+      ])
+      if (!product)
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Product not found',
+        })
+
+      if (type === 'remove') {
+        if (cartItem) await ctx.db.delete(cartItems).where(where)
+        return { success: true }
       }
 
+      const finalQuantity = cartItem
+        ? type === 'increment'
+          ? cartItem.quantity + quantity
+          : quantity
+        : quantity
+      if (finalQuantity > product.stock)
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Insufficient stock available',
+        })
+
+      if (!cartItem)
+        await ctx.db
+          .insert(cartItems)
+          .values({ userId, productId, quantity: finalQuantity })
+      else
+        await ctx.db
+          .update(cartItems)
+          .set({ quantity: finalQuantity })
+          .where(where)
       return { success: true }
     }),
 } satisfies TRPCRouterRecord

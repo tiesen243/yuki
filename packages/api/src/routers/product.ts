@@ -37,10 +37,10 @@ export const productRouter = {
       .innerJoin(categories, eq(products.categoryId, categories.id))
       .limit(1)
 
-    if (!product)
-      throw new TRPCError({ code: 'NOT_FOUND', message: 'Product not found' })
-
-    return product
+    return {
+      product,
+      reviews,
+    }
   }),
 
   relativeProducts: publicProcedure
@@ -87,3 +87,30 @@ const productDetail = {
   discount: products.discount,
   category: categories.name,
 }
+
+const reviews = [
+  {
+    id: 1,
+    name: 'Sarah Johnson',
+    rating: 5,
+    date: '2024-01-15',
+    comment:
+      'Absolutely amazing sound quality! The noise cancellation works perfectly and the battery life is exactly as advertised.',
+  },
+  {
+    id: 2,
+    name: 'Mike Chen',
+    rating: 4,
+    date: '2024-01-10',
+    comment:
+      "Great headphones overall. Very comfortable for long listening sessions. Only minor complaint is they're a bit heavy.",
+  },
+  {
+    id: 3,
+    name: 'Emily Davis',
+    rating: 5,
+    date: '2024-01-05',
+    comment:
+      "Best purchase I've made this year! The audio quality is incredible and they're so comfortable I forget I'm wearing them.",
+  },
+]
