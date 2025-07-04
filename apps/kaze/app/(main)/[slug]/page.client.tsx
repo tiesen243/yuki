@@ -16,19 +16,31 @@ import {
   TruckIcon,
 } from '@yuki/ui/icons'
 import { Input } from '@yuki/ui/input'
+import { toast } from '@yuki/ui/sonner'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@yuki/ui/tabs'
 import { Typography } from '@yuki/ui/typography'
 
 import { useTRPC } from '@/trpc/react'
 
 export const ProductDetail = ({ id }: { id: string }) => {
-  const { trpc } = useTRPC()
+  const { trpc, queryClient } = useTRPC()
   const {
     data: { product, reviews },
   } = useSuspenseQuery(trpc.product.byId.queryOptions({ id }))
 
   const [quantity, setQuantity] = useState(1)
-  const { mutate, isPending } = useMutation(trpc.cart.update.mutationOptions())
+  const { mutate, isPending } = useMutation({
+    ...trpc.cart.update.mutationOptions(),
+    onSuccess: () => {
+      void queryClient.invalidateQueries(trpc.cart.get.queryFilter())
+      toast.success('Item added to cart', {
+        action: {
+          label: 'View Cart',
+          onClick: () => (window.location.href = '/profile/cart'),
+        },
+      })
+    },
+  })
   if (!product) return
 
   const rating =

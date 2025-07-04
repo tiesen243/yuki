@@ -23,7 +23,7 @@ export default async function ProfilePage() {
           </Avatar>
           <div className="flex-1">
             <div className="flex items-center gap-2">
-              <Typography variant="h4" component="h2" className="mb-0">
+              <Typography variant="h5" component="h2" className="mb-0">
                 {user.name}
               </Typography>
             </div>
@@ -40,61 +40,21 @@ export default async function ProfilePage() {
       <section className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <h3 className="sr-only">Profile Actions section</h3>
 
-        <Card className="transition-shadow hover:shadow-md">
-          <CardHeader>
-            <CardTitle>Orders</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Typography className="text-muted-foreground text-sm lg:text-base">
-              View and track your orders
-            </Typography>
-            <Button asChild variant="outline" size="sm" className="w-full">
-              <Link href="/profile/orders">View Orders</Link>
-            </Button>
-          </CardContent>
-        </Card>
-
-        <Card className="transition-shadow hover:shadow-md">
-          <CardHeader>
-            <CardTitle>Addresses</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Typography className="text-muted-foreground text-sm lg:text-base">
-              Manage shipping addresses
-            </Typography>
-            <Button asChild variant="outline" size="sm" className="w-full">
-              <Link href="/profile/addresses">Manage Addresses</Link>
-            </Button>
-          </CardContent>
-        </Card>
-
-        <Card className="transition-shadow hover:shadow-md">
-          <CardHeader>
-            <CardTitle className="text-base">Shopping Cart</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Typography className="text-muted-foreground text-sm lg:text-base">
-              Review items in your cart before checkout
-            </Typography>
-            <Button asChild variant="outline" size="sm" className="w-full">
-              <Link href="/profile/cart">View Cart</Link>
-            </Button>
-          </CardContent>
-        </Card>
-
-        <Card className="transition-shadow hover:shadow-md">
-          <CardHeader>
-            <CardTitle>Security</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Typography className="text-muted-foreground text-sm lg:text-base">
-              Update your password or delete your account
-            </Typography>
-            <Button asChild variant="outline" size="sm" className="w-full">
-              <Link href="/profile/security">Security Settings</Link>
-            </Button>
-          </CardContent>
-        </Card>
+        {a.map((item) => (
+          <Card key={item.link} className="transition-shadow hover:shadow-md">
+            <CardHeader>
+              <CardTitle>{item.title}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Typography className="text-muted-foreground text-sm lg:text-base">
+                {item.description}
+              </Typography>
+              <Button variant="outline" size="sm" className="w-full" asChild>
+                <Link href={item.link}>{item.linkText}</Link>
+              </Button>
+            </CardContent>
+          </Card>
+        ))}
       </section>
 
       <Card className="gap-4">
@@ -143,3 +103,30 @@ export default async function ProfilePage() {
     </section>
   )
 }
+
+const a = [
+  {
+    title: 'Orders',
+    description: 'View and track your orders placed on Yuki',
+    link: '/profile/orders',
+    linkText: 'View Orders',
+  },
+  {
+    title: 'Addresses',
+    description: 'Manage shipping addresses for your orders',
+    link: '/profile/addresses',
+    linkText: 'Manage Addresses',
+  },
+  {
+    title: 'Shopping Cart',
+    description: 'Review items in your cart before checkout',
+    link: '/profile/cart',
+    linkText: 'View Cart',
+  },
+  {
+    title: 'Security',
+    description: 'Update your password or delete your account',
+    link: '/profile/security',
+    linkText: 'Security Settings',
+  },
+]
