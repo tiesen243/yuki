@@ -1,10 +1,10 @@
 import type { TRPCRouterRecord } from '@trpc/server'
 import { TRPCError } from '@trpc/server'
 
-import { Password } from '@yukinu/auth'
-import { and, eq } from '@yukinu/db'
-import { accounts, sessions, users } from '@yukinu/db/schema'
-import { changePasswordSchema, signUpSchema } from '@yukinu/validators/auth'
+import { Password } from '@yuki/auth'
+import { and, eq } from '@yuki/db'
+import { accounts, sessions, users } from '@yuki/db/schema'
+import { changePasswordSchema, signUpSchema } from '@yuki/validators/auth'
 
 import { protectedProcedure, publicProcedure } from '../trpc'
 

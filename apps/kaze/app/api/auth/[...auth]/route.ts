@@ -1,3 +1,3 @@
-import { handlers } from '@yukinu/auth'
+import { handlers } from '@yuki/auth'
 
 export const { GET, POST } = handlers

@@ -1,4 +1,4 @@
-import '@yukinu/validators/env'
+import '@yuki/validators/env'
 
 import type { NextConfig } from 'next'
 
@@ -10,11 +10,11 @@ const nextConfig = {
   eslint: { ignoreDuringBuilds: true },
 
   transpilePackages: [
-    '@yukinu/api',
-    '@yukinu/auth',
-    '@yukinu/db',
-    '@yukinu/ui',
-    '@yukinu/validators',
+    '@yuki/api',
+    '@yuki/auth',
+    '@yuki/db',
+    '@yuki/ui',
+    '@yuki/validators',
   ],
 } satisfies NextConfig
 

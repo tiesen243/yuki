@@ -1,6 +1,7 @@
 import { relations } from 'drizzle-orm'
 import { index, pgEnum, pgTable, primaryKey } from 'drizzle-orm/pg-core'
 
+export const roles = pgEnum('role', ['user', 'admin'])
 export const users = pgTable(
   'user',
   (t) => ({
@@ -8,6 +9,7 @@ export const users = pgTable(
     name: t.varchar({ length: 255 }).notNull(),
     email: t.varchar({ length: 320 }).unique().notNull(),
     image: t.varchar({ length: 500 }).notNull(),
+    role: roles().default('user').notNull(),
     createdAt: t
       .timestamp({ mode: 'date', withTimezone: true })
       .defaultNow()
@@ -15,12 +17,11 @@ export const users = pgTable(
     updatedAt: t
       .timestamp({ mode: 'date', withTimezone: true })
       .defaultNow()
-      .$onUpdateFn(() => new Date())
+      .$onUpdate(() => new Date())
       .notNull(),
   }),
   (t) => [index('user_email_idx').on(t.email)],
 )
-
 export const usersRelations = relations(users, ({ many }) => ({
   accounts: many(accounts),
   sessions: many(sessions),
@@ -33,11 +34,11 @@ export const accounts = pgTable(
   (t) => ({
     provider: t.varchar({ length: 25 }).notNull(),
     accountId: t.varchar({ length: 128 }).notNull(),
+    password: t.varchar({ length: 255 }),
     userId: t
       .varchar({ length: 25 })
       .notNull()
       .references(() => users.id, { onDelete: 'cascade' }),
-    password: t.varchar({ length: 255 }),
   }),
   (account) => [
     primaryKey({ columns: [account.provider, account.accountId] }),
@@ -45,7 +46,6 @@ export const accounts = pgTable(
     index('account_provider_idx').on(account.provider),
   ],
 )
-
 export const accountsRelations = relations(accounts, ({ one }) => ({
   user: one(users, { fields: [accounts.userId], references: [users.id] }),
 }))
@@ -62,7 +62,6 @@ export const sessions = pgTable(
   }),
   (t) => [index('session_user_id_idx').on(t.userId)],
 )
-
 export const sessionRelations = relations(sessions, ({ one }) => ({
   user: one(users, { fields: [sessions.userId], references: [users.id] }),
 }))
@@ -71,25 +70,22 @@ export const addresses = pgTable(
   'address',
   (t) => ({
     id: t.varchar({ length: 25 }).primaryKey().$defaultFn(cuid).notNull(),
-    default: t.boolean().default(false).notNull(),
-    userId: t
-      .varchar({ length: 25 })
-      .notNull()
-      .references(() => users.id, { onDelete: 'cascade' }),
     name: t.varchar({ length: 100 }).notNull(),
     phone: t.varchar({ length: 20 }).notNull(),
-    address: t.varchar({ length: 255 }).notNull(),
+    line1: t.varchar({ length: 255 }).notNull(),
+    line2: t.varchar({ length: 255 }),
     city: t.varchar({ length: 100 }).notNull(),
     state: t.varchar({ length: 100 }).notNull(),
     postalCode: t.varchar({ length: 20 }).notNull(),
     country: t.varchar({ length: 100 }).notNull(),
+    isDefault: t.boolean().default(false).notNull(),
+    userId: t
+      .varchar({ length: 25 })
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
   }),
-  (t) => [
-    index('address_user_id_idx').on(t.userId),
-    index('address_default_idx').on(t.default),
-  ],
+  (t) => [index('address_user_id_idx').on(t.userId)],
 )
-
 export const addressesRelations = relations(addresses, ({ one, many }) => ({
   user: one(users, {
     fields: [addresses.userId],
@@ -103,14 +99,9 @@ export const categories = pgTable(
   (t) => ({
     id: t.varchar({ length: 25 }).primaryKey().$defaultFn(cuid).notNull(),
     name: t.varchar({ length: 50 }).notNull(),
-    createdAt: t
-      .timestamp({ mode: 'date', withTimezone: true })
-      .defaultNow()
-      .notNull(),
   }),
   (t) => [index('category_name_idx').on(t.name)],
 )
-
 export const categoriesRelations = relations(categories, ({ many }) => ({
   products: many(products),
 }))
@@ -136,7 +127,7 @@ export const products = pgTable(
     updatedAt: t
       .timestamp({ mode: 'date', withTimezone: true })
       .defaultNow()
-      .$onUpdateFn(() => new Date())
+      .$onUpdate(() => new Date())
       .notNull(),
   }),
   (t) => [
@@ -144,13 +135,13 @@ export const products = pgTable(
     index('product_category_id_idx').on(t.categoryId),
   ],
 )
-
 export const productsRelations = relations(products, ({ one, many }) => ({
+  cartItems: many(cartItems),
+  orderItems: many(orderItems),
   category: one(categories, {
     fields: [products.categoryId],
     references: [categories.id],
   }),
-  orderItems: many(orderItems),
 }))
 
 export const orderItems = pgTable(
@@ -164,8 +155,8 @@ export const orderItems = pgTable(
       .varchar({ length: 25 })
       .notNull()
       .references(() => products.id, { onDelete: 'cascade' }),
-    price: t.real().notNull(),
     quantity: t.integer().notNull(),
+    price: t.real().notNull(),
   }),
   (t) => [
     primaryKey({ columns: [t.orderId, t.productId] }),
@@ -173,7 +164,6 @@ export const orderItems = pgTable(
     index('order_item_product_id_idx').on(t.productId),
   ],
 )
-
 export const orderItemsRelations = relations(orderItems, ({ one }) => ({
   product: one(products, {
     fields: [orderItems.productId],
@@ -186,24 +176,22 @@ export const orderItemsRelations = relations(orderItems, ({ one }) => ({
 }))
 
 export const orderStatus = pgEnum('order_status', [
-  'new',
   'pending',
-  'processing',
+  'paid',
   'shipped',
   'delivered',
   'cancelled',
 ])
-
 export const orders = pgTable(
   'order',
   (t) => ({
     id: t.varchar({ length: 25 }).primaryKey().$defaultFn(cuid).notNull(),
+    status: orderStatus().default('pending').notNull(),
+    total: t.real().default(0).notNull(),
     userId: t
       .varchar({ length: 25 })
       .notNull()
       .references(() => users.id, { onDelete: 'cascade' }),
-    totalAmount: t.real().default(0).notNull(),
-    status: orderStatus().default('new').notNull(),
     addressId: t
       .varchar({ length: 25 })
       .notNull()
@@ -213,10 +201,14 @@ export const orders = pgTable(
       .defaultNow()
       .notNull(),
   }),
-  (t) => [index('order_user_id_idx').on(t.userId)],
+  (t) => [
+    index('order_status_idx').on(t.status),
+    index('order_user_id_idx').on(t.userId),
+    index('order_address_id_idx').on(t.addressId),
+  ],
 )
-
 export const ordersRelations = relations(orders, ({ one, many }) => ({
+  orderItems: many(orderItems),
   user: one(users, {
     fields: [orders.userId],
     references: [users.id],
@@ -225,7 +217,36 @@ export const ordersRelations = relations(orders, ({ one, many }) => ({
     fields: [orders.addressId],
     references: [addresses.id],
   }),
-  orderItems: many(orderItems),
+}))
+
+export const cartItems = pgTable(
+  'cart_item',
+  (t) => ({
+    userId: t
+      .varchar({ length: 25 })
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    productId: t
+      .varchar({ length: 25 })
+      .notNull()
+      .references(() => products.id, { onDelete: 'cascade' }),
+    quantity: t.integer().notNull(),
+  }),
+  (t) => [
+    primaryKey({ columns: [t.userId, t.productId] }),
+    index('cart_item_user_id_idx').on(t.userId),
+    index('cart_item_product_id_idx').on(t.productId),
+  ],
+)
+export const cartItemsRelations = relations(cartItems, ({ one }) => ({
+  product: one(products, {
+    fields: [cartItems.productId],
+    references: [products.id],
+  }),
+  user: one(users, {
+    fields: [cartItems.userId],
+    references: [users.id],
+  }),
 }))
 
 function cuid(): string {

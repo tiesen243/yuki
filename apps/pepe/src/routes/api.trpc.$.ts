@@ -1,4 +1,4 @@
-import { handler } from '@yukinu/api'
+import { handler } from '@yuki/api'
 
 import type { Route } from './+types/api.trpc.$'
 

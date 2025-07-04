@@ -1,7 +1,7 @@
 import type { MiddlewareConfig, NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 
-import { verifyRequestOrigin } from '@yukinu/auth/csrf'
+import { verifyRequestOrigin } from '@yuki/auth/csrf'
 
 export function middleware(request: NextRequest) {
   const isValidOrigin = verifyRequestOrigin(request)

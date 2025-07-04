@@ -1,9 +1,9 @@
 import type { TRPCRouterRecord } from '@trpc/server'
 import { TRPCError } from '@trpc/server'
 
-import { and, eq, sql } from '@yukinu/db'
-import { addresses, orderItems, orders, products } from '@yukinu/db/schema'
-import { byIdOrStatusSchema, updateCartSchema } from '@yukinu/validators/order'
+import { and, eq, sql } from '@yuki/db'
+import { addresses, orderItems, orders, products } from '@yuki/db/schema'
+import { byIdOrStatusSchema, updateCartSchema } from '@yuki/validators/order'
 
 import { protectedProcedure } from '../trpc'
 

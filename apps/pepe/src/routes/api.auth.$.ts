@@ -1,4 +1,4 @@
-import { handlers } from '@yukinu/auth'
+import { handlers } from '@yuki/auth'
 
 import type { Route } from './+types/api.auth.$'
 

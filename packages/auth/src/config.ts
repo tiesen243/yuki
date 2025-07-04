@@ -1,5 +1,5 @@
-import { and, db, eq } from '@yukinu/db'
-import { accounts, sessions, users } from '@yukinu/db/schema'
+import { and, db, eq } from '@yuki/db'
+import { accounts, sessions, users } from '@yuki/db/schema'
 
 import type { AuthOptions } from './core/types'
 import { encodeHex, hashSecret } from './core/crypto'

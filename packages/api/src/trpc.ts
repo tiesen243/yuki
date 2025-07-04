@@ -1,8 +1,8 @@
 import { initTRPC, TRPCError } from '@trpc/server'
 import SuperJSON from 'superjson'
 
-import { auth, validateSessionToken } from '@yukinu/auth'
-import { db } from '@yukinu/db'
+import { auth, validateSessionToken } from '@yuki/auth'
+import { db } from '@yuki/db'
 
 const isomorphicGetSession = async (headers: Headers) => {
   const authToken = headers.get('Authorization') ?? null

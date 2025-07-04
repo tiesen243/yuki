@@ -23,7 +23,7 @@
     "@yukinu/db": "workspace:*",
     "@yukinu/ui": "workspace:*",
     "@yukinu/validators": "workspace:*",
-    "next": "15.3.4",
+    "next": "15.3.5",
     "react": "catalog:react",
     "react-dom": "catalog:react"
   },
