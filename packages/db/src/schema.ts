@@ -1,42 +1,27 @@
 import { relations } from 'drizzle-orm'
 import { index, pgEnum, pgTable, primaryKey } from 'drizzle-orm/pg-core'
 
-/*
- * ============================================================================
- * ENUMS
- * ============================================================================
- */
-export const userRolesEnum = pgEnum('user_role', ['admin', 'user'])
-export const orderStatusEnum = pgEnum('order_status', [
-  'pending',
-  'completed',
-  'cancelled',
-  'refunded',
-])
-
-/*
- * ============================================================================
- * USER MANAGEMENT
- * ============================================================================
- */
+export const roles = pgEnum('role', ['user', 'admin'])
 export const users = pgTable(
   'user',
   (t) => ({
-    id: t.uuid().primaryKey().defaultRandom().notNull(),
+    id: t.varchar({ length: 25 }).primaryKey().$defaultFn(cuid).notNull(),
     name: t.varchar({ length: 255 }).notNull(),
-    email: t.varchar({ length: 255 }).unique().notNull(),
-    image: t.varchar({ length: 255 }).notNull(),
-    role: userRolesEnum().default('user').notNull(),
-    createdAt: t.timestamp({ withTimezone: true }).defaultNow().notNull(),
-    updatedAt: t
-      .timestamp({ withTimezone: true })
+    email: t.varchar({ length: 320 }).unique().notNull(),
+    image: t.varchar({ length: 500 }).notNull(),
+    role: roles().default('user').notNull(),
+    createdAt: t
+      .timestamp({ mode: 'date', withTimezone: true })
       .defaultNow()
-      .$onUpdateFn(() => new Date())
+      .notNull(),
+    updatedAt: t
+      .timestamp({ mode: 'date', withTimezone: true })
+      .defaultNow()
+      .$onUpdate(() => new Date())
       .notNull(),
   }),
-  (user) => [index().on(user.email), index().on(user.role)],
+  (t) => [index('user_email_idx').on(t.email)],
 )
-
 export const usersRelations = relations(users, ({ many }) => ({
   accounts: many(accounts),
   sessions: many(sessions),
@@ -44,28 +29,23 @@ export const usersRelations = relations(users, ({ many }) => ({
   orders: many(orders),
 }))
 
-/*
- * ============================================================================
- * AUTHENTICATION
- * ============================================================================
- */
 export const accounts = pgTable(
   'account',
   (t) => ({
-    provider: t.varchar({ length: 255 }).notNull(),
-    accountId: t.varchar({ length: 255 }).notNull(),
+    provider: t.varchar({ length: 25 }).notNull(),
+    accountId: t.varchar({ length: 128 }).notNull(),
+    password: t.varchar({ length: 255 }),
     userId: t
-      .uuid()
+      .varchar({ length: 25 })
       .notNull()
       .references(() => users.id, { onDelete: 'cascade' }),
-    password: t.varchar({ length: 255 }),
   }),
   (account) => [
     primaryKey({ columns: [account.provider, account.accountId] }),
-    index().on(account.userId),
+    index('account_user_id_idx').on(account.userId),
+    index('account_provider_idx').on(account.provider),
   ],
 )
-
 export const accountsRelations = relations(accounts, ({ one }) => ({
   user: one(users, { fields: [accounts.userId], references: [users.id] }),
 }))
@@ -73,70 +53,55 @@ export const accountsRelations = relations(accounts, ({ one }) => ({
 export const sessions = pgTable(
   'session',
   (t) => ({
-    token: t.varchar({ length: 255 }).primaryKey().notNull(),
+    token: t.varchar({ length: 64 }).primaryKey().notNull(),
     expires: t.timestamp({ mode: 'date', withTimezone: true }).notNull(),
     userId: t
-      .uuid()
+      .varchar({ length: 25 })
       .notNull()
       .references(() => users.id, { onDelete: 'cascade' }),
   }),
-  (session) => [index().on(session.userId), index().on(session.expires)],
+  (t) => [index('session_user_id_idx').on(t.userId)],
 )
-
 export const sessionRelations = relations(sessions, ({ one }) => ({
   user: one(users, { fields: [sessions.userId], references: [users.id] }),
 }))
 
-/*
- * ============================================================================
- * USER ADDRESSES
- * ============================================================================
- */
 export const addresses = pgTable(
   'address',
   (t) => ({
-    id: t.uuid().primaryKey().defaultRandom().notNull(),
-    userId: t
-      .uuid()
-      .notNull()
-      .references(() => users.id, { onDelete: 'cascade' }),
-    name: t.varchar({ length: 255 }).notNull(),
-    phone: t.varchar({ length: 50 }).notNull(),
-    address: t.varchar({ length: 255 }).notNull(),
+    id: t.varchar({ length: 25 }).primaryKey().$defaultFn(cuid).notNull(),
+    name: t.varchar({ length: 100 }).notNull(),
+    phone: t.varchar({ length: 20 }).notNull(),
+    line1: t.varchar({ length: 255 }).notNull(),
+    line2: t.varchar({ length: 255 }),
     city: t.varchar({ length: 100 }).notNull(),
     state: t.varchar({ length: 100 }).notNull(),
+    postalCode: t.varchar({ length: 20 }).notNull(),
     country: t.varchar({ length: 100 }).notNull(),
-    zipCode: t.varchar({ length: 20 }).notNull(),
     isDefault: t.boolean().default(false).notNull(),
-    createdAt: t.timestamp({ withTimezone: true }).defaultNow().notNull(),
+    userId: t
+      .varchar({ length: 25 })
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
   }),
-  (address) => [
-    index().on(address.userId),
-    index().on(address.userId, address.isDefault),
-  ],
+  (t) => [index('address_user_id_idx').on(t.userId)],
 )
-
-export const addressesRelations = relations(addresses, ({ one }) => ({
-  user: one(users, { fields: [addresses.userId], references: [users.id] }),
+export const addressesRelations = relations(addresses, ({ one, many }) => ({
+  user: one(users, {
+    fields: [addresses.userId],
+    references: [users.id],
+  }),
+  orders: many(orders),
 }))
 
-/*
- * ============================================================================
- * PRODUCT CATALOG
- * ============================================================================
- */
 export const categories = pgTable(
   'category',
   (t) => ({
-    id: t.uuid().primaryKey().defaultRandom().notNull(),
-    name: t.varchar({ length: 255 }).notNull(),
-    description: t.varchar({ length: 255 }).notNull(),
-    image: t.varchar({ length: 255 }).notNull(),
-    createdAt: t.timestamp({ withTimezone: true }).defaultNow().notNull(),
+    id: t.varchar({ length: 25 }).primaryKey().$defaultFn(cuid).notNull(),
+    name: t.varchar({ length: 50 }).notNull(),
   }),
-  (category) => [index().on(category.name)],
+  (t) => [index('category_name_idx').on(t.name)],
 )
-
 export const categoriesRelations = relations(categories, ({ many }) => ({
   products: many(products),
 }))
@@ -144,97 +109,155 @@ export const categoriesRelations = relations(categories, ({ many }) => ({
 export const products = pgTable(
   'product',
   (t) => ({
-    id: t.uuid().primaryKey().defaultRandom().notNull(),
-    name: t.varchar({ length: 255 }).notNull(),
+    id: t.varchar({ length: 25 }).primaryKey().$defaultFn(cuid).notNull(),
+    name: t.varchar({ length: 100 }).notNull(),
     description: t.text().notNull(),
-    image: t.varchar({ length: 255 }).notNull(),
+    image: t.varchar({ length: 500 }).notNull(),
+    stock: t.integer().notNull(),
     price: t.real().notNull(),
-    stock: t.integer().default(0).notNull(),
+    discount: t.real().default(0).notNull(),
     categoryId: t
-      .uuid()
+      .varchar({ length: 25 })
       .notNull()
       .references(() => categories.id, { onDelete: 'cascade' }),
-    createdAt: t.timestamp().defaultNow().notNull(),
+    createdAt: t
+      .timestamp({ mode: 'date', withTimezone: true })
+      .defaultNow()
+      .notNull(),
     updatedAt: t
       .timestamp({ mode: 'date', withTimezone: true })
       .defaultNow()
-      .$onUpdateFn(() => new Date())
+      .$onUpdate(() => new Date())
       .notNull(),
   }),
-  (product) => [
-    index().on(product.categoryId),
-    index().on(product.price),
-    index().on(product.stock),
-    index().on(product.name),
+  (t) => [
+    index('product_name_idx').on(t.name),
+    index('product_category_id_idx').on(t.categoryId),
   ],
 )
-
 export const productsRelations = relations(products, ({ one, many }) => ({
+  cartItems: many(cartItems),
+  orderItems: many(orderItems),
   category: one(categories, {
     fields: [products.categoryId],
     references: [categories.id],
   }),
-  orderItems: many(orderItems),
-}))
-
-/*
- * ============================================================================
- * ORDERS
- * ============================================================================
- */
-export const orders = pgTable(
-  'order',
-  (t) => ({
-    id: t.uuid().primaryKey().defaultRandom().notNull(),
-    userId: t
-      .uuid()
-      .notNull()
-      .references(() => users.id, { onDelete: 'cascade' }),
-    total: t.real().notNull(),
-    status: orderStatusEnum().default('pending').notNull(),
-    createdAt: t.timestamp().defaultNow().notNull(),
-    updatedAt: t
-      .timestamp({ withTimezone: true })
-      .defaultNow()
-      .$onUpdateFn(() => new Date())
-      .notNull(),
-  }),
-  (order) => [
-    index().on(order.userId),
-    index().on(order.status),
-    index().on(order.createdAt),
-  ],
-)
-
-export const ordersRelations = relations(orders, ({ one, many }) => ({
-  orderItems: many(orderItems),
-  user: one(users, { fields: [orders.userId], references: [users.id] }),
 }))
 
 export const orderItems = pgTable(
   'order_item',
   (t) => ({
     orderId: t
-      .uuid()
+      .varchar({ length: 25 })
       .notNull()
       .references(() => orders.id, { onDelete: 'cascade' }),
     productId: t
-      .uuid()
+      .varchar({ length: 25 })
       .notNull()
       .references(() => products.id, { onDelete: 'cascade' }),
     quantity: t.integer().notNull(),
+    price: t.real().notNull(),
   }),
-  (orderItem) => [
-    primaryKey({ columns: [orderItem.orderId, orderItem.productId] }),
-    index().on(orderItem.orderId),
-    index().on(orderItem.productId),
+  (t) => [
+    primaryKey({ columns: [t.orderId, t.productId] }),
+    index('order_item_order_id_idx').on(t.orderId),
+    index('order_item_product_id_idx').on(t.productId),
   ],
 )
-
 export const orderItemsRelations = relations(orderItems, ({ one }) => ({
-  order: one(orders, { fields: [orderItems.orderId], references: [orders.id] }),
   product: one(products, {
     fields: [orderItems.productId],
     references: [products.id],
   }),
+  order: one(orders, {
+    fields: [orderItems.orderId],
+    references: [orders.id],
+  }),
 }))
+
+export const orderStatus = pgEnum('order_status', [
+  'pending',
+  'paid',
+  'shipped',
+  'delivered',
+  'cancelled',
+])
+export const orders = pgTable(
+  'order',
+  (t) => ({
+    id: t.varchar({ length: 25 }).primaryKey().$defaultFn(cuid).notNull(),
+    status: orderStatus().default('pending').notNull(),
+    total: t.real().default(0).notNull(),
+    userId: t
+      .varchar({ length: 25 })
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    addressId: t
+      .varchar({ length: 25 })
+      .notNull()
+      .references(() => addresses.id, { onDelete: 'set null' }),
+    createdAt: t
+      .timestamp({ mode: 'date', withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  }),
+  (t) => [
+    index('order_status_idx').on(t.status),
+    index('order_user_id_idx').on(t.userId),
+    index('order_address_id_idx').on(t.addressId),
+  ],
+)
+export const ordersRelations = relations(orders, ({ one, many }) => ({
+  orderItems: many(orderItems),
+  user: one(users, {
+    fields: [orders.userId],
+    references: [users.id],
+  }),
+  address: one(addresses, {
+    fields: [orders.addressId],
+    references: [addresses.id],
+  }),
+}))
+
+export const cartItems = pgTable(
+  'cart_item',
+  (t) => ({
+    userId: t
+      .varchar({ length: 25 })
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    productId: t
+      .varchar({ length: 25 })
+      .notNull()
+      .references(() => products.id, { onDelete: 'cascade' }),
+    quantity: t.integer().notNull(),
+  }),
+  (t) => [
+    primaryKey({ columns: [t.userId, t.productId] }),
+    index('cart_item_user_id_idx').on(t.userId),
+    index('cart_item_product_id_idx').on(t.productId),
+  ],
+)
+export const cartItemsRelations = relations(cartItems, ({ one }) => ({
+  product: one(products, {
+    fields: [cartItems.productId],
+    references: [products.id],
+  }),
+  user: one(users, {
+    fields: [cartItems.userId],
+    references: [users.id],
+  }),
+}))
+
+function cuid(): string {
+  const alphabet = 'abcdefghijklmnpqrstuvwxyz0123456789'
+  const timestamp = Date.now().toString(36).padStart(8, '0')
+
+  const randomBytes = crypto.getRandomValues(new Uint8Array(16))
+  const randomPart = Array.from(
+    randomBytes,
+    (byte) => alphabet[byte % alphabet.length],
+  ).join('')
+
+  return `c${timestamp}${randomPart}`
+}

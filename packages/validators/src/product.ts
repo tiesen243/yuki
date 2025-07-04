@@ -9,5 +9,6 @@ export const allSchema = z.object({
 })
 
 export const byIdSchema = z.object({
-  id: z.uuid(),
+  id: z.cuid2(),
+  categoryId: z.cuid2().optional(),
 })

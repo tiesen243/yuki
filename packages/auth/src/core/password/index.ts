@@ -1,6 +1,4 @@
-import { constantTimeEqual } from '@oslojs/crypto/subtle'
-import { decodeHex, encodeHexLowerCase } from '@oslojs/encoding'
-
+import { constantTimeEqual, decodeHex, encodeHex } from '../crypto'
 import { scrypt } from './scrypt'
 
 export class Password {
@@ -22,9 +20,9 @@ export class Password {
   }
 
   async hash(password: string): Promise<string> {
-    const salt = encodeHexLowerCase(crypto.getRandomValues(new Uint8Array(16)))
+    const salt = encodeHex(crypto.getRandomValues(new Uint8Array(16)))
     const key = await this.generateKey(password.normalize('NFKC'), salt)
-    return `${salt}:${encodeHexLowerCase(key)}`
+    return `${salt}:${encodeHex(key)}`
   }
 
   async verify(hash: string, password: string): Promise<boolean> {

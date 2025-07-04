@@ -2,7 +2,6 @@
   "name": "@yuki/db",
   "version": "1.0.0",
   "private": true,
-  "license": "MIT",
   "type": "module",
   "exports": {
     ".": {
@@ -17,8 +16,8 @@
   "scripts": {
     "build": "tsc",
     "clean": "git clean -xdf .cache .turbo dist node_modules",
-    "db:push": "bun with-env drizzle-kit push",
-    "db:studio": "bun with-env drizzle-kit studio",
+    "db:push": "bun run with-env drizzle-kit push",
+    "db:studio": "bun run with-env drizzle-kit studio",
     "dev": "tsc --watch",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
@@ -27,17 +26,17 @@
   },
   "prettier": "@yuki/prettier-config",
   "dependencies": {
-    "@neondatabase/serverless": "^1.0.0",
+    "@neondatabase/serverless": "^1.0.1",
     "drizzle-orm": "^0.44.2"
   },
   "devDependencies": {
     "@yuki/eslint-config": "workspace:*",
     "@yuki/prettier-config": "workspace:*",
     "@yuki/tsconfig": "workspace:*",
-    "dotenv-cli": "^8.0.0",
-    "drizzle-kit": "^0.31.1",
-    "eslint": "catalog:tool",
-    "prettier": "catalog:tool",
-    "typescript": "catalog:tool"
+    "dotenv-cli": "catalog:",
+    "drizzle-kit": "^0.31.4",
+    "eslint": "catalog:",
+    "prettier": "catalog:",
+    "typescript": "catalog:"
   }
 }

@@ -1,177 +1,93 @@
 import type { TRPCRouterRecord } from '@trpc/server'
 import { TRPCError } from '@trpc/server'
 
-import type { Cart, CartItem } from '@yuki/redis/schema'
-import { eq, inArray } from '@yuki/db'
-import { products } from '@yuki/db/schema'
-import { addToCartSchema, removeCartItemSchema } from '@yuki/validators/cart'
+import { and, eq } from '@yuki/db'
+import { cartItems, products } from '@yuki/db/schema'
+import { updateCartSchema } from '@yuki/validators/cart'
 
 import { protectedProcedure } from '../trpc'
 
 export const cartRouter = {
   get: protectedProcedure.query(async ({ ctx }) => {
-    const cartKey = `cart:${ctx.session.user.id}`
-    const cart = await ctx.redis.get<Cart>(cartKey)
+    const userId = ctx.session.user.id
 
-    if (!cart) return null
-    if (cart.items.length === 0) return cart
+    const cartItems = await ctx.db.query.cartItems.findMany({
+      where: (t, { eq }) => eq(t.userId, userId),
+      with: { product: true },
+    })
 
-    const productIds = cart.items.map((item) => item.productId)
-    const productsInDb = await ctx.db
-      .select()
-      .from(products)
-      .where(inArray(products.id, productIds))
-      .limit(productIds.length)
-
-    const itemMap = new Map(
-      cart.items.map((item) => [item.productId, item.quantity]),
-    )
+    const totalPrice = cartItems.reduce((sum, item) => {
+      const price = item.product.price * item.quantity
+      const discount = item.product.discount / 100
+      return sum + price * (1 - discount)
+    }, 0)
 
     return {
-      ...cart,
-      items: productsInDb.map((product) => ({
-        productId: product.id,
-        productName: product.name,
-        productImage: product.image,
-        productPrice: product.price,
-        quantity: itemMap.get(product.id) ?? 0,
+      totalPrice: totalPrice.toFixed(2),
+      items: cartItems.map((item) => ({
+        productId: item.product.id,
+        productName: item.product.name,
+        productImage: item.product.image,
+        quantity: item.quantity,
+        price: item.product.price,
+        discount: item.product.discount,
+        totalPrice: (
+          item.product.price *
+          item.quantity *
+          (1 - item.product.discount / 100)
+        ).toFixed(2),
       })),
     }
   }),
 
-  add: protectedProcedure
-    .input(addToCartSchema)
+  update: protectedProcedure
+    .input(updateCartSchema)
     .mutation(async ({ ctx, input }) => {
-      const { productId, quantity } = input
-      const cartKey = `cart:${ctx.session.user.id}`
-      const currentTime = Date.now()
+      const userId = ctx.session.user.id
+      const { productId, quantity, type } = input
 
-      const [product] = await ctx.db
-        .select()
-        .from(products)
-        .where(eq(products.id, productId))
-        .limit(1)
+      const where = and(
+        eq(cartItems.userId, userId),
+        eq(cartItems.productId, productId),
+      )
+
+      const [cartItem, product] = await Promise.all([
+        ctx.db.query.cartItems.findFirst({ where }),
+        ctx.db.query.products.findFirst({
+          where: eq(products.id, productId), // Fixed: use products.id instead of cartItems.productId
+        }),
+      ])
       if (!product)
-        throw new TRPCError({ code: 'NOT_FOUND', message: 'Product not found' })
-
-      if (product.stock < quantity)
         throw new TRPCError({
-          code: 'BAD_REQUEST',
-          message: `Not enough stock available. Available: ${product.stock}`,
+          code: 'NOT_FOUND',
+          message: 'Product not found',
         })
 
-      const existingCart = await ctx.redis.get<Cart>(cartKey)
-      const newItem: CartItem = {
-        productId,
-        productName: product.name,
-        productImage: product.image,
-        productPrice: product.price,
-        quantity,
-      }
-
-      if (!existingCart) {
-        const newCart: Cart = {
-          items: [newItem],
-          total: product.price * quantity,
-          createdAt: currentTime,
-        }
-        await ctx.redis.set(cartKey, newCart)
+      if (type === 'remove') {
+        if (cartItem) await ctx.db.delete(cartItems).where(where)
         return { success: true }
       }
 
-      const existingItemIndex = existingCart.items.findIndex(
-        (item) => item.productId === productId,
-      )
-
-      if (existingItemIndex >= 0 && existingCart.items[existingItemIndex]) {
-        const newQuantity =
-          existingCart.items[existingItemIndex].quantity + quantity
-
-        if (newQuantity > product.stock)
-          throw new TRPCError({
-            code: 'BAD_REQUEST',
-            message: `Not enough stock available. Available: ${product.stock}`,
-          })
-
-        existingCart.items[existingItemIndex].quantity = newQuantity
-      } else existingCart.items.push(newItem)
-
-      existingCart.total = calculateCartTotal(existingCart.items)
-      await ctx.redis.set(cartKey, existingCart)
-
-      return { success: true }
-    }),
-
-  update: protectedProcedure
-    .input(addToCartSchema)
-    .mutation(async ({ ctx, input }) => {
-      const { productId, quantity, action } = input
-      const cartKey = `cart:${ctx.session.user.id}`
-
-      const existingCart = await ctx.redis.get<Cart>(cartKey)
-      if (!existingCart)
-        throw new TRPCError({ code: 'NOT_FOUND', message: 'Cart not found' })
-
-      const [product] = await ctx.db
-        .select()
-        .from(products)
-        .where(eq(products.id, productId))
-        .limit(1)
-
-      const existingItemIndex = existingCart.items.findIndex(
-        (item) => item.productId === productId,
-      )
-
-      if (
-        existingItemIndex < 0 ||
-        !existingCart.items[existingItemIndex] ||
-        !product
-      )
-        throw new TRPCError({ code: 'NOT_FOUND', message: 'Product not found' })
-
-      let newQuantity = quantity
-      if (action === 'increment')
-        newQuantity = existingCart.items[existingItemIndex].quantity + quantity
-
-      if (newQuantity > product.stock)
+      const finalQuantity = cartItem
+        ? type === 'increment'
+          ? cartItem.quantity + quantity
+          : quantity
+        : quantity
+      if (finalQuantity > product.stock)
         throw new TRPCError({
           code: 'BAD_REQUEST',
-          message: `Not enough stock available. Available: ${product.stock}`,
+          message: 'Insufficient stock available',
         })
 
-      existingCart.items[existingItemIndex].quantity = newQuantity
-      existingCart.items[existingItemIndex].productPrice = product.price
-      existingCart.total = calculateCartTotal(existingCart.items)
-      await ctx.redis.set(cartKey, existingCart)
-
-      return { success: true }
-    }),
-
-  remove: protectedProcedure
-    .input(removeCartItemSchema)
-    .mutation(async ({ ctx, input }) => {
-      const cartKey = `cart:${ctx.session.user.id}`
-      const existingCart = await ctx.redis.get<Cart>(cartKey)
-      if (!existingCart)
-        throw new TRPCError({ code: 'NOT_FOUND', message: 'Cart not found' })
-
-      const existingItemIndex = existingCart.items.findIndex(
-        (item) => item.productId === input.productId,
-      )
-      if (existingItemIndex < 0 || !existingCart.items[existingItemIndex])
-        throw new TRPCError({ code: 'NOT_FOUND', message: 'Item not found' })
-
-      existingCart.items.splice(existingItemIndex, 1)
-      existingCart.total = calculateCartTotal(existingCart.items)
-      await ctx.redis.set(cartKey, existingCart)
-
+      if (!cartItem)
+        await ctx.db
+          .insert(cartItems)
+          .values({ userId, productId, quantity: finalQuantity })
+      else
+        await ctx.db
+          .update(cartItems)
+          .set({ quantity: finalQuantity })
+          .where(where)
       return { success: true }
     }),
 } satisfies TRPCRouterRecord
-
-function calculateCartTotal(items: CartItem[]): number {
-  return items.reduce(
-    (total, item) => total + item.productPrice * item.quantity,
-    0,
-  )
-}

@@ -1,7 +1,7 @@
 import type { TRPCRouterRecord } from '@trpc/server'
 import { TRPCError } from '@trpc/server'
 
-import { asc, desc, eq } from '@yuki/db'
+import { and, asc, desc, eq, ne } from '@yuki/db'
 import { categories, products } from '@yuki/db/schema'
 import { allSchema, byIdSchema } from '@yuki/validators/product'
 
@@ -13,12 +13,11 @@ export const productRouter = {
     const orderBy = input.orderBy === 'asc' ? asc : desc
 
     const productList = await ctx.db
-      .select()
+      .select(productPreview)
       .from(products)
       .limit(limit)
       .offset((page - 1) * limit)
       .orderBy(orderBy(products[sortBy]))
-      .execute()
 
     const total = await ctx.db.$count(products)
     const totalPage = Math.ceil(total / limit)
@@ -32,43 +31,86 @@ export const productRouter = {
 
   byId: publicProcedure.input(byIdSchema).query(async ({ ctx, input }) => {
     const [product] = await ctx.db
-      .select({
-        id: products.id,
-        name: products.name,
-        description: products.description,
-        image: products.image,
-        stock: products.stock,
-        price: products.price,
-        category: categories.name,
-      })
+      .select(productDetail)
       .from(products)
       .where(eq(products.id, input.id))
       .innerJoin(categories, eq(products.categoryId, categories.id))
       .limit(1)
 
-    if (!product)
-      throw new TRPCError({ code: 'NOT_FOUND', message: 'Product not found' })
-
-    return product
+    return {
+      product,
+      reviews,
+    }
   }),
 
   relativeProducts: publicProcedure
     .input(byIdSchema)
     .query(async ({ ctx, input }) => {
-      const [product] = await ctx.db
-        .select()
-        .from(products)
-        .where(eq(products.id, input.id))
-        .limit(1)
-
-      if (!product) return []
+      if (!input.categoryId)
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Category ID is required to fetch relative products',
+        })
 
       const relativeProducts = await ctx.db
-        .select()
+        .select(productPreview)
         .from(products)
-        .where(eq(products.categoryId, product.categoryId))
+        .where(
+          and(
+            eq(products.categoryId, input.categoryId),
+            ne(products.id, input.id),
+          ),
+        )
         .limit(8)
 
-      return relativeProducts.filter((p) => p.id !== product.id)
+      return relativeProducts
     }),
 } satisfies TRPCRouterRecord
+
+const productPreview = {
+  id: products.id,
+  name: products.name,
+  description: products.description,
+  image: products.image,
+  price: products.price,
+  discount: products.discount,
+  createdAt: products.createdAt,
+}
+
+const productDetail = {
+  id: products.id,
+  name: products.name,
+  description: products.description,
+  image: products.image,
+  stock: products.stock,
+  price: products.price,
+  discount: products.discount,
+  category: categories.name,
+}
+
+const reviews = [
+  {
+    id: 1,
+    name: 'Sarah Johnson',
+    rating: 5,
+    date: '2024-01-15',
+    comment:
+      'Absolutely amazing sound quality! The noise cancellation works perfectly and the battery life is exactly as advertised.',
+  },
+  {
+    id: 2,
+    name: 'Mike Chen',
+    rating: 4,
+    date: '2024-01-10',
+    comment:
+      "Great headphones overall. Very comfortable for long listening sessions. Only minor complaint is they're a bit heavy.",
+  },
+  {
+    id: 3,
+    name: 'Emily Davis',
+    rating: 5,
+    date: '2024-01-05',
+    comment:
+      "Best purchase I've made this year! The audio quality is incredible and they're so comfortable I forget I'm wearing them.",
+  },
+]

@@ -15,94 +15,79 @@ export const authRouter = {
     .input(signUpSchema)
     .mutation(async ({ ctx, input }) => {
       const user = await ctx.db.query.users.findFirst({
-        where: (users, { eq }) => eq(users.email, input.email),
+        where: eq(users.email, input.email),
+        columns: { id: true },
       })
-
       if (user)
         throw new TRPCError({
           code: 'CONFLICT',
           message: 'User already exists',
         })
 
-      const [newUser] = await ctx.db
-        .insert(users)
-        .values({
-          name: input.name,
-          email: input.email,
-          image: '',
-        })
-        .returning({ id: users.id })
-
-      await ctx.db
-        .insert(accounts)
-        .values({
+      await ctx.db.transaction(async (tx) => {
+        const [newUser] = await tx
+          .insert(users)
+          .values({
+            email: input.email,
+            name: input.name,
+            image: '',
+          })
+          .returning({ id: users.id })
+        await tx.insert(accounts).values({
           provider: 'credentials',
           accountId: newUser?.id ?? '',
           userId: newUser?.id ?? '',
           password: await password.hash(input.password),
         })
-        .returning()
+      })
 
-      return true
+      return { message: 'User created successfully' }
     }),
 
   changePassword: protectedProcedure
     .input(changePasswordSchema)
     .mutation(async ({ ctx, input }) => {
-      const { currentPassword, newPassword, isLogoutAll } = input
       const userId = ctx.session.user.id
 
       const account = await ctx.db.query.accounts.findFirst({
-        where: (accounts, { and, eq }) =>
-          and(
-            eq(accounts.provider, 'credentials'),
-            eq(accounts.accountId, userId),
-          ),
+        where: and(
+          eq(accounts.provider, 'credentials'),
+          eq(accounts.userId, userId),
+        ),
+        columns: { password: true },
       })
-
-      if (!account) {
-        await ctx.db.insert(accounts).values({
-          provider: 'credentials',
-          accountId: userId,
-          userId: userId,
-          password: await password.hash(newPassword),
-        })
-      } else {
-        if (
-          !(await password.verify(
-            account.password ?? '',
-            currentPassword ?? '',
-          ))
+      if (account?.password && input.currentPassword) {
+        const isValid = await password.verify(
+          account.password,
+          input.currentPassword,
         )
+        if (!isValid)
           throw new TRPCError({
             code: 'UNAUTHORIZED',
             message: 'Current password is incorrect',
           })
-
-        await ctx.db
-          .update(accounts)
-          .set({ password: await password.hash(newPassword) })
-          .where(
-            and(
-              eq(accounts.provider, 'credentials'),
-              eq(accounts.accountId, account.accountId),
-            ),
-          )
       }
 
-      if (isLogoutAll)
-        await ctx.db.delete(sessions).where(eq(sessions.userId, userId))
+      await ctx.db.transaction(async (tx) => {
+        const hashedPassword = await password.hash(input.newPassword)
 
-      return true
+        await tx
+          .insert(accounts)
+          .values({
+            provider: 'credentials',
+            accountId: userId,
+            userId,
+            password: hashedPassword,
+          })
+          .onConflictDoUpdate({
+            target: [accounts.provider, accounts.userId],
+            set: { password: hashedPassword },
+          })
+
+        if (input.isLogoutAll)
+          await tx.delete(sessions).where(eq(sessions.userId, userId))
+      })
+
+      return { message: 'Password changed successfully' }
     }),
-
-  removeAccount: protectedProcedure.mutation(async ({ ctx }) => {
-    const userId = ctx.session.user.id
-
-    await ctx.db.delete(users).where(eq(users.id, userId))
-    await ctx.db.delete(accounts).where(eq(accounts.accountId, userId))
-    await ctx.db.delete(sessions).where(eq(sessions.userId, userId))
-
-    return true
-  }),
 } satisfies TRPCRouterRecord

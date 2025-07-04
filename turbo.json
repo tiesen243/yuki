@@ -2,56 +2,22 @@
   "$schema": "./node_modules/turbo/schema.json",
   "ui": "tui",
   "tasks": {
-    "build": {
-      "outputs": [".cache/tsbuildinfo.json", "dist/**"]
-    },
-    "clean": {
-      "cache": false
-    },
-    "//#clean": {
-      "cache": false
-    },
-    "dev": {
-      "cache": false,
-      "persistent": false
-    },
-    "format": {
-      "outputs": [".cache/.prettiercache"],
-      "outputLogs": "new-only"
-    },
-    "lint": {
-      "outputs": [".cache/.eslintcache"],
-      "outputLogs": "new-only"
-    },
-    "typecheck": {
-      "outputs": [".cache/tsbuildinfo.json"],
-      "outputLogs": "new-only"
-    },
-    "db:push": {
-      "cache": false,
-      "interactive": true
-    },
-    "db:studio": {
-      "cache": false,
-      "persistent": true
-    },
-    "ui-add": {
-      "cache": false,
-      "interactive": true
-    }
+    "build": { "outputs": [".cache/tsbuildinfo.json", "dist/**"] },
+    "clean": { "cache": false },
+    "//#clean": { "cache": false },
+    "dev": { "persistent": true },
+    "format": { "outputs": [".cache/prettiercache"] },
+    "lint": { "outputs": [".cache/eslintcache"] },
+    "typecheck": { "outputs": [".cache/tsbuildinfo.json"] }
   },
   "globalEnv": [
-    "AUTH_PROXY_URL",
+    "AUTH_FACEBOOK_ID",
+    "AUTH_FACEBOOK_SECRET",
+    "AUTH_GOOGLE_ID",
+    "AUTH_GOOGLE_SECRET",
     "DATABASE_URL",
-    "FACEBOOK_CLIENT_ID",
-    "FACEBOOK_CLIENT_SECRET",
-    "GOOGLE_CLIENT_ID",
-    "GOOGLE_CLIENT_SECRET",
-    "PORT",
-    "REDIS_URL",
-    "REDIS_TOKEN",
-    "NEXT_PUBLIC_WEB_URL",
-    "NEXT_PUBLIC_DASHBOARD_URL"
+    "NEXT_PUBLIC_API_URL",
+    "PORT"
   ],
   "globalPassThroughEnv": [
     "CI",

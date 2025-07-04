@@ -1,5 +1,5 @@
 {
-  "extends": "@yuki/tsconfig/react-library.json",
+  "extends": "@yuki/tsconfig/react.json",
   "compilerOptions": {
     "rootDir": "src"
   },

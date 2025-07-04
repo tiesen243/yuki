@@ -1,107 +1,62 @@
 import type { TRPCRouterRecord } from '@trpc/server'
 import { TRPCError } from '@trpc/server'
 
-import { and, eq } from '@yuki/db'
+import { and, desc, eq, ne } from '@yuki/db'
 import { addresses } from '@yuki/db/schema'
-import { addSchema, byIdSchema } from '@yuki/validators/address'
+import { addSchema, byIdSchema, updateSchema } from '@yuki/validators/address'
 
 import { protectedProcedure } from '../trpc'
 
 export const addressRouter = {
-  all: protectedProcedure.query(async ({ ctx }) => {
-    return ctx.db.query.addresses.findMany({
-      where: (addresses, { eq }) => eq(addresses.userId, ctx.session.user.id),
-      orderBy: (addresses, { desc }) => desc(addresses.createdAt),
-    })
-  }),
+  all: protectedProcedure.query(async ({ ctx }) =>
+    ctx.db
+      .select()
+      .from(addresses)
+      .where(eq(addresses.userId, ctx.session.user.id))
+      .orderBy(desc(addresses.name)),
+  ),
 
   byId: protectedProcedure.input(byIdSchema).query(async ({ ctx, input }) => {
     const [address] = await ctx.db
-      .select({
-        name: addresses.name,
-        phone: addresses.phone,
-        address: addresses.address,
-        city: addresses.city,
-        state: addresses.state,
-        country: addresses.country,
-        zipCode: addresses.zipCode,
-      })
+      .select()
       .from(addresses)
-      .where(
-        and(
-          eq(addresses.id, input.id),
-          eq(addresses.userId, ctx.session.user.id),
-        ),
-      )
-
+      .where(eq(addresses.id, input.id))
+      .limit(1)
     if (!address)
       throw new TRPCError({ code: 'NOT_FOUND', message: 'Address not found' })
     return address
   }),
 
   add: protectedProcedure.input(addSchema).mutation(async ({ ctx, input }) => {
+    const count = await ctx.db.$count(addresses)
     await ctx.db.insert(addresses).values({
       ...input,
-      id: undefined,
+      isDefault: count === 0,
       userId: ctx.session.user.id,
-      isDefault: (await ctx.db.$count(addresses)) === 0,
     })
-
-    return true
+    return { message: 'Address added successfully' }
   }),
 
   update: protectedProcedure
-    .input(addSchema)
+    .input(updateSchema)
     .mutation(async ({ ctx, input }) => {
       await ctx.db
         .update(addresses)
         .set(input)
-        .where(
-          and(
-            eq(addresses.id, input.id ?? ''),
-            eq(addresses.userId, ctx.session.user.id),
-          ),
-        )
+        .where(eq(addresses.id, input.id))
 
-      return true
-    }),
+      if (input.isDefault)
+        await ctx.db
+          .update(addresses)
+          .set({ isDefault: false })
+          .where(
+            and(
+              ne(addresses.id, input.id),
+              eq(addresses.userId, ctx.session.user.id),
+            ),
+          )
 
-  setDefault: protectedProcedure
-    .input(byIdSchema)
-    .mutation(async ({ ctx, input }) => {
-      const [address] = await ctx.db
-        .select()
-        .from(addresses)
-        .where(
-          and(
-            eq(addresses.id, input.id),
-            eq(addresses.userId, ctx.session.user.id),
-          ),
-        )
-
-      if (!address)
-        throw new TRPCError({ code: 'NOT_FOUND', message: 'Address not found' })
-
-      await ctx.db.transaction(async (tx) => {
-        if (!address.isDefault) {
-          await tx
-            .update(addresses)
-            .set({ isDefault: false })
-            .where(eq(addresses.userId, ctx.session.user.id))
-
-          await tx
-            .update(addresses)
-            .set({ isDefault: true })
-            .where(
-              and(
-                eq(addresses.id, input.id),
-                eq(addresses.userId, ctx.session.user.id),
-              ),
-            )
-        }
-      })
-
-      return true
+      return { message: 'Address updated successfully' }
     }),
 
   remove: protectedProcedure
@@ -110,27 +65,17 @@ export const addressRouter = {
       const [address] = await ctx.db
         .select()
         .from(addresses)
-        .where(
-          and(
-            eq(addresses.id, input.id),
-            eq(addresses.userId, ctx.session.user.id),
-          ),
-        )
-      if (address?.isDefault)
+        .where(eq(addresses.id, input.id))
+        .limit(1)
+      if (!address)
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Address not found' })
+      if (address.isDefault)
         throw new TRPCError({
           code: 'BAD_REQUEST',
-          message: 'Cannot delete default address',
+          message: 'Change the default address before removing this one',
         })
 
-      await ctx.db
-        .delete(addresses)
-        .where(
-          and(
-            eq(addresses.id, input.id),
-            eq(addresses.userId, ctx.session.user.id),
-          ),
-        )
-
-      return true
+      await ctx.db.delete(addresses).where(eq(addresses.id, input.id))
+      return { message: 'Address removed successfully' }
     }),
 } satisfies TRPCRouterRecord
