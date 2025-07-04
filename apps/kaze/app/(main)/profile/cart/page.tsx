@@ -1,6 +1,6 @@
 import { Suspense } from 'react'
 
-import { Typography } from '@yukinu/ui/typography'
+import { Typography } from '@yuki/ui/typography'
 
 import { getQueryClient, HydrateClient, trpc } from '@/trpc/rsc'
 import { CardList, CardListSkeleton } from './page.client'
@@ -8,11 +8,10 @@ import { CardList, CardListSkeleton } from './page.client'
 export const dynamic = 'force-dynamic'
 
 export default function CartPage() {
+  const queryClient = getQueryClient()
   void Promise.all([
-    getQueryClient().prefetchQuery(
-      trpc.order.byIdOrStatus.queryOptions({ status: 'new' }),
-    ),
-    getQueryClient().prefetchQuery(trpc.address.all.queryOptions()),
+    queryClient.prefetchQuery(trpc.cart.get.queryOptions()),
+    queryClient.prefetchQuery(trpc.address.all.queryOptions()),
   ])
 
   return (
@@ -21,6 +20,7 @@ export default function CartPage() {
         <Typography variant="h4" component="h2">
           Your Shopping Cart
         </Typography>
+
         <Suspense fallback={<CardListSkeleton />}>
           <CardList />
         </Suspense>

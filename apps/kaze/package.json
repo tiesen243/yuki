@@ -1,5 +1,5 @@
 {
-  "name": "@yukinu/kaze",
+  "name": "@yuki/kaze",
   "version": "1.0.0",
   "private": true,
   "type": "module",
@@ -13,16 +13,16 @@
     "typecheck": "tsc --noEmit",
     "with-env": "dotenv -e ../../.env --"
   },
-  "prettier": "@yukinu/prettier-config",
+  "prettier": "@yuki/prettier-config",
   "dependencies": {
     "@tanstack/react-query": "catalog:api",
     "@trpc/client": "catalog:api",
     "@trpc/tanstack-react-query": "catalog:api",
-    "@yukinu/api": "workspace:*",
-    "@yukinu/auth": "workspace:*",
-    "@yukinu/db": "workspace:*",
-    "@yukinu/ui": "workspace:*",
-    "@yukinu/validators": "workspace:*",
+    "@yuki/api": "workspace:*",
+    "@yuki/auth": "workspace:*",
+    "@yuki/db": "workspace:*",
+    "@yuki/ui": "workspace:*",
+    "@yuki/validators": "workspace:*",
     "next": "15.3.5",
     "react": "catalog:react",
     "react-dom": "catalog:react"
@@ -32,9 +32,9 @@
     "@types/node": "catalog:",
     "@types/react": "catalog:react",
     "@types/react-dom": "catalog:react",
-    "@yukinu/eslint-config": "workspace:*",
-    "@yukinu/prettier-config": "workspace:*",
-    "@yukinu/tsconfig": "workspace:*",
+    "@yuki/eslint-config": "workspace:*",
+    "@yuki/prettier-config": "workspace:*",
+    "@yuki/tsconfig": "workspace:*",
     "dotenv-cli": "catalog:",
     "tailwindcss": "^4.1.11",
     "typescript": "catalog:"

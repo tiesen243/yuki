@@ -4,8 +4,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useMutation } from '@tanstack/react-query'
 
-import { Badge } from '@yukinu/ui/badge'
-import { Button } from '@yukinu/ui/button'
+import { Badge } from '@yuki/ui/badge'
+import { Button } from '@yuki/ui/button'
 import {
   Card,
   CardContent,
@@ -13,9 +13,9 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@yukinu/ui/card'
-import { ShoppingCartIcon } from '@yukinu/ui/icons'
-import { toast } from '@yukinu/ui/sonner'
+} from '@yuki/ui/card'
+import { ShoppingCartIcon } from '@yuki/ui/icons'
+import { toast } from '@yuki/ui/sonner'
 
 import { slugify } from '@/lib/utils'
 import { useTRPC } from '@/trpc/react'
@@ -34,14 +34,10 @@ interface ProductCardProps {
 export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const { trpc, queryClient } = useTRPC()
   const { mutate, isPending } = useMutation({
-    ...trpc.order.update.mutationOptions(),
-    onError: (error) => {
-      toast.error(error.message)
-    },
-    onSuccess: async () => {
-      await queryClient.invalidateQueries(
-        trpc.order.byIdOrStatus.queryFilter({ status: 'new' }),
-      )
+    ...trpc.cart.update.mutationOptions(),
+    onError: (error) => toast.error(error.message),
+    onSuccess: () => {
+      void queryClient.invalidateQueries(trpc.cart.get.queryFilter())
       toast.success('Item added to cart', {
         action: {
           label: 'View Cart',
@@ -91,10 +87,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           onClick={() => {
             mutate({
               productId: product.id,
-              price: product.price,
+              type: 'increment',
               quantity: 1,
-              action: 'update',
-              quantityAction: 'increment',
             })
           }}
         >

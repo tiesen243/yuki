@@ -1,5 +1,5 @@
 {
-  "extends": "@yukinu/tsconfig/next.json",
+  "extends": "@yuki/tsconfig/next.json",
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {

@@ -5,7 +5,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@yukinu/ui/card'
+} from '@yuki/ui/card'
 
 import { RegisterForm } from './page.client'
 

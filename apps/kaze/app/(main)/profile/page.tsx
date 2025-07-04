@@ -1,11 +1,11 @@
 import { headers } from 'next/headers'
 import Link from 'next/link'
 
-import { auth } from '@yukinu/auth'
-import { Avatar, AvatarFallback, AvatarImage } from '@yukinu/ui/avatar'
-import { Button } from '@yukinu/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@yukinu/ui/card'
-import { Typography } from '@yukinu/ui/typography'
+import { auth } from '@yuki/auth'
+import { Avatar, AvatarFallback, AvatarImage } from '@yuki/ui/avatar'
+import { Button } from '@yuki/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@yuki/ui/card'
+import { Typography } from '@yuki/ui/typography'
 
 export default async function ProfilePage() {
   const { user } = await auth({ headers: await headers() })

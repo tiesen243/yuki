@@ -2,12 +2,12 @@
 
 import { useRouter } from 'next/navigation'
 
-import { useSession } from '@yukinu/auth/react'
-import { Button } from '@yukinu/ui/button'
-import { useForm } from '@yukinu/ui/form'
-import { Input } from '@yukinu/ui/input'
-import { toast } from '@yukinu/ui/sonner'
-import { signInSchema } from '@yukinu/validators/auth'
+import { useSession } from '@yuki/auth/react'
+import { Button } from '@yuki/ui/button'
+import { useForm } from '@yuki/ui/form'
+import { Input } from '@yuki/ui/input'
+import { toast } from '@yuki/ui/sonner'
+import { signInSchema } from '@yuki/validators/auth'
 
 export const LoginForm: React.FC = () => {
   const { signIn } = useSession()

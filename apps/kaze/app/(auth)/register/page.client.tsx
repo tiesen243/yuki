@@ -2,11 +2,11 @@
 
 import { useRouter } from 'next/navigation'
 
-import { Button } from '@yukinu/ui/button'
-import { useForm } from '@yukinu/ui/form'
-import { Input } from '@yukinu/ui/input'
-import { toast } from '@yukinu/ui/sonner'
-import { signUpSchema } from '@yukinu/validators/auth'
+import { Button } from '@yuki/ui/button'
+import { useForm } from '@yuki/ui/form'
+import { Input } from '@yuki/ui/input'
+import { toast } from '@yuki/ui/sonner'
+import { signUpSchema } from '@yuki/validators/auth'
 
 import { useTRPC } from '@/trpc/react'
 

@@ -1,5 +1,5 @@
 {
-  "name": "@yukinu/db",
+  "name": "@yuki/db",
   "version": "1.0.0",
   "private": true,
   "type": "module",
@@ -24,15 +24,15 @@
     "typecheck": "tsc --noEmit",
     "with-env": "dotenv -e ../../.env --"
   },
-  "prettier": "@yukinu/prettier-config",
+  "prettier": "@yuki/prettier-config",
   "dependencies": {
     "@neondatabase/serverless": "^1.0.1",
     "drizzle-orm": "^0.44.2"
   },
   "devDependencies": {
-    "@yukinu/eslint-config": "workspace:*",
-    "@yukinu/prettier-config": "workspace:*",
-    "@yukinu/tsconfig": "workspace:*",
+    "@yuki/eslint-config": "workspace:*",
+    "@yuki/prettier-config": "workspace:*",
+    "@yuki/tsconfig": "workspace:*",
     "dotenv-cli": "catalog:",
     "drizzle-kit": "^0.31.4",
     "eslint": "catalog:",

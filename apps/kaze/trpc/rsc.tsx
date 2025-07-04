@@ -3,7 +3,7 @@ import { headers } from 'next/headers'
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
 import { createTRPCOptionsProxy } from '@trpc/tanstack-react-query'
 
-import { appRouter, createCallerFactory, createTRPCContext } from '@yukinu/api'
+import { appRouter, createCallerFactory, createTRPCContext } from '@yuki/api'
 
 import { createQueryClient } from '@/trpc/query-client'
 

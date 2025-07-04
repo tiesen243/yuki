@@ -3,12 +3,12 @@
 import Link from 'next/link'
 import { useMutation, useSuspenseQuery } from '@tanstack/react-query'
 
-import type { RouterOutputs } from '@yukinu/api'
-import { Badge } from '@yukinu/ui/badge'
-import { Button } from '@yukinu/ui/button'
-import { PencilIcon, TrashIcon } from '@yukinu/ui/icons'
-import { toast } from '@yukinu/ui/sonner'
-import { Typography } from '@yukinu/ui/typography'
+import type { RouterOutputs } from '@yuki/api'
+import { Badge } from '@yuki/ui/badge'
+import { Button } from '@yuki/ui/button'
+import { PencilIcon, TrashIcon } from '@yuki/ui/icons'
+import { toast } from '@yuki/ui/sonner'
+import { Typography } from '@yuki/ui/typography'
 
 import { useTRPC } from '@/trpc/react'
 
@@ -46,7 +46,7 @@ const AddressCard: React.FC<{
   return (
     <div className="bg-card relative min-w-48 rounded-xl p-4 shadow-md">
       <div className="flex w-[80%] items-center gap-2">
-        {address.default ? (
+        {address.isDefault ? (
           <Badge variant="info">Default</Badge>
         ) : (
           <Button
@@ -54,7 +54,7 @@ const AddressCard: React.FC<{
             variant="ghost"
             className="text-info hover:bg-info/10 dark:hover:bg-info/20 hover:text-info"
             onClick={() => {
-              setDefault({ ...address, default: true })
+              setDefault({ ...address, isDefault: true })
             }}
             disabled={isSetting}
           >
@@ -96,7 +96,10 @@ const AddressCard: React.FC<{
       </div>
 
       <div className="grid w-[80%] gap-1">
-        <Typography className="truncate">{address.address}</Typography>
+        <Typography className="truncate">
+          {address.line1}
+          {address.line2 ? `, ${address.line2}` : ''}
+        </Typography>
         <Typography className="truncate">
           {address.city}, {address.state} {address.postalCode}
         </Typography>

@@ -2,10 +2,10 @@
 
 import Link from 'next/link'
 
-import { useSession } from '@yukinu/auth/react'
-import { useTheme } from '@yukinu/ui'
-import { Avatar, AvatarFallback, AvatarImage } from '@yukinu/ui/avatar'
-import { Button } from '@yukinu/ui/button'
+import { useSession } from '@yuki/auth/react'
+import { useTheme } from '@yuki/ui'
+import { Avatar, AvatarFallback, AvatarImage } from '@yuki/ui/avatar'
+import { Button } from '@yuki/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,7 +19,7 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-} from '@yukinu/ui/dropdown-menu'
+} from '@yuki/ui/dropdown-menu'
 import {
   LaptopIcon,
   LogInIcon,
@@ -31,7 +31,7 @@ import {
   SunIcon,
   SunMoonIcon,
   UserIcon,
-} from '@yukinu/ui/icons'
+} from '@yuki/ui/icons'
 
 export const UserButton: React.FC = () => {
   const { status, session, signOut } = useSession()

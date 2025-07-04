@@ -1,7 +1,7 @@
 import Form from 'next/form'
 
-import { SearchIcon } from '@yukinu/ui/icons'
-import { Input } from '@yukinu/ui/input'
+import { SearchIcon } from '@yuki/ui/icons'
+import { Input } from '@yuki/ui/input'
 
 export function Search() {
   return (

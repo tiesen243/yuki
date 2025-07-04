@@ -2,12 +2,12 @@
 
 import { useRouter } from 'next/navigation'
 
-import type { RouterOutputs } from '@yukinu/api'
-import { Button } from '@yukinu/ui/button'
-import { useForm } from '@yukinu/ui/form'
-import { Input } from '@yukinu/ui/input'
-import { toast } from '@yukinu/ui/sonner'
-import { updateSchema } from '@yukinu/validators/address'
+import type { RouterOutputs } from '@yuki/api'
+import { Button } from '@yuki/ui/button'
+import { useForm } from '@yuki/ui/form'
+import { Input } from '@yuki/ui/input'
+import { toast } from '@yuki/ui/sonner'
+import { updateSchema } from '@yuki/validators/address'
 
 import { useTRPC } from '@/trpc/react'
 
@@ -78,12 +78,25 @@ export const CreateOrEditAddressForm: React.FC<{
       />
 
       <form.Field
-        name="address"
+        name="line1"
         render={({ field, meta }) => (
           <div id={meta.id} className="grid gap-2">
-            <form.Label>Address</form.Label>
+            <form.Label>Address Line 1</form.Label>
             <form.Control {...field}>
               <Input placeholder="123 Main St" />
+            </form.Control>
+            <form.Message />
+          </div>
+        )}
+      />
+
+      <form.Field
+        name="line2"
+        render={({ field, meta }) => (
+          <div id={meta.id} className="grid gap-2">
+            <form.Label>Address Line 2</form.Label>
+            <form.Control {...field} value={field.value ?? ''}>
+              <Input placeholder="Apt 4B" />
             </form.Control>
             <form.Message />
           </div>

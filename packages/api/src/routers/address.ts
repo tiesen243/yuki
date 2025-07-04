@@ -31,8 +31,8 @@ export const addressRouter = {
     const count = await ctx.db.$count(addresses)
     await ctx.db.insert(addresses).values({
       ...input,
+      isDefault: count === 0,
       userId: ctx.session.user.id,
-      default: count === 0,
     })
     return { message: 'Address added successfully' }
   }),
@@ -45,10 +45,10 @@ export const addressRouter = {
         .set(input)
         .where(eq(addresses.id, input.id))
 
-      if (input.default)
+      if (input.isDefault)
         await ctx.db
           .update(addresses)
-          .set({ default: false })
+          .set({ isDefault: false })
           .where(
             and(
               ne(addresses.id, input.id),
@@ -69,7 +69,7 @@ export const addressRouter = {
         .limit(1)
       if (!address)
         throw new TRPCError({ code: 'NOT_FOUND', message: 'Address not found' })
-      if (address.default)
+      if (address.isDefault)
         throw new TRPCError({
           code: 'BAD_REQUEST',
           message: 'Change the default address before removing this one',

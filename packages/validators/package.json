@@ -1,5 +1,5 @@
 {
-  "name": "@yukinu/validators",
+  "name": "@yuki/validators",
   "version": "1.0.0",
   "private": true,
   "type": "module",
@@ -17,14 +17,14 @@
     "lint": "eslint",
     "typecheck": "tsc --noEmit"
   },
-  "prettier": "@yukinu/prettier-config",
+  "prettier": "@yuki/prettier-config",
   "dependencies": {
     "zod": "^3.25.73"
   },
   "devDependencies": {
-    "@yukinu/eslint-config": "workspace:*",
-    "@yukinu/prettier-config": "workspace:*",
-    "@yukinu/tsconfig": "workspace:*",
+    "@yuki/eslint-config": "workspace:*",
+    "@yuki/prettier-config": "workspace:*",
+    "@yuki/tsconfig": "workspace:*",
     "eslint": "catalog:",
     "prettier": "catalog:",
     "typescript": "catalog:"

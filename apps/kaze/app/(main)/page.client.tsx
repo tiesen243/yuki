@@ -4,9 +4,9 @@ import * as React from 'react'
 import Image from 'next/image'
 import { useSuspenseQuery } from '@tanstack/react-query'
 
-import { cn } from '@yukinu/ui'
-import { Button } from '@yukinu/ui/button'
-import { Typography } from '@yukinu/ui/typography'
+import { cn } from '@yuki/ui'
+import { Button } from '@yuki/ui/button'
+import { Typography } from '@yuki/ui/typography'
 
 import { ProductCard } from '@/app/_components/product-card'
 import { useTRPC } from '@/trpc/react'

@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-html-link-for-pages */
-import { Button } from '@yukinu/ui/button'
-import { Card, CardFooter } from '@yukinu/ui/card'
-import { FacebookIcon, GoogleIcon } from '@yukinu/ui/icons'
+import { Button } from '@yuki/ui/button'
+import { Card, CardFooter } from '@yuki/ui/card'
+import { FacebookIcon, GoogleIcon } from '@yuki/ui/icons'
 
 export default function AuthLayout({
   children,

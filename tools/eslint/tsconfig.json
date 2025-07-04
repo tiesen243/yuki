@@ -1,5 +1,5 @@
 {
-  "extends": "@yukinu/tsconfig/base.json",
+  "extends": "@yuki/tsconfig/base.json",
   "include": ["."],
   "exclude": ["node_modules"]
 }

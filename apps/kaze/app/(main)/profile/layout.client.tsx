@@ -9,8 +9,8 @@ import {
   ShoppingBagIcon,
   ShoppingCartIcon,
   UserIcon,
-} from '@yukinu/ui/icons'
-import { Tabs, TabsList, TabsTrigger } from '@yukinu/ui/tabs'
+} from '@yuki/ui/icons'
+import { Tabs, TabsList, TabsTrigger } from '@yuki/ui/tabs'
 
 export const Navigation = () => {
   const pathName = usePathname()

@@ -4,12 +4,12 @@ import { useCallback, useState } from 'react'
 import Image from 'next/image'
 import { useMutation, useSuspenseQuery } from '@tanstack/react-query'
 
-import type { RouterOutputs } from '@yukinu/api'
-import { Badge } from '@yukinu/ui/badge'
-import { Button } from '@yukinu/ui/button'
-import { useDebounce } from '@yukinu/ui/hooks/use-debounce'
-import { MinusIcon, PlusIcon, Trash2Icon } from '@yukinu/ui/icons'
-import { Input } from '@yukinu/ui/input'
+import type { RouterOutputs } from '@yuki/api'
+import { Badge } from '@yuki/ui/badge'
+import { Button } from '@yuki/ui/button'
+import { useDebounce } from '@yuki/ui/hooks/use-debounce'
+import { MinusIcon, PlusIcon, Trash2Icon } from '@yuki/ui/icons'
+import { Input } from '@yuki/ui/input'
 import {
   Select,
   SelectContent,
@@ -17,15 +17,13 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@yukinu/ui/select'
+} from '@yuki/ui/select'
 
 import { useTRPC } from '@/trpc/react'
 
 export const CardList: React.FC = () => {
   const { trpc } = useTRPC()
-  const { data: cart } = useSuspenseQuery(
-    trpc.order.byIdOrStatus.queryOptions({ status: 'new' }),
-  )
+  const { data: cart } = useSuspenseQuery(trpc.cart.get.queryOptions())
   const { data: addresses } = useSuspenseQuery(trpc.address.all.queryOptions())
 
   return (
@@ -42,14 +40,14 @@ export const CardList: React.FC = () => {
         </div>
       ) : (
         <div className="grid gap-1 border-t pt-4">
-          <p className="font-semibold">Total: {cart.totalAmount.toFixed(2)}</p>
+          <p className="font-semibold">Total: {cart.totalPrice}</p>
           <p className="text-muted-foreground text-sm">
             Items: {cart.items.length}
           </p>
 
           <div className="grid grid-cols-2 gap-4 pt-4">
             <Select
-              defaultValue={addresses.find((address) => address.default)?.id}
+              defaultValue={addresses.find((address) => address.isDefault)?.id}
             >
               <SelectTrigger className="line-clamp-1 w-full">
                 <SelectValue placeholder="Select a address" />
@@ -62,14 +60,15 @@ export const CardList: React.FC = () => {
                       <div className="flex flex-col gap-1">
                         <div className="flex items-center gap-2">
                           <span className="font-medium">{address.name}</span>
-                          {address.default && (
+                          {address.isDefault && (
                             <Badge variant="info" className="py-0">
                               Default
                             </Badge>
                           )}
                         </div>
                         <span className="text-muted-foreground text-sm">
-                          {address.address}
+                          {address.line1}
+                          {address.line2 ? `, ${address.line2}` : ''}
                         </span>
                         <span className="text-muted-foreground text-xs">
                           {address.city}, {address.state} {address.postalCode}
@@ -90,17 +89,14 @@ export const CardList: React.FC = () => {
 }
 
 const CartItem: React.FC<{
-  item: RouterOutputs['order']['byIdOrStatus']['items'][number]
+  item: RouterOutputs['cart']['get']['items'][number]
 }> = ({ item }) => {
   const [localQuantity, setLocalQuantity] = useState(item.quantity)
 
   const { trpc, queryClient } = useTRPC()
   const { mutate, isPending } = useMutation({
-    ...trpc.order.update.mutationOptions(),
-    onSuccess: () =>
-      queryClient.invalidateQueries(
-        trpc.order.byIdOrStatus.queryFilter({ status: 'new' }),
-      ),
+    ...trpc.cart.update.mutationOptions(),
+    onSuccess: () => queryClient.invalidateQueries(trpc.cart.get.queryFilter()),
     onError: () => {
       setLocalQuantity(item.quantity)
     },
@@ -110,10 +106,8 @@ const CartItem: React.FC<{
     if (quantity !== item.quantity && quantity > 0) {
       mutate({
         productId: item.productId,
+        type: 'replace',
         quantity,
-        price: item.price,
-        action: 'update',
-        quantityAction: 'replace',
       })
     }
   }, 500)
@@ -131,8 +125,8 @@ const CartItem: React.FC<{
   return (
     <div className="bg-card hover:bg-card/80 grid grid-cols-7 gap-4 rounded-xl border p-4 shadow-md transition-colors">
       <Image
-        src={item.image}
-        alt={item.name}
+        src={item.productImage}
+        alt={item.productName}
         className="aspect-square object-cover"
         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         width={80}
@@ -140,7 +134,7 @@ const CartItem: React.FC<{
       />
 
       <div className="col-span-5 grid gap-2">
-        <h3 className="text-lg font-semibold">{item.name}</h3>
+        <h3 className="text-lg font-semibold">{item.productName}</h3>
 
         <div className="flex">
           <Button
@@ -191,8 +185,7 @@ const CartItem: React.FC<{
           onClick={() => {
             mutate({
               productId: item.productId,
-              action: 'remove',
-              price: item.price,
+              type: 'remove',
               quantity: 0,
             })
           }}

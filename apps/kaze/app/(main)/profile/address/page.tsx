@@ -1,8 +1,8 @@
 import { Suspense } from 'react'
 import Link from 'next/link'
 
-import { Button } from '@yukinu/ui/button'
-import { Typography } from '@yukinu/ui/typography'
+import { Button } from '@yuki/ui/button'
+import { Typography } from '@yuki/ui/typography'
 
 import { getQueryClient, HydrateClient, trpc } from '@/trpc/rsc'
 import { AddressCardSkeleton, AddressList } from './page.client'

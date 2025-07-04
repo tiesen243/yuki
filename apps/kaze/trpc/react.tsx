@@ -13,7 +13,7 @@ import {
 import { createTRPCOptionsProxy } from '@trpc/tanstack-react-query'
 import SuperJSON from 'superjson'
 
-import type { AppRouter } from '@yukinu/api'
+import type { AppRouter } from '@yuki/api'
 
 import { getBaseUrl } from '@/lib/utils'
 import { createQueryClient } from '@/trpc/query-client'

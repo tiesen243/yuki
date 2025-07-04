@@ -9,8 +9,8 @@ import {
   ScrollRestoration,
 } from 'react-router'
 
-import { SessionProvider } from '@yukinu/auth/react'
-import { ThemeProvider } from '@yukinu/ui'
+import { SessionProvider } from '@yuki/auth/react'
+import { ThemeProvider } from '@yuki/ui'
 
 import type { Route } from './+types/root'
 import { createMetadata } from '@/lib/metadata'

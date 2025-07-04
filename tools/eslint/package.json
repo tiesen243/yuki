@@ -1,5 +1,5 @@
 {
-  "name": "@yukinu/eslint-config",
+  "name": "@yuki/eslint-config",
   "version": "0.0.1",
   "private": true,
   "type": "module",
@@ -13,7 +13,7 @@
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "typecheck": "tsc --noEmit"
   },
-  "prettier": "@yukinu/prettier-config",
+  "prettier": "@yuki/prettier-config",
   "dependencies": {
     "@next/eslint-plugin-next": "^15.3.5",
     "eslint-plugin-import": "^2.32.0",
@@ -24,8 +24,8 @@
     "typescript-eslint": "^8.35.1"
   },
   "devDependencies": {
-    "@yukinu/prettier-config": "workspace:*",
-    "@yukinu/tsconfig": "workspace:*",
+    "@yuki/prettier-config": "workspace:*",
+    "@yuki/tsconfig": "workspace:*",
     "eslint": "catalog:",
     "prettier": "catalog:",
     "typescript": "catalog:"

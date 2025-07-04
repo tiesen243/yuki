@@ -1,6 +1,6 @@
 import Link from 'next/link'
 
-import { Button } from '@yukinu/ui/button'
+import { Button } from '@yuki/ui/button'
 import {
   FacebookIcon,
   InstagramIcon,
@@ -9,8 +9,8 @@ import {
   PhoneIcon,
   XFormerTwitterIcon,
   YoutubeIcon,
-} from '@yukinu/ui/icons'
-import { Input } from '@yukinu/ui/input'
+} from '@yuki/ui/icons'
+import { Input } from '@yuki/ui/input'
 
 export const Footer = () => (
   <footer className="bg-sidebar border-t">
@@ -118,7 +118,7 @@ export const Footer = () => (
             </div>
             <div className="text-muted-foreground flex items-center gap-2 text-sm">
               <MailIcon className="h-4 w-4" />
-              <span>support@yukinu.com</span>
+              <span>support@yuki.com</span>
             </div>
             <div className="text-muted-foreground flex items-center gap-2 text-sm">
               <PhoneIcon className="h-4 w-4" />
