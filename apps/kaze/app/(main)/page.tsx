@@ -4,6 +4,8 @@ import { getQueryClient, trpc } from '@/trpc/rsc'
 import { ProductCardSkeleton } from '../_components/product-card'
 import { ProductList, Slider } from './page.client'
 
+export const dynamic = 'force-dynamic'
+
 export default function HomePage() {
   void getQueryClient().prefetchQuery(
     trpc.product.all.queryOptions({ limit: 12 }),
